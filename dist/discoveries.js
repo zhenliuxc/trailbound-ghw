@@ -150,27 +150,38 @@
     "icon": "eaves"
   }
 ]);
+ CATALOG.push(
+  {id:'westlake-floating-leaf',route:'westlake',order:0,at:.055,place:'西湖 · 九溪溪谷',name:'石头旁打转的一片落叶',hint:'那片叶子绕了好久，还没转过石头。',memory:'九溪的水绕过石头，一片落叶慢慢打转。我看了一会儿，水声把脚步也放轻了。',icon:'leaf',interaction:'ripple'},
+  {id:'westlake-leaf-shadow',route:'westlake',order:1,at:.66,place:'西湖 · 龙井茶园',name:'茶叶间漏下的一点光',hint:'云缝里的光，把叶脉照得很清楚。',memory:'龙井茶园里，光从茶叶间漏下来。叶影轻轻摇着，我把这一点温暖留在了手边。',icon:'tea',interaction:'leaf'},
+  {id:'westlake-basket',route:'westlake',order:2,at:.895,place:'西湖 · 龙井村口',name:'一只等雨停的竹篮',hint:'竹篮安静放在凳上，屋檐还在滴水。',memory:'龙井村口的屋檐下，一只竹篮安静等着雨停。我听过一串细细的滴水声，把这段午后也放慢了。',icon:'basket',interaction:'drip'}
+ );
+ for(const entry of CATALOG.filter(x=>x.route==='westlake'))entry.interaction=entry.interaction||({stones:'ripple',tea:'leaf',eaves:'drip'})[entry.icon];
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}
- function create(route,seed=Math.random()*4294967296){let value=Number(seed)>>>0;const random=()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};const pool=CATALOG.filter(x=>x.route===route).sort((a,b)=>a.order-b.order);
-  return {route,seed:Number(seed)>>>0,found:[],slots:pool.map((x,i)=>{const at=x.at+random()*(i===2&&route==='aotai'?.01:.025);return {id:x.id,at,until:Math.min(.97,at+.16),side:random()<.5?-1:1};})};
+ function create(route,seed=Math.random()*4294967296,{recent=[]}={}){let value=Number(seed)>>>0;const random=()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};let pool=CATALOG.filter(x=>x.route===route).sort((a,b)=>a.order-b.order);
+  if(route==='westlake'){
+   const previous=new Set(recent.slice(-3));pool=[0,1,2].map(order=>{const candidates=pool.filter(x=>x.order===order),weights=candidates.map(x=>previous.has(x.id)?1:3);let roll=random()*weights.reduce((a,b)=>a+b,0),pick=candidates.at(-1);for(let i=0;i<candidates.length;i++){roll-=weights[i];if(roll<0){pick=candidates[i];break;}}return pick;});
+   if(pool.every(x=>previous.has(x.id))){const index=Math.floor(random()*3),alternate=CATALOG.find(x=>x.route===route&&x.order===index&&!previous.has(x.id));if(alternate)pool[index]=alternate;}
+  }
+  return {route,seed:Number(seed)>>>0,afterRain:route==='westlake',found:[],slots:pool.map((x,i)=>{const at=x.at+random()*(i===2&&route==='aotai'?.01:.025);return {id:x.id,at,until:Math.min(route==='westlake'&&i===0?.135:.97,at+.16),side:random()<.5?-1:1};})};
  }
+
  function visible(state,trip){if(!['walking','paused'].includes(state.status))return null;return trip.slots.find(x=>state.progress>=x.at&&state.progress<=x.until&&!trip.found.includes(x.id))||null;}
  function capture(state,trip,id){const active=visible(state,trip);return active?.id===id?{...trip,found:[...trip.found,id]}:trip;}
  function load(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');return data?.version===1?clean(data.found):data?.version===2?clean(cleanMoments(data.moments).map(m=>m.id)):[];}catch(_){return [];}}
  function save(storage,found){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:1,found:clean(found)}));return true;}catch(_){return false;}}
  const MAX_MOMENTS=120,WEATHER=new Set(['clear','wind','fog','rain','snow','blizzard']);
  const finite=(value,min,max)=>Number.isFinite(value)?Math.max(min,Math.min(max,value)):null;
- function moment(state,trip,id,{weather=null,now=Date.now()}={}){
+ function moment(state,trip,id,{weather=null,now=Date.now(),experience=null}={}){
   const entry=item(id);if(!entry||entry.route!==trip.route||!trip.found.includes(id))return null;
-  return {key:`${now}-${trip.seed}-${id}`,id,route:entry.route,place:entry.place,title:entry.name,memory:entry.memory,icon:entry.icon,progress:finite(state.progress,0,1),elapsed:finite(state.elapsed,0,86400),weather:WEATHER.has(weather)?weather:null,createdAt:finite(now,0,8640000000000000),legacy:false};
+  return {key:`${now}-${trip.seed}-${id}`,id,route:entry.route,place:entry.place,title:experience?.id===id?experience.title:entry.name,memory:experience?.id===id?experience.memory:entry.memory,...(experience?.id===id?{interaction:experience.interaction}:{}),icon:entry.icon,progress:finite(state.progress,0,1),elapsed:finite(state.elapsed,0,86400),weather:WEATHER.has(weather)?weather:null,createdAt:finite(now,0,8640000000000000),legacy:false};
  }
  function cleanMoments(values){
   if(!Array.isArray(values))return [];const keys=new Set(),out=[];
   for(const value of values){const entry=item(value?.id);if(!entry||value.route!==entry.route||typeof value.key!=='string'||!value.key||value.key.length>100||keys.has(value.key))continue;keys.add(value.key);
    const text=(name,fallback,max)=>typeof value[name]==='string'&&value[name].trim()?value[name].slice(0,max):fallback;
-   out.push({key:value.key,id:entry.id,route:entry.route,place:text('place',entry.place,80),title:text('title',entry.name,80),memory:text('memory',entry.memory,400),icon:entry.icon,progress:finite(value.progress,0,1),elapsed:finite(value.elapsed,0,86400),weather:WEATHER.has(value.weather)?value.weather:null,createdAt:finite(value.createdAt,0,8640000000000000),legacy:!!value.legacy});
+   out.push({key:value.key,id:entry.id,route:entry.route,place:text('place',entry.place,80),title:text('title',entry.name,80),memory:text('memory',entry.memory,400),...(['look','tap','drag'].includes(value.interaction)?{interaction:value.interaction}:{}),icon:entry.icon,progress:finite(value.progress,0,1),elapsed:finite(value.elapsed,0,86400),weather:WEATHER.has(value.weather)?value.weather:null,createdAt:finite(value.createdAt,0,8640000000000000),legacy:!!value.legacy});
   }return out.slice(-MAX_MOMENTS);
  }
  function loadMoments(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');if(data?.version===2)return cleanMoments(data.moments);if(data?.version===1)return clean(data.found).map(id=>{const entry=item(id);return {key:'legacy-'+id,id,route:entry.route,place:entry.place.split(' · ')[0],title:'从旧手帐带来的一页',memory:'这是以前在这段路线保存的回忆。新的旅途瞬间会记下当时的风景与心情。',icon:entry.icon,progress:null,elapsed:null,weather:null,createdAt:null,legacy:true};});return [];}catch(_){return [];}}

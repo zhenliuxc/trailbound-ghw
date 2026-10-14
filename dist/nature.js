@@ -300,6 +300,7 @@
     "place": "西湖 · 龙井村口"
   }
 });
+ Object.assign(OBSERVATIONS,{"westlake-floating-leaf": {"route": "westlake", "place": "西湖 · 九溪溪谷", "title": "溪水里的一片落叶", "look": "水纹散开时，叶子也换了一个方向。", "fact": "九溪十八涧与龙井村是西湖群山户外休闲带的节点。手帐里的落叶与水纹，是这段溪谷旅程的插画演绎。", "source": "westlake"}, "westlake-leaf-shadow": {"route": "westlake", "place": "西湖 · 龙井茶园", "title": "茶叶与叶影", "look": "光从叶脉里透过去，叶影轻轻摇着。", "fact": "西湖群山户外休闲带串联龙井村与九溪十八涧。茶园附近这一片叶影，被改编成可以停下来观察的旅行瞬间。", "source": "westlake"}, "westlake-basket": {"route": "westlake", "place": "西湖 · 龙井村口", "title": "村口的小小日常", "look": "竹篮放在屋檐下，水滴渐渐慢下来。", "fact": "龙井村与九溪十八涧同属西湖群山户外休闲带的节点。屋檐与竹篮是村口场景的虚构插画，不是某户人家的实物记录。", "source": "westlake"}});
  for(const set of [SOURCES,CHECKPOINTS,OBSERVATIONS]){for(const value of Object.values(set))Object.freeze(value);Object.freeze(set);}
  const checkpoint=id=>CHECKPOINTS[id]||null,observation=id=>OBSERVATIONS[id]||null,source=id=>SOURCES[id]||null;
  function moment(routeId,progress=0){const entries=Object.values(CHECKPOINTS).filter(e=>e.route===routeId);if(!entries.length)return null;const p=Number.isFinite(progress)?Math.max(0,Math.min(1,progress)):0;return entries[Math.min(entries.length-1,Math.floor(p*entries.length))];}

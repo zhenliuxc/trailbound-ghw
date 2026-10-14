@@ -7,9 +7,9 @@
 <link rel="preload" as="image" href="photos/wugong-meadow.webp" fetchpriority="high">
 <link rel="preload" as="image" href="badges/moments-v1.webp" fetchpriority="low">
 <link rel="preload" as="image" href="badges/moments-expansion-v1.webp" fetchpriority="low">
-<link rel="preload" as="image" href="badges/moments-westlake-v1.webp" fetchpriority="low">
+<link rel="preload" as="image" href="badges/moments-westlake-v2.webp" fetchpriority="low">
 <script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="geography-extra.js"></script>
-<script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="nature.js"></script><script defer src="discoveries.js"></script><script defer src="landscape-data.js"></script><script defer src="terrain.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="audio.js"></script><script defer src="checkpoints.js"></script><script defer src="app.js"></script>
+<script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="nature.js"></script><script defer src="discoveries.js"></script><script defer src="micro-moments.js"></script><script defer src="landscape-data.js"></script><script defer src="terrain.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="audio.js"></script><script defer src="checkpoints.js"></script><script defer src="app.js"></script>
 </head><body>
 <header class="site-header"><a class="brand" href="./">◬ 山径 <small>TRAILBOUND</small></a><span>给自己一小段山野时间</span></header>
 <main>
@@ -57,6 +57,11 @@
 <div class="weather-badge"><span id="weather-icon">☀</span><span id="weather-name">晴朗</span><small>虚拟天气</small></div>
 <button id="map-toggle" class="map-toggle" type="button" aria-pressed="false">看完整路线 ↗</button>
 <button id="observe-button" class="observe-button" type="button" hidden><span id="observe-name"></span><small id="observe-hint"></small></button>
+<section id="micro-panel" class="micro-panel" hidden aria-labelledby="micro-title">
+<div class="micro-heading"><div><small id="micro-place"></small><h2 id="micro-title"></h2></div><button id="micro-skip" type="button">继续走 →</button></div>
+<button id="micro-surface" class="micro-surface" type="button" aria-label="轻触景物"><svg id="micro-art" viewBox="0 0 400 230" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg></button>
+<p id="micro-instruction" class="micro-instruction"></p><p id="micro-result" class="micro-result" role="status" aria-live="polite"></p>
+</section>
 <div id="overlay" class="overlay"><div class="overlay-card"><p class="eyebrow" id="overlay-kicker">THE TRAIL IS WAITING</p><h2 id="overlay-title">背包已经收拾好。</h2><p id="overlay-copy">点一次出发，沿途的风景会慢慢来到你身边。</p><button id="overlay-action" class="primary-button" type="button">出发，走一走 →</button><span class="overlay-hint" id="overlay-hint">约2–3分钟 · 自动行走 · 随时停下</span></div></div>
 <section id="story-panel" class="story-panel" hidden aria-labelledby="story-title" tabindex="-1"><p id="story-kicker" class="eyebrow"></p><h2 id="story-title"></h2><p id="story-copy"></p><div id="story-choices" class="story-choices"></div></section>
 <section id="photo-panel" class="photo-panel" hidden aria-labelledby="photo-title" tabindex="-1">
@@ -71,7 +76,7 @@
 </section>
 <section class="album"><div class="album-heading"><h2>路上，收进来的风景</h2><span id="album-count">0 / 3</span></div><ol id="checkpoint-list" class="checkpoint-list"></ol></section>
 <section class="field-journal" aria-label="旅行瞬间手帐"><div class="album-heading"><h2>路上的小小瞬间</h2><span id="journal-count">0个瞬间</span></div><p id="discovery-status" role="status" aria-live="polite">一段水声、一片落叶，或旧石阶的一个转弯。任何让你想停留的片刻，都可以记在手帐里。</p><aside id="learning-note" class="nature-note learning-note" hidden><p class="eyebrow">刚刚记下 / 一个沿途瞬间</p><strong id="learning-note-title"></strong><p id="learning-note-look" class="nature-look"></p><p id="learning-note-fact" class="nature-fact"></p><a id="learning-note-source" class="nature-source" hidden></a></aside><details><summary>翻开旅行手帐 <span id="trip-count">本次记下0个瞬间</span></summary><ul id="journal-list" class="journal-list"></ul><article id="journal-page" class="journal-page" hidden></article><p id="journal-storage" class="journal-note">手帐保存在这个浏览器。换一条路线、再走一次，新的瞬间会接着写下去。</p></details></section>
-<details class="route-details"><summary>关于这段路线与照片</summary><strong id="route-title"></strong><p id="route-context"></p><p id="route-notice"></p><div id="route-sources"></div></details>
+<details class="route-details"><summary>关于这段路线与照片</summary><strong id="route-title"></strong><p id="route-context"></p><p id="route-notice"></p><div id="route-sources"></div><details class="sound-credits"><summary>声音素材来源</summary><p>九溪旅程使用通用环境录音与原创合成旋律组合。溪水：<a href="https://commons.wikimedia.org/wiki/File:Swale.ogg" target="_blank" rel="noopener noreferrer">Siddharth Patil（Ksd5）</a>；叶声：<a href="https://commons.wikimedia.org/wiki/File:Leaves_falling_from_the_trees_during_autumn_in_the_forest.wav" target="_blank" rel="noopener noreferrer">Wilfredor</a>，均为 <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener noreferrer">CC0</a>。滴水：<a href="https://commons.wikimedia.org/wiki/File:Water_drops_dripping.ogg" target="_blank" rel="noopener noreferrer">ZooFari</a>，<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>，经节选、压缩与音量调整，改编音频沿用该许可。</p></details></details>
 <footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 山野手帐</span></footer>
 </main><noscript>请启用JavaScript开始旅程。</noscript>
 </body></html>

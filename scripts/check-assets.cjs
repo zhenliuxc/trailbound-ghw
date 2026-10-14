@@ -24,3 +24,7 @@ for(const [index,entry] of badges.entries.entries()){
 }
 for(const sheet of badges.atlases){const atlas=fs.readFileSync(path.join(dir,sheet.file));assert.equal(atlas.toString('ascii',8,12),'WEBP');assert.equal(atlas.length,sheet.bytes);assert.ok(atlas.length<200000,'Badge atlas is too large for a small journal gallery');}
 console.log('PASS: all generated badges map to their moments through lightweight WebP atlases.');
+
+const audio=require('../dist/audio.js'),recordings=JSON.parse(fs.readFileSync(path.join(dir,'audio/credits.json')));let recordedBytes=0;
+for(const entry of recordings.entries){const data=fs.readFileSync(path.join(dir,entry.file));recordedBytes+=data.length;assert.equal(entry.file,audio.SAMPLES[entry.id]);assert.equal(data.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),entry.sha256);assert.ok(entry.author&&entry.source&&entry.license&&entry.licenseUrl&&entry.changes);}
+assert.ok(recordedBytes<600000);console.log('PASS: lightweight recorded sound materials retain verified sources, licenses and hashes.');

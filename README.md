@@ -1,6 +1,8 @@
 # 山径 Trailbound · 七条山径与旅行瞬间手帐
 
-在原私有试玩站点继续更新。保留六条山径，新增西湖九溪十八涧—龙井村的溪谷茶园旅程。西湖轨迹、照片、徽章与验证范围见 [WESTLAKE_ROUTE.md](docs/WESTLAKE_ROUTE.md)，前三条扩展路线见 [ROUTE_EXPANSION.md](docs/ROUTE_EXPANSION.md)。
+在原私有试玩站点继续更新。西湖九溪新增六种可遇见的旅行瞬间，每趟选择三个；可以点水、触叶、听屋檐滴水，手帐会留下实际参与的回忆。溪谷、茶园与村口使用有许可的录音层随路程渐变，详细玩法与声源见 [WESTLAKE_MICRO_MOMENTS.md](docs/WESTLAKE_MICRO_MOMENTS.md)。
+
+保留六条山径，新增西湖九溪十八涧—龙井村的溪谷茶园旅程。西湖轨迹、照片、徽章与验证范围见 [WESTLAKE_ROUTE.md](docs/WESTLAKE_ROUTE.md)，前三条扩展路线见 [ROUTE_EXPANSION.md](docs/ROUTE_EXPANSION.md)。
 
 两三分钟的虚拟徒步。点一次出发，小人沿卡通路线持续行走，镜头跟随；路上出现风、云、雨、雪和两次情境选择。抵达打卡点自动停下，展开真实照片。草叶随风、蝴蝶振翅、飞鸟掠过；小人会驻足、拍照和护住衣领。路边还有小景物可以点一下记住，收进跨地图保留的山野手账。最后得到属于这次行程的旅程回忆。
 
@@ -29,7 +31,7 @@
 | 莫干山竹林步道 | 莫干岭古道连通OSM选段 | 竹林深处、山间步道、山泉小溪 |
 | 西湖·九溪龙井 | 九溪烟树附近至龙井村口的连通OSM选段 | 九溪溪谷、十八涧石径、龙井茶村 |
 
-本版有七条路线、二十一张授权实景照片和二十一枚旅行瞬间徽章。卡通路线保留参考走向，插画地形和打卡站近似布置；照片展示对应区域，来源署名在图片下方折叠，见 `docs/PHOTO_CREDITS.md`。手帐可以记住石头旁的细水、茶树新叶或屋檐下的安静，不限定题材。故事、天气与人物状态是虚拟演练，不代表真实体温、营地或现实可通行情况。路线管理背景见 `docs/ROUTES_AND_RISKS.md`。
+本版有七条路线、二十一张授权实景照片和二十四枚旅行瞬间徽章。卡通路线保留参考走向，插画地形和打卡站近似布置；照片展示对应区域，来源署名在图片下方折叠，见 `docs/PHOTO_CREDITS.md`。手帐可以记住石头旁的细水、茶树新叶或屋檐下的安静，不限定题材。故事、天气与人物状态是虚拟演练，不代表真实体温、营地或现实可通行情况。路线管理背景见 `docs/ROUTES_AND_RISKS.md`。
 
 ## 运行
 
@@ -51,7 +53,7 @@ npm test
 
 `geography.js`、`routes.js`保留路线与照片数据；`game.js`提供原距离插值等功能；`journey.js`负责持续行走、事件暂停、选择、照片和结局；新增 `scenery.js`生成分层插画场景，`pixi-scene.js`用PixiJS渲染光影、云层视差与水光；`discoveries.js`负责可选观察与跨旅程手账；`terrain.js`负责路径地貌、海拔插值和地理要素裁剪，`landscape-data.js`补充两段金沙江中心线；`life.js`负责原生SVG环境动画，`motion.js`计算人物步态与情境动作；`audio.js`合成打卡音乐与环境声；`app.js`、HTML和CSS呈现漫游界面。旧的手动物资/风险引擎保留在源码中，默认界面已经移除这些按钮。
 
-当前 `npm run check` 通过，132 项 Node.js 测试全部通过，覆盖七条完整旅程、照片预加载与重看、独立声景、跨地图手帐和暂停恢复。九溪路线还逐段核对原 OSM 步道边，检查 320/390px 与宽屏照片镜头。地图和徽章经 Sharp 静态渲染检查；受管预览不可用，未取得真实浏览器或手机运行截图，未实机试听。详见 `docs/VALIDATION.md`。本次更新包含七条路线的新开场文案与手机音频兼容修复，范围见 `docs/MOBILE_AUDIO.md`。
+当前 `npm run check` 通过，142 项 Node.js 测试全部通过，覆盖七条完整旅程、照片预加载与重看、独立声景、跨地图手帐和暂停恢复。九溪路线还逐段核对原 OSM 步道边，检查 320/390px 与宽屏照片镜头。地图和徽章经 Sharp 静态渲染检查；受管预览不可用，未取得真实浏览器或手机运行截图，未实机试听。详见 `docs/VALIDATION.md`。本次更新包含七条路线的新开场文案与手机音频兼容修复，范围见 `docs/MOBILE_AUDIO.md`。
 
 本版本由ChatGPT/Codex实现，没有Cursor操作记录。持续更新的源码在 `codex/travel-moment-journal` 分支与 PR #2；原私有试玩站点使用该版本，不依赖 PR 合并。Cursor 实作和 MLH 提交仍待完成。剩余步骤见 `docs/CURSOR_WORKFLOW.md`、`docs/SUBMISSION.md`。本地 Codex 的 Cowork 发布交接见 `docs/LOCAL_CODEX_COWORK_HANDOFF.md`。
 

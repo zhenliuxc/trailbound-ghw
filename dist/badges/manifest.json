@@ -14,8 +14,8 @@
       "bytes": 138268
     },
     {
-      "file": "badges/moments-westlake-v1.webp",
-      "bytes": 47714
+      "file": "badges/moments-westlake-v2.webp",
+      "bytes": 102910
     }
   ],
   "entries": [
@@ -184,7 +184,7 @@
     {
       "id": "westlake-stones",
       "file": "badges/westlake-stones-v1.webp",
-      "atlas": "badges/moments-westlake-v1.webp",
+      "atlas": "badges/moments-westlake-v2.webp",
       "column": 0,
       "row": 0,
       "bytes": 19416,
@@ -193,7 +193,7 @@
     {
       "id": "westlake-tea",
       "file": "badges/westlake-tea-v1.webp",
-      "atlas": "badges/moments-westlake-v1.webp",
+      "atlas": "badges/moments-westlake-v2.webp",
       "column": 1,
       "row": 0,
       "bytes": 16316,
@@ -202,11 +202,38 @@
     {
       "id": "westlake-eaves",
       "file": "badges/westlake-eaves-v1.webp",
-      "atlas": "badges/moments-westlake-v1.webp",
+      "atlas": "badges/moments-westlake-v2.webp",
       "column": 2,
       "row": 0,
       "bytes": 16380,
       "sha256": "787bf4c1942e4ee45d15456f92a2f4de10a3fb54bd2230f00f223d9163713b80"
+    },
+    {
+      "id": "westlake-floating-leaf",
+      "file": "badges/westlake-floating-leaf-v1.webp",
+      "column": 0,
+      "row": 1,
+      "bytes": 19922,
+      "sha256": "26dec45bed1a678215ee67f59e47c4a9037bcd9cd8b4fb6761bffe08c4e969c0",
+      "atlas": "badges/moments-westlake-v2.webp"
+    },
+    {
+      "id": "westlake-leaf-shadow",
+      "file": "badges/westlake-leaf-shadow-v1.webp",
+      "column": 1,
+      "row": 1,
+      "bytes": 15830,
+      "sha256": "1ca16bb5b4a7b15facb417fb51456e8755bd4b2ebd7d9824635fdfc23a96d4f0",
+      "atlas": "badges/moments-westlake-v2.webp"
+    },
+    {
+      "id": "westlake-basket",
+      "file": "badges/westlake-basket-v1.webp",
+      "column": 2,
+      "row": 1,
+      "bytes": 19790,
+      "sha256": "2e75162bc0e03d85c9eef22b9bf35f16318c4f1fda7a336ad4ddec31e1a23d55",
+      "atlas": "badges/moments-westlake-v2.webp"
     }
   ]
 }
