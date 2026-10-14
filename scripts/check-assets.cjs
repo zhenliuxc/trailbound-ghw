@@ -16,3 +16,11 @@ const bundled=fs.readFileSync(path.join(dir,'vendor/pixi-8.22.0.min.js')),upstre
 assert.equal(crypto.createHash('sha256').update(bundled).digest('hex'),crypto.createHash('sha256').update(upstream).digest('hex'),'Vendored PixiJS differs from installed upstream distribution');
 assert.ok(fs.existsSync(path.join(dir,'vendor/PIXI-LICENSE.txt')));
 console.log('PASS: pinned PixiJS browser bundle matches the installed upstream package and includes its license.');
+const badges=JSON.parse(fs.readFileSync(path.join(dir,'badges/manifest.json'),'utf8')),moments=require('../dist/discoveries.js').CATALOG;
+assert.equal(badges.columns,3);assert.equal(badges.rows,3);assert.equal(badges.cell,192);assert.equal(badges.entries.length,moments.length);
+for(const [index,entry] of badges.entries.entries()){
+  assert.equal(entry.id,moments[index].id,'Badge art does not match the journal moment');assert.equal(entry.column,index%3);assert.equal(entry.row,Math.floor(index/3));
+  const buffer=fs.readFileSync(path.join(dir,entry.file));assert.equal(buffer.toString('ascii',8,12),'WEBP');assert.equal(crypto.createHash('sha256').update(buffer).digest('hex'),entry.sha256);
+}
+const atlas=fs.readFileSync(path.join(dir,badges.atlas));assert.equal(atlas.toString('ascii',8,12),'WEBP');assert.equal(atlas.length,badges.atlasBytes);assert.ok(atlas.length<200000,'Badge atlas is too large for a small journal gallery');
+console.log('PASS: all nine generated badges map to the correct moments and share one lightweight WebP atlas.');
