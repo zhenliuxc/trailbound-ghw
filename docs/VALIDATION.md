@@ -1,6 +1,6 @@
 # 当前七路线验证（2026-10-14）
 
-`npm run check` 通过，当前132项 Node 自动测试全部通过。覆盖七条完整旅程、二十一张实景照片预加载/重看、二十一套合成声音和跨路线手帐。九溪龙井检查核对六条 OSM way 的原节点相接、每一条轨迹边、缺失海拔保留、茶园插画、照片体积、三枚手帐收集与保留，以及 320/390px 和宽屏照片镜头、停留时钟冻结与继续。新增四项手机音频兼容回归检查，范围见 [MOBILE_AUDIO.md](MOBILE_AUDIO.md)。新开场文案和音频修复按用户要求暂未发布。地图和徽章经过 Sharp 静态渲染目视检查。受管预览不可用，未进行真实浏览器/手机排版或实机试听。西湖范围见 [WESTLAKE_ROUTE.md](WESTLAKE_ROUTE.md)，此前128项测试输出见 [westlake-test-output.txt](westlake-test-output.txt)。此前扩展路线见 [ROUTE_EXPANSION.md](ROUTE_EXPANSION.md)。
+`npm run check` 通过，当前132项 Node 自动测试全部通过。覆盖七条完整旅程、二十一张实景照片预加载/重看、二十一套合成声音和跨路线手帐。九溪龙井检查核对六条 OSM way 的原节点相接、每一条轨迹边、缺失海拔保留、茶园插画、照片体积、三枚手帐收集与保留，以及 320/390px 和宽屏照片镜头、停留时钟冻结与继续。新增四项手机音频兼容回归检查，范围见 [MOBILE_AUDIO.md](MOBILE_AUDIO.md)。用户已于2026-10-15授权发布新开场文案和音频修复。地图和徽章经过 Sharp 静态渲染目视检查。受管预览不可用，未进行真实浏览器/手机排版或实机试听。西湖范围见 [WESTLAKE_ROUTE.md](WESTLAKE_ROUTE.md)，此前128项测试输出见 [westlake-test-output.txt](westlake-test-output.txt)。此前扩展路线见 [ROUTE_EXPANSION.md](ROUTE_EXPANSION.md)。
 
 以下为此前各版历史记录。
 
