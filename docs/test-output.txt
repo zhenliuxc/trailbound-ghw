@@ -1,4 +1,4 @@
-v0.9 verification summary (Node.js, 2026-10-14)
+v0.9.1 verification summary (Node.js, 2026-10-14)
 
 Commands: npm run check; npm test
 
@@ -17,3 +17,5 @@ Cancelled: 0
 Skipped: 0
 
 This is a completed test-run summary. CSS keyframes, browser/GPU rendering and mobile performance were not executed.
+
+PASS: static SVG inspection of resized butterflies, redesigned birds and three map overlays.
