@@ -1,19 +1,20 @@
 {
-  "version": "0.9.1",
-  "testsPassed": 74,
+  "version": "0.10.0",
+  "testsPassed": 81,
   "browserRenderingTested": false,
   "webglRenderingTested": false,
   "pixiVersion": "8.22.0",
   "filterResolution": "inherit",
   "filesSha256": {
-    "dist/app.js": "7b943590d85fb0ec4e4a4b4aafbacc1b2a69e17b87824878b7443b2daab8458b",
+    "dist/app.js": "27271d63c9e852d0229d6965b975ad021077b2afc050dbf26496500d7dcdecaa",
     "dist/discoveries.js": "e571371c29ba61884a28772cf043568ea87bf0fd86062c2fe713abbaed75a2c3",
     "dist/game.js": "b28b7534358b6b914c685c38ad3d10071be46134c31ee4d2476e7d114df3d976",
     "dist/geography.js": "2d916239b0812781a28e521b13e11ece2f531638ba1e7e1a6ec3ec09c2eb0a90",
     "dist/icon.svg": "3ceb846bc7e369c4cdb04027216c44f0f2aa1a259d17347b76326ec0c6b1288f",
-    "dist/index.html": "52f798dc54a56a0c01a8b3d53aef9181d86e0102f449d5d85ede511f219682aa",
+    "dist/index.html": "2f23f01c908fdf180cdec4a1a0b2acd3bb994d17b7d3bfadcd32dc08183207b8",
     "dist/journey.js": "97d03ee1e471ca897e7592f67d67b6c807537f706f8b65fe82073f0e36047178",
-    "dist/life.js": "b094a0c5c217d037b3ae43517316b5fb5882db63e40395ec92748a5c7573ede8",
+    "dist/landscape-data.js": "b244007d6cecf7e20fed69ad55a7832a4743d0d2099c8d33302aaa3defa8d34d",
+    "dist/life.js": "30df0565013dfcf011c7c10ddca8f4001963a4836c65c20ca1acdc6b92056387",
     "dist/motion.js": "8677176a02bdacb08b220aefb08c871911629df577b027809f9a40cf481dd107",
     "dist/photos/aotai-aoshan.webp": "656c5e2392fb61f29affec69f08e9e387dc6233ec0e8f2a398f5c831e87196a3",
     "dist/photos/aotai-ridge.webp": "b93d986adc5a280db617a7ba82a3bf8f829629eed55b282b54e3c1e3693a598e",
@@ -27,8 +28,9 @@
     "dist/photos/wugong-ridge.webp": "6647ba13e9df6f1e52029593a39193e4a1ebbefdb465aaa0f440ea848c25d493",
     "dist/pixi-scene.js": "0c33fe2f160aed6b67d7903ebf7422f692f584b58617499243d1aac1d723bbcf",
     "dist/routes.js": "43ee947a2126c96c53781e6b3d5855e10e7e7dd9094b26b73bcda1f64e504d28",
-    "dist/scenery.js": "dce6e9eb6e8ac30ad8d453e88f278667fa3d22a58ece0c5c2bfbeb4ec5fbc5c5",
-    "dist/style.css": "6aea66334671e77b77eb0f81b179bff1cc9f5190b908040a3e57f869ccb090d1",
+    "dist/scenery.js": "60bc7b17f2d53e6ce7b8e4a735a60402486b10a6992f2b35896d7f7ec55b5d9b",
+    "dist/style.css": "1e1578012ea9e512d802a1c50288e744662ac96232e9fde601883b179b8dbcee",
+    "dist/terrain.js": "a8234914573040802fc43327ffe8118155069c3aa66b24694bd9c30360e5521a",
     "dist/vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
     "dist/vendor/pixi-8.22.0.min.js": "06d9ef9823e743518793083c296d801e752db128cb1f519fbabe37e1259567ea"
   },
@@ -41,5 +43,12 @@
   "staticAvatarPosesInspected": 6,
   "cssKeyframesBrowserTested": false,
   "photoFramingViewportCases": 4,
-  "creatureVisualsStaticallyInspected": true
+  "creatureVisualsStaticallyInspected": true,
+  "terrainTests": 7,
+  "realDemUsed": false,
+  "jinshaOsmWayIds": [
+    759020432,
+    1000085951
+  ],
+  "backgroundProjectionSharedWithRoute": true
 }

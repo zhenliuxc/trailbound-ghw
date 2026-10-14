@@ -1,21 +1,19 @@
-v0.9.1 verification summary (Node.js, 2026-10-14)
+v0.10 verification summary (Node.js, 2026-10-14)
 
 Commands: npm run check; npm test
 
-PASS: JavaScript syntax, local assets, SVG references, accessible status.
-PASS: nine packaged WebP photographs retain attribution; PixiJS bundle matches upstream.
-PASS: existing route, journey, journal, motion, scenery and 24 filter coverage combinations.
-PASS: 11 new life/action checks: bounded theme actors, finite poses, reduced motion,
-      photography and shelter, trail footprints, paused/background freezing,
-      non-blocking discovery gestures, transition cleanup, stale events and portrait photo framing.
-PASS: static SVG inspection of six avatar poses and overlays on three landscapes.
+PASS: JavaScript syntax, local assets, SVG references and accessible status.
+PASS: real photographs retain attribution; pinned PixiJS bundle matches upstream.
+PASS: existing journey, journal, actions, scene and viewport regression checks.
+PASS: 7 new terrain checks: segment clearance, station/elevation interpolation,
+      finite turning geometry, bounded/disjoint clipping, actual-water glints,
+      preserved summit/endpoint positions, real-data PixiJS/SVG compilation.
+PASS: static SVG inspection of all three landscapes and the Jinsha River layout.
 
-Tests: 74
-Passed: 74
+Tests: 81
+Passed: 81
 Failed: 0
 Cancelled: 0
 Skipped: 0
 
-This is a completed test-run summary. CSS keyframes, browser/GPU rendering and mobile performance were not executed.
-
-PASS: static SVG inspection of resized butterflies, redesigned birds and three map overlays.
+Slopes are illustrations, not surveyed DEM contours. No real browser/GPU or mobile rendering was executed.

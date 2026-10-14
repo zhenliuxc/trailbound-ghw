@@ -21,3 +21,5 @@
 @media(prefers-reduced-motion:reduce){.scene-fx{display:none}.nature-marker,.journal-entry.found{animation:none}.journey-stage:not(.walking) #hiker-torso,#hiker-camera,#hiker-pole,#journey-progress-fill{transition:none}}
 .photo-panel{max-width:440px;max-height:68%;padding:17px 20px}.photo-panel img{height:150px}.photo-panel h2{font-size:22px}
 @media(max-width:680px){.photo-panel{padding:15px 16px;max-height:68%}.photo-panel img{height:125px}.photo-panel h2{font-size:20px}}
+.map-credit{padding:6px 14px;background:#eef2e4;font-size:9px;color:#84937a;text-align:right}.map-credit a{text-decoration:none}.map-credit a:hover{text-decoration:underline}
+@media(max-width:680px){.map-credit{padding:5px 10px;font-size:8px}}
