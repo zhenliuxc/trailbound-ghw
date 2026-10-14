@@ -55,7 +55,11 @@
 <button id="observe-button" class="observe-button" type="button" hidden><span id="observe-name"></span><small id="observe-hint"></small></button>
 <div id="overlay" class="overlay"><div class="overlay-card"><p class="eyebrow" id="overlay-kicker">THE TRAIL IS WAITING</p><h2 id="overlay-title">背包已经收拾好。</h2><p id="overlay-copy">点一次出发，沿途的风景会慢慢来到你身边。</p><button id="overlay-action" class="primary-button" type="button">出发，走一走 →</button><span class="overlay-hint" id="overlay-hint">约2–3分钟 · 自动行走 · 随时停下</span></div></div>
 <section id="story-panel" class="story-panel" hidden aria-labelledby="story-title" tabindex="-1"><p id="story-kicker" class="eyebrow"></p><h2 id="story-title"></h2><p id="story-copy"></p><div id="story-choices" class="story-choices"></div></section>
-<section id="photo-panel" class="photo-panel" hidden aria-labelledby="photo-title" tabindex="-1"><div class="photo-top"><p class="eyebrow">沿途实景 / 收进旅程</p><button id="photo-close" type="button" aria-label="收起照片">收起 ×</button></div><h2 id="photo-title"></h2><p id="photo-soundscape" class="photo-soundscape" hidden></p><img id="checkpoint-photo" alt="" decoding="async"><p id="photo-error" role="status" hidden>照片未能显示，可从下方来源查看原图。</p><p id="photo-caption"></p><div id="photo-credit" class="photo-credit"></div><button id="photo-continue" class="primary-button" type="button">把风景记住，继续走 →</button></section>
+<section id="photo-panel" class="photo-panel" hidden aria-labelledby="photo-title" tabindex="-1">
+<img id="checkpoint-photo" alt="" decoding="async">
+<div class="photo-header"><div class="photo-top"><p class="eyebrow">沿途实景 / 收进旅程</p><button id="photo-close" type="button" aria-label="收起照片">收起 ×</button></div><h2 id="photo-title"></h2><p id="photo-soundscape" class="photo-soundscape" hidden></p></div>
+<div class="photo-footer"><div class="photo-details"><p id="photo-error" role="status" hidden>照片未能显示，可从下方来源查看原图。</p><p id="photo-caption"></p><div id="photo-credit" class="photo-credit"></div></div><button id="photo-continue" class="primary-button" type="button">把风景记住，继续走 →</button></div>
+</section>
 <section id="ending-panel" class="ending-panel" hidden aria-labelledby="ending-title" tabindex="-1"><p class="eyebrow">TODAY'S WALK / 今天的山野</p><h2 id="ending-title"></h2><p id="ending-copy"></p><ul id="ending-memories"></ul><button id="replay" class="primary-button" type="button">再走一次 →</button></section>
 </div>
 <div class="map-credit">地貌插画示意 · 地理要素 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a></div>
@@ -65,6 +69,6 @@
 <section class="album"><div class="album-heading"><h2>路上，收进来的风景</h2><span id="album-count">0 / 3</span></div><ol id="checkpoint-list" class="checkpoint-list"></ol></section>
 <section class="field-journal" aria-label="山野手账"><div class="album-heading"><h2>小小发现，慢慢记住</h2><span id="journal-count">0 / 9</span></div><p id="discovery-status" role="status" aria-live="polite">留意路边的小插画，点一下就能记住。错过也没关系。</p><details><summary>翻开山野手账 <span id="trip-count">本次发现 0 / 3</span></summary><ul id="journal-list" class="journal-list"></ul><p id="journal-storage" class="journal-note">手账保存在这个浏览器，换地图或重走也会留下。</p><p class="journal-note">小景物为虚构插画观察，不代表实际地点的物种记录；真实照片在上方相册。</p></details></section>
 <details class="route-details"><summary>关于这段路线与照片</summary><strong id="route-title"></strong><p id="route-context"></p><p id="route-notice"></p><div id="route-sources"></div><p>卡通地图保留参考路线走向，水系与山峰参考OSM坐标，坡面和植被为插画示意、打卡位置为近似展示；照片注明实际地点或区域范围。故事、天气与人物状态是虚拟演练，不能用于实地导航。音乐与音效为原创合成声景，不是现场录音。</p></details>
-<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 地貌贴合版 v0.11</span></footer>
+<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 地貌贴合版 v0.11.1</span></footer>
 </main><noscript>请启用JavaScript开始旅程。</noscript>
 </body></html>
