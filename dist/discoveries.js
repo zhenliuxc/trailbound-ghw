@@ -16,7 +16,7 @@
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}
- function create(route,seed=Math.random()*4294967296){let value=Number(seed)>>>0;const random=()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};const pool=CATALOG.filter(x=>x.route===(route==='training'?'wugong':route));for(let i=pool.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+ function create(route,seed=Math.random()*4294967296){let value=Number(seed)>>>0;const random=()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};const pool=CATALOG.filter(x=>x.route===route);for(let i=pool.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
   return {route,found:[],slots:pool.map((x,i)=>{const at=[.055,.325,.725][i]+random()*.025;return {id:x.id,at,until:Math.min(.97,at+.16),side:random()<.5?-1:1};})};
  }
  function visible(state,trip){if(!['walking','paused'].includes(state.status))return null;return trip.slots.find(x=>state.progress>=x.at&&state.progress<=x.until&&!trip.found.includes(x.id))||null;}

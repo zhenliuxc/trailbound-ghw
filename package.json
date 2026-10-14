@@ -1,6 +1,6 @@
 {
   "name": "trailbound-ghw",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "private": true,
   "description": "A browser hiking journey with illustrated scenery and PixiJS rendering",
   "scripts": {

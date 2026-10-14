@@ -1,4 +1,4 @@
-v0.10 verification summary (Node.js, 2026-10-14)
+v0.10.1 verification summary (Node.js, 2026-10-14)
 
 Commands: npm run check; npm test
 
@@ -10,10 +10,13 @@ PASS: 7 new terrain checks: segment clearance, station/elevation interpolation,
       preserved summit/endpoint positions, real-data PixiJS/SVG compilation.
 PASS: static SVG inspection of all three landscapes and the Jinsha River layout.
 
-Tests: 81
-Passed: 81
+Tests: 79
+Passed: 79
 Failed: 0
 Cancelled: 0
 Skipped: 0
 
 Slopes are illustrations, not surveyed DEM contours. No real browser/GPU or mobile rendering was executed.
+
+PASS: only three formal route cards remain; narrative, postcards and replay checks now use formal routes.
+Two completion checks for the removed practice route were retired.
