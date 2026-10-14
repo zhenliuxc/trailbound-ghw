@@ -1,6 +1,6 @@
 # MLH 提交准备
 
-当前状态：**v0.8 参考 MVP、运行说明、63 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
+当前状态：**v0.9 参考 MVP、运行说明、74 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
 
 ## 官方要求核对
 
@@ -75,3 +75,5 @@ Cursor then helped me [describe a real fix or improvement and how it was tested]
 最新参考版本为 v0.7.1，修正地图背景滤镜裁剪。Cursor 实作和 MLH 提交状态不变。
 
 最新参考版本为v0.8，新增路边发现、九项浏览器手账与随机重玩。介绍可以描述这些实际功能，但仍需真实Cursor实作和复测，不能称为Cursor操作记录。
+
+最新参考版本v0.9包含人物情境姿态、环境矢量动画与短过渡。当前检查没有执行真实CSS关键帧或GPU浏览器；运行截图仍需真实运行最终Cursor版本后取得。

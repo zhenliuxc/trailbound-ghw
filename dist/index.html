@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#234436">
 <meta name="description" content="两三分钟的虚拟徒步。跟随背包小人，听风看云，遇见故事，收集真实山野照片。"><title>山径 Trailbound · 去山里走一走</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
-<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="discoveries.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="pixi-scene.js"></script><script defer src="app.js"></script>
+<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="discoveries.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="app.js"></script>
 </head><body>
 <header class="site-header"><a class="brand" href="./">◬ 山径 <small>TRAILBOUND</small></a><span>给自己一小段山野时间</span></header>
 <main>
@@ -15,13 +15,13 @@
 <div class="map-frame" id="map-frame"><svg id="map" viewBox="0 0 720 600" role="group" aria-label="沿真实路线走向绘制的卡通地图" xmlns="http://www.w3.org/2000/svg">
             <defs><radialGradient id="mist-soft-edge"><stop offset="0" stop-color="black"/><stop offset=".46" stop-color="black"/><stop offset=".77" stop-color="#777"/><stop offset="1" stop-color="white"/></radialGradient><mask id="fog-hole" maskUnits="userSpaceOnUse"><rect width="720" height="600" fill="white"/><circle id="weather-window" cx="360" cy="300" r="215" fill="url(#mist-soft-edge)"/></mask><filter id="mist-local-soften" x="-15%" y="-70%" width="130%" height="240%"><feGaussianBlur stdDeviation="7"/></filter></defs>
             <rect id="map-base" width="720" height="600" fill="#dfead6"/>
-            <g id="online-tiles"></g><g id="geo-background"></g><g id="geo-labels"></g>
+            <g id="online-tiles"></g><g id="geo-background"></g><g id="scene-life" aria-hidden="true" pointer-events="none"></g><g id="geo-labels"></g>
             <path id="route-outline" fill="none" stroke="#fffef0" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
             <path id="route-line" fill="none" stroke="#bf8955" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
             <path id="completed-line" fill="none" stroke="#2b694b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
             <g id="weather-fx"></g>
             <rect id="fog-cover" width="720" height="600" fill="#dce7e4" opacity="0" mask="url(#fog-hole)" pointer-events="none"/>
-            <g id="nature-discoveries"></g><g id="geo-markers"></g>
+            <g id="trail-footprints" aria-hidden="true" pointer-events="none"></g><g id="nature-discoveries"></g><g id="geo-markers"></g>
             <g id="player" pointer-events="none" aria-label="背包徒步小人">
               <ellipse id="hiker-shadow" cy="18" rx="12" ry="3.3" fill="#345640" opacity=".18"/>
               <g id="hiker-facing">
@@ -32,20 +32,24 @@
                   <path id="arm-back" d="M-4-8Q-9-3-7 3" fill="none" stroke="#d3a271" stroke-width="2.7" stroke-linecap="round"/>
                   <path d="M-4-13Q0-15 4-12L7 3H-5Z" fill="#de9257" stroke="#aa6a42" stroke-width=".8"/>
                   <path d="M-3-10-1 2" stroke="#f4bd79" stroke-width="1.2" opacity=".65"/>
+                  <path id="hiker-scarf" d="M-5-15H5M-1-14Q-12-14-17-9L-18-13Q-10-19-1-17Z" fill="#c46f4e" stroke="#e3a179" stroke-width="1"/>
                   <circle cy="-21" r="6" fill="#e6b78b" stroke="#987855" stroke-width=".6"/>
                   <path d="M-6-22Q-6-30 2-28Q7-26 7-21H-6Z" fill="#466e50"/><path d="M-5-22H9" stroke="#36543e" stroke-width="1.5" stroke-linecap="round"/>
                   <circle cx="3.5" cy="-20.5" r=".65" fill="#5c5c45"/>
                   <path id="arm-front" d="M4-8Q9-5 13 1" fill="none" stroke="#e4af7d" stroke-width="3" stroke-linecap="round"/>
+                  <g id="hiker-camera" opacity="0"><rect x="6" y="-20" width="11" height="7" rx="1.5" fill="#506963" stroke="#f1d8ab" stroke-width=".6"/><circle cx="12" cy="-16.5" r="2.1" fill="#b3ccc6" stroke="#304f4b" stroke-width=".8"/><path d="M7-20V-22H11V-20" fill="#506963"/></g>
                 </g>
                 <path id="leg-front" d="M-1 3L-2 10L-3 17" fill="none" stroke="#345b66" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
                 <path id="shoe-front" d="M-4 17H0" fill="none" stroke="#3a493e" stroke-width="3.1" stroke-linecap="round"/>
                 <path id="hiker-pole" d="M13 0L19 17.5" stroke="#667a67" stroke-width="1.5" stroke-linecap="round"/>
               </g>
+              <g id="hiker-breath" opacity="0"><ellipse cx="14" cy="-21" rx="4" ry="2" fill="#fbfff4"/><ellipse cx="21" cy="-23" rx="5" ry="3" fill="#fbfff4"/></g>
             </g>
             <text x="30" y="572" fill="#798568" font-size="12">路线走向参考实线 · 插画地形示意</text>
             <g transform="translate(681 40)"><path d="m0-13-5 16 5-3 5 3Z" fill="#45644c"/><text y="-20" text-anchor="middle" fill="#45644c" font-size="10">N</text></g>
           </svg>
 <div id="atmosphere" class="atmosphere" aria-hidden="true"></div><div id="weather-fx-html" aria-hidden="true"></div>
+<div id="transition-layer" class="transition-layer" aria-hidden="true"></div>
 <div class="weather-badge"><span id="weather-icon">☀</span><span id="weather-name">晴朗</span><small>虚拟天气</small></div>
 <button id="map-toggle" class="map-toggle" type="button" aria-pressed="false">看完整路线 ↗</button>
 <button id="observe-button" class="observe-button" type="button" hidden><span id="observe-name"></span><small id="observe-hint"></small></button>
@@ -60,6 +64,6 @@
 <section class="album"><div class="album-heading"><h2>路上，收进来的风景</h2><span id="album-count">0 / 3</span></div><ol id="checkpoint-list" class="checkpoint-list"></ol></section>
 <section class="field-journal" aria-label="山野手账"><div class="album-heading"><h2>小小发现，慢慢记住</h2><span id="journal-count">0 / 9</span></div><p id="discovery-status" role="status" aria-live="polite">留意路边的小插画，点一下就能记住。错过也没关系。</p><details><summary>翻开山野手账 <span id="trip-count">本次发现 0 / 3</span></summary><ul id="journal-list" class="journal-list"></ul><p id="journal-storage" class="journal-note">手账保存在这个浏览器，换地图或重走也会留下。</p><p class="journal-note">小景物为虚构插画观察，不代表实际地点的物种记录；真实照片在上方相册。</p></details></section>
 <details class="route-details"><summary>关于这段路线与照片</summary><strong id="route-title"></strong><p id="route-context"></p><p id="route-notice"></p><div id="route-sources"></div><p>卡通地图保留参考路线走向，地形与打卡位置为近似示意；照片注明实际地点或区域范围。故事、天气与人物状态是虚拟演练，不能用于实地导航。音效由浏览器合成，不是现场录音。</p></details>
-<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 山野发现版 v0.8</span></footer>
+<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 山野动画版 v0.9</span></footer>
 </main><noscript>请启用JavaScript开始旅程。</noscript>
 </body></html>

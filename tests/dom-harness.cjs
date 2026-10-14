@@ -10,10 +10,10 @@ class Element{
   emit(type,event={}){for(const fn of this.listeners[type]??[])fn({target:this,preventDefault(){this.prevented=true;},...event});}
   focus(){this.doc.activeElement=this;}
   setPointerCapture(id){this.captured.add(id);}hasPointerCapture(id){return this.captured.has(id);}releasePointerCapture(id){this.captured.delete(id);}
-  getBoundingClientRect(){return {left:0,top:0,width:720,height:600};}
+  getBoundingClientRect(){return {left:0,top:0,...(this.doc.viewport||{width:720,height:600})};}
 }
-function harness(storage={getItem:()=>null,setItem:()=>{}}){
-  const document={ids:new Map(),all:[],listeners:{},hidden:false,activeElement:null};
+function harness(storage={getItem:()=>null,setItem:()=>{}},options={}){
+  const document={ids:new Map(),all:[],listeners:{},hidden:false,activeElement:null,viewport:options.viewport};
   document.createElement=tag=>{const el=new Element(tag,document);document.all.push(el);return el;};document.createElementNS=(_,tag)=>document.createElement(tag);
   document.createTextNode=text=>({textContent:text});document.getElementById=id=>document.ids.get(id);
   document.querySelectorAll=selector=>document.all.filter(el=>selector==='[data-action]'?el.dataset.action:el.dataset.direction);
@@ -27,8 +27,8 @@ function harness(storage={getItem:()=>null,setItem:()=>{}}){
     if(/\bhidden\b/.test(match[2]))el.hidden=true;if(/\bdisabled\b/.test(match[2]))el.disabled=true;if(/\bchecked\b/.test(match[2]))el.checked=true;
     stack.at(-1).appendChild(el);if(!voids.has(tag)&&!full.endsWith('/>'))stack.push(el);
   }
-  const window={location:{protocol:'file:'},TrailGame:require('../dist/game.js'),TrailJourney:require('../dist/journey.js'),TrailScenery:require('../dist/scenery.js'),TrailMotion:require('../dist/motion.js'),TrailDiscoveries:require('../dist/discoveries.js'),listeners:{},addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);},emit(type,event={}){for(const fn of this.listeners[type]??[])fn({target:document.activeElement,preventDefault(){this.prevented=true;},...event});}};
-  let now=0,frameId=0;const pending=new Map();window.requestAnimationFrame=fn=>{const id=++frameId;pending.set(id,fn);return id;};window.cancelAnimationFrame=id=>pending.delete(id);window.matchMedia=()=>({matches:false});
+  const window={location:{protocol:'file:'},TrailGame:require('../dist/game.js'),TrailJourney:require('../dist/journey.js'),TrailScenery:require('../dist/scenery.js'),TrailMotion:require('../dist/motion.js'),TrailLife:require('../dist/life.js'),TrailDiscoveries:require('../dist/discoveries.js'),listeners:{},addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);},emit(type,event={}){for(const fn of this.listeners[type]??[])fn({target:document.activeElement,preventDefault(){this.prevented=true;},...event});}};
+  let now=0,frameId=0;const pending=new Map();window.requestAnimationFrame=fn=>{const id=++frameId;pending.set(id,fn);return id;};window.cancelAnimationFrame=id=>pending.delete(id);window.matchMedia=()=>({matches:!!options.reducedMotion});
   vm.runInNewContext(fs.readFileSync(require.resolve('../dist/app.js'),'utf8'),{window,document,localStorage:storage,console}, {filename:'app.js'});
   return {document,window,advance(seconds){const count=Math.ceil(seconds*50);for(let i=0;i<count;i++){now+=20;const callbacks=[...pending.values()];pending.clear();for(const callback of callbacks)callback(now);}},pendingFrames:()=>pending.size,$:id=>document.getElementById(id),click:id=>document.getElementById(id).emit('click'),key:key=>window.emit('keydown',{key})};
 }

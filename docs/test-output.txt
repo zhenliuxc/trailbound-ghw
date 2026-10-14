@@ -1,18 +1,19 @@
-v0.8 verification summary (Node.js, 2026-10-14)
+v0.9 verification summary (Node.js, 2026-10-14)
 
 Commands: npm run check; npm test
 
 PASS: JavaScript syntax, local assets, SVG references, accessible status.
-PASS: nine WebP photographs retain attribution and licenses; pinned PixiJS matches upstream.
-PASS: existing journey, route data, motion, scenery and 24 Pixi filter coverage combinations.
-PASS: 10 new observation/journal checks: seeded variation, optional windows, validated capture,
-      storage sanitation/failure, non-blocking capture, keyboard/pause, ending and persistent replay.
-PASS: static SVG inspection of nine nature icons and observation overlays on three maps.
+PASS: nine packaged WebP photographs retain attribution; PixiJS bundle matches upstream.
+PASS: existing route, journey, journal, motion, scenery and 24 filter coverage combinations.
+PASS: 11 new life/action checks: bounded theme actors, finite poses, reduced motion,
+      photography and shelter, trail footprints, paused/background freezing,
+      non-blocking discovery gestures, transition cleanup, stale events and portrait photo framing.
+PASS: static SVG inspection of six avatar poses and overlays on three landscapes.
 
-Tests: 63
-Passed: 63
+Tests: 74
+Passed: 74
 Failed: 0
 Cancelled: 0
 Skipped: 0
 
-This is a completed test-run summary, not a browser screenshot, GPU rendering test or user fun study.
+This is a completed test-run summary. CSS keyframes, browser/GPU rendering and mobile performance were not executed.

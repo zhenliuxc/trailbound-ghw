@@ -1,19 +1,20 @@
 {
-  "version": "0.8.0",
-  "testsPassed": 63,
+  "version": "0.9.0",
+  "testsPassed": 74,
   "browserRenderingTested": false,
   "webglRenderingTested": false,
   "pixiVersion": "8.22.0",
   "filterResolution": "inherit",
   "filesSha256": {
-    "dist/app.js": "804b7beb7d87b1860be443c447e64bf9616bd238dccaaf610ae62fb789a8de5f",
+    "dist/app.js": "56bd95162d81fe49abfeffa6ff0f66f4818a14ca1d0f630b1b0dbe5a7efbfd28",
     "dist/discoveries.js": "e571371c29ba61884a28772cf043568ea87bf0fd86062c2fe713abbaed75a2c3",
     "dist/game.js": "b28b7534358b6b914c685c38ad3d10071be46134c31ee4d2476e7d114df3d976",
     "dist/geography.js": "2d916239b0812781a28e521b13e11ece2f531638ba1e7e1a6ec3ec09c2eb0a90",
     "dist/icon.svg": "3ceb846bc7e369c4cdb04027216c44f0f2aa1a259d17347b76326ec0c6b1288f",
-    "dist/index.html": "480a1b79e09ce1b62f8c7f938b7d7ed0edfcd6a170a9ad2d3dd2756c11aac917",
+    "dist/index.html": "b61e1608b749eda48b5298c314122c6d6309e7276651be5dde671da676979fd9",
     "dist/journey.js": "97d03ee1e471ca897e7592f67d67b6c807537f706f8b65fe82073f0e36047178",
-    "dist/motion.js": "dfb1ce10bfc581d35ea2ab7dad9a0b61a2fb1103fee3e16f2eb18d24703d4668",
+    "dist/life.js": "96578ebf014e456cb2dd5efbbdc6d12211efb296ea4e7003359fc87cd3c01964",
+    "dist/motion.js": "8677176a02bdacb08b220aefb08c871911629df577b027809f9a40cf481dd107",
     "dist/photos/aotai-aoshan.webp": "656c5e2392fb61f29affec69f08e9e387dc6233ec0e8f2a398f5c831e87196a3",
     "dist/photos/aotai-ridge.webp": "b93d986adc5a280db617a7ba82a3bf8f829629eed55b282b54e3c1e3693a598e",
     "dist/photos/aotai-taibai.webp": "9880e3e9ede01f81f474c13a1899f2ed0ace0a9a5a92be19971ecbea3a2751cd",
@@ -27,7 +28,7 @@
     "dist/pixi-scene.js": "0c33fe2f160aed6b67d7903ebf7422f692f584b58617499243d1aac1d723bbcf",
     "dist/routes.js": "43ee947a2126c96c53781e6b3d5855e10e7e7dd9094b26b73bcda1f64e504d28",
     "dist/scenery.js": "dce6e9eb6e8ac30ad8d453e88f278667fa3d22a58ece0c5c2bfbeb4ec5fbc5c5",
-    "dist/style.css": "65418f5bfda46b6c60686c7937cb7a1e3396ae517b1d796513a76a9223176718",
+    "dist/style.css": "6aea66334671e77b77eb0f81b179bff1cc9f5190b908040a3e57f869ccb090d1",
     "dist/vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
     "dist/vendor/pixi-8.22.0.min.js": "06d9ef9823e743518793083c296d801e752db128cb1f519fbabe37e1259567ea"
   },
@@ -35,5 +36,9 @@
   "filterCoverageCases": 24,
   "discoveryTests": 10,
   "staticNatureIconsInspected": 9,
-  "userFunStudyPerformed": false
+  "userFunStudyPerformed": false,
+  "animationTests": 11,
+  "staticAvatarPosesInspected": 6,
+  "cssKeyframesBrowserTested": false,
+  "photoFramingViewportCases": 4
 }
