@@ -1,6 +1,6 @@
 # MLH 提交准备
 
-当前状态：**v0.10.1 参考 MVP、运行说明、79 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
+当前状态：**v0.11 参考 MVP、运行说明、90 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
 
 ## 官方要求核对
 
@@ -83,3 +83,5 @@ Cursor then helped me [describe a real fix or improvement and how it was tested]
 最新参考版本v0.10将地貌插画与路径贴合，并加入真实坐标水系和峰点。只能描述为地理要素参考与艺术化坡面，不能称DEM或真实等高线复原。OSM派生数据须保留ODbL署名，Cursor贡献仍按实际执行填写。
 
 当前v0.10.1已删除重复练习地图，只有武功山、虎跳峡与鳌太线三张正式地图。Cursor实作和MLH提交仍待完成。
+
+当前v0.11包含九个打卡点的原创合成音乐与环境音。最终实机验证应包含首次开启声音、打卡点切曲、暂停和后台停止；音频夹具不等于听音测试。Cursor贡献继续按真实操作填写。

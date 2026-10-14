@@ -23,3 +23,4 @@
 @media(max-width:680px){.photo-panel{padding:15px 16px;max-height:68%}.photo-panel img{height:125px}.photo-panel h2{font-size:20px}}
 .map-credit{padding:6px 14px;background:#eef2e4;font-size:9px;color:#84937a;text-align:right}.map-credit a{text-decoration:none}.map-credit a:hover{text-decoration:underline}
 @media(max-width:680px){.map-credit{padding:5px 10px;font-size:8px}}
+.photo-panel .photo-soundscape{margin:0 0 9px;color:#7a8d68;font-size:10px;line-height:1.5}.photo-soundscape[data-playing="true"]{color:#4e7757}.photo-soundscape[data-playing="true"]::before{content:'▂▅▃ ';display:inline-block;color:#91a371;animation:sound-breathe 1.6s ease-in-out infinite alternate}@keyframes sound-breathe{from{opacity:.4}to{opacity:1}}@media(max-width:680px){.photo-panel .photo-soundscape{font-size:9px}}
