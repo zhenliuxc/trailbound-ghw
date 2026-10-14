@@ -42,3 +42,7 @@ PixiJS v8的Application异步init、固定分发包、一次创建场景图、�
 官方FilterOptions：https://pixijs.download/v8.22.0/docs/filters.FilterOptions.html
 
 本次仍无真实浏览器GPU测试；适配器质量回归使用模拟Application和实际PixiJS图形数据，应据此理解验证范围。
+
+## v0.7.1 滤镜裁剪修正
+
+通过安装的 PixiJS 8.22.0 FilterSystem 源码确认：filterArea 会乘上容器的 worldTransform。上一版将屏幕矩形直接设在缩放/移动的 world 上，造成地图底图被截断，SVG 路线继续延伸。现将屏幕边界反投影到 world 的本地坐标，每帧随镜头更新，保留两像素边缘。高清滤镜配置、原路线和照片均保持不变。新增回归测试调用该库实际的边界变换逻辑。

@@ -1,60 +1,16 @@
-✔ route-shaped cartoon map and backpack person remain; obsolete micromanagement controls are absent (42.496674ms)
-✔ one start click makes the hiker move over time without directional input (29.644479ms)
-✔ pause and background visibility cancel the clock and do not skip time on return (29.356285ms)
-✔ a story encounter stops automatically; only a story choice resumes walking (33.669623ms)
-✔ photo stops show a genuine local image and attribution; continuing resumes the journey (53.687894ms)
-✔ reopening a collected photograph preserves the prior walk/pause state (54.674391ms)
-✔ map overview is optional and does not advance time or unlock photographs (18.76157ms)
-✔ photo failure offers the verified source and recovers on the next postcard (68.393252ms)
-✔ full scenic trip has an ending and replay clears discoveries (131.352806ms)
-✔ changing route cancels old animation and resets narrative/photographs (75.181142ms)
-✔ each story route completes in the interface and keeps all photograph cards (1077.756054ms)
-✔ aotai early ending is a complete narrative result and does not force the final postcard (422.051172ms)
-✔ limbs articulate while walking and stay planted when a photo or pause stops the clock (47.614836ms)
-✔ clouds and mist move with the journey clock and freeze during a stop (21.351815ms)
-✔ routes use traceable geographic coordinates and contain no square map (4.564703ms)
-✔ wugong is a connected OSM footpath ending at actual Golden Peak coordinates (0.956252ms)
-✔ historical GPX ends are retained rather than invented summit connectors (0.189376ms)
-✔ position interpolates on the actual track and backtracking restores distance (0.805204ms)
-✔ training: full geographic expedition completes without fake resources (1.527603ms)
-✔ wugong: full geographic expedition completes without fake resources (0.823591ms)
-✔ tiger: full geographic expedition completes without fake resources (3.330031ms)
-✔ aotai: full geographic expedition completes without fake resources (1.537558ms)
-✔ weather still affects cold, moisture and visibility (0.31173ms)
-✔ disorientation blocks moving and navigating restores progress (0.327614ms)
-✔ cold exhaustion is distinct and terminal (0.218149ms)
-✔ energy exhaustion resolves before a game rest can revive a finished state (0.207733ms)
-✔ rest and shelter exist only at explicitly virtual quarter-route markers (0.189385ms)
-✔ finite packs, capped indicators and immutable source data (0.217208ms)
-✔ retreat walks the original track backward; rescue is not a real call (0.277839ms)
-✔ all inactive states freeze geographic movement and climate (0.197568ms)
-✔ every route has ordered photo checkpoints and finishing unlocks them exactly once (2.027578ms)
-✔ crossing a checkpoint unlocks its photo without mutating prior state or duplicating on return (0.317268ms)
-✔ training: continuous journey can complete with all real postcards (4.524853ms)
-✔ wugong: continuous journey can complete with all real postcards (5.720992ms)
-✔ tiger: continuous journey can complete with all real postcards (2.705199ms)
-✔ aotai: continuous journey can complete with all real postcards (3.028727ms)
-✔ photo or story cannot be skipped by a large frame; inactive states freeze (0.207873ms)
-✔ choices change pace, feeling and memories, with a valid early finish (2.463394ms)
-✔ invalid choice, repeated choice and locked postcard continuation have no effects (0.2189ms)
-✔ journey functions preserve earlier states and retain the route endpoint (0.183486ms)
-✔ waiting for the mist to lift visibly changes the weather instead of only changing copy (0.347864ms)
-✔ high-DPI phones retain native density while very large buffers stay bounded (0.774227ms)
-✔ stance feet are planted and swing feet lift; knees and arms use distinct phases (1.251137ms)
-✔ idle and reduced-motion figures remain planted instead of cycling their limbs (0.745935ms)
-✔ mist is a separate weather layer; clear-weather terrain is not fogged (0.265991ms)
-✔ GPU and vector viewport mappings use the same meet/slice camera relation (0.190637ms)
-✔ wugong: every illustrated layer compiles with the installed PixiJS version (16.95816ms)
-✔ tiger: every illustrated layer compiles with the installed PixiJS version (13.029747ms)
-✔ aotai: every illustrated layer compiles with the installed PixiJS version (5.41153ms)
-✔ GPU initialization failure returns to the vector fallback without propagating an exception (0.539694ms)
-✔ missing graphics library leaves the existing browser journey available (0.144999ms)
-✔ renderer preserves HD filter quality and rebuilds fog resources when changing maps (8.82687ms)
-ℹ tests 52
-ℹ suites 0
-ℹ pass 52
-ℹ fail 0
-ℹ cancelled 0
-ℹ skipped 0
-ℹ todo 0
-ℹ duration_ms 2212.048397
+v0.7.1 verification summary (Node.js, 2026-10-14)
+
+Commands: npm run check; npm test
+
+PASS: JavaScript syntax, packaged static assets, SVG references, accessible status.
+PASS: all nine WebP checkpoint photographs retain author, source and license metadata.
+PASS: vendored PixiJS 8.22.0 matches the installed upstream package.
+PASS: actual Pixi filter bounds cover the whole viewport during overview, following and camera transitions (24 combinations).
+
+Tests: 53
+Passed: 53
+Failed: 0
+Cancelled: 0
+Skipped: 0
+
+This is a summary of the completed test run, not a real-browser screenshot or GPU rendering test.

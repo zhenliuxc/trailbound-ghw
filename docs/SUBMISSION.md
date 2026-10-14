@@ -1,6 +1,6 @@
 # MLH 提交准备
 
-当前状态：**v0.7 参考 MVP、运行说明、52 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
+当前状态：**v0.7.1 参考 MVP、运行说明、53 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
 
 ## 官方要求核对
 
@@ -71,3 +71,5 @@ Cursor then helped me [describe a real fix or improvement and how it was tested]
 当前参考交付为v0.6光影漫游版，新增PixiJS画面层。最终成果若复用该库须保留其许可，Cursor贡献仍按事实填写；当前GPU场景没有真实浏览器运行截图。
 
 最新参考交付v0.7修正高清滤镜并优化云雾/步态，仍需真实Cursor实作、最终浏览器运行截图或GitHub链接和MLH表单提交。
+
+最新参考版本为 v0.7.1，修正地图背景滤镜裁剪。Cursor 实作和 MLH 提交状态不变。

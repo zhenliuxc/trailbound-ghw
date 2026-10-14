@@ -12,7 +12,7 @@
  app.canvas.setAttribute('aria-hidden','true');app.canvas.setAttribute('class','pixi-landscape');host.appendChild(app.canvas);app.canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();fail();});
  root=new P.Container();app.stage.addChild(root);onReady();
  }catch(_){fail();return null;}
- function setPlan(next){if(!alive)return;try{plan=next;releaseFilters();for(const child of root.removeChildren())child.destroy({children:true});world=new P.Container();root.addChild(world);clouds=[];mist=[];water=[];lastTone='';lastSize='';
+ function setPlan(next){if(!alive)return;try{plan=next;releaseFilters();for(const child of root.removeChildren())child.destroy({children:true});world=new P.Container();world.filterArea=new P.Rectangle();root.addChild(world);clouds=[];mist=[];water=[];lastTone='';lastSize='';
  for(const [name,features]of Object.entries(plan.layers)){
  if(name==='clouds'){const groups=new Map();for(const f of features){const key=f.cloud||'cloud';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(f);}for(const [key,shapes]of groups){const g=geometry(P,shapes);world.addChild(g);g.filters=[filter(new P.BlurFilter({strength:1.45,quality:2,resolution:'inherit'}))];clouds.push({g,offset:clouds.length*.8});}}
  else if(name==='mist'){const groups=new Map();for(const f of features){const key=f.mist;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(f);}for(const shapes of groups.values()){const g=geometry(P,shapes);g.filters=[filter(new P.BlurFilter({strength:9,quality:2,resolution:1}))];g.alpha=0;world.addChild(g);mist.push({g});}}
@@ -22,8 +22,10 @@
  color=filter(new P.ColorMatrixFilter({resolution:'inherit',antialias:'inherit'}));world.filters=[color];
  }catch(_){fail();}}
  function draw(params){if(!alive||!plan)return;try{
- const rect=host.getBoundingClientRect(),width=Math.max(1,rect.width),height=Math.max(1,rect.height),density=M.resolution(width,height,pixelRatio()),size=`${width}:${height}:${density}`;if(size!==lastSize){app.renderer.resize(width,height,density);world.filterArea=new P.Rectangle(0,0,width,height);lastSize=size;}
+ const rect=host.getBoundingClientRect(),width=Math.max(1,rect.width),height=Math.max(1,rect.height),density=M.resolution(width,height,pixelRatio()),size=`${width}:${height}:${density}`;if(size!==lastSize){app.renderer.resize(width,height,density);lastSize=size;}
  const {view,overview=false,progress=0,elapsed=0,weather='clear',reducedMotion=false}=params,matrix=M.viewport(width,height,view,overview);root.scale.set(matrix.scale);root.position.set(matrix.x,matrix.y);
+ // Pixi transforms filterArea from the container's local coordinates; invert the camera on every frame.
+ const area=world.filterArea,padding=2/matrix.scale;area.x=-matrix.x/matrix.scale-padding;area.y=-matrix.y/matrix.scale-padding;area.width=width/matrix.scale+padding*2;area.height=height/matrix.scale+padding*2;
  const tone=`${weather}:${Math.floor(progress*20)}`;if(tone!==lastTone){lastTone=tone;color.reset();if(weather==='fog'||weather==='blizzard'){color.saturate(-.24,false);color.brightness(.94,true);}else if(progress>.7){const evening=Math.min(1,(progress-.7)/.3);color.matrix=[1+.045*evening,0,0,0,.015*evening,0,1-.012*evening,0,0,.006*evening,0,0,1-.075*evening,0,0,0,0,0,1,0];}else color.brightness(1.035,false);}
  const time=reducedMotion?0:elapsed;
  for(const [i,c]of clouds.entries()){const pose=M.cloud(i,time,reducedMotion);c.g.position.set(pose.x+(view.x-120)*.025,pose.y);c.g.alpha=pose.alpha;}
