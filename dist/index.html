@@ -4,6 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#234436">
 <meta name="description" content="两三分钟的虚拟徒步。跟随背包小人，听风看云，遇见故事，收集真实山野照片。"><title>山径 Trailbound · 去山里走一走</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+<link rel="preload" as="image" href="photos/wugong-meadow.webp" fetchpriority="high">
 <script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="nature.js"></script><script defer src="discoveries.js"></script><script defer src="landscape-data.js"></script><script defer src="terrain.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="audio.js"></script><script defer src="checkpoints.js"></script><script defer src="app.js"></script>
 </head><body>
 <header class="site-header"><a class="brand" href="./">◬ 山径 <small>TRAILBOUND</small></a><span>给自己一小段山野时间</span></header>
@@ -57,6 +58,7 @@
 <section id="story-panel" class="story-panel" hidden aria-labelledby="story-title" tabindex="-1"><p id="story-kicker" class="eyebrow"></p><h2 id="story-title"></h2><p id="story-copy"></p><div id="story-choices" class="story-choices"></div></section>
 <section id="photo-panel" class="photo-panel" hidden aria-labelledby="photo-title" tabindex="-1">
 <img id="checkpoint-photo" alt="" decoding="async">
+<p id="photo-loading" class="photo-loading" role="status" hidden>山野照片正在展开…</p>
 <div class="photo-header"><div class="photo-top"><p class="eyebrow">沿途实景 / 收进旅程</p><button id="photo-close" type="button" aria-label="收起照片">收起 ×</button></div><h2 id="photo-title"></h2><p id="photo-soundscape" class="photo-soundscape" hidden></p></div>
 <div class="photo-footer"><div class="photo-details"><p id="photo-error" role="status" hidden>照片未能显示，可从下方来源查看原图。</p><p id="photo-caption"></p><aside id="photo-nature" class="nature-note photo-nature-note" hidden><p class="eyebrow">风景里的知识 / 先看见，再理解</p><strong id="photo-nature-title"></strong><p id="photo-nature-look" class="nature-look"></p><p id="photo-nature-fact" class="nature-fact"></p><a id="photo-nature-source" class="nature-source"></a></aside><div id="photo-credit" class="photo-credit"></div></div><button id="photo-continue" class="primary-button" type="button">把风景记住，继续走 →</button></div>
 </section>

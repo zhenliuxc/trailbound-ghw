@@ -4,7 +4,9 @@ class Element{
   constructor(tag,doc){this.tagName=tag.toUpperCase();this.doc=doc;this.attributes={};this.children=[];this.listeners={};this.style={};this.hidden=false;this.disabled=false;this.dataset={};this.textContent='';this.captured=new Set();this.classes=new Set();this.classList={toggle:(name,force)=>{if(force)this.classes.add(name);else this.classes.delete(name);}};}
   set id(value){this.attributes.id=value;this.doc.ids.set(value,this);}get id(){return this.attributes.id;}
   setAttribute(name,value){this.attributes[name]=String(value);if(name==='id')this.doc.ids.set(String(value),this);if(name.startsWith('data-'))this.dataset[name.slice(5)]=String(value);if(name==='class')this.classes=new Set(String(value).split(/\s+/));}
-  appendChild(el){this.children.push(el);return el;}replaceChildren(...els){this.children=els;}
+  getAttribute(name){return this.attributes[name]??null;}removeAttribute(name){if(name==='id')this.doc.ids.delete(this.id);delete this.attributes[name];}
+  appendChild(el){el.parentNode=this;this.children.push(el);return el;}replaceChildren(...els){for(const child of this.children)child.parentNode=null;this.children=els;for(const child of els)child.parentNode=this;}
+  replaceWith(el){const parent=this.parentNode,index=parent.children.indexOf(this);parent.children[index]=el;el.parentNode=parent;this.parentNode=null;}
   querySelector(selector){for(const child of this.children){if(child.tagName?.toLowerCase()===selector)return child;const found=child.querySelector?.(selector);if(found)return found;}return null;}
   addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
   emit(type,event={}){for(const fn of this.listeners[type]??[])fn({target:this,preventDefault(){this.prevented=true;},...event});}
@@ -15,6 +17,14 @@ class Element{
 function harness(storage={getItem:()=>null,setItem:()=>{}},options={}){
   const document={ids:new Map(),all:[],listeners:{},hidden:false,activeElement:null,viewport:options.viewport};
   document.createElement=tag=>{const el=new Element(tag,document);document.all.push(el);return el;};document.createElementNS=(_,tag)=>document.createElement(tag);
+  const photoRequests=[],photoImages=[];
+  const Image=options.images?class extends Element{
+    constructor(){super('img',document);photoImages.push(this);this.complete=false;this.naturalWidth=0;this.decodeCalls=0;}
+    setAttribute(name,value){super.setAttribute(name,value);if(name==='src')photoRequests.push(value);}
+    decode(){this.decodeCalls++;return options.decode?options.decode(this):Promise.resolve();}
+    load(){this.complete=true;this.naturalWidth=1024;this.onload?.();}
+    fail(){this.complete=true;this.naturalWidth=0;this.onerror?.();}
+  }:undefined;
   document.createTextNode=text=>({textContent:text});document.getElementById=id=>document.ids.get(id);
   document.querySelectorAll=selector=>document.all.filter(el=>selector==='[data-action]'?el.dataset.action:el.dataset.direction);
   document.addEventListener=(type,fn)=>(document.listeners[type]??=[]).push(fn);
@@ -28,9 +38,10 @@ function harness(storage={getItem:()=>null,setItem:()=>{}},options={}){
     stack.at(-1).appendChild(el);if(!voids.has(tag)&&!full.endsWith('/>'))stack.push(el);
   }
   const window={location:{protocol:'file:'},TrailGame:require('../dist/game.js'),TrailJourney:require('../dist/journey.js'),TrailScenery:require('../dist/scenery.js'),TrailMotion:require('../dist/motion.js'),TrailLife:require('../dist/life.js'),TrailLandscapeData:require('../dist/landscape-data.js'),TrailDiscoveries:require('../dist/discoveries.js'),TrailNature:require('../dist/nature.js'),TrailAudio:require('../dist/audio.js'),TrailCheckpoints:require('../dist/checkpoints.js'),AudioContext:options.AudioContext,setTimeout:options.timers?.setTimeout,clearTimeout:options.timers?.clearTimeout,listeners:{},addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);},emit(type,event={}){for(const fn of this.listeners[type]??[])fn({target:document.activeElement,preventDefault(){this.prevented=true;},...event});}};
+  window.Image=Image;
   let now=0,frameId=0;const pending=new Map();window.requestAnimationFrame=fn=>{const id=++frameId;pending.set(id,fn);return id;};window.cancelAnimationFrame=id=>pending.delete(id);window.matchMedia=()=>({matches:!!options.reducedMotion});
   vm.runInNewContext(fs.readFileSync(require.resolve('../dist/app.js'),'utf8'),{window,document,localStorage:storage,console}, {filename:'app.js'});
-  const api={document,window,advance(seconds){const count=Math.ceil(seconds*50);for(let i=0;i<count;i++){now+=20;const callbacks=[...pending.values()];pending.clear();for(const callback of callbacks)callback(now);}},pendingFrames:()=>pending.size,$:id=>document.getElementById(id),click:id=>document.getElementById(id).emit('click'),key:key=>window.emit('keydown',{key})};
+  const api={document,window,photoImages,photoRequests,advance(seconds){const count=Math.ceil(seconds*50);for(let i=0;i<count;i++){now+=20;const callbacks=[...pending.values()];pending.clear();for(const callback of callbacks)callback(now);}},pendingFrames:()=>pending.size,$:id=>document.getElementById(id),click:id=>document.getElementById(id).emit('click'),key:key=>window.emit('keydown',{key})};
   // Follow the existing first narrative choice until the next photograph, using UI events.
   api.toPhoto=()=>{for(let i=0;i<8;i++){api.advance(160);if(!api.$('photo-panel').hidden)return;const choice=api.$('story-choices').querySelector('button');if(!api.$('story-panel').hidden&&choice)choice.emit('click');else throw Error('Journey did not reach a photo');}throw Error('Too many narrative stops');};
   return api;
