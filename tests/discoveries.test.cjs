@@ -4,8 +4,8 @@ function memoryStorage(){const values=new Map();return {getItem:key=>values.get(
 test('each remaining route offers its own three observations',()=>{
  for(const route of ['wugong','tiger','aotai']){const trip=D.create(route,42);assert.equal(trip.slots.length,3);assert.equal(new Set(trip.slots.map(x=>x.id)).size,3);for(const slot of trip.slots){assert.equal(D.item(slot.id).route,route);assert.ok(slot.at>0&&slot.until<1&&slot.until>slot.at);}}
 });
-test('seeded replays change observation order and timings without touching route data',()=>{
- assert.deepEqual(D.create('tiger',42),D.create('tiger',42));const trips=[1,42,8172,123456].map(seed=>D.create('tiger',seed));assert.ok(new Set(trips.map(t=>t.slots.map(x=>x.id).join(','))).size>1);assert.ok(new Set(trips.map(t=>t.slots[0].at)).size>1);
+test('local topics retain geographic order while seeded replay timing changes',()=>{
+ assert.deepEqual(D.create('tiger',42),D.create('tiger',42));const trips=[1,42,8172,123456].map(seed=>D.create('tiger',seed));assert.equal(new Set(trips.map(t=>t.slots.map(x=>x.id).join(','))).size,1);assert.deepEqual(trips[0].slots.map(x=>D.item(x.id).order),[0,1,2]);assert.ok(new Set(trips.map(t=>t.slots[0].at)).size>1);
 });
 test('discovery is optional, bounded by progress, and never interrupts a story or photo',()=>{
  const trip=D.create('aotai',42),slot=trip.slots[0],s={status:'walking',progress:slot.at};assert.equal(D.visible(s,trip),slot);assert.equal(D.visible({...s,status:'paused'},trip),slot);for(const status of ['ready','encounter','finished','retreated'])assert.equal(D.visible({...s,status},trip),null);assert.equal(D.visible({...s,progress:slot.until+.001},trip),null);assert.equal(trip.found.length,0);

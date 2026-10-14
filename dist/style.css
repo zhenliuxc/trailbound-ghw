@@ -12,7 +12,7 @@
 #player{filter:none}.overlay{background:#f0f0de26}#hiker-torso,#hiker-facing{transform-box:view-box}.gpu-ready [data-layer="clouds"],.gpu-ready [data-layer="mist"]{display:none}
 
 /* Optional discoveries sit above the landscape; the native button also works on small screens. */
-.nature-marker{cursor:pointer}.nature-marker:focus-visible{outline:none}.nature-marker:focus-visible circle:not([fill="transparent"]){stroke:#557b50;stroke-width:4}.observe-button{position:absolute;left:18px;bottom:18px;z-index:3;max-width:calc(100% - 36px);padding:12px 17px;background:#fffaf0f2;border:1px solid #d3be87;border-radius:13px;color:#4d6747;text-align:left;box-shadow:0 5px 17px #4b674320}.observe-button span,.observe-button small{display:block}.observe-button span{font-size:13px;font-weight:600}.observe-button small{font-size:10px;color:#8a8b6e;margin-top:3px;max-width:260px}.field-journal{margin-top:26px}.field-journal>p{font-size:11px;color:var(--muted);margin:7px 0 13px;min-height:18px}.field-journal details{border:1px solid var(--line);border-radius:13px;background:#fbfaf2;padding:13px 16px}.field-journal summary{cursor:pointer;font-size:12px;min-height:30px;line-height:30px}.field-journal summary span{float:right;color:var(--muted);font-size:10px}.journal-list{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0;padding:0}.journal-entry{padding:12px;background:#f2f2e7;border:1px dashed #d5dbc8;border-radius:11px;text-align:center;min-width:0}.journal-entry svg{width:50px;height:50px;opacity:.3;display:block;margin:0 auto 6px}.journal-entry strong{font-size:12px;font-weight:500;display:block;color:#8b9580}.journal-entry small{font-size:10px;line-height:1.7;display:block;color:#8b9580;margin-top:5px}.journal-entry.found{background:#eef3e1;border:1px solid #b5c798}.journal-entry.found svg{opacity:1}.journal-entry.found strong{color:#426143}.journal-note{font-size:10px;color:var(--muted);line-height:1.8;margin:9px 0 0}
+.nature-marker{cursor:pointer}.nature-marker:focus-visible{outline:none}.nature-marker:focus-visible>circle:not([fill="transparent"]){stroke:#557b50;stroke-width:4}.observe-button{position:absolute;left:18px;bottom:18px;z-index:3;max-width:calc(100% - 36px);padding:12px 17px;background:#fffaf0f2;border:1px solid #d3be87;border-radius:13px;color:#4d6747;text-align:left;box-shadow:0 5px 17px #4b674320}.observe-button span,.observe-button small{display:block}.observe-button span{font-size:13px;font-weight:600}.observe-button small{font-size:10px;color:#8a8b6e;margin-top:3px;max-width:260px}.field-journal{margin-top:26px}.field-journal>p{font-size:11px;color:var(--muted);margin:7px 0 13px;min-height:18px}.field-journal details{border:1px solid var(--line);border-radius:13px;background:#fbfaf2;padding:13px 16px}.field-journal summary{cursor:pointer;font-size:12px;min-height:30px;line-height:30px}.field-journal summary span{float:right;color:var(--muted);font-size:10px}.journal-list{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0;padding:0}.journal-entry{padding:12px;background:#f2f2e7;border:1px dashed #d5dbc8;border-radius:11px;text-align:center;min-width:0}.journal-entry svg{width:50px;height:50px;opacity:.3;display:block;margin:0 auto 6px}.journal-entry strong{font-size:12px;font-weight:500;display:block;color:#8b9580}.journal-entry small{font-size:10px;line-height:1.7;display:block;color:#8b9580;margin-top:5px}.journal-entry.found{background:#eef3e1;border:1px solid #b5c798}.journal-entry.found svg{opacity:1}.journal-entry.found strong{color:#426143}.journal-note{font-size:10px;color:var(--muted);line-height:1.8;margin:9px 0 0}
 @media(max-width:680px){.observe-button{left:12px;bottom:12px;max-width:calc(100% - 24px);padding:10px 13px}.observe-button span{font-size:12px}.observe-button small{font-size:9px;max-width:230px}.field-journal{margin-top:22px}.field-journal .album-heading h2{font-size:15px}.journal-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.journal-entry{padding:10px}.journal-entry strong{font-size:11px}.journal-entry small{font-size:9px}.field-journal details{padding:11px 12px}}
 
 /* Short presentation transitions never advance the journey clock. */
@@ -42,3 +42,25 @@
 
 /* SVG landmarks have a circular keyboard focus cue, never the browser's rectangular outline. */
 .checkpoint-marker{outline:none!important;-webkit-tap-highlight-color:transparent;user-select:none}.checkpoint-marker .checkpoint-focus{opacity:0}.checkpoint-marker:focus-visible .checkpoint-focus{opacity:1}.checkpoint-marker:hover .checkpoint-badge{stroke:#779259;stroke-width:2.8}.checkpoint-marker.unlocked .checkpoint-badge{fill:#eef4de;stroke:#648851}.checkpoint-label{paint-order:stroke;stroke:#fffdf0;stroke-width:4px;stroke-linejoin:round}.checkpoint-number svg{display:block;width:24px;height:24px}.collected .checkpoint-number{background:#e0ebcf;color:#426546}
+
+/* Place-based observations remain below the map and never block the journey. */
+.nature-marker{outline:none!important;-webkit-tap-highlight-color:transparent}
+.nature-note{padding:14px 17px;border:1px solid #d4dec4;border-radius:12px;background:#eef3e1;margin:10px 0 16px}
+.nature-note strong{display:block;font:normal 17px var(--serif);color:#456b46}
+.nature-note .nature-look{font-size:12px;color:#506e4e;line-height:1.8;margin:8px 0 5px}
+.nature-note .nature-fact{font-size:11px;color:#6d7f65;line-height:1.8;margin:5px 0 7px}
+.nature-source{font-size:9px;color:#738868;text-underline-offset:3px}
+.photo-nature-note{background:#fffdf012;border:1px solid #fffdf02e;padding:10px 12px;margin:10px 0}
+.photo-nature-note .eyebrow{color:#d8e5c9;font-size:8px;margin-bottom:4px}
+.photo-nature-note strong{color:#fffdf2;font-size:15px}
+.photo-nature-note .nature-look{color:#e0ebd3;font-size:10px;margin:5px 0}
+.photo-nature-note .nature-fact{color:#fffdf2d9;font-size:10px;margin:4px 0 6px}
+.photo-nature-note .nature-source{color:#e7eeda}
+.journal-entry.found{text-align:left}.journal-entry.found>svg{width:36px;height:36px;margin:0 0 9px}
+.journal-entry .journal-photo-link{display:block;margin-top:9px}
+.journal-entry .journal-photo{display:block;width:100%;height:126px;object-fit:cover;border-radius:7px}
+.journal-entry .journal-photo-caption{font-size:9px;line-height:1.7}
+.journal-entry .journal-observe{font-size:11px;color:#4f6c4b;line-height:1.8;margin:12px 0 6px}
+.journal-entry .journal-fact{font-size:10px;color:#74856b;line-height:1.8;margin:5px 0 9px}
+.journal-source{display:block;font-size:8px;line-height:1.7;color:#798a70;margin-top:5px;text-underline-offset:2px}
+@media(max-width:680px){.nature-note{padding:12px 14px}.nature-note strong{font-size:15px}.nature-note .nature-look{font-size:11px}.photo-nature-note strong{font-size:14px}.photo-nature-note .nature-look{font-size:10px}.journal-entry .journal-photo{height:98px}}

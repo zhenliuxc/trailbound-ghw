@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#234436">
 <meta name="description" content="两三分钟的虚拟徒步。跟随背包小人，听风看云，遇见故事，收集真实山野照片。"><title>山径 Trailbound · 去山里走一走</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
-<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="discoveries.js"></script><script defer src="landscape-data.js"></script><script defer src="terrain.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="audio.js"></script><script defer src="checkpoints.js"></script><script defer src="app.js"></script>
+<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="nature.js"></script><script defer src="discoveries.js"></script><script defer src="landscape-data.js"></script><script defer src="terrain.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="audio.js"></script><script defer src="checkpoints.js"></script><script defer src="app.js"></script>
 </head><body>
 <header class="site-header"><a class="brand" href="./">◬ 山径 <small>TRAILBOUND</small></a><span>给自己一小段山野时间</span></header>
 <main>
@@ -58,7 +58,7 @@
 <section id="photo-panel" class="photo-panel" hidden aria-labelledby="photo-title" tabindex="-1">
 <img id="checkpoint-photo" alt="" decoding="async">
 <div class="photo-header"><div class="photo-top"><p class="eyebrow">沿途实景 / 收进旅程</p><button id="photo-close" type="button" aria-label="收起照片">收起 ×</button></div><h2 id="photo-title"></h2><p id="photo-soundscape" class="photo-soundscape" hidden></p></div>
-<div class="photo-footer"><div class="photo-details"><p id="photo-error" role="status" hidden>照片未能显示，可从下方来源查看原图。</p><p id="photo-caption"></p><div id="photo-credit" class="photo-credit"></div></div><button id="photo-continue" class="primary-button" type="button">把风景记住，继续走 →</button></div>
+<div class="photo-footer"><div class="photo-details"><p id="photo-error" role="status" hidden>照片未能显示，可从下方来源查看原图。</p><p id="photo-caption"></p><aside id="photo-nature" class="nature-note photo-nature-note" hidden><p class="eyebrow">风景里的知识 / 先看见，再理解</p><strong id="photo-nature-title"></strong><p id="photo-nature-look" class="nature-look"></p><p id="photo-nature-fact" class="nature-fact"></p><a id="photo-nature-source" class="nature-source"></a></aside><div id="photo-credit" class="photo-credit"></div></div><button id="photo-continue" class="primary-button" type="button">把风景记住，继续走 →</button></div>
 </section>
 <section id="ending-panel" class="ending-panel" hidden aria-labelledby="ending-title" tabindex="-1"><p class="eyebrow">TODAY'S WALK / 今天的山野</p><h2 id="ending-title"></h2><p id="ending-copy"></p><ul id="ending-memories"></ul><button id="replay" class="primary-button" type="button">再走一次 →</button></section>
 </div>
@@ -67,8 +67,8 @@
 <div class="walk-bar"><div><p id="thought" class="thought" role="status" aria-live="polite"></p><span id="feeling" class="feeling"></span></div><button id="walk-toggle" type="button" disabled>停下来看看</button></div>
 </section>
 <section class="album"><div class="album-heading"><h2>路上，收进来的风景</h2><span id="album-count">0 / 3</span></div><ol id="checkpoint-list" class="checkpoint-list"></ol></section>
-<section class="field-journal" aria-label="山野手账"><div class="album-heading"><h2>小小发现，慢慢记住</h2><span id="journal-count">0 / 9</span></div><p id="discovery-status" role="status" aria-live="polite">留意路边的小插画，点一下就能记住。错过也没关系。</p><details><summary>翻开山野手账 <span id="trip-count">本次发现 0 / 3</span></summary><ul id="journal-list" class="journal-list"></ul><p id="journal-storage" class="journal-note">手账保存在这个浏览器，换地图或重走也会留下。</p><p class="journal-note">小景物为虚构插画观察，不代表实际地点的物种记录；真实照片在上方相册。</p></details></section>
+<section class="field-journal" aria-label="地点自然手账"><div class="album-heading"><h2>一处风景，一页地方手账</h2><span id="journal-count">0 / 9</span></div><p id="discovery-status" role="status" aria-live="polite">沿途留意地点标记，记下一处风景与它的自然故事。错过也没关系。</p><aside id="learning-note" class="nature-note learning-note" hidden><p class="eyebrow">风景里的知识 / 先看见，再理解</p><strong id="learning-note-title"></strong><p id="learning-note-look" class="nature-look"></p><p id="learning-note-fact" class="nature-fact"></p><a id="learning-note-source" class="nature-source"></a></aside><details><summary>翻开地点手账 <span id="trip-count">本次发现 0 / 3</span></summary><ul id="journal-list" class="journal-list"></ul><p id="journal-storage" class="journal-note">手账保存在这个浏览器，换地图或重走也会留下。</p><p class="journal-note">便笺围绕具体路线与区域景观整理。照片注明真实地点和历史范围，资料链接可继续阅读。</p></details></section>
 <details class="route-details"><summary>关于这段路线与照片</summary><strong id="route-title"></strong><p id="route-context"></p><p id="route-notice"></p><div id="route-sources"></div><p>卡通地图保留参考路线走向，水系与山峰参考OSM坐标，坡面和植被为插画示意、打卡位置为近似展示；照片注明实际地点或区域范围。故事、天气与人物状态是虚拟演练，不能用于实地导航。音乐与音效为原创合成声景，不是现场录音。</p></details>
-<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 地貌贴合版 v0.12</span></footer>
+<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 地方自然版 v0.13 候选</span></footer>
 </main><noscript>请启用JavaScript开始旅程。</noscript>
 </body></html>
