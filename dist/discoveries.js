@@ -156,6 +156,8 @@
   {id:'westlake-basket',route:'westlake',order:2,at:.895,place:'西湖 · 龙井村口',name:'一只等雨停的竹篮',hint:'竹篮安静放在凳上，屋檐还在滴水。',memory:'龙井村口的屋檐下，一只竹篮安静等着雨停。我听过一串细细的滴水声，把这段午后也放慢了。',icon:'basket',interaction:'drip'}
  );
  for(const entry of CATALOG.filter(x=>x.route==='westlake'))entry.interaction=entry.interaction||({stones:'ripple',tea:'leaf',eaves:'drip'})[entry.icon];
+ const interactions={'meadow-bird':'watch','meadow-butterfly':'breeze','meadow-flower':'breeze','gorge-goat':'watch','gorge-eagle':'watch','gorge-sparkle':'ripple','snow-tracks':'trace','snow-lichen':'trace','snow-light':'breeze','coast-sand':'ripple','coast-shell':'trace','coast-pier':'ripple','valley-moss':'trace','valley-bridge':'ripple','valley-reflection':'ripple','bamboo-drop':'drip','bamboo-step':'trace','bamboo-leaf':'breeze'};
+ for(const entry of CATALOG)if(interactions[entry.id])entry.interaction=interactions[entry.id];
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}

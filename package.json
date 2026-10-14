@@ -5,7 +5,7 @@
   "description": "A browser hiking journey with illustrated scenery and PixiJS rendering",
   "scripts": {
     "test": "node --test tests/*.test.cjs",
-    "check": "node --check dist/geography.js && node --check dist/geography-extra.js && node --check dist/routes.js && node --check dist/game.js && node --check dist/journey.js && node --check dist/nature.js && node --check dist/discoveries.js && node --check dist/micro-moments.js && node --check dist/landscape-data.js && node --check dist/terrain.js && node --check dist/illustration.js && node --check dist/scenery.js && node --check dist/motion.js && node --check dist/life.js && node --check dist/pixi-scene.js && node --check dist/audio.js && node --check dist/checkpoints.js && node --check dist/app.js && node scripts/check-assets.cjs"
+    "check": "node --check dist/geography.js && node --check dist/geography-extra.js && node --check dist/routes.js && node --check dist/game.js && node --check dist/journey.js && node --check dist/nature.js && node --check dist/discoveries.js && node --check dist/moment-scenes.js && node --check dist/micro-moments.js && node --check dist/landscape-data.js && node --check dist/terrain.js && node --check dist/illustration.js && node --check dist/scenery.js && node --check dist/motion.js && node --check dist/life.js && node --check dist/pixi-scene.js && node --check dist/audio.js && node --check dist/checkpoints.js && node --check dist/app.js && node scripts/check-assets.cjs"
   },
   "engines": {
     "node": ">=18"

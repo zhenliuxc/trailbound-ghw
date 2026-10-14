@@ -9,9 +9,13 @@
 - GitHub：https://github.com/zhenliuxc/trailbound-ghw
 - 版本分支：`codex/travel-moment-journal`；PR：https://github.com/zhenliuxc/trailbound-ghw/pull/2
 - 从该分支取本交接文件所在提交，以该完整提交 SHA 作为发布版本；不要使用尚未包含七路线更新的 master。
-- 执行 `npm ci`、`npm run check`、`npm test`。本次云端终端的检查通过，当前142项测试全部通过；完整输出在 `docs/westlake-micro-test-output.txt`。
+- 执行 `npm ci`、`npm run check`、`npm test`。本次云端终端的检查通过，当前150项测试全部通过；完整输出在 `docs/full-gameplay-test-output.txt`。
 - 新增第七条路线“西湖·九溪龙井”，含连通 OSM 选段、溪谷茶园地图、三张授权实景照片、三段原创合成声音、三枚旅行瞬间徽章。源证据见 `docs/WESTLAKE_ROUTE.md`。
 - 地图和徽章完成静态渲染目视检查。云端受管预览不可用，真实桌面/手机 CSS、GPU 运行和听音尚未验证；本地有浏览器时补充实际检查，并按事实记录结果。
+
+## 当前开发候选
+
+七条路线现已接入绘本 SVG 与轻互动、实时拖动、手帐参与回忆和结束徽章，见 `docs/FULL_GAMEPLAY.md`。此候选尚未部署；沿用用户“先不自动上线”的阶段要求，不把准备好的交接说明当作本次发布指令。
 
 ## 发布执行
 

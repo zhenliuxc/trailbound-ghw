@@ -111,5 +111,72 @@
   }
   return {style:'westlake-picturebook-v1',trees:trees.length,waterSegments:waters.length};
  }
- return {westlake};
+ function regional(layers,terrain,points,theme,palette){
+  const path=(layer,d,fill,extra={})=>layers[layer].push({tag:'path',d,fill,'stroke-linecap':'round','stroke-linejoin':'round',...extra});
+  const ellipse=(layer,x,y,rx,ry,fill,opacity=1)=>layers[layer].push({tag:'ellipse',cx:f(x),cy:f(y),rx:f(rx),ry:f(ry),fill,opacity});
+  let seed={meadow:301,gorge:509,snow:719,coast:827,forest:947,bamboo:113}[theme]||439;
+  const random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
+  const water=terrain.features.filter(v=>v.kind==='water');
+  const nearWater=(x,y)=>water.some(v=>T.nearest(v.line,x,y).distance<16);
+  // Broken pigment strokes are static and share the landscape's coordinate system.
+  for(let i=0;i<64;i++){const x=12+random()*696,y=90+random()*500,w=4+random()*15;
+   if(T.nearest(points,x,y).distance<24||nearWater(x,y))continue;
+   path('ground',`M${f(x)} ${f(y)}Q${f(x+w*.6)} ${f(y-2)} ${f(x+w)} ${f(y)}Q${f(x+w*.4)} ${f(y+2)} ${f(x)} ${f(y)}Z`,i%3?palette.shade:'#fff7db',{opacity:.075});
+  }
+  // Rocks and individual plants sit beside, rather than on top of, the route.
+  const spine=terrain.spine;
+  for(let i=3;i<spine.length-2;i+=7){const q=spine[i],side=i%2?1:-1,x=q.x+q.nx*(47+random()*23)*side,y=q.y+q.ny*(47+random()*23)*side;
+   if(nearWater(x,y)||T.nearest(points,x,y).distance<28)continue;
+   const p=(xx,yy)=>`${f(x+xx)} ${f(y+yy)}`;
+   ellipse('details',x+2,y+4,10,3,palette.shade,.12);
+   if(theme==='snow'||theme==='gorge'||theme==='coast'){
+    path('details',`M${p(-11,2)}Q${p(-14,-6)} ${p(-6,-10)}L${p(4,-12)}Q${p(10,-6)} ${p(12,1)}Q${p(1,7)} ${p(-11,2)}Z`,theme==='snow'?'#a4b4aa':'#b7b69a',{stroke:palette.shade,'stroke-width':.7});
+    path('details',`M${p(-10,-1)}Q${p(-11,-7)} ${p(-5,-9)}L${p(4,-11)}L${p(1,-4)}Z`,theme==='snow'?'#eef2e3':'#dad6b8');
+    path('details',`M${p(2,-6)}L${p(4,0)}L${p(9,1)}`,'none',{stroke:palette.shade,'stroke-width':.65,opacity:.55});
+    if(theme==='snow'){path('details',`M${p(-8,-5)}Q${p(-4,-7)} ${p(-1,-4)}Q${p(-2,0)} ${p(-7,-1)}Z`,'#8d9e73');}
+   }else{
+    path('details',`M${p(0,4)}Q${p(-2,-6)} ${p(-1,-17)}M${p(-1,-4)}Q${p(-7,-14)} ${p(-12,-14)}M${p(-1,0)}Q${p(8,-11)} ${p(13,-10)}`,'none',{stroke:palette.leaf,'stroke-width':.9});
+    for(const [dx,dy]of [[-9,-11],[-5,-7],[7,-7],[11,-9]])path('details',`M${p(dx,dy)}Q${p(dx-3,dy-5)} ${p(dx+2,dy-5)}Q${p(dx+4,dy-2)} ${p(dx,dy)}Z`,palette.leafLight);
+    if(theme==='meadow')for(const dx of [-6,3,9])ellipse('details',x+dx,y-9-Math.abs(dx)*.4,1.9,1.5,'#ece0ac');
+   }
+  }
+  for(const q of terrain.water.slice(1,-1).filter((_,i)=>i%3===0)){
+   const x=q.x+q.nx*13,y=q.y+q.ny*13;
+   ellipse('hydro',x+1,y+2,6,2,palette.shade,.15);
+   path('hydro',`M${f(x-5)} ${f(y)}Q${f(x-6)} ${f(y-5)} ${f(x)} ${f(y-5)}Q${f(x+6)} ${f(y-4)} ${f(x+5)} ${f(y)}Z`,'#b5bea4',{stroke:palette.shade,'stroke-width':.55});
+   path('hydro',`M${f(x-3)} ${f(y-2)}Q${f(x)} ${f(y-4)} ${f(x+3)} ${f(y-2)}`,'none',{stroke:'#e6e4c2','stroke-width':.8});
+  }
+  return {style:theme+'-picturebook-v1',detail:true};
+ }
+ function tree(layers,x,y,s,theme,p){
+  const point=(a,b)=>`${f(x+a*s)} ${f(y+b*s)}`;
+  const path=(d,fill,stroke='none',w=.8,opacity=1)=>layers.canopy.push({tag:'path',d,fill,stroke,'stroke-width':f(w*s),'stroke-linecap':'round','stroke-linejoin':'round',opacity});
+  const shape=(d,fill,stroke,w,opacity)=>{let i=0;path(d.replace(/-?\d*\.?\d+/g,n=>f(Number(n)*s+(i++%2?y:x))),fill,stroke,w,opacity);};
+  layers.canopy.push({tag:'ellipse',cx:f(x+5*s),cy:f(y+4*s),rx:f(21*s),ry:f(5*s),fill:p.shade,opacity:.13});
+  if(theme==='bamboo'){
+   for(const [offset,height]of [[-9,74],[9,61]]){
+    path(`M${point(offset,0)}Q${point(offset-4,-height*.5)} ${point(offset+2,-height)}`,'none',p.leaf,2.7);
+    for(let j=1;j<4;j++)path(`M${point(offset-2.3,-j*height/5)}L${point(offset+2,-j*height/5)}`,'none',p.leafLight,.9);
+    for(const [side,yy]of [[-1,22],[1,43]]){const top=-height+yy;path(`M${point(offset,top+8)}Q${point(offset+side*24,top-12)} ${point(offset+side*36,top-9)}`,'none',p.leaf,1);
+     for(let k=0;k<3;k++){const xx=offset+side*(8+k*6),cy=top-k*3;path(`M${point(xx,cy)}Q${point(xx+side*5,cy-12)} ${point(xx+side*10,cy-11)}Q${point(xx+side*7,cy-2)} ${point(xx,cy)}Z`,k%2?p.leafLight:p.leaf);}}
+   }return;
+  }
+  shape('M-3 1L-2 -47L2 -48L3 1Z','#8a8265');
+  if(theme==='forest'||theme==='snow'){
+   for(const [yy,w]of [[-45,12],[-32,18],[-17,23]]){
+    path(`M${point(-w,yy+10)}Q${point(-w*.45,yy-2)} ${point(0,yy-18)}Q${point(w*.4,yy-1)} ${point(w,yy+10)}L${point(w*.4,yy+9)}L${point(w*.3,yy+12)}L${point(-w*.7,yy+11)}Z`,p.leaf,p.shade,.55);
+    path(`M${point(-w,yy+10)}Q${point(-w*.45,yy-2)} ${point(0,yy-18)}L${point(-1,yy+6)}Z`,p.leafLight);
+    for(const sign of [-1,1])path(`M${point(sign*3,yy)}L${point(sign*w*.58,yy+6)}`,'none',theme==='snow'?'#edf2df':'#bfd0a8',.8,.65);
+   }
+   if(theme==='snow')shape('M-6 -49L0 -63L6 -49L1 -51L0 -47L-2 -51Z','#f4f6e8');
+  }else{
+   shape('M-24 -20C-36 -28 -30 -43 -24 -45C-26 -58 -11 -60 -7 -59C-4 -73 13 -70 18 -61C31 -65 38 -51 31 -44C42 -31 25 -19 14 -20C0 -13 -16 -15 -24 -20Z',p.leaf,p.shade,.65);
+   shape('M-24 -20C-36 -28 -30 -43 -24 -45C-26 -58 -11 -60 -7 -59C-4 -73 13 -70 18 -61C5 -64 0 -51 -12 -47C-25 -46 -13 -28 -24 -20Z',p.leafLight);
+   shape('M9 -19C29 -17 40 -34 31 -44C23 -34 15 -41 10 -29L5 -24Z',p.shade,'none',0,.58);
+   shape('M-17 -40Q-8 -38 -5 -42M0 -55Q6 -52 12 -56M17 -32Q22 -31 27 -36','none','#d1dcb0',1,.55);
+   for(const [xx,yy]of [[-18,-49],[-3,-32],[8,-61],[21,-42]])path(`M${point(xx-3,yy)}Q${point(xx,yy-5)} ${point(xx+5,yy-2)}Q${point(xx+2,yy+1)} ${point(xx-3,yy)}Z`,p.leafLight,'none',0,.7);
+  }
+  shape('M0 -14L1 -1','none','#c9b58a',.7);
+ }
+ return {westlake,regional,tree};
 }));

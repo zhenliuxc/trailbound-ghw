@@ -116,3 +116,15 @@
 .journey-stage[data-art="picturebook"] .checkpoint-label{stroke:#f8f4df;stroke-width:3;font-family:var(--serif);font-size:13px}
 .journey-stage[data-art="picturebook"] .weather-badge,.journey-stage[data-art="picturebook"] .map-toggle{background:#fcfaf0ed;border-color:#ced2b7}
 .journey-stage[data-art="picturebook"] .atmosphere{background:linear-gradient(150deg,#fff1c317,transparent 55%)}
+
+/* The journey's last page contains only the moments actually collected. */
+.ending-journal{border-top:1px solid #d8dcc2;padding-top:13px;margin:14px 0 18px}
+.ending-journal h3{font:normal 15px var(--serif);margin:0 0 10px;color:#56714d}
+.ending-badges{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.ending-badge-button{flex:1 1 80px;max-width:145px;border:1px solid transparent;border-radius:12px;background:#f1f2e3;padding:7px;color:#59734e;min-height:94px}
+.ending-badge-button[aria-expanded="true"]{border-color:#88a372;background:#e9efd9}
+.ending-badge-button .journal-badge-art{width:62px;height:62px;margin:auto}
+.ending-badge-button small{display:block;font-size:10px;line-height:1.6;margin:5px 0 0}
+#ending-detail{font-size:12px;line-height:1.9;color:#76856a;margin:9px 0 0}
+#ending-detail:empty{display:none}
+@media(max-width:680px){.ending-badges{gap:6px}.ending-badge-button{flex-basis:65px;padding:5px}.ending-badge-button .journal-badge-art{width:53px;height:53px}}
