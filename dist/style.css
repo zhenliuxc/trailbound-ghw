@@ -40,8 +40,6 @@
 .photo-panel .photo-nature-note{background:#f1f5e8;border:1px solid #dce4cc;color:#617b55;margin:7px 0 0}
 .photo-panel .photo-nature-note strong{font-size:13px;color:#496b45}.photo-panel .photo-nature-note .nature-look,.photo-panel .photo-nature-note .nature-fact,.photo-panel .photo-nature-note .nature-source{color:#7a8e6b;font-size:10px}
 @media(max-width:680px){.photo-panel{top:8px;bottom:8px;left:8px;right:8px;border-radius:12px}.photo-header{padding:8px 12px}.photo-panel h2{font-size:18px}.photo-footer{padding:9px 12px}.photo-panel .primary-button{font-size:11px}}
-.map-credit{padding:6px 14px;background:#eef2e4;font-size:9px;color:#84937a;text-align:right}.map-credit a{text-decoration:none}.map-credit a:hover{text-decoration:underline}
-@media(max-width:680px){.map-credit{padding:5px 10px;font-size:8px}}
 .photo-panel .photo-soundscape{margin:0;color:#819172;font-size:10px;line-height:1.5}.photo-panel .photo-soundscape[data-playing="true"]{color:#63814f}.photo-soundscape[data-playing="true"]::before{content:'▂▅▃ ';display:inline-block;color:#d0e7ae;animation:sound-breathe 1.6s ease-in-out infinite alternate}@keyframes sound-breathe{from{opacity:.4}to{opacity:1}}@media(max-width:680px){.photo-panel .photo-soundscape{font-size:9px}}
 
 /* SVG landmarks have a circular keyboard focus cue, never the browser's rectangular outline. */
@@ -93,3 +91,5 @@
 .journal-page{padding:20px 23px;margin:18px 0 10px;background:#fffdf2;border:1px solid #dedfc8;border-radius:5px 13px 13px 5px}
 .journal-page>strong{display:block;font:normal 19px var(--serif);color:#416047}.journal-page .journal-place{font-size:9px;color:#89957d;margin:0 0 8px}
 @media(max-width:680px){.journal-list{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:9px 5px}.journal-badge-art{width:82px;height:82px}.journal-entry.found strong{font-size:10px;max-width:96px}.journal-page{padding:17px 16px}}
+
+#route-sources{display:flex;flex-wrap:wrap;gap:7px 18px}
