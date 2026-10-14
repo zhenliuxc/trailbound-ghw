@@ -23,84 +23,75 @@
  const OBSERVATIONS={
   "meadow-bird": {
     "route": "wugong",
-    "title": "武功山 · 山脊草甸",
+    "title": "一只小鸟掠过草尖",
     "look": "先看草甸铺在哪里，再找森林与开阔山脊的边界。",
     "fact": "武功山的代表景观是江南湿润山地中的高山草甸。开阔的草坡和低处森林共同组成这里的山野风景。",
     "source": "wugong",
-    "checkpointId": "wugong-meadow",
-    "place": "武功山 · 山脊草甸"
+    "place": "武功山 · 草甸风口"
   },
   "meadow-butterfly": {
     "route": "wugong",
-    "title": "武功山 · 云海变化",
+    "title": "一片云擦过山脊",
     "look": "留意远山边缘怎样被遮住，又怎样慢慢露出来。",
     "fact": "雾中有悬浮的微小水滴。空气足够湿润并冷却时，水汽可以凝结成小水滴；山里的云雾因而会改变你看见风景的方式。",
     "source": "fog",
-    "checkpointId": "wugong-clouds",
-    "place": "武功山 · 云海变化"
+    "place": "武功山 · 开阔草脊"
   },
   "meadow-flower": {
     "route": "wugong",
-    "title": "武功山 · 罗霄群峰",
+    "title": "草坡亮起来的那一刻",
     "look": "从近处草脊看向远处群峰，找一找山的层次。",
     "fact": "武功山位于罗霄山脉北段。眼前的草脊属于更长的山地系统，森林、草甸和云海只是它的不同面貌。",
     "source": "wugong",
-    "checkpointId": "wugong-golden",
-    "place": "武功山 · 罗霄群峰"
+    "place": "武功山 · 向阳草坡"
   },
   "gorge-goat": {
     "route": "tiger",
-    "title": "虎跳峡 · 高路与深谷",
+    "title": "转角遇见一只山羊",
     "look": "先找脚边的山径，再找很远下面的江流。",
     "fact": "虎跳峡的金沙江穿行在玉龙、哈巴雪山之间。高路视角里的陡坡、对岸山体和低处江流，让峡谷的高差更容易被看见。",
     "source": "gorge",
-    "checkpointId": "tiger-trail",
-    "place": "虎跳峡 · 高路与深谷"
+    "place": "虎跳峡 · 高路转弯处"
   },
   "gorge-eagle": {
     "route": "tiger",
-    "title": "虎跳峡 · 两山夹江",
+    "title": "一只飞鸟越过江谷",
     "look": "对照两侧山壁、谷底江流和更远的峰顶。",
     "fact": "虎跳峡是深切的山地峡谷。这里的风景不是平地上孤立的几块石头，而是两侧高山、陡坡与江谷形成的整体。",
     "source": "gorge",
-    "checkpointId": "tiger-gorge",
-    "place": "虎跳峡 · 两山夹江"
+    "place": "虎跳峡 · 临江山壁"
   },
   "gorge-sparkle": {
     "route": "tiger",
-    "title": "虎跳峡 · 山村与路标",
+    "title": "江面闪了一下",
     "look": "注意路标、屋舍与山坡之间的关系。",
     "fact": "虎跳峡周边山村与徒步高路相连，村民的生活、农作和客栈也构成山地文化。看自然风景时，也可以留意人与山的相处。",
     "source": "village",
-    "checkpointId": "tiger-halfway",
-    "place": "虎跳峡 · 山村与路标"
+    "place": "虎跳峡 · 金沙江上方"
   },
   "snow-tracks": {
     "route": "aotai",
-    "title": "秦岭 · 林带变化",
+    "title": "薄雪里的一串小脚印",
     "look": "比较低处的树冠、针叶树与高处开阔地。",
     "fact": "太白山区域有明显的植被垂直分带。不同高度的环境条件不同，森林、灌丛与高山草甸并非随机混在一起。",
     "source": "qinling",
-    "checkpointId": "aotai-aoshan",
-    "place": "秦岭 · 林带变化"
+    "place": "秦岭 · 薄雪林缘"
   },
   "snow-lichen": {
     "route": "aotai",
-    "title": "秦岭 · 岩面的地衣",
+    "title": "岩石上的一小片绿",
     "look": "留意岩石上的色块，是贴着石面，还是像薄薄的小叶片。",
     "fact": "地衣是真菌与藻类等伙伴组成的共生体，可以长在岩石上。它与苔藓不同；这里介绍生态知识，不鉴定某个地点的具体物种。",
     "source": "lichen",
-    "checkpointId": "aotai-ridge",
-    "place": "秦岭 · 岩面的地衣"
+    "place": "秦岭 · 岩脊旁"
   },
   "snow-light": {
     "route": "aotai",
-    "title": "太白山 · 石海与古冰川",
+    "title": "云缝里的一抹阳光",
     "look": "在太白山区域照片中，找找岩石地貌与季节性积雪。",
     "fact": "太白山高处有石海、石河与古冰川遗迹。大片岩石、高山草甸和季节变化，也是秦岭高山的辨识度。",
     "source": "taibai",
-    "checkpointId": "aotai-taibai",
-    "place": "太白山 · 石海与古冰川"
+    "place": "太白山区域 · 开阔石海"
   }
 };
  for(const set of [SOURCES,CHECKPOINTS,OBSERVATIONS]){for(const value of Object.values(set))Object.freeze(value);Object.freeze(set);}
