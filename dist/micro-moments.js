@@ -21,10 +21,14 @@
   if(kind==='ripple'){
    path('M0 60Q90 14 184 46T400 20V230H0Z','#a6c2aa');path('M-20 123Q75 25 154 87T421 76L420 241H-20Z','url(#micro-water)');
    for(let i=0;i<8;i++)path(`M${i*62-40} ${105+i%3*34}q35-12 68 0t65 0`,'none','#e5eee0',1.3);
-   path('M55 151Q20 129 48 94Q69 69 109 85Q149 106 127 139Q104 161 55 151Z','#a6afa0','#839685',2);path('M52 105Q69 84 104 92','none','#bdc7a8',8);
-   for(const [x,y]of [[322,170],[360,126],[285,206]])add('ellipse',{cx:x,cy:y,rx:20,ry:12,fill:'#9bad99',stroke:'#81988a'});
+   add('ellipse',{cx:83,cy:150,rx:54,ry:12,fill:'#5f968b',opacity:.22});
+   path('M55 151Q20 129 48 94Q69 69 109 85Q149 106 127 139Q104 161 55 151Z','#a6afa0','#839685',1.1);path('M52 105Q69 84 104 92','none','#d3d5b2',8);
+   path('M39 117Q55 116 64 127L98 137Q113 135 130 121Q130 143 102 151Q57 157 39 136Z','#839b8a');
+   path('M49 110Q60 98 77 102Q82 110 74 112Q60 108 49 110Z M92 145Q106 130 123 132L114 147Z','#78986c');
+   path('M79 89L82 107L76 116M108 101L103 116L113 120','none','#879580',.8);
+   for(const [x,y]of [[322,170],[360,126],[285,206]]){add('ellipse',{cx:x,cy:y+3,rx:23,ry:10,fill:'#5e968a',opacity:.16});path(`M${x-21} ${y}Q${x-25} ${y-9} ${x-8} ${y-13}Q${x+13} ${y-16} ${x+22} ${y}Q${x+12} ${y+11} ${x-21} ${y}Z`,'#aeb69c','#849b89',.9);path(`M${x-15} ${y-5}Q${x-3} ${y-13} ${x+11} ${y-7}`,'none','#d7d8b7',2);}
    refs.rings=[0,1,2].map(()=>add('ellipse',{cx:215,cy:150,rx:0,ry:0,fill:'none',stroke:'#f8f9da','stroke-width':2,opacity:0}));
-   refs.leaf=add('g');path('M-19 1Q-6-21 23-5Q20 14-19 1Z','#c29d64','#997b53',1.2,refs.leaf);path('M-19 1L17-4','none','#e4c58a',1,refs.leaf);
+   refs.leaf=add('g');path('M-19 1Q-6-21 23-5Q20 14-19 1Z','#c29d64','#997b53',.8,refs.leaf);path('M-19 1L17-4M-6-1L-5-9M-6-1L-2 5M5-3L8-10M5-3L10 3','none','#e4c58a',.65,refs.leaf);
    for(let i=0;i<9;i++)path(`M${10+i*8} 211q${i%2?8:-8}-24 2-42`,'none','#648f64',2);
   }else if(kind==='leaf'){
    path('M0 160Q90 74 187 113T400 75V230H0Z','#c3d4a2');path('M-10 209Q139 113 400 152','none','#91b17b',20);path('M-10 228Q139 139 400 177','none','#a6bf87',16);
@@ -37,7 +41,7 @@
    path('M0 24Q130 1 252 18T400 4V57Q264 66 164 46T0 51Z','#778780','#516b63',2);
    for(let i=0;i<14;i++)path(`M${i*32-6} 19q-8 21 0 34`,'none','#a4b0a2',2);
    path('M28 164H191V177H28Z','#9f855c');path('M46 177V220M170 177V220','none','#867650',8);
-   const basket=add('g',{transform:'translate(107 150)'});path('M-40-6Q0-45 40-6L30 19Q0 34-30 19Z','#c4a56e','#92784d',2,basket);for(let i=-3;i<4;i++)path(`M${i*10} -12l-6 36`,'none','#e2c48b',1,basket);for(let i=0;i<4;i++)path(`M-35 ${i*7-2}q35 10 70 0`,'none','#8f784e',1,basket);
+   const basket=add('g',{transform:'translate(107 150)'});path('M-40-6Q0-45 40-6L30 19Q0 34-30 19Z','#c4a56e','#92784d',1.2,basket);path('M-28-12Q-24-54 1-51Q27-54 29-13','none','#967c4f',3.5,basket);path('M-27-13Q-23-51 1-49Q24-51 28-13','none','#dbc28b',1,basket);for(let i=-3;i<4;i++)path(`M${i*10} -12l-6 36`,'none','#e2c48b',1,basket);for(let i=0;i<4;i++)path(`M-35 ${i*7-2}q35 10 70 0`,'none','#8f784e',1,basket);path('M-39-6Q0-19 39-6','none','#e4c990',2,basket);
    add('ellipse',{cx:284,cy:194,rx:51,ry:18,fill:'#b5c9b8',stroke:'#879f8c','stroke-width':2});add('ellipse',{cx:284,cy:190,rx:46,ry:13,fill:'url(#micro-water)'});
    refs.drops=[0,1,2].map(()=>add('ellipse',{cx:285,cy:57,rx:2.8,ry:5,fill:'#7aa9a4',opacity:0}));refs.rings=[0,1].map(()=>add('ellipse',{cx:284,cy:190,rx:0,ry:0,fill:'none',stroke:'#edf2dd','stroke-width':1.4,opacity:0}));
    add('ellipse',{cx:385,cy:180,rx:42,ry:64,fill:'url(#micro-glow)',opacity:.4});
