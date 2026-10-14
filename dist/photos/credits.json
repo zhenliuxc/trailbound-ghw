@@ -6,8 +6,7 @@
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "file": "photos/wugong-ridge.webp",
-    "alt": "武功山山脊，远处最高峰为金顶",
-    "caption": "武功山山脊实拍，远处最高峰为金顶。2011年照片，属于沿线区域景观，不是人物所在位置的即时画面。"
+    "alt": "武功山山脊，远处最高峰为金顶"
   },
   "wugong-clouds": {
     "title": "武功山的云海.jpg",
@@ -16,8 +15,7 @@
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
     "file": "photos/wugong-clouds.webp",
-    "alt": "武功山观景平台看到的云海",
-    "caption": "2024年在武功山观景平台拍摄的云海。云海打卡站是游戏展示位置，不标记照片的精确拍摄平台。"
+    "alt": "武功山的云海"
   },
   "wugong-meadow": {
     "title": "Wugong Mountains, 17 June 2018, Picture12.jpg",
@@ -26,8 +24,7 @@
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
     "file": "photos/wugong-meadow.webp",
-    "alt": "武功山绿色山脊草甸和步道",
-    "caption": "2018年武功山的山脊与草甸实拍。用于展示本路线所在区域的草甸风景。"
+    "alt": "武功山绿色山脊草甸和步道"
   },
   "tiger-trail": {
     "title": "Tiger Leaping Gorge trail 08.JPG",
@@ -36,8 +33,7 @@
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "file": "photos/tiger-trail.webp",
-    "alt": "虎跳峡高路上的山径",
-    "caption": "2008年虎跳峡山径实拍。来源记录为出桥头约45分钟的路段；卡通位置为近似展示。"
+    "alt": "虎跳峡高路上的山径"
   },
   "tiger-gorge": {
     "title": "Hiking the Tiger Leaping Gorge.jpg",
@@ -46,8 +42,7 @@
     "license": "CC BY-SA 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
     "file": "photos/tiger-gorge.webp",
-    "alt": "从徒步路线上俯瞰虎跳峡与金沙江",
-    "caption": "2008年虎跳峡徒步沿途实景，展现峡谷与江流；不代表打卡点的精确拍摄位置。"
+    "alt": "从徒步路线上俯瞰虎跳峡与金沙江"
   },
   "tiger-halfway": {
     "title": "Tiger Leaping Gorge trail 36.JPG",
@@ -56,8 +51,7 @@
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "file": "photos/tiger-halfway.webp",
-    "alt": "虎跳峡徒步路线上的Halfway路标",
-    "caption": "2008年虎跳峡徒步路线的中途路标实拍。游戏按沿途顺序近似布置，不表示当前路标仍在原处。"
+    "alt": "虎跳峡徒步路线上的Halfway路标"
   },
   "aotai-aoshan": {
     "title": "鳌山白起庙 - panoramio.jpg",
@@ -66,8 +60,7 @@
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
     "file": "photos/aotai-aoshan.webp",
-    "alt": "鳌山白起庙实拍",
-    "caption": "鳌山白起庙的历史实景照片。打卡点参考鳌山段近似布置，照片不代表鳌山山顶，也不是当前通行信息。"
+    "alt": "鳌山白起庙实拍"
   },
   "aotai-ridge": {
     "title": "Mountain Taibai No.1.jpg",
@@ -76,8 +69,7 @@
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "file": "photos/aotai-ridge.webp",
-    "alt": "太白山的秦岭山脊实景",
-    "caption": "2016年太白山区域山脊实拍，用于展示秦岭山地环境；不是太白梁这一精确位置的照片。"
+    "alt": "太白山的秦岭山脊实景"
   },
   "aotai-taibai": {
     "title": "Mountain Taibai No.2.jpg",
@@ -86,7 +78,87 @@
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "file": "photos/aotai-taibai.webp",
-    "alt": "太白山区域山景实拍",
-    "caption": "2016年太白山区域实景。历史轨迹末点不延伸到拔仙台；照片展示周边山景，不冒充轨迹终点现场。"
+    "alt": "太白山区域山景实拍"
+  },
+  "maclehose-saiwan": {
+    "title": "Sai Wan.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sai_Wan.jpg",
+    "author": "Smallpei",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/maclehose-saiwan.webp",
+    "alt": "香港西贡西湾的沙滩、海浪和绿色岬角"
+  },
+  "maclehose-hamtin": {
+    "title": "Ham Tin Wan beach.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Ham_Tin_Wan_beach.jpg",
+    "author": "Kaldari",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "file": "photos/maclehose-hamtin.webp",
+    "alt": "香港西贡咸田湾的沙滩与海湾"
+  },
+  "maclehose-chekkeng": {
+    "title": "ChekKeng3.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:ChekKeng3.JPG",
+    "author": "山民主義",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/maclehose-chekkeng.webp",
+    "alt": "香港赤径村附近的小渡头与平静海湾"
+  },
+  "changping-forest": {
+    "title": "Xiaojin, Aba, Sichuan, China - panoramio (42).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(42).jpg",
+    "author": "jetsun",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "file": "photos/changping-forest.webp",
+    "alt": "长坪沟溪边的苔木与针叶林"
+  },
+  "changping-valley": {
+    "title": "Xiaojin, Aba, Sichuan, China - panoramio (52).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(52).jpg",
+    "author": "jetsun",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "file": "photos/changping-valley.webp",
+    "alt": "长坪沟林间溪谷与山间云雾"
+  },
+  "changping-meadow": {
+    "title": "Xiaojin, Aba, Sichuan, China - panoramio (57).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(57).jpg",
+    "author": "jetsun",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "file": "photos/changping-meadow.webp",
+    "alt": "长坪沟开阔的花草地与山壁"
+  },
+  "mogan-bamboo": {
+    "title": "Mount Mogan bamboo forest.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mount_Mogan_bamboo_forest.jpg",
+    "author": "Walter Grassroot",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/mogan-bamboo.webp",
+    "alt": "莫干山云雾中的竹林"
+  },
+  "mogan-path": {
+    "title": "Mount Mogan Path3.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mount_Mogan_Path3.jpg",
+    "author": "Walter Grassroot",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/mogan-path.webp",
+    "alt": "莫干山树林中的木制山间步道"
+  },
+  "mogan-stream": {
+    "title": "Mount Mogan River.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mount_Mogan_River.jpg",
+    "author": "Walter Grassroot",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/mogan-stream.webp",
+    "alt": "莫干山石间流淌的溪水"
   }
 }

@@ -1,10 +1,19 @@
 {
+  "version": 2,
   "generator": "built-in imagegen",
   "cell": 192,
   "columns": 3,
   "rows": 3,
-  "atlas": "badges/moments-v1.webp",
-  "atlasBytes": 162402,
+  "atlases": [
+    {
+      "file": "badges/moments-v1.webp",
+      "bytes": 162402
+    },
+    {
+      "file": "badges/moments-expansion-v1.webp",
+      "bytes": 138268
+    }
+  ],
   "entries": [
     {
       "id": "meadow-bird",
@@ -12,7 +21,8 @@
       "column": 0,
       "row": 0,
       "bytes": 19604,
-      "sha256": "0723ee33fc5d6bb081d6edfec66f9497c44503fdc35500f9a1072f817fe5b175"
+      "sha256": "0723ee33fc5d6bb081d6edfec66f9497c44503fdc35500f9a1072f817fe5b175",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "meadow-butterfly",
@@ -20,7 +30,8 @@
       "column": 1,
       "row": 0,
       "bytes": 17388,
-      "sha256": "5c9e2eb2e74a8fd6d9f5a674e413f00672b8802c4808b343d68c2e758c10688c"
+      "sha256": "5c9e2eb2e74a8fd6d9f5a674e413f00672b8802c4808b343d68c2e758c10688c",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "meadow-flower",
@@ -28,7 +39,8 @@
       "column": 2,
       "row": 0,
       "bytes": 18362,
-      "sha256": "1dcc391a88f709478a47856f174d42ab42682f20d8de7698d3e20b5bbb28dce4"
+      "sha256": "1dcc391a88f709478a47856f174d42ab42682f20d8de7698d3e20b5bbb28dce4",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "gorge-goat",
@@ -36,7 +48,8 @@
       "column": 0,
       "row": 1,
       "bytes": 20488,
-      "sha256": "8067d1fbabcc70e1f09cb29c3a025ba6305691400e1252fa55800007112988f0"
+      "sha256": "8067d1fbabcc70e1f09cb29c3a025ba6305691400e1252fa55800007112988f0",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "gorge-eagle",
@@ -44,7 +57,8 @@
       "column": 1,
       "row": 1,
       "bytes": 19182,
-      "sha256": "0f0e7c4e3f71c88c00f051b51becef932752d441cf56137772eb2b51171a76a8"
+      "sha256": "0f0e7c4e3f71c88c00f051b51becef932752d441cf56137772eb2b51171a76a8",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "gorge-sparkle",
@@ -52,7 +66,8 @@
       "column": 2,
       "row": 1,
       "bytes": 20262,
-      "sha256": "307f501b7fd98dbc5b601c500f361977b26a2e042fd9e5bd60d0e5c4815d8fe7"
+      "sha256": "307f501b7fd98dbc5b601c500f361977b26a2e042fd9e5bd60d0e5c4815d8fe7",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "snow-tracks",
@@ -60,7 +75,8 @@
       "column": 0,
       "row": 2,
       "bytes": 18652,
-      "sha256": "5462c8419c6aa8e216347bbd2088eee5b514e7c50c8065e88af6eb502ba8555e"
+      "sha256": "5462c8419c6aa8e216347bbd2088eee5b514e7c50c8065e88af6eb502ba8555e",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "snow-lichen",
@@ -68,7 +84,8 @@
       "column": 1,
       "row": 2,
       "bytes": 18670,
-      "sha256": "af9d9e62a1dbe96077af27212d4755a88c5488deb32864e7999ace978965252d"
+      "sha256": "af9d9e62a1dbe96077af27212d4755a88c5488deb32864e7999ace978965252d",
+      "atlas": "badges/moments-v1.webp"
     },
     {
       "id": "snow-light",
@@ -76,7 +93,89 @@
       "column": 2,
       "row": 2,
       "bytes": 18806,
-      "sha256": "9afaba40cb85da72172f75155e68227cfeff2847c46383e32504f67c49ec4fe2"
+      "sha256": "9afaba40cb85da72172f75155e68227cfeff2847c46383e32504f67c49ec4fe2",
+      "atlas": "badges/moments-v1.webp"
+    },
+    {
+      "id": "coast-sand",
+      "file": "badges/coast-sand-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 0,
+      "row": 0,
+      "bytes": 15498,
+      "sha256": "896540112a94643ca03a8bb392d3f130a8f1d4167c16cc0f9171b3d0fe7e2de0"
+    },
+    {
+      "id": "coast-shell",
+      "file": "badges/coast-shell-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 1,
+      "row": 0,
+      "bytes": 14642,
+      "sha256": "f5bc996afcf468b4841f78975809bb5ab01ea39083d5718779ce5cc5d3928028"
+    },
+    {
+      "id": "coast-pier",
+      "file": "badges/coast-pier-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 2,
+      "row": 0,
+      "bytes": 16546,
+      "sha256": "cb0dea6015457cfc96b5d522f375d4ca1645af51a3f2ec5b6ef269b2dfefea75"
+    },
+    {
+      "id": "valley-moss",
+      "file": "badges/valley-moss-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 0,
+      "row": 1,
+      "bytes": 18562,
+      "sha256": "47907d8f57c5826ad9a8751ec3c2e96427e1082d57fb39d0194810217242f711"
+    },
+    {
+      "id": "valley-bridge",
+      "file": "badges/valley-bridge-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 1,
+      "row": 1,
+      "bytes": 18018,
+      "sha256": "abe63e2ede27aa15de32e4bd4ef909852bdf1e6a51468f7eafd598f0f10ab90b"
+    },
+    {
+      "id": "valley-reflection",
+      "file": "badges/valley-reflection-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 2,
+      "row": 1,
+      "bytes": 16200,
+      "sha256": "4d736df360ca0624ccb966e030c48e32e0a2748fb133836a9856ae6c55221d3f"
+    },
+    {
+      "id": "bamboo-drop",
+      "file": "badges/bamboo-drop-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 0,
+      "row": 2,
+      "bytes": 15110,
+      "sha256": "6232c8ee06d844634f33ae4d5f1a4f9dc9ce0c352ae92b3a0fb43534ed69d4cc"
+    },
+    {
+      "id": "bamboo-step",
+      "file": "badges/bamboo-step-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 1,
+      "row": 2,
+      "bytes": 16846,
+      "sha256": "4d367bec45e08627be35baad5e020f651042dd88446e57fbc146af5832999b78"
+    },
+    {
+      "id": "bamboo-leaf",
+      "file": "badges/bamboo-leaf-v1.webp",
+      "atlas": "badges/moments-expansion-v1.webp",
+      "column": 2,
+      "row": 2,
+      "bytes": 15454,
+      "sha256": "9ac393b73e4aa9109badb1f76ff7228901cad9d11cb5cacfc8772a33e87e7612"
     }
   ]
 }

@@ -53,3 +53,53 @@ Scene: Inside the badge: one warm golden sunbeam breaking through pale high clou
 
 验证：108 项 Node 自动测试通过；真实浏览器排版验证仍受受管预览 proc 挂载权限限制。
 
+
+
+## 三条新路线的九枚瞬间徽章
+
+由内置 imagegen 逐枚生成，沿用圆形细腻手绘、纸质叶纹边缘和透明背景。按 192×192 合并为第二张三行三列图集 `moments-expansion-v1.webp`，原图集与原九个瞬间 ID 保留。图集映射和校验信息见 `manifest.json`。这些是旅途瞬间的艺术化插画，不是实地记录照片。
+
+### coast-sand
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: Gentle lace-like white sea foam withdrawing across a pale sandy shore near Sai Wan on Hong Kong’s MacLehose Trail section 2, leaving delicate tide lines. Turquoise sea and a softly green headland behind; the tide lines in wet sand are the intimate focal point.
+
+### coast-shell
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: A tiny ivory seashell resting undisturbed on wet sand at Ham Tin Wan on Hong Kong’s Sai Kung coast. A wave has just left a soft curved line nearby, green headland and clear turquoise water beyond; the small shell is the focal point. No hands, no collecting.
+
+### coast-pier
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: A quiet small wooden and stone village jetty reflected in calm coastal inlet water near Chek Keng on Hong Kong’s MacLehose Trail section 2. Green hills curl around the peaceful inlet, subtle weathered texture; the still reflection under the pier is the focal point.
+
+### valley-moss
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: An intimate close view of a lush moss-covered fallen branch beside a wooden trail in Changping Valley of Mount Siguniang, Sichuan. Tall dark conifers, damp forest floor, soft cool green light; tiny velvet moss textures on the old wood are the focal point.
+
+### valley-bridge
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: A small rustic wooden boardwalk crossing a clear narrow stream in the conifer forest of Changping Valley, Sichuan. Warm wood planks, rounded rocks, fern and moss edges, a distant softly painted snow peak framed by trees; the little crossing is the focal point.
+
+### valley-reflection
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: A luminous reflection of a jagged distant Mount Siguniang snow peak in a still bend of a stream in the meadow near Muluozi, Changping Valley, Sichuan. Green alpine meadow and soft ochre grasses, clear water doubles the mountain shape; the reflection is the focal point.
+
+### bamboo-drop
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: A close bamboo leaf holding one perfect small raindrop in a tranquil bamboo forest on Mount Mogan, Zhejiang. The droplet reflects the surrounding green bamboo stems, hazy layered grove behind, delicate ivory light; the clear raindrop is the focal point.
+
+### bamboo-step
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: A gently weathered old stone stairway winding through emerald bamboo on Mount Mogan, Zhejiang, with tiny moss in the stone seams, warm gray stone textures and a few fallen bamboo leaves. The quiet turn of the stone steps is the focal point, intimate and welcoming.
+
+### bamboo-leaf
+
+Use case: illustration-story. Asset type: one small collectible travel-journal badge for a Chinese hiking game. Create ONE exquisite circular badge, centered, occupying about 82% of the square canvas, with truly transparent pixels outside its circular edge. Style: finely hand-painted gouache miniature with delicate watercolor gradients and luminous natural light, set within a narrow ivory embroidered paper rim; sophisticated cozy storybook art, tactile fine-grained texture, rich tiny details but a clear silhouette legible at 96px. Consistent restrained sage green, warm cream, muted turquoise and soft honey gold palette. Keep the whole circle and rim visible with generous transparent margins. No text, lettering, numbers, watermark, brand, UI, hands, multiple badges, rectangular scenery or background outside the badge.
+Scene: Inside the badge: One delicate golden bamboo leaf resting on a warm gray stone beside a small trickling stream on Mount Mogan, Zhejiang. A few tiny concentric ripples and softly blurred green bamboo stems provide local context; the fallen leaf is the clear focal point.

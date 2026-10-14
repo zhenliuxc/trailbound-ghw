@@ -14,6 +14,107 @@
   {id:'snow-lichen',route:'aotai',order:1,at:.325,place:'秦岭 · 岩脊旁',name:'岩石上的一小片绿',hint:'灰色石面上，有一点贴得很近的绿色。',memory:'在灰色岩脊旁，我看见石面上一小片绿色。走近一点才发现，山里的细小生命也很认真。',icon:'lichen'},
   {id:'snow-light',route:'aotai',order:2,at:.895,place:'太白山区域 · 开阔石海',name:'云缝里的一抹阳光',hint:'云散开一点，光落在雪斑和岩石上。',memory:'风雪之后，云缝里落下一抹阳光。雪斑和岩石都亮了起来，我也慢慢松开了肩膀。',icon:'sun'}
  ];
+ CATALOG.push(...[
+  {
+    "id": "coast-sand",
+    "route": "maclehose",
+    "order": 0,
+    "at": 0.39,
+    "place": "麦理浩径 · 西湾沙滩",
+    "name": "潮水画下的一条线",
+    "hint": "浪退下去，沙滩留下了一条细细的弧线。",
+    "memory": "潮水从西湾的沙滩退下去，留了一条细细的线。我看着下一道浪把它慢慢改写。",
+    "icon": "tide"
+  },
+  {
+    "id": "coast-shell",
+    "route": "maclehose",
+    "order": 1,
+    "at": 0.55,
+    "place": "麦理浩径 · 咸田海湾",
+    "name": "一枚留在沙上的贝壳",
+    "hint": "它还留在原地，等下一道浪。",
+    "memory": "咸田湾的湿沙上躺着一枚小贝壳。我把它留在原处，只把这一眼收进了手帐。",
+    "icon": "shell"
+  },
+  {
+    "id": "coast-pier",
+    "route": "maclehose",
+    "order": 2,
+    "at": 0.84,
+    "place": "麦理浩径 · 赤径海湾",
+    "name": "渡头下的倒影",
+    "hint": "小渡头和远山，在水里又出现了一次。",
+    "memory": "走到赤径海湾时，水很平。小渡头下面还有一座倒着的山，随着细细的波纹轻轻晃。",
+    "icon": "pier"
+  },
+  {
+    "id": "valley-moss",
+    "route": "changping",
+    "order": 0,
+    "at": 0.055,
+    "place": "长坪沟 · 林间栈道",
+    "name": "老树枝上的绒绒绿",
+    "hint": "苔藓沿着老树枝，铺出一小段绿色。",
+    "memory": "长坪沟的栈道边，一根老树枝上长满绒绒的苔藓。它静静躺在林子里，让我也放轻了脚步。",
+    "icon": "moss"
+  },
+  {
+    "id": "valley-bridge",
+    "route": "changping",
+    "order": 1,
+    "at": 0.325,
+    "place": "长坪沟 · 溪边木道",
+    "name": "跨过水声的一小段木板",
+    "hint": "水从木板下面经过，声音没有停。",
+    "memory": "林间木道跨过了长坪沟的一段小溪。我踩过去时，脚步在上面，水声在下面。",
+    "icon": "bridge"
+  },
+  {
+    "id": "valley-reflection",
+    "route": "changping",
+    "order": 2,
+    "at": 0.77,
+    "place": "长坪沟 · 木骡子附近",
+    "name": "水里还有一座远山",
+    "hint": "溪水转弯处，远山的轮廓倒了过来。",
+    "memory": "木骡子附近，溪水在草甸边转了个弯。远山的轮廓落进水里，我站着看它轻轻散开。",
+    "icon": "reflection"
+  },
+  {
+    "id": "bamboo-drop",
+    "route": "mogan",
+    "order": 0,
+    "at": 0.055,
+    "place": "莫干山 · 莫干岭竹林",
+    "name": "竹叶尖上的一滴雨",
+    "hint": "叶尖弯下来，好像正托住一点重量。",
+    "memory": "雨后的莫干岭古道，一片竹叶尖托着小小的水滴。我停半步，看它把整个竹林缩进一点亮里。",
+    "icon": "drop"
+  },
+  {
+    "id": "bamboo-step",
+    "route": "mogan",
+    "order": 1,
+    "at": 0.325,
+    "place": "莫干山 · 古道石阶",
+    "name": "石阶拐弯的地方",
+    "hint": "石缝里有苔藓，转角还藏着下一段路。",
+    "memory": "莫干岭的旧石阶拐了个弯。石缝里的苔藓很软，脚下的路却被很多脚步磨得平滑。",
+    "icon": "steps"
+  },
+  {
+    "id": "bamboo-leaf",
+    "route": "mogan",
+    "order": 2,
+    "at": 0.77,
+    "place": "莫干山 · 大坑侧溪边",
+    "name": "一片竹叶落在石上",
+    "hint": "叶子很轻，溪水从旁边过去。",
+    "memory": "走到莫干山的溪边，一片竹叶轻轻落在石头上。水一直流，叶子却安安静静留在那里。",
+    "icon": "leaf"
+  }
+]);
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}

@@ -93,3 +93,7 @@
 @media(max-width:680px){.journal-list{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:9px 5px}.journal-badge-art{width:82px;height:82px}.journal-entry.found strong{font-size:10px;max-width:96px}.journal-page{padding:17px 16px}}
 
 #route-sources{display:flex;flex-wrap:wrap;gap:7px 18px}
+
+.theme-coast{background:#f0f7f1}.theme-forest{background:#edf2e9}.theme-bamboo{background:#f0f4e4}
+.route-card strong{font-size:19px;line-height:1.35;padding-right:18px}
+@media(max-width:680px){.route-card{flex-basis:166px}.route-card strong{font-size:17px;padding-right:5px}}

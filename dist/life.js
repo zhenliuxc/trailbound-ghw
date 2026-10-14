@@ -3,6 +3,9 @@
  function build(theme,points,context={}){let seed=theme==='snow'?613:theme==='gorge'?311:127;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;},actors=[];const near=(i,kind)=>{const p=points[Math.floor((i+1)/(15)*Math.max(0,points.length-1))]||[360,300],side=i%2?1:-1;actors.push({kind,x:clamp(p[0]+side*(35+random()*55),35,685),y:clamp(p[1]+25+random()*25,60,540),phase:random()*6.28,scale:kind==='butterfly'?.32+random()*.12:.7+random()*.45});};
   if(theme==='meadow'){for(let i=0;i<12;i++)near(i,'grass');for(let i=0;i<3;i++)near(i*4,'butterfly');}
   if(theme==='gorge'){for(let i=0;i<7;i++)near(i*2,'leaf');const water=context.water||[];for(const [i,p]of water.entries())actors.push({kind:'water',x:p.x,y:p.y,phase:i*.7,scale:.65});}
+  if(theme==='coast'){for(let i=0;i<8;i++)near(i,'water');for(let i=0;i<3;i++)near(i*4,'grass');}
+  if(theme==='forest'){for(let i=0;i<8;i++)near(i,'leaf');for(let i=0;i<3;i++)near(i*4,'butterfly');}
+  if(theme==='bamboo')for(let i=0;i<13;i++)near(i,'leaf');
   if(theme==='snow')for(let i=0;i<8;i++)near(i,'spindrift');
   for(let i=0;i<2;i++)actors.push({kind:'bird',x:150+i*350,y:130+i*140,phase:i*2.4,scale:.52+i*.08});
   return actors;

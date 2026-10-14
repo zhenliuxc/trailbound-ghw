@@ -15,6 +15,284 @@
  {id:'cold-choice',at:.82,kicker:'路上遇见 · 重新判断',title:'风还在吹，你想先缓一缓。',copy:'你留意到自己的疲惫和寒意。接下来，选择怎样结束这段旅程。',weather:'snow',choices:[{id:'recover',label:'避风休息，恢复后再走',note:'休息融入故事，无需点物资按钮',pace:.9,energy:18,warmth:24,memory:'先休息恢复，才继续剩下的一段路。',echo:'这次，你没有催促自己。缓过来之后，山径仍在。'},{id:'return',label:'到这里就好，结束这次徒步',note:'这也是一个完整的结局',end:'retreated',energy:0,warmth:0,memory:'在风雪里选择及时结束虚拟行程。',echo:'你决定把剩下的路留在地图上。平安的选择，也是旅程的结尾。'}]}
  ]}
  };
+ Object.assign(STORIES,{
+  "maclehose": {
+    "duration": 115,
+    "opening": "从浪茄的山径出发，海会在一个转弯后出现。",
+    "thoughts": [
+      [
+        0,
+        "山径从低低的灌木间升起，海风带来一点咸味。"
+      ],
+      [
+        0.2,
+        "越过山脊，弯弯的海岸展开了。"
+      ],
+      [
+        0.39,
+        "沙滩上留着浅浅的潮痕，浪花反复改写它。"
+      ],
+      [
+        0.55,
+        "海水有很多种蓝，近处和远处不一样。"
+      ],
+      [
+        0.72,
+        "离开开阔海湾，脚步转进安静的山村。"
+      ],
+      [
+        0.84,
+        "赤径的水很平，渡头下还有另一座山的倒影。"
+      ]
+    ],
+    "events": [
+      {
+        "id": "coast-wind",
+        "at": 0.14,
+        "kicker": "路上遇见 · 海风",
+        "title": "海风把背包带轻轻拉紧。",
+        "copy": "你翻上一段山脊。再走几步，就能看见山后的海。",
+        "weather": "wind",
+        "choices": [
+          {
+            "id": "listen",
+            "label": "慢一点，听听海风",
+            "note": "按自己的节奏走一会儿",
+            "pace": 0.9,
+            "energy": 6,
+            "warmth": 0,
+            "memory": "在西贡山脊上，把风声听成了海的前奏。",
+            "echo": "风从肩旁过去。你把步子放慢了一点。"
+          },
+          {
+            "id": "follow",
+            "label": "跟着山径往海边走",
+            "note": "按自己的节奏走一会儿",
+            "pace": 1.1,
+            "energy": -5,
+            "warmth": 0,
+            "memory": "顺着海风，走向还看不见的海湾。",
+            "echo": "海风一直在，山径也一直向前。"
+          }
+        ]
+      },
+      {
+        "id": "coast-rest",
+        "at": 0.66,
+        "kicker": "路上遇见 · 转弯",
+        "title": "沙滩的声音，留在了身后。",
+        "copy": "山路再次拐向内陆。鞋底上还带着一点沙。",
+        "weather": "clear",
+        "choices": [
+          {
+            "id": "sand",
+            "label": "停下来，倒掉鞋里的细沙",
+            "note": "按自己的节奏走一会儿",
+            "pace": 0.9,
+            "energy": 8,
+            "warmth": 0,
+            "memory": "离开咸田湾时，我倒出鞋里的一点沙。海还在身后响。",
+            "echo": "鞋里轻快了。你继续沿着山径走。"
+          },
+          {
+            "id": "walk",
+            "label": "继续走，听潮声慢慢变远",
+            "note": "按自己的节奏走一会儿",
+            "pace": 1.06,
+            "energy": -3,
+            "warmth": 0,
+            "memory": "把潮声留在身后，向赤径的小山村走去。",
+            "echo": "一层山挡住了海，潮声也变轻了。"
+          }
+        ]
+      }
+    ]
+  },
+  "changping": {
+    "duration": 120,
+    "opening": "从木栈道走入长坪沟，让林间的水声带路。",
+    "thoughts": [
+      [
+        0,
+        "栈道旁的苔木湿润，树林像一座安静的屋子。"
+      ],
+      [
+        0.1,
+        "鞋底落在木板上，声音比泥路轻。"
+      ],
+      [
+        0.29,
+        "溪水绕过圆石，树枝在水面上晃。"
+      ],
+      [
+        0.48,
+        "山壁隐在薄雾里，林子显得更深了。"
+      ],
+      [
+        0.7,
+        "树间的缝隙越来越宽，风带来了草的味道。"
+      ],
+      [
+        0.88,
+        "草甸让出了远山的轮廓。走到这里，就想多看一会儿。"
+      ]
+    ],
+    "events": [
+      {
+        "id": "valley-sound",
+        "at": 0.14,
+        "kicker": "路上遇见 · 木栈道",
+        "title": "这里的脚步声，听起来不一样。",
+        "copy": "木板轻轻回应鞋底。边上的溪水，把声音接了过去。",
+        "weather": "fog",
+        "choices": [
+          {
+            "id": "soft",
+            "label": "放轻脚步，听水从哪里来",
+            "note": "按自己的节奏走一会儿",
+            "pace": 0.9,
+            "energy": 6,
+            "warmth": 0,
+            "memory": "在长坪沟的木栈道上，我分出了脚步和溪水的声音。",
+            "echo": "你把脚步放轻，水声变得更清楚了。"
+          },
+          {
+            "id": "steady",
+            "label": "保持节奏，继续穿过树林",
+            "note": "按自己的节奏走一会儿",
+            "pace": 1.08,
+            "energy": -4,
+            "warmth": 0,
+            "memory": "木板的轻响陪我走过了长坪沟的树林。",
+            "echo": "一步一步，林子慢慢向后退去。"
+          }
+        ]
+      },
+      {
+        "id": "valley-open",
+        "at": 0.61,
+        "kicker": "路上遇见 · 草甸",
+        "title": "前面，树林开始让开了。",
+        "copy": "树冠之间出现一片更亮的天空。溪流沿着草甸向前弯去。",
+        "weather": "clear",
+        "choices": [
+          {
+            "id": "pause",
+            "label": "在林缘歇一会儿",
+            "note": "按自己的节奏走一会儿",
+            "pace": 0.88,
+            "energy": 10,
+            "warmth": 2,
+            "memory": "长坪沟的树林让开时，我在林缘歇了一小会儿。",
+            "echo": "坐过一会儿，再站起来，远山显得更清楚了。"
+          },
+          {
+            "id": "meadow",
+            "label": "走到开阔处看看",
+            "note": "按自己的节奏走一会儿",
+            "pace": 1.12,
+            "energy": -6,
+            "warmth": 0,
+            "memory": "从树林走进草甸，长坪沟一下子变宽了。",
+            "echo": "风从开阔处吹来，你向草甸走去。"
+          }
+        ]
+      }
+    ]
+  },
+  "mogan": {
+    "duration": 105,
+    "opening": "雨刚停过。沿着莫干岭古道，走进一片竹林。",
+    "thoughts": [
+      [
+        0,
+        "竹叶上还有雨，石阶是深深的灰色。"
+      ],
+      [
+        0.08,
+        "一滴水落下来，正好敲在背包上。"
+      ],
+      [
+        0.28,
+        "竹竿把远处的景物切成细细的绿色。"
+      ],
+      [
+        0.46,
+        "旧石阶拐了个弯，苔藓住在石缝里。"
+      ],
+      [
+        0.69,
+        "竹叶沙沙响着，山泉在不远处回应。"
+      ],
+      [
+        0.9,
+        "这一小段古道走完了，脚步也安静下来。"
+      ]
+    ],
+    "events": [
+      {
+        "id": "bamboo-rain",
+        "at": 0.14,
+        "kicker": "路上遇见 · 竹间细雨",
+        "title": "几滴细雨，又落进竹林。",
+        "copy": "竹叶把雨分成许多细小的声音，石阶的颜色慢慢变深。",
+        "weather": "rain",
+        "choices": [
+          {
+            "id": "shelter",
+            "label": "在路旁缓一缓，整理雨衣",
+            "note": "按自己的节奏走一会儿",
+            "pace": 0.88,
+            "energy": 8,
+            "warmth": 5,
+            "memory": "在莫干山的竹林里，听了一阵落在叶尖的细雨。",
+            "echo": "雨衣整理好了。竹叶上的雨仍在滴答。"
+          },
+          {
+            "id": "slowstep",
+            "label": "放慢脚步，沿石阶走",
+            "note": "按自己的节奏走一会儿",
+            "pace": 0.95,
+            "energy": 2,
+            "warmth": 2,
+            "memory": "我放慢了脚步，走过莫干山一段湿湿的石阶。",
+            "echo": "脚步放轻，雨声反而清楚了。"
+          }
+        ]
+      },
+      {
+        "id": "bamboo-clear",
+        "at": 0.62,
+        "kicker": "路上遇见 · 竹叶声",
+        "title": "雨停了，竹林还在响。",
+        "copy": "叶尖的水滴接着落下。刚才是雨声，现在是竹林自己的声音。",
+        "weather": "clear",
+        "choices": [
+          {
+            "id": "stay",
+            "label": "停一停，等一滴水落下",
+            "note": "按自己的节奏走一会儿",
+            "pace": 0.85,
+            "energy": 8,
+            "warmth": 0,
+            "memory": "雨停之后，我在莫干山等一滴水从竹叶尖落下。",
+            "echo": "滴答。一片竹叶轻轻弹回去。"
+          },
+          {
+            "id": "ahead",
+            "label": "继续走，去听听山泉",
+            "note": "按自己的节奏走一会儿",
+            "pace": 1.08,
+            "energy": -4,
+            "warmth": 0,
+            "memory": "沿着莫干岭古道，把竹叶声走成了山泉声。",
+            "echo": "石阶慢慢下降，你听见了小溪。"
+          }
+        ]
+      }
+    ]
+  }
+});
  function routeOf(s){return G.getRoute(typeof s==='string'?s:s.routeId);}
  function storyOf(s){return STORIES[routeOf(s).id];}
  function stops(s){return [...storyOf(s).events.map(e=>({...e,kind:'choice'})),...routeOf(s).checkpoints.map(cp=>({id:cp.id,at:cp.fraction,kind:'photo',checkpoint:cp}))].sort((a,b)=>a.at-b.at);}
@@ -26,7 +304,7 @@
  function choose(s,id){if(s.status!=='encounter'||s.pending?.kind!=='choice')return s;const choice=s.pending.choices.find(c=>c.id===id);if(!choice)return s;const resolved=[...s.resolved,s.pending.id];return {...s,status:choice.end||'walking',pending:null,resolved,energy:clamp(s.energy+choice.energy),warmth:clamp(s.warmth+choice.warmth),pace:choice.pace||s.pace,weatherOverride:choice.weatherAfter||s.weatherOverride,memories:[...s.memories,choice.memory],echo:choice.echo};}
  function continuePhoto(s){if(s.status!=='encounter'||s.pending?.kind!=='photo')return s;return {...s,status:s.progress>=1?'finished':'walking',resolved:[...s.resolved,s.pending.id],pending:null,echo:'把风景收进行囊，继续走自己的路。'};}
  function thought(s){if(s.pending)return s.echo;let text=storyOf(s).thoughts[0][1];for(const [at,value]of storyOf(s).thoughts){if(at>s.progress)break;text=value;}return text;}
- function weather(s){if(s.weatherOverride)return s.weatherOverride;if(s.weather&&s.pending?.kind==='choice')return s.weather;if(s.routeId==='aotai')return s.progress>.88?'clear':s.progress>.42&&s.progress<.6?'blizzard':'snow';if(s.routeId==='tiger')return s.progress>.58&&s.progress<.75?'rain':'clear';return s.progress>.58&&s.progress<.68?'fog':s.progress>.14&&s.progress<.3?'wind':'clear';}
+ function weather(s){if(s.weatherOverride)return s.weatherOverride;if(s.weather&&s.pending?.kind==='choice')return s.weather;if(s.routeId==='maclehose')return s.progress<.3?'wind':'clear';if(s.routeId==='changping')return s.progress<.32?'fog':'clear';if(s.routeId==='mogan')return s.progress>.14&&s.progress<.43?'rain':s.progress<.14?'fog':'clear';if(s.routeId==='aotai')return s.progress>.88?'clear':s.progress>.42&&s.progress<.6?'blizzard':'snow';if(s.routeId==='tiger')return s.progress>.58&&s.progress<.75?'rain':'clear';return s.progress>.58&&s.progress<.68?'fog':s.progress>.14&&s.progress<.3?'wind':'clear';}
  function feeling(s){if(s.warmth<35)return '寒意明显，想先歇一歇';if(s.energy<35)return '脚步有些沉，想慢一点';if(s.pace<1)return '步伐舒缓，心里很安静';return '脚步轻快，风景在前方';}
  function ending(s){if(s.status==='retreated')return {title:'把平安，带回今天。',copy:'这次没有走完整条路线，但你留意到了自己的状态，也做出了结束行程的选择。'};if(s.pace<1)return {title:'山径很长，你走出了自己的节奏。',copy:'你没有急着把每一段路走完。那些停下来听风、看云的时刻，也留在了今天的旅程里。'};return {title:'回头看，已经走过这么多弯。',copy:'一路的脚步与选择，把地图变成了一段记忆。下次，也可以试着走得慢一些。'};}
  return {STORIES,routeOf,storyOf,stops,create,start,pause,resume,tick,choose,continuePhoto,thought,weather,feeling,ending};

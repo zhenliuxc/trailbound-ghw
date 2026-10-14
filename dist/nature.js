@@ -1,6 +1,20 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailNature=api;}(typeof globalThis!=='undefined'?globalThis:this,function makeNature(){
  'use strict';
  const SOURCES=Object.freeze({
+
+  "maclehose": {
+    "name": "香港渔农自然护理署 · 麦理浩径第二段",
+    "url": "https://www.hiking.gov.hk/trail/info/id/d0pFSWc1N1dWdkh3aStSajBvUHlmUT09"
+  },
+  "changping": {
+    "name": "四姑娘山景区 · 长坪沟",
+    "url": "https://www.sgns.cn/understand/cpg"
+  },
+  "mogan": {
+    "name": "国家体育总局 · 莫干山山径与竹林",
+    "url": "https://www.sport.gov.cn/n20001280/n20001265/n20067706/c29452719/content.html"
+  }
+,
   wugong:{name:'文化和旅游部 · 武功山草甸与云海',url:'https://www.mct.gov.cn/whzx/qgwhxxlb/jx/202401/t20240102_950613.htm'},
   gorge:{name:'迪庆州政府 · 虎跳峡山地景观',url:'https://www.diqing.gov.cn/zfxxgk_dqzzf/fdzdgknr/zdmslyxx/jyxxgk/ggty/202510/20251010_232970.html'},
   village:{name:'迪庆州政府 · 山村与高路',url:'https://www.diqing.gov.cn/zfxxgk_dqzzf/zhengcewenjian/zdgkwj/dizhengbanfa/202408/20240802_217696.html'},
@@ -94,6 +108,145 @@
     "place": "太白山区域 · 开阔石海"
   }
 };
+ Object.assign(CHECKPOINTS,{
+  "maclehose-saiwan": {
+    "route": "maclehose",
+    "title": "西湾沙滩，看近处也看远处",
+    "look": "香港西贡西湾的沙滩、海浪和绿色岬角，留意前景和远景的层次。",
+    "fact": "麦理浩径第二段在西贡的山脊、沙滩和村落之间转换。西湾、咸田湾与赤径，呈现开阔海湾到安静海岸的不同风景。",
+    "source": "maclehose"
+  },
+  "maclehose-hamtin": {
+    "route": "maclehose",
+    "title": "咸田海湾，看近处也看远处",
+    "look": "香港西贡咸田湾的沙滩与海湾，留意前景和远景的层次。",
+    "fact": "麦理浩径第二段在西贡的山脊、沙滩和村落之间转换。西湾、咸田湾与赤径，呈现开阔海湾到安静海岸的不同风景。",
+    "source": "maclehose"
+  },
+  "maclehose-chekkeng": {
+    "route": "maclehose",
+    "title": "赤径村落，看近处也看远处",
+    "look": "香港赤径村附近的小渡头与平静海湾，留意前景和远景的层次。",
+    "fact": "麦理浩径第二段在西贡的山脊、沙滩和村落之间转换。西湾、咸田湾与赤径，呈现开阔海湾到安静海岸的不同风景。",
+    "source": "maclehose"
+  },
+  "changping-forest": {
+    "route": "changping",
+    "title": "苔木森林，看近处也看远处",
+    "look": "长坪沟溪边的苔木与针叶林，留意前景和远景的层次。",
+    "fact": "长坪沟有针叶林、苔藓、溪流与开阔草甸。树林尽头的草地与周围山峰，让溪谷从幽深变得开阔。",
+    "source": "changping"
+  },
+  "changping-valley": {
+    "route": "changping",
+    "title": "溪谷云雾，看近处也看远处",
+    "look": "长坪沟林间溪谷与山间云雾，留意前景和远景的层次。",
+    "fact": "长坪沟有针叶林、苔藓、溪流与开阔草甸。树林尽头的草地与周围山峰，让溪谷从幽深变得开阔。",
+    "source": "changping"
+  },
+  "changping-meadow": {
+    "route": "changping",
+    "title": "草甸远眺，看近处也看远处",
+    "look": "长坪沟开阔的花草地与山壁，留意前景和远景的层次。",
+    "fact": "长坪沟有针叶林、苔藓、溪流与开阔草甸。树林尽头的草地与周围山峰，让溪谷从幽深变得开阔。",
+    "source": "changping"
+  },
+  "mogan-bamboo": {
+    "route": "mogan",
+    "title": "竹林深处，看近处也看远处",
+    "look": "莫干山云雾中的竹林，留意前景和远景的层次。",
+    "fact": "竹林与茶园是莫干山山径周围的代表风景。看竹叶、石阶和山泉，也能把一段山路记成许多很小的瞬间。",
+    "source": "mogan"
+  },
+  "mogan-path": {
+    "route": "mogan",
+    "title": "山间步道，看近处也看远处",
+    "look": "莫干山树林中的木制山间步道，留意前景和远景的层次。",
+    "fact": "竹林与茶园是莫干山山径周围的代表风景。看竹叶、石阶和山泉，也能把一段山路记成许多很小的瞬间。",
+    "source": "mogan"
+  },
+  "mogan-stream": {
+    "route": "mogan",
+    "title": "山泉小溪，看近处也看远处",
+    "look": "莫干山石间流淌的溪水，留意前景和远景的层次。",
+    "fact": "竹林与茶园是莫干山山径周围的代表风景。看竹叶、石阶和山泉，也能把一段山路记成许多很小的瞬间。",
+    "source": "mogan"
+  }
+});
+ Object.assign(OBSERVATIONS,{
+  "coast-sand": {
+    "route": "maclehose",
+    "title": "潮水画下的一条线",
+    "look": "浪退下去，沙滩留下了一条细细的弧线。",
+    "fact": "麦理浩径第二段在西贡的山脊、沙滩和村落之间转换。西湾、咸田湾与赤径，呈现开阔海湾到安静海岸的不同风景。",
+    "source": "maclehose",
+    "place": "麦理浩径 · 西湾沙滩"
+  },
+  "coast-shell": {
+    "route": "maclehose",
+    "title": "一枚留在沙上的贝壳",
+    "look": "它还留在原地，等下一道浪。",
+    "fact": "麦理浩径第二段在西贡的山脊、沙滩和村落之间转换。西湾、咸田湾与赤径，呈现开阔海湾到安静海岸的不同风景。",
+    "source": "maclehose",
+    "place": "麦理浩径 · 咸田海湾"
+  },
+  "coast-pier": {
+    "route": "maclehose",
+    "title": "渡头下的倒影",
+    "look": "小渡头和远山，在水里又出现了一次。",
+    "fact": "麦理浩径第二段在西贡的山脊、沙滩和村落之间转换。西湾、咸田湾与赤径，呈现开阔海湾到安静海岸的不同风景。",
+    "source": "maclehose",
+    "place": "麦理浩径 · 赤径海湾"
+  },
+  "valley-moss": {
+    "route": "changping",
+    "title": "老树枝上的绒绒绿",
+    "look": "苔藓沿着老树枝，铺出一小段绿色。",
+    "fact": "长坪沟有针叶林、苔藓、溪流与开阔草甸。树林尽头的草地与周围山峰，让溪谷从幽深变得开阔。",
+    "source": "changping",
+    "place": "长坪沟 · 林间栈道"
+  },
+  "valley-bridge": {
+    "route": "changping",
+    "title": "跨过水声的一小段木板",
+    "look": "水从木板下面经过，声音没有停。",
+    "fact": "长坪沟有针叶林、苔藓、溪流与开阔草甸。树林尽头的草地与周围山峰，让溪谷从幽深变得开阔。",
+    "source": "changping",
+    "place": "长坪沟 · 溪边木道"
+  },
+  "valley-reflection": {
+    "route": "changping",
+    "title": "水里还有一座远山",
+    "look": "溪水转弯处，远山的轮廓倒了过来。",
+    "fact": "长坪沟有针叶林、苔藓、溪流与开阔草甸。树林尽头的草地与周围山峰，让溪谷从幽深变得开阔。",
+    "source": "changping",
+    "place": "长坪沟 · 木骡子附近"
+  },
+  "bamboo-drop": {
+    "route": "mogan",
+    "title": "竹叶尖上的一滴雨",
+    "look": "叶尖弯下来，好像正托住一点重量。",
+    "fact": "竹林与茶园是莫干山山径周围的代表风景。看竹叶、石阶和山泉，也能把一段山路记成许多很小的瞬间。",
+    "source": "mogan",
+    "place": "莫干山 · 莫干岭竹林"
+  },
+  "bamboo-step": {
+    "route": "mogan",
+    "title": "石阶拐弯的地方",
+    "look": "石缝里有苔藓，转角还藏着下一段路。",
+    "fact": "竹林与茶园是莫干山山径周围的代表风景。看竹叶、石阶和山泉，也能把一段山路记成许多很小的瞬间。",
+    "source": "mogan",
+    "place": "莫干山 · 古道石阶"
+  },
+  "bamboo-leaf": {
+    "route": "mogan",
+    "title": "一片竹叶落在石上",
+    "look": "叶子很轻，溪水从旁边过去。",
+    "fact": "竹林与茶园是莫干山山径周围的代表风景。看竹叶、石阶和山泉，也能把一段山路记成许多很小的瞬间。",
+    "source": "mogan",
+    "place": "莫干山 · 大坑侧溪边"
+  }
+});
  for(const set of [SOURCES,CHECKPOINTS,OBSERVATIONS]){for(const value of Object.values(set))Object.freeze(value);Object.freeze(set);}
  const checkpoint=id=>CHECKPOINTS[id]||null,observation=id=>OBSERVATIONS[id]||null,source=id=>SOURCES[id]||null;
  function moment(routeId,progress=0){const entries=Object.values(CHECKPOINTS).filter(e=>e.route===routeId);if(!entries.length)return null;const p=Number.isFinite(progress)?Math.max(0,Math.min(1,progress)):0;return entries[Math.min(entries.length-1,Math.floor(p*entries.length))];}

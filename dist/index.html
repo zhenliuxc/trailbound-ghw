@@ -6,11 +6,13 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
 <link rel="preload" as="image" href="photos/wugong-meadow.webp" fetchpriority="high">
 <link rel="preload" as="image" href="badges/moments-v1.webp" fetchpriority="low">
-<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="nature.js"></script><script defer src="discoveries.js"></script><script defer src="landscape-data.js"></script><script defer src="terrain.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="audio.js"></script><script defer src="checkpoints.js"></script><script defer src="app.js"></script>
+<link rel="preload" as="image" href="badges/moments-expansion-v1.webp" fetchpriority="low">
+<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="geography-extra.js"></script>
+<script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="nature.js"></script><script defer src="discoveries.js"></script><script defer src="landscape-data.js"></script><script defer src="terrain.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="life.js"></script><script defer src="pixi-scene.js"></script><script defer src="audio.js"></script><script defer src="checkpoints.js"></script><script defer src="app.js"></script>
 </head><body>
 <header class="site-header"><a class="brand" href="./">◬ 山径 <small>TRAILBOUND</small></a><span>给自己一小段山野时间</span></header>
 <main>
-<section class="intro"><p class="eyebrow">A SMALL WALK / 一段虚拟徒步</p><h1>今天，<em>去山里走一走。</em></h1><p>跟着脚步，听风、看云。留意路边的小小发现，把喜欢的瞬间收进手账。</p></section>
+<section class="intro"><p class="eyebrow">A SMALL WALK / 一段虚拟徒步</p><h1>今天，<em>去山里走一走。</em></h1><p>沿着山径，慢慢走。把让你想停留的片刻，收进手帐。</p></section>
 <section class="route-picker" aria-label="选择旅程"><div id="route-cards" class="route-cards"></div></section>
 <section class="journey-stage" id="journey-stage" aria-label="虚拟徒步旅程">
 <div class="stage-heading"><div><span class="live-dot"></span><strong id="stage-location">武功山</strong><span id="journey-state">准备出发</span></div><button id="sound-toggle" type="button" aria-pressed="false">声音 · 关</button></div>
@@ -67,7 +69,7 @@
 <div class="walk-bar"><div><p id="thought" class="thought" role="status" aria-live="polite"></p><span id="feeling" class="feeling"></span></div><button id="walk-toggle" type="button" disabled>停下来看看</button></div>
 </section>
 <section class="album"><div class="album-heading"><h2>路上，收进来的风景</h2><span id="album-count">0 / 3</span></div><ol id="checkpoint-list" class="checkpoint-list"></ol></section>
-<section class="field-journal" aria-label="旅行瞬间手帐"><div class="album-heading"><h2>路上的小小瞬间</h2><span id="journal-count">0个瞬间</span></div><p id="discovery-status" role="status" aria-live="polite">云从山脊擦过，光落进江谷，也许会遇见一只小动物。喜欢哪一刻，就把它写进手帐。</p><aside id="learning-note" class="nature-note learning-note" hidden><p class="eyebrow">刚刚记下 / 一个沿途瞬间</p><strong id="learning-note-title"></strong><p id="learning-note-look" class="nature-look"></p><p id="learning-note-fact" class="nature-fact"></p><a id="learning-note-source" class="nature-source" hidden></a></aside><details><summary>翻开旅行手帐 <span id="trip-count">本次记下0个瞬间</span></summary><ul id="journal-list" class="journal-list"></ul><article id="journal-page" class="journal-page" hidden></article><p id="journal-storage" class="journal-note">手帐保存在这个浏览器。换一条路线、再走一次，新的瞬间会接着写下去。</p></details></section>
+<section class="field-journal" aria-label="旅行瞬间手帐"><div class="album-heading"><h2>路上的小小瞬间</h2><span id="journal-count">0个瞬间</span></div><p id="discovery-status" role="status" aria-live="polite">一段水声、一片落叶，或旧石阶的一个转弯。任何让你想停留的片刻，都可以记在手帐里。</p><aside id="learning-note" class="nature-note learning-note" hidden><p class="eyebrow">刚刚记下 / 一个沿途瞬间</p><strong id="learning-note-title"></strong><p id="learning-note-look" class="nature-look"></p><p id="learning-note-fact" class="nature-fact"></p><a id="learning-note-source" class="nature-source" hidden></a></aside><details><summary>翻开旅行手帐 <span id="trip-count">本次记下0个瞬间</span></summary><ul id="journal-list" class="journal-list"></ul><article id="journal-page" class="journal-page" hidden></article><p id="journal-storage" class="journal-note">手帐保存在这个浏览器。换一条路线、再走一次，新的瞬间会接着写下去。</p></details></section>
 <details class="route-details"><summary>关于这段路线与照片</summary><strong id="route-title"></strong><p id="route-context"></p><p id="route-notice"></p><div id="route-sources"></div></details>
 <footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 山野手帐</span></footer>
 </main><noscript>请启用JavaScript开始旅程。</noscript>
