@@ -5,6 +5,7 @@
   if(theme==='gorge'){for(let i=0;i<7;i++)near(i*2,'leaf');const water=context.water||[];for(const [i,p]of water.entries())actors.push({kind:'water',x:p.x,y:p.y,phase:i*.7,scale:.65});}
   if(theme==='coast'){for(let i=0;i<8;i++)near(i,'water');for(let i=0;i<3;i++)near(i*4,'grass');}
   if(theme==='forest'){for(let i=0;i<8;i++)near(i,'leaf');for(let i=0;i<3;i++)near(i*4,'butterfly');}
+  if(theme==='tea'){for(let i=0;i<8;i++)near(i,'leaf');const water=context.water||[];for(const [i,p]of water.entries())actors.push({kind:'water',x:p.x,y:p.y,phase:i*.7,scale:.55});}
   if(theme==='bamboo')for(let i=0;i<13;i++)near(i,'leaf');
   if(theme==='snow')for(let i=0;i<8;i++)near(i,'spindrift');
   for(let i=0;i<2;i++)actors.push({kind:'bird',x:150+i*350,y:130+i*140,phase:i*2.4,scale:.52+i*.08});

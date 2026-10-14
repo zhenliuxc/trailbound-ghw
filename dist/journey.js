@@ -293,6 +293,98 @@
     ]
   }
 });
+ STORIES.westlake={
+  "duration": 110,
+  "opening": "从九溪的树荫出发，让水声带你走进龙井的茶山。",
+  "thoughts": [
+    [
+      0,
+      "树林把山路盖住，溪水从石头旁流过去。"
+    ],
+    [
+      0.09,
+      "水绕过一块石头，声音忽然变得清脆。"
+    ],
+    [
+      0.28,
+      "石板路弯向树林深处，鞋底留下轻轻的响声。"
+    ],
+    [
+      0.46,
+      "树影之间透出茶园，整齐的茶垄沿着坡面展开。"
+    ],
+    [
+      0.68,
+      "茶树尖的一点新绿，把你的目光留住了。"
+    ],
+    [
+      0.88,
+      "走近龙井村口，屋檐下的影子安静地铺在石路上。"
+    ]
+  ],
+  "events": [
+    {
+      "id": "westlake-water",
+      "at": 0.14,
+      "kicker": "路上遇见 · 溪声",
+      "title": "同一条溪水，换了一种声音。",
+      "copy": "水流遇到几块小石头，细细的响声从脚边传来。",
+      "weather": "clear",
+      "choices": [
+        {
+          "id": "water-listen",
+          "label": "停一停，听水从石缝经过",
+          "note": "让脚步缓一缓",
+          "pace": 0.9,
+          "energy": 8,
+          "warmth": 0,
+          "memory": "在九溪的石板路旁，我听了一阵绕过石头的水声。",
+          "echo": "溪水一直流。你带着它的声音继续走。"
+        },
+        {
+          "id": "water-walk",
+          "label": "让水声陪着脚步往前走",
+          "note": "保持自己的步伐",
+          "pace": 1.08,
+          "energy": -4,
+          "warmth": 0,
+          "memory": "让九溪的水声陪着脚步，走进了更深的树荫。",
+          "echo": "转过一个弯，水声也跟着换了方向。"
+        }
+      ]
+    },
+    {
+      "id": "westlake-teahill",
+      "at": 0.61,
+      "kicker": "路上遇见 · 茶园",
+      "title": "树林让开，茶垄出现在坡上。",
+      "copy": "一行行茶树沿着山坡铺开，石径从它们旁边经过。",
+      "weather": "clear",
+      "choices": [
+        {
+          "id": "tea-slow",
+          "label": "沿着茶园边的石径慢慢看",
+          "note": "把这一段走得悠闲些",
+          "pace": 0.86,
+          "energy": 7,
+          "warmth": 0,
+          "memory": "走出九溪树林后，我沿着龙井茶园边的石径慢慢看了一会儿。",
+          "echo": "新叶有深浅不同的绿，远处的茶村也清楚了。"
+        },
+        {
+          "id": "tea-village",
+          "label": "继续走，到村口歇一会儿",
+          "note": "跟着山径走向茶村",
+          "pace": 1.06,
+          "energy": -3,
+          "warmth": 0,
+          "memory": "循着茶园旁的路，一直走到了龙井村口。",
+          "echo": "石板路接上村里的小路，屋檐的影子越来越近。"
+        }
+      ]
+    }
+  ]
+};
  function routeOf(s){return G.getRoute(typeof s==='string'?s:s.routeId);}
  function storyOf(s){return STORIES[routeOf(s).id];}
  function stops(s){return [...storyOf(s).events.map(e=>({...e,kind:'choice'})),...routeOf(s).checkpoints.map(cp=>({id:cp.id,at:cp.fraction,kind:'photo',checkpoint:cp}))].sort((a,b)=>a.at-b.at);}
@@ -304,7 +396,7 @@
  function choose(s,id){if(s.status!=='encounter'||s.pending?.kind!=='choice')return s;const choice=s.pending.choices.find(c=>c.id===id);if(!choice)return s;const resolved=[...s.resolved,s.pending.id];return {...s,status:choice.end||'walking',pending:null,resolved,energy:clamp(s.energy+choice.energy),warmth:clamp(s.warmth+choice.warmth),pace:choice.pace||s.pace,weatherOverride:choice.weatherAfter||s.weatherOverride,memories:[...s.memories,choice.memory],echo:choice.echo};}
  function continuePhoto(s){if(s.status!=='encounter'||s.pending?.kind!=='photo')return s;return {...s,status:s.progress>=1?'finished':'walking',resolved:[...s.resolved,s.pending.id],pending:null,echo:'把风景收进行囊，继续走自己的路。'};}
  function thought(s){if(s.pending)return s.echo;let text=storyOf(s).thoughts[0][1];for(const [at,value]of storyOf(s).thoughts){if(at>s.progress)break;text=value;}return text;}
- function weather(s){if(s.weatherOverride)return s.weatherOverride;if(s.weather&&s.pending?.kind==='choice')return s.weather;if(s.routeId==='maclehose')return s.progress<.3?'wind':'clear';if(s.routeId==='changping')return s.progress<.32?'fog':'clear';if(s.routeId==='mogan')return s.progress>.14&&s.progress<.43?'rain':s.progress<.14?'fog':'clear';if(s.routeId==='aotai')return s.progress>.88?'clear':s.progress>.42&&s.progress<.6?'blizzard':'snow';if(s.routeId==='tiger')return s.progress>.58&&s.progress<.75?'rain':'clear';return s.progress>.58&&s.progress<.68?'fog':s.progress>.14&&s.progress<.3?'wind':'clear';}
+ function weather(s){if(s.weatherOverride)return s.weatherOverride;if(s.weather&&s.pending?.kind==='choice')return s.weather;if(s.routeId==='westlake')return s.progress>.25&&s.progress<.39?'fog':'clear';if(s.routeId==='maclehose')return s.progress<.3?'wind':'clear';if(s.routeId==='changping')return s.progress<.32?'fog':'clear';if(s.routeId==='mogan')return s.progress>.14&&s.progress<.43?'rain':s.progress<.14?'fog':'clear';if(s.routeId==='aotai')return s.progress>.88?'clear':s.progress>.42&&s.progress<.6?'blizzard':'snow';if(s.routeId==='tiger')return s.progress>.58&&s.progress<.75?'rain':'clear';return s.progress>.58&&s.progress<.68?'fog':s.progress>.14&&s.progress<.3?'wind':'clear';}
  function feeling(s){if(s.warmth<35)return '寒意明显，想先歇一歇';if(s.energy<35)return '脚步有些沉，想慢一点';if(s.pace<1)return '步伐舒缓，心里很安静';return '脚步轻快，风景在前方';}
  function ending(s){if(s.status==='retreated')return {title:'把平安，带回今天。',copy:'这次没有走完整条路线，但你留意到了自己的状态，也做出了结束行程的选择。'};if(s.pace<1)return {title:'山径很长，你走出了自己的节奏。',copy:'你没有急着把每一段路走完。那些停下来听风、看云的时刻，也留在了今天的旅程里。'};return {title:'回头看，已经走过这么多弯。',copy:'一路的脚步与选择，把地图变成了一段记忆。下次，也可以试着走得慢一些。'};}
  return {STORIES,routeOf,storyOf,stops,create,start,pause,resume,tick,choose,continuePhoto,thought,weather,feeling,ending};

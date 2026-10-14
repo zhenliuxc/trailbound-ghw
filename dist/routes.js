@@ -134,6 +134,50 @@
     }
   ]
 });
+ checkpoints.westlake=[
+  {
+    "id": "westlake-creek",
+    "name": "九溪溪谷",
+    "fraction": 0.25,
+    "photo": {
+      "title": "Jiuxi 20161004.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Jiuxi_20161004.jpg",
+      "author": "Tyg728",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/westlake-creek.webp",
+      "alt": "九溪十八涧的溪流、树林与游人"
+    }
+  },
+  {
+    "id": "westlake-path",
+    "name": "十八涧石径",
+    "fraction": 0.5,
+    "photo": {
+      "title": "九溪十八涧.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%B9%9D%E6%BA%AA%E5%8D%81%E5%85%AB%E6%B6%A7.jpg",
+      "author": "三猎",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/westlake-path.webp",
+      "alt": "九溪十八涧树林中的石板步道"
+    }
+  },
+  {
+    "id": "westlake-tea",
+    "name": "龙井茶村",
+    "fraction": 1,
+    "photo": {
+      "title": "Longjing tea village Hangzhou.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Longjing_tea_village_Hangzhou.jpg",
+      "author": "Niklas Dougherty",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/westlake-tea.webp",
+      "alt": "龙井村的房屋与周围茶园"
+    }
+  }
+];
  const routes=[
  {id:'wugong',geoId:'wugong',name:'武功山',subtitle:'中庵—金顶步道',region:'江西 · 草甸与云海',hazards:true,theme:'meadow',initialWarmth:100,brief:'沿卡通山径看草甸、云海与金顶远眺。每到打卡点解锁实景，雨雾中注意防护与补给。',notice:'本关是中庵至金顶附近的OSM连通步道选段，不是整个武功山穿越。地图数据不代表实时开放情况。',weather:[{turn:0,type:'clear'},{turn:4,type:'fog'},{turn:10,type:'rain'},{turn:16,type:'wind'},{turn:22,type:'clear'}]},
  {id:'tiger',geoId:'tiger',name:'虎跳峡',subtitle:'高路走向 · 实景打卡',region:'云南 · 峡谷与山径',hazards:true,theme:'gorge',initialWarmth:95,brief:'沿参考高路走向穿过卡通峡谷。解锁山径、峡谷和中途路标的实景照片，留意雨雾与体力。',notice:'由公开往返GPX切出去程。属于历史记录；官方通告限制擅自进入高路等未开发区域，游戏不表示当前可通行。',weather:[{turn:0,type:'clear'},{turn:3,type:'rain'},{turn:9,type:'fog'},{turn:15,type:'rain'},{turn:21,type:'clear'}]},
@@ -223,5 +267,31 @@
     "hazards": false
   }
 ]);
+ routes.push({
+  "id": "westlake",
+  "geoId": "westlake",
+  "name": "西湖·九溪龙井",
+  "subtitle": "九溪十八涧—龙井村",
+  "region": "杭州 · 溪谷与茶园",
+  "hazards": false,
+  "theme": "tea",
+  "initialWarmth": 100,
+  "brief": "沿九溪十八涧的石板路听溪声，慢慢走进龙井茶园。",
+  "notice": "九溪烟树附近至龙井村口的连通步道选段，末段经过村路；地图用于虚拟旅程。",
+  "weather": [
+    {
+      "turn": 0,
+      "type": "clear"
+    },
+    {
+      "turn": 5,
+      "type": "fog"
+    },
+    {
+      "turn": 13,
+      "type": "clear"
+    }
+  ]
+});
  for(const r of routes){r.geo=geo[r.geoId];r.checkpoints=Object.freeze(checkpoints[r.geoId].map(c=>Object.freeze({...c,photo:Object.freeze(c.photo)})));Object.freeze(r.weather);Object.freeze(r);}const ROUTES=Object.freeze(routes);function getRoute(id='wugong'){return ROUTES.find(r=>r.id===id)||ROUTES[0];}return {ROUTES,getRoute};
 }));

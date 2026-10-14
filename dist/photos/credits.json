@@ -160,5 +160,32 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "file": "photos/mogan-stream.webp",
     "alt": "莫干山石间流淌的溪水"
+  },
+  "westlake-creek": {
+    "title": "Jiuxi 20161004.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jiuxi_20161004.jpg",
+    "author": "Tyg728",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/westlake-creek.webp",
+    "alt": "九溪十八涧的溪流、树林与游人"
+  },
+  "westlake-path": {
+    "title": "九溪十八涧.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E4%B9%9D%E6%BA%AA%E5%8D%81%E5%85%AB%E6%B6%A7.jpg",
+    "author": "三猎",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/westlake-path.webp",
+    "alt": "九溪十八涧树林中的石板步道"
+  },
+  "westlake-tea": {
+    "title": "Longjing tea village Hangzhou.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Longjing_tea_village_Hangzhou.jpg",
+    "author": "Niklas Dougherty",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "file": "photos/westlake-tea.webp",
+    "alt": "龙井村的房屋与周围茶园"
   }
 }

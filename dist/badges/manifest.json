@@ -12,6 +12,10 @@
     {
       "file": "badges/moments-expansion-v1.webp",
       "bytes": 138268
+    },
+    {
+      "file": "badges/moments-westlake-v1.webp",
+      "bytes": 47714
     }
   ],
   "entries": [
@@ -176,6 +180,33 @@
       "row": 2,
       "bytes": 15454,
       "sha256": "9ac393b73e4aa9109badb1f76ff7228901cad9d11cb5cacfc8772a33e87e7612"
+    },
+    {
+      "id": "westlake-stones",
+      "file": "badges/westlake-stones-v1.webp",
+      "atlas": "badges/moments-westlake-v1.webp",
+      "column": 0,
+      "row": 0,
+      "bytes": 19416,
+      "sha256": "26eb77038c7d71125b8ce94bcc8ea93896ae6771710796ff26c312d749772be7"
+    },
+    {
+      "id": "westlake-tea",
+      "file": "badges/westlake-tea-v1.webp",
+      "atlas": "badges/moments-westlake-v1.webp",
+      "column": 1,
+      "row": 0,
+      "bytes": 16316,
+      "sha256": "8c15accdc50467dd8195b2be220e6209ba21384e1bb41935c46d49c655155991"
+    },
+    {
+      "id": "westlake-eaves",
+      "file": "badges/westlake-eaves-v1.webp",
+      "atlas": "badges/moments-westlake-v1.webp",
+      "column": 2,
+      "row": 0,
+      "bytes": 16380,
+      "sha256": "787bf4c1942e4ee45d15456f92a2f4de10a3fb54bd2230f00f223d9163713b80"
     }
   ]
 }

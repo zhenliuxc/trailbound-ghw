@@ -115,6 +115,41 @@
     "icon": "leaf"
   }
 ]);
+ CATALOG.push(...[
+  {
+    "id": "westlake-stones",
+    "route": "westlake",
+    "order": 0,
+    "at": 0.055,
+    "place": "西湖 · 九溪溪谷",
+    "name": "水绕过石头的一小圈",
+    "hint": "水在灰色石头旁，绕出了细细的波纹。",
+    "memory": "九溪的浅水绕过一块灰色石头，打了一个很小的转。我站在石径上，听见这几步路有自己的声音。",
+    "icon": "stones"
+  },
+  {
+    "id": "westlake-tea",
+    "route": "westlake",
+    "order": 1,
+    "at": 0.66,
+    "place": "西湖 · 龙井茶园",
+    "name": "茶树尖的一点新绿",
+    "hint": "一小片新叶，比旁边的叶子亮一些。",
+    "memory": "走到龙井茶园边，茶树尖的一小片新叶，比整片茶山更先留住了我的目光。它正在慢慢展开。",
+    "icon": "tea"
+  },
+  {
+    "id": "westlake-eaves",
+    "route": "westlake",
+    "order": 2,
+    "at": 0.895,
+    "place": "西湖 · 龙井村口",
+    "name": "屋檐下的一小段安静",
+    "hint": "瓦片的影子，轻轻铺在村里的石路上。",
+    "memory": "龙井村口，一段灰瓦屋檐把影子铺在石路上。墙边有一张小竹凳，我忽然很想在这里坐一会儿。",
+    "icon": "eaves"
+  }
+]);
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}

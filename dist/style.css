@@ -97,3 +97,6 @@
 .theme-coast{background:#f0f7f1}.theme-forest{background:#edf2e9}.theme-bamboo{background:#f0f4e4}
 .route-card strong{font-size:19px;line-height:1.35;padding-right:18px}
 @media(max-width:680px){.route-card{flex-basis:166px}.route-card strong{font-size:17px;padding-right:5px}}
+
+.theme-tea{background:#eef4df}.route-cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(min-width:681px) and (max-width:900px){.route-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}

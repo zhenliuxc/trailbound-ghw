@@ -266,6 +266,92 @@
     "space": 0.2
   }
 });
+ Object.assign(PROFILES,{
+  "westlake-creek": {
+    "route": "westlake",
+    "title": "石头旁的细水声",
+    "instrument": "wood",
+    "tempo": 72,
+    "melody": [
+      65,
+      72,
+      77,
+      74,
+      72,
+      69,
+      67,
+      65
+    ],
+    "chord": [
+      41,
+      48,
+      57
+    ],
+    "ambience": {
+      "kind": "stream",
+      "cutoff": 1250,
+      "gain": 0.031
+    },
+    "effect": "drops",
+    "space": 0.18
+  },
+  "westlake-path": {
+    "route": "westlake",
+    "title": "石径转入树荫",
+    "instrument": "pluck",
+    "tempo": 80,
+    "melody": [
+      69,
+      74,
+      78,
+      81,
+      78,
+      76,
+      73,
+      69
+    ],
+    "chord": [
+      45,
+      52,
+      61
+    ],
+    "ambience": {
+      "kind": "forest",
+      "cutoff": 760,
+      "gain": 0.021
+    },
+    "effect": "stone",
+    "space": 0.18
+  },
+  "westlake-tea": {
+    "route": "westlake",
+    "title": "茶村慢下来的午后",
+    "instrument": "air",
+    "tempo": 60,
+    "melody": [
+      72,
+      77,
+      81,
+      84,
+      79,
+      77,
+      74,
+      72
+    ],
+    "chord": [
+      48,
+      55,
+      64
+    ],
+    "ambience": {
+      "kind": "leaves",
+      "cutoff": 640,
+      "gain": 0.02
+    },
+    "effect": "breeze",
+    "space": 0.18
+  }
+});
  for(const p of Object.values(PROFILES)){Object.freeze(p.melody);Object.freeze(p.chord);Object.freeze(p.ambience);Object.freeze(p);}Object.freeze(PROFILES);
  const hz=midi=>440*Math.pow(2,(midi-69)/12);
  function profile(id){return PROFILES[id]||null;}
@@ -281,7 +367,7 @@
   return events.sort((a,b)=>a.at-b.at);
  }
  function noise(length,seed=19){const out=new Float32Array(length);let brown=0;for(let i=0;i<length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;brown=(brown+(seed/4294967296*2-1)*.10)/1.035;out[i]=brown;}return out;}
- function selection({routeId,checkpointId=null,weather='clear',mode='walk'}){if(mode==='silent')return {key:`silent:${routeId}`,silent:true};const p=mode==='photo'?profile(checkpointId):null;const ambience=p?.ambience||({maclehose:{kind:'surf',cutoff:780,gain:.034},changping:{kind:'stream',cutoff:1100,gain:.028},mogan:{kind:'bamboo',cutoff:1280,gain:.022}}[routeId])||{kind:routeId==='tiger'?'river':routeId==='aotai'?'snow':'wind',cutoff:routeId==='tiger'?950:routeId==='aotai'?620:430,gain:routeId==='tiger'?.033:.025};return {key:`${mode}:${routeId}:${p?checkpointId:''}:${weather}`,profile:p,ambience:{...ambience,gain:ambience.gain*(weather==='blizzard'?1.3:1)},events:p?score(checkpointId):[]};}
+ function selection({routeId,checkpointId=null,weather='clear',mode='walk'}){if(mode==='silent')return {key:`silent:${routeId}`,silent:true};const p=mode==='photo'?profile(checkpointId):null;const ambience=p?.ambience||({westlake:{kind:'stream',cutoff:1020,gain:.027},maclehose:{kind:'surf',cutoff:780,gain:.034},changping:{kind:'stream',cutoff:1100,gain:.028},mogan:{kind:'bamboo',cutoff:1280,gain:.022}}[routeId])||{kind:routeId==='tiger'?'river':routeId==='aotai'?'snow':'wind',cutoff:routeId==='tiger'?950:routeId==='aotai'?620:430,gain:routeId==='tiger'?.033:.025};return {key:`${mode}:${routeId}:${p?checkpointId:''}:${weather}`,profile:p,ambience:{...ambience,gain:ambience.gain*(weather==='blizzard'?1.3:1)},events:p?score(checkpointId):[]};}
  function create({AudioContext=null,timers=globalThis,onError=()=>{}}={}){let context=null,master=null,reverb=null,reverbGain=null,noiseBuffer=null,enabled=false,currentKey='',group=null,groups=[],suspendTimer=null,disposed=false;
   function cancelSuspend(){if(suspendTimer!==null){timers.clearTimeout?.(suspendTimer);suspendTimer=null;}}
   function disconnect(node){try{node.disconnect();}catch(_){}}

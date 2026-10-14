@@ -1,6 +1,6 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailCheckpoints=api;}(typeof globalThis!=='undefined'?globalThis:this,function(){
  'use strict';
- const ICONS=Object.freeze({'wugong-meadow':'grass','wugong-clouds':'cloud','wugong-golden':'sunrise','tiger-trail':'trail','tiger-gorge':'gorge','tiger-halfway':'sign','aotai-aoshan':'shelter','aotai-ridge':'snowpeak','aotai-taibai':'summit',
+ const ICONS=Object.freeze({'wugong-meadow':'grass','wugong-clouds':'cloud','wugong-golden':'sunrise','tiger-trail':'trail','tiger-gorge':'gorge','tiger-halfway':'sign','aotai-aoshan':'shelter','aotai-ridge':'snowpeak','aotai-taibai':'summit','westlake-creek':'creekstone','westlake-path':'stonepath','westlake-tea':'teavillage',
   "maclehose-saiwan": "beach",
   "maclehose-hamtin": "waves",
   "maclehose-chekkeng": "pier",
@@ -20,6 +20,9 @@
   else if(name==='gorge'){path('M-15-11L-7-8L-4 1L-8 11L-15 12Z','#c6b88f');path('M15-12L7-7L4 2L8 11L15 12Z','#a4b398');path('M0-11Q-4-3 1 1T0 14','none',water,3.6);}
   else if(name==='sign'){path('M0-13V14','none','#997b53',2.6);path('M-10-9H8L13-5L8-1H-10Z','#d7e1b2');path('M10 2H-7L-12 6L-7 10H10Z','#b5cca0');}
   else if(name==='shelter'){path('M-11-2H11V12H-11Z','#e4d6b3');path('M-15-2L0-12L15-2Z','#b0c5ae');path('M-9-6L0-12L9-6L3-6L0-8L-3-6Z',snow,'none');path('M-3 12V4H3V12','#97794f');}
+  else if(name==='creekstone'){path('M-15-6Q-4-1 5-6T17-6','none',water,1.7);path('M-16 10Q-6 5 2 10T16 10','none',water,1.7);for(const [x,y]of [[-9,2],[5,-1]])shape('ellipse',{cx:x,cy:y,rx:6,ry:3.5,fill:'#bbc3a6',stroke:ink,'stroke-width':1.2});}
+  else if(name==='stonepath'){path('M-15 11L-4-13L10-13L15 11Z','#e0d8b4');path('M-9 0H11M-12 7H14','none','#9eaa83',1.5);path('M-15-8V6M-19-5L-15-11L-11-5Z',leaf);}
+  else if(name==='teavillage'){path('M-12-2H12V13H-12Z','#e4dcc0');path('M-16-2L0-12L16-2L12 1H-12Z','#8aa281');path('M-3 13V4H3V13','#a29063');path('M13 11Q15 4 18 0M15 6Q8-1 10-4Q18-4 15 6',leaf,'none');}
   else if(name==='beach'){shape('circle',{cx:8,cy:-9,r:4,fill:sun});path('M-15 4Q-5-1 2 4T15 4','none',water,2.5);path('M-15 10Q0 6 15 10','none','#c3a575',3);}
   else if(name==='waves'){for(const y of [-8,1,10])path(`M-15 ${y}Q-7 ${y-5} 0 ${y}T15 ${y}`,'none',water,2.5);}
   else if(name==='pier'){path('M-14-4H14V2H-14Z','#c7b189');path('M-10 2V13M10 2V13','none','#8c8161',2.5);path('M-16 12Q-7 8 0 12T16 12','none',water,1.5);}

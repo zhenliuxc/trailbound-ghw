@@ -40,3 +40,12 @@
 - 竹林深处：[Mount Mogan bamboo forest.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_bamboo_forest.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-bamboo.webp`。
 - 山间步道：[Mount Mogan Path3.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_Path3.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-path.webp`。
 - 山泉小溪：[Mount Mogan River.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_River.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-stream.webp`。
+
+
+## 西湖九溪龙井照片
+
+三张真实照片只做等比缩放和 WebP 编码，保留各自原许可。图片来源折叠在图片下方；没有历史说明覆盖图像。
+
+- 九溪溪谷：[Jiuxi 20161004.jpg](https://commons.wikimedia.org/wiki/File:Jiuxi_20161004.jpg)，摄影 Tyg728，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-creek.webp`。
+- 十八涧石径：[九溪十八涧.jpg](https://commons.wikimedia.org/wiki/File:%E4%B9%9D%E6%BA%AA%E5%8D%81%E5%85%AB%E6%B6%A7.jpg)，摄影 三猎，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-path.webp`。
+- 龙井茶村：[Longjing tea village Hangzhou.jpg](https://commons.wikimedia.org/wiki/File:Longjing_tea_village_Hangzhou.jpg)，摄影 Niklas Dougherty，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-tea.webp`。

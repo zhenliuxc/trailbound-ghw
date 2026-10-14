@@ -1,6 +1,10 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailNature=api;}(typeof globalThis!=='undefined'?globalThis:this,function makeNature(){
  'use strict';
  const SOURCES=Object.freeze({
+ westlake:{
+  "name": "国家体育总局 · 西湖群山与龙井九溪山径",
+  "url": "https://www.sport.gov.cn/n20001280/n20001265/n20067706/c29452719/content.html"
+},
 
   "maclehose": {
     "name": "香港渔农自然护理署 · 麦理浩径第二段",
@@ -245,6 +249,55 @@
     "fact": "竹林与茶园是莫干山山径周围的代表风景。看竹叶、石阶和山泉，也能把一段山路记成许多很小的瞬间。",
     "source": "mogan",
     "place": "莫干山 · 大坑侧溪边"
+  }
+});
+ Object.assign(CHECKPOINTS,{
+  "westlake-creek": {
+    "route": "westlake",
+    "title": "九溪溪谷，看一看路旁的细节",
+    "look": "九溪十八涧的溪流、树林与游人，留意近处石径和远处山坡。",
+    "fact": "九溪十八涧与龙井村都位于西湖周围的山地。溪流、树林、石径和茶园，把一段山路连接成杭州山野的不同风景。",
+    "source": "westlake"
+  },
+  "westlake-path": {
+    "route": "westlake",
+    "title": "十八涧石径，看一看路旁的细节",
+    "look": "九溪十八涧树林中的石板步道，留意近处石径和远处山坡。",
+    "fact": "九溪十八涧与龙井村都位于西湖周围的山地。溪流、树林、石径和茶园，把一段山路连接成杭州山野的不同风景。",
+    "source": "westlake"
+  },
+  "westlake-tea": {
+    "route": "westlake",
+    "title": "龙井茶村，看一看路旁的细节",
+    "look": "龙井村的房屋与周围茶园，留意近处石径和远处山坡。",
+    "fact": "九溪十八涧与龙井村都位于西湖周围的山地。溪流、树林、石径和茶园，把一段山路连接成杭州山野的不同风景。",
+    "source": "westlake"
+  }
+});
+ Object.assign(OBSERVATIONS,{
+  "westlake-stones": {
+    "route": "westlake",
+    "title": "水绕过石头的一小圈",
+    "look": "水在灰色石头旁，绕出了细细的波纹。",
+    "fact": "九溪十八涧与龙井村都位于西湖周围的山地。溪流、树林、石径和茶园，把一段山路连接成杭州山野的不同风景。",
+    "source": "westlake",
+    "place": "西湖 · 九溪溪谷"
+  },
+  "westlake-tea": {
+    "route": "westlake",
+    "title": "茶树尖的一点新绿",
+    "look": "一小片新叶，比旁边的叶子亮一些。",
+    "fact": "九溪十八涧与龙井村都位于西湖周围的山地。溪流、树林、石径和茶园，把一段山路连接成杭州山野的不同风景。",
+    "source": "westlake",
+    "place": "西湖 · 龙井茶园"
+  },
+  "westlake-eaves": {
+    "route": "westlake",
+    "title": "屋檐下的一小段安静",
+    "look": "瓦片的影子，轻轻铺在村里的石路上。",
+    "fact": "九溪十八涧与龙井村都位于西湖周围的山地。溪流、树林、石径和茶园，把一段山路连接成杭州山野的不同风景。",
+    "source": "westlake",
+    "place": "西湖 · 龙井村口"
   }
 });
  for(const set of [SOURCES,CHECKPOINTS,OBSERVATIONS]){for(const value of Object.values(set))Object.freeze(value);Object.freeze(set);}

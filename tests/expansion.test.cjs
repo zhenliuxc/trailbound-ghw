@@ -1,9 +1,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs');
 const G=require('../dist/game'),J=require('../dist/journey'),D=require('../dist/discoveries'),S=require('../dist/scenery'),A=require('../dist/audio'),{harness}=require('./dom-harness.cjs'),{fixture}=require('./audio-fixture.cjs');
 const added=['maclehose','changping','mogan'];
-test('six named journeys retain distinct landscapes and eighteen distinct local photographs',()=>{
- assert.deepEqual(G.ROUTES.map(r=>r.id),['wugong','tiger','aotai',...added]);assert.equal(new Set(G.ROUTES.map(r=>r.theme)).size,6);
- const photos=G.ROUTES.flatMap(r=>r.checkpoints.map(cp=>cp.photo.file));assert.equal(photos.length,18);assert.equal(new Set(photos).size,18);
+test('all named journeys retain distinct landscapes and local photographs',()=>{
+ assert.deepEqual(G.ROUTES.map(r=>r.id),['wugong','tiger','aotai',...added,'westlake']);assert.equal(new Set(G.ROUTES.map(r=>r.theme)).size,G.ROUTES.length);
+ const photos=G.ROUTES.flatMap(r=>r.checkpoints.map(cp=>cp.photo.file));assert.equal(photos.length,G.ROUTES.length*3);assert.equal(new Set(photos).size,photos.length);
  for(const id of added){const r=G.getRoute(id);assert.equal(J.storyOf(id).events.length,2);assert.equal(D.create(id,7).slots.length,3);for(const cp of r.checkpoints)assert.ok(fs.statSync(require.resolve('../dist/'+cp.photo.file)).size<110000);}
 });
 test('added geography preserves official GPX endpoints and connected OSM node sequences',()=>{
@@ -26,7 +26,7 @@ test('new route moments can all be remembered through the walking UI and persist
 });
 test('old and new journal memories keep their correct atlas cells and expand independently',()=>{
  const moments=D.CATALOG.map((entry,i)=>({key:'saved-'+entry.id,id:entry.id,route:entry.route,createdAt:1234+i,progress:entry.at,elapsed:60,weather:'clear'}));const h=harness({getItem:()=>JSON.stringify({version:2,moments}),setItem(){}});
- assert.equal(h.$('journal-list').children.length,18);for(const card of h.$('journal-list').children){const id=card.attributes['data-moment'].slice(6),index=D.CATALOG.findIndex(e=>e.id===id),button=card.querySelector('button'),art=button.querySelector('span');assert.equal(art.style.backgroundImage,`url('badges/${index<9?'moments-v1':'moments-expansion-v1'}.webp')`);assert.equal(art.style.backgroundPosition,`${index%3*50}% ${Math.floor(index%9/3)*50}%`);button.emit('click');assert.equal(h.$('journal-page').querySelector('strong').textContent,D.item(id).name);}
+ assert.equal(h.$('journal-list').children.length,D.CATALOG.length);for(const card of h.$('journal-list').children){const id=card.attributes['data-moment'].slice(6),index=D.CATALOG.findIndex(e=>e.id===id),button=card.querySelector('button'),art=button.querySelector('span');assert.equal(art.style.backgroundImage,`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v1'][Math.floor(index/9)]}.webp')`);assert.equal(art.style.backgroundPosition,`${index%3*50}% ${Math.floor(index%9/3)*50}%`);button.emit('click');assert.equal(h.$('journal-page').querySelector('strong').textContent,D.item(id).name);}
 });
 test('coastal sea closes on the water side and new scenery preserves its input coordinates',()=>{
  const r=G.getRoute('maclehose'),points=[[100,500],[200,300],[300,100]],context={features:[{kind:'coast',line:Array.from({length:12},(_,i)=>[400,550-i*40])}]},before=JSON.stringify(context),plan=S.build(r,points,context);
