@@ -4,15 +4,15 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#234436">
 <meta name="description" content="两三分钟的虚拟徒步。跟随背包小人，听风看云，遇见故事，收集真实山野照片。"><title>山径 Trailbound · 去山里走一走</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
-<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="pixi-scene.js"></script><script defer src="app.js"></script>
+<script defer src="vendor/pixi-8.22.0.min.js"></script><script defer src="geography.js"></script><script defer src="routes.js"></script><script defer src="game.js"></script><script defer src="journey.js"></script><script defer src="discoveries.js"></script><script defer src="scenery.js"></script><script defer src="motion.js"></script><script defer src="pixi-scene.js"></script><script defer src="app.js"></script>
 </head><body>
 <header class="site-header"><a class="brand" href="./">◬ 山径 <small>TRAILBOUND</small></a><span>给自己一小段山野时间</span></header>
 <main>
-<section class="intro"><p class="eyebrow">A SMALL WALK / 一段虚拟徒步</p><h1>今天，<em>去山里走一走。</em></h1><p>不用一直点按钮。跟着脚步，听风、看云，偶尔作一个自己的选择。</p></section>
+<section class="intro"><p class="eyebrow">A SMALL WALK / 一段虚拟徒步</p><h1>今天，<em>去山里走一走。</em></h1><p>跟着脚步，听风、看云。留意路边的小小发现，把喜欢的瞬间收进手账。</p></section>
 <section class="route-picker" aria-label="选择旅程"><div id="route-cards" class="route-cards"></div></section>
 <section class="journey-stage" id="journey-stage" aria-label="虚拟徒步旅程">
 <div class="stage-heading"><div><span class="live-dot"></span><strong id="stage-location">武功山</strong><span id="journey-state">准备出发</span></div><button id="sound-toggle" type="button" aria-pressed="false">声音 · 关</button></div>
-<div class="map-frame" id="map-frame"><svg id="map" viewBox="0 0 720 600" role="img" aria-label="沿真实路线走向绘制的卡通地图" xmlns="http://www.w3.org/2000/svg">
+<div class="map-frame" id="map-frame"><svg id="map" viewBox="0 0 720 600" role="group" aria-label="沿真实路线走向绘制的卡通地图" xmlns="http://www.w3.org/2000/svg">
             <defs><radialGradient id="mist-soft-edge"><stop offset="0" stop-color="black"/><stop offset=".46" stop-color="black"/><stop offset=".77" stop-color="#777"/><stop offset="1" stop-color="white"/></radialGradient><mask id="fog-hole" maskUnits="userSpaceOnUse"><rect width="720" height="600" fill="white"/><circle id="weather-window" cx="360" cy="300" r="215" fill="url(#mist-soft-edge)"/></mask><filter id="mist-local-soften" x="-15%" y="-70%" width="130%" height="240%"><feGaussianBlur stdDeviation="7"/></filter></defs>
             <rect id="map-base" width="720" height="600" fill="#dfead6"/>
             <g id="online-tiles"></g><g id="geo-background"></g><g id="geo-labels"></g>
@@ -21,7 +21,7 @@
             <path id="completed-line" fill="none" stroke="#2b694b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
             <g id="weather-fx"></g>
             <rect id="fog-cover" width="720" height="600" fill="#dce7e4" opacity="0" mask="url(#fog-hole)" pointer-events="none"/>
-            <g id="geo-markers"></g>
+            <g id="nature-discoveries"></g><g id="geo-markers"></g>
             <g id="player" pointer-events="none" aria-label="背包徒步小人">
               <ellipse id="hiker-shadow" cy="18" rx="12" ry="3.3" fill="#345640" opacity=".18"/>
               <g id="hiker-facing">
@@ -48,6 +48,7 @@
 <div id="atmosphere" class="atmosphere" aria-hidden="true"></div><div id="weather-fx-html" aria-hidden="true"></div>
 <div class="weather-badge"><span id="weather-icon">☀</span><span id="weather-name">晴朗</span><small>虚拟天气</small></div>
 <button id="map-toggle" class="map-toggle" type="button" aria-pressed="false">看完整路线 ↗</button>
+<button id="observe-button" class="observe-button" type="button" hidden><span id="observe-name"></span><small id="observe-hint"></small></button>
 <div id="overlay" class="overlay"><div class="overlay-card"><p class="eyebrow" id="overlay-kicker">THE TRAIL IS WAITING</p><h2 id="overlay-title">背包已经收拾好。</h2><p id="overlay-copy">点一次出发，沿途的风景会慢慢来到你身边。</p><button id="overlay-action" class="primary-button" type="button">出发，走一走 →</button><span class="overlay-hint" id="overlay-hint">约2–3分钟 · 自动行走 · 随时停下</span></div></div>
 <section id="story-panel" class="story-panel" hidden aria-labelledby="story-title" tabindex="-1"><p id="story-kicker" class="eyebrow"></p><h2 id="story-title"></h2><p id="story-copy"></p><div id="story-choices" class="story-choices"></div></section>
 <section id="photo-panel" class="photo-panel" hidden aria-labelledby="photo-title" tabindex="-1"><div class="photo-top"><p class="eyebrow">沿途实景 / 收进旅程</p><button id="photo-close" type="button" aria-label="收起照片">收起 ×</button></div><h2 id="photo-title"></h2><img id="checkpoint-photo" alt="" decoding="async"><p id="photo-error" role="status" hidden>照片未能显示，可从下方来源查看原图。</p><p id="photo-caption"></p><div id="photo-credit" class="photo-credit"></div><button id="photo-continue" class="primary-button" type="button">把风景记住，继续走 →</button></section>
@@ -57,7 +58,8 @@
 <div class="walk-bar"><div><p id="thought" class="thought" role="status" aria-live="polite"></p><span id="feeling" class="feeling"></span></div><button id="walk-toggle" type="button" disabled>停下来看看</button></div>
 </section>
 <section class="album"><div class="album-heading"><h2>路上，收进来的风景</h2><span id="album-count">0 / 3</span></div><ol id="checkpoint-list" class="checkpoint-list"></ol></section>
+<section class="field-journal" aria-label="山野手账"><div class="album-heading"><h2>小小发现，慢慢记住</h2><span id="journal-count">0 / 9</span></div><p id="discovery-status" role="status" aria-live="polite">留意路边的小插画，点一下就能记住。错过也没关系。</p><details><summary>翻开山野手账 <span id="trip-count">本次发现 0 / 3</span></summary><ul id="journal-list" class="journal-list"></ul><p id="journal-storage" class="journal-note">手账保存在这个浏览器，换地图或重走也会留下。</p><p class="journal-note">小景物为虚构插画观察，不代表实际地点的物种记录；真实照片在上方相册。</p></details></section>
 <details class="route-details"><summary>关于这段路线与照片</summary><strong id="route-title"></strong><p id="route-context"></p><p id="route-notice"></p><div id="route-sources"></div><p>卡通地图保留参考路线走向，地形与打卡位置为近似示意；照片注明实际地点或区域范围。故事、天气与人物状态是虚拟演练，不能用于实地导航。音效由浏览器合成，不是现场录音。</p></details>
-<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 云雾步态版 v0.7</span></footer>
+<footer><span>你走过的，不只有路。</span><span>TRAILBOUND / 山野发现版 v0.8</span></footer>
 </main><noscript>请启用JavaScript开始旅程。</noscript>
 </body></html>

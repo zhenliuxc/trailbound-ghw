@@ -1,6 +1,6 @@
 # MLH 提交准备
 
-当前状态：**v0.7.1 参考 MVP、运行说明、53 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
+当前状态：**v0.8 参考 MVP、运行说明、63 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
 
 ## 官方要求核对
 
@@ -43,7 +43,7 @@ git push origin master
 以下有明确占位符，只有完成真实 Cursor 操作后填写。不要将它视为已经发生的操作描述：
 
 ```text
-Using Cursor, I [describe the files/features Cursor actually scaffolded] for Trailbound, a browser hiking game where players collect three trail markers, manage stamina, and reach the summit.
+Using Cursor, I [describe the files/features Cursor actually scaffolded] for Trailbound, a browser hiking game where a small backpack hiker follows an illustrated route, discovers scenery, and collects real landscape photographs.
 Cursor then helped me [describe a real fix or improvement and how it was tested], and the final app supports [list the controls you actually verified].
 ```
 
@@ -52,7 +52,7 @@ Cursor then helped me [describe a real fix or improvement and how it was tested]
 ## 提交前核对
 
 - [ ] 有真实 Cursor 起始生成和至少一次实际迭代。
-- [ ] 最终版本可运行，沿轨迹前进、返回与终点可完成。
+- [ ] 最终版本可运行，自动行走、观察、照片停留、情境选择和结尾可完成。
 - [ ] 运行截图来自真实最终版本，没有把自动测试输出当截图。
 - [ ] 仓库链接真实存在且评审可访问，或使用允许的运行截图路线。
 - [ ] 两句话具体、准确，没有待填写占位符。
@@ -73,3 +73,5 @@ Cursor then helped me [describe a real fix or improvement and how it was tested]
 最新参考交付v0.7修正高清滤镜并优化云雾/步态，仍需真实Cursor实作、最终浏览器运行截图或GitHub链接和MLH表单提交。
 
 最新参考版本为 v0.7.1，修正地图背景滤镜裁剪。Cursor 实作和 MLH 提交状态不变。
+
+最新参考版本为v0.8，新增路边发现、九项浏览器手账与随机重玩。介绍可以描述这些实际功能，但仍需真实Cursor实作和复测，不能称为Cursor操作记录。
