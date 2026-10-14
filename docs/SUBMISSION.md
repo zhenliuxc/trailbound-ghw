@@ -1,6 +1,6 @@
 # MLH 提交准备
 
-当前状态：**v0.11.1 参考 MVP、运行说明、90 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
+当前状态：**v0.12 参考 MVP、运行说明、92 项自动测试和提交清单已准备；源码已通过 GitHub 插件提交至 [zhenliuxc/trailbound-ghw](https://github.com/zhenliuxc/trailbound-ghw) 的 master 分支。Cursor 实作、真实运行截图和 MLH 提交仍未完成。**
 
 ## 官方要求核对
 
@@ -87,3 +87,5 @@ Cursor then helped me [describe a real fix or improvement and how it was tested]
 当前v0.11包含九个打卡点的原创合成音乐与环境音。最终实机验证应包含首次开启声音、打卡点切曲、暂停和后台停止；音频夹具不等于听音测试。Cursor贡献继续按真实操作填写。
 
 当前v0.11.1将打卡照片改为铺满弹窗；最终截图需检查手机显示、文字和署名可读、继续按钮可用。Cursor实作与MLH提交状态不变。
+
+当前v0.12采用卡通山野背景和简洁景物打卡图标；仍需在真实浏览器验证焦点样式和运行截图，Cursor贡献按事实记录。
