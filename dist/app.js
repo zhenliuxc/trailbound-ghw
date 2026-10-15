@@ -8,10 +8,10 @@
  let micro=null,microRefs=null,microReturn=null,microPointer=null,tripMoments=[];
  let journalRoute='all',journalPageSize=window.TrailJournal.PAGE_SIZE,choiceResult=null,reward=null,rewardReturn=null,rewardScroll='';
  let storage=null;try{storage=localStorage;}catch(_){}
- const historyReset=D.resetHistory(storage);
+ const historyReset=D.historyState(storage);
  let trip=D.create(state.routeId),journal=historyReset==='unavailable'?[]:D.loadMoments(storage),natureId=null,natureNode=null,naturePoint=null,natureArt=null,lifeActors=[],footprints=[],actionStarted=-Infinity;
- if(historyReset==='cleared')$('journal-storage').textContent='旧手帐已清空，从这次旅程重新记起。相同的片刻只留一页。';
- else if(historyReset==='unavailable')$('journal-storage').textContent='浏览器未允许清理或保存手帐，旧数据尚未确认删除；本次先从空白手帐开始。';
+ $('journal-reset-notice').hidden=historyReset!=='legacy';
+ if(historyReset==='unavailable')$('journal-storage').textContent='浏览器未允许清理或保存手帐，旧数据尚未确认删除；本次先从空白手帐开始。';
  // Keep the actual decoded image nodes: private hosting may revalidate a new request even for a small WebP.
  const photoCache=new Map();
  function preparePhoto(cp,priority='low'){
@@ -75,6 +75,13 @@
   const entryIndex=D.CATALOG.findIndex(entry=>entry.id===moment.id),index=entryIndex%9,badge=html('span',null,parent,'journal-badge-art');badge.setAttribute('role','img');badge.setAttribute('aria-label',moment.title+'的山野徽章');badge.style.backgroundImage=`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v2'][Math.floor(entryIndex/9)]}.webp')`;badge.style.backgroundPosition=`${index%3*50}% ${Math.floor(index/3)*50}%`;return badge;
  }
  function setupJournalTools(){
+  $('journal-reset').addEventListener('click',()=>{
+   if(!window.confirm?.('永久删除当前浏览器中这份山径手帐的全部记录？此操作无法恢复，不影响其他浏览器或其他存档。'))return;
+   const result=D.resetHistory(storage);
+   if(result==='cleared'){journal=[];tripMoments=[];renderJournal();renderEndingJournal();$('journal-reset-notice').hidden=true;$('journal-storage').textContent='旧手帐已清空，从下一次完成互动重新记起。';}
+   else if(result==='ready'){$('journal-reset-notice').hidden=true;journal=D.loadMoments(storage);renderJournal();}
+   else $('journal-reset-status').textContent='浏览器未允许删除，旧手帐尚未清空。';
+  });
   for(const r of G.ROUTES){const option=html('option',r.name,$('journal-route'));option.setAttribute('value',r.id);}
   $('journal-route').addEventListener('change',()=>{journalRoute=G.ROUTES.some(r=>r.id===$('journal-route').value)?$('journal-route').value:'all';journalPageSize=window.TrailJournal.PAGE_SIZE;renderJournal();});
   $('journal-more').addEventListener('click',()=>{const previous=$('journal-list').children.length;journalPageSize+=window.TrailJournal.PAGE_SIZE;renderJournal(true);$('journal-list').children[previous]?.querySelector('article')?.focus();});
@@ -119,7 +126,7 @@
  }
  function animateDiscovery(){if(!natureNode)return;const icon=D.item(natureId).icon,p=D.item(natureId).edition===3?{angle:0,wing:1}:L.creature(icon,state.elapsed,motionReduced);natureNode.setAttribute('transform',`translate(${naturePoint[0].toFixed(2)} ${(naturePoint[1]+(motionReduced?0:Math.sin(state.elapsed*2.2)*1.5)).toFixed(2)})`);natureArt.setAttribute('transform',`rotate(${p.angle.toFixed(2)})`);for(const wing of natureArt.motionWings||[])wing.setAttribute('transform',`scale(${p.wing.toFixed(3)} 1)`);}
  function saveMoment(moment,entry){
-  if(!moment)return;
+  if(!moment||!D.hasTag(moment))return;
   tripMoments.push(moment);actionStarted=state.elapsed;playTransition('discovery',moment.title,null,entry.icon);
   state={...state,memories:[...state.memories,moment.memory]};
   const result=window.TrailJournal.remember(journal,moment);
@@ -170,7 +177,7 @@
   // Rejection (for example cancellation) must never leave a modal trapped on screen.
   const finish=()=>{if(reward===current&&rewardFlight===animation)closeReward();};animation.finished.then(finish,finish);
  }
- function finishMicro(record=true,resume=true){if(!micro)return;clearMicroPointer();const finished=micro,previous=microReturn,entry=D.item(finished.id);window.TrailMiniGames?.dispose(microRefs);miniPendingPoint=null;micro=null;microRefs=null;microReturn=null;microPointer=null;$('micro-panel').hidden=true;cancelLoop();let moment=null;if(record){const next=D.capture(state,trip,finished.id);if(next!==trip){trip=next;moment=D.moment(state,trip,finished.id,{weather:J.weather(state),experience:X.outcome(finished,entry)});saveMoment(moment,entry);}}if(moment&&D.hasTag(moment)){showReward(moment,previous);return;}if(resume&&previous==='walking'&&!audioBackground&&!document.hidden)state=J.resume(state);uiKey='';render();updatePosition(0);if(resume)$('walk-toggle').focus({preventScroll:true});ensureLoop();}
+ function finishMicro(record=true,resume=true){if(!micro)return;clearMicroPointer();const finished=micro,previous=microReturn,entry=D.item(finished.id);window.TrailMiniGames?.dispose(microRefs);miniPendingPoint=null;micro=null;microRefs=null;microReturn=null;microPointer=null;$('micro-panel').hidden=true;cancelLoop();let moment=null;if(record&&finished.play?.complete===true){const next=D.capture(state,trip,finished.id);if(next!==trip){trip=next;moment=D.moment(state,trip,finished.id,{weather:J.weather(state),experience:X.outcome(finished,entry)});saveMoment(moment,entry);}}if(moment&&D.hasTag(moment)){showReward(moment,previous);return;}if(resume&&previous==='walking'&&!audioBackground&&!document.hidden)state=J.resume(state);uiKey='';render();updatePosition(0);if(resume)$('walk-toggle').focus({preventScroll:true});ensureLoop();}
 
 
  function world(lon,lat){return [lon*rad*R,Math.log(Math.tan(Math.PI/4+lat*rad/2))*R];}

@@ -1,19 +1,17 @@
 (function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./route-moments.js'):root.TrailRouteMoments);if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailDiscoveries=api;}(typeof globalThis!=='undefined'?globalThis:this,function(R){
  'use strict';
  const KEY='trailbound.field-journal.v1';
- // Owner-requested one-time reset of pre-redesign notebook history.
- // Keep the revision in the same payload so deletion and its marker are atomic.
+ // Reset only after an explicit in-page confirmation, and only this notebook key.
  const HISTORY_REVISION=1;
- function resetHistory(storage){
-  try{
-   if(!storage?.getItem||!storage?.setItem)return 'unavailable';
-   const raw=storage.getItem(KEY);if(raw===null)return 'ready';
-   let data=null;try{data=JSON.parse(raw);}catch(_){}
-   if(data?.historyRevision===HISTORY_REVISION)return 'ready';
-   storage.setItem(KEY,JSON.stringify({version:2,historyRevision:HISTORY_REVISION,moments:[]}));
-   return 'cleared';
-  }catch(_){return 'unavailable';}
+ function historyState(storage){
+  try{if(!storage?.getItem||!storage?.setItem)return 'unavailable';const raw=storage.getItem(KEY);if(raw===null)return 'ready';let data=null;try{data=JSON.parse(raw);}catch(_){}return data?.historyRevision===HISTORY_REVISION?'ready':'legacy';}catch(_){return 'unavailable';}
  }
+ function resetHistory(storage){
+  if(historyState(storage)!=='legacy')return historyState(storage);
+  try{storage.setItem(KEY,JSON.stringify({version:2,historyRevision:HISTORY_REVISION,moments:[]}));return 'cleared';}catch(_){return 'unavailable';}
+ }
+ // Do not silently acknowledge a pending legacy cleanup when saving a new reward.
+ function historyRevision(storage){return historyState(storage)==='legacy'?0:HISTORY_REVISION;}
  // Travel moments belong to a landscape, rather than to its photo checkpoints.
  // Keep the original IDs and storage key so earlier notebooks can be migrated.
  const CATALOG=[
@@ -191,7 +189,7 @@
  function visible(state,trip){if(!['walking','paused'].includes(state.status))return null;return trip.slots.find(x=>state.progress>=x.at&&state.progress<=x.until&&!trip.found.includes(x.id))||null;}
  function capture(state,trip,id){const active=visible(state,trip);return active?.id===id?{...trip,found:[...trip.found,id]}:trip;}
  function load(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');return data?.version===1?clean(data.found):data?.version===2?clean(cleanMoments(data.moments).map(m=>m.id)):[];}catch(_){return [];}}
- function save(storage,found){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:1,historyRevision:HISTORY_REVISION,found:clean(found)}));return true;}catch(_){return false;}}
+ function save(storage,found){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:1,historyRevision:historyRevision(storage),found:clean(found)}));return true;}catch(_){return false;}}
  const MAX_MOMENTS=10000,WEATHER=new Set(['clear','wind','fog','rain','snow','blizzard']);
  const finite=(value,min,max)=>Number.isFinite(value)?Math.max(min,Math.min(max,value)):null;
  function moment(state,trip,id,{weather=null,now=Date.now(),experience=null}={}){
@@ -206,9 +204,9 @@
   }return out.slice(-MAX_MOMENTS);
  }
  function loadMoments(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');if(data?.version===2)return cleanMoments(data.moments);if(data?.version===1)return clean(data.found).map(id=>{const entry=LEGACY[id]||item(id);return {key:'legacy-'+id,id,route:entry.route,place:entry.place.split(' · ')[0],title:'从旧手帐带来的一页',memory:'这是以前在这段路线保存的回忆。新的旅途瞬间会记下当时的风景与心情。',icon:entry.icon,progress:null,elapsed:null,weather:null,createdAt:null,legacy:true};});return [];}catch(_){return [];}}
- function saveMoments(storage,moments){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:2,historyRevision:HISTORY_REVISION,moments:cleanMoments(moments)}));return true;}catch(_){return false;}}
+ function saveMoments(storage,moments){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:2,historyRevision:historyRevision(storage),moments:cleanMoments(moments)}));return true;}catch(_){return false;}}
  const hasTag=moment=>moment?.edition===3?moment.earned===true:!!moment;
  const tagArt=moment=>moment?.edition===3&&hasTag(moment)?(moment.artVersion===5?R.profile(moment.id)?.artV5:moment.artVersion===4?R.profile(moment.id)?.artV4:R.profile(moment.id)?.badge):null;
- return {LEGACY,hasTag,tagArt,KEY,CATALOG,item,clean,create,visible,capture,load,save,MAX_MOMENTS,moment,cleanMoments,loadMoments,saveMoments,resetHistory};
+ return {LEGACY,hasTag,tagArt,KEY,CATALOG,item,clean,create,visible,capture,load,save,MAX_MOMENTS,moment,cleanMoments,loadMoments,saveMoments,resetHistory,historyState};
 
 }));

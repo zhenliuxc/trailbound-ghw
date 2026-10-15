@@ -11,6 +11,7 @@
   return [...entries.values()];
  }
  function remember(moments,moment){
+  if(!D.hasTag(moment))return {moments,status:'unchanged'};
   const previous=unique(moments).find(entry=>identity(entry)===identity(moment));
   if(previous&&rank(moment)<=rank(previous))return {moments,status:'unchanged'};
   if(moments.length>=D.MAX_MOMENTS)return {moments,status:'full'};

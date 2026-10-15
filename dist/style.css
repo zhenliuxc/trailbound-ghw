@@ -263,3 +263,5 @@
  .journal-copy .journal-entry-title{font-size:21px;margin-bottom:10px}.journal-copy .journal-memory{font-size:15px;line-height:1.95}
  .journal-copy .journal-location{font-size:11px}.journal-notebook .journal-entry[data-kind="note"] .journal-spread{padding-block:24px}
 }
+
+.journal-reset-notice{padding:16px 20px;margin:16px 0;background:#f3eddb;border:1px solid #d9ccaa;border-radius:10px;color:#6e674f}.journal-reset-notice strong{font:18px var(--serif)}.journal-reset-notice p{font-size:12px;line-height:1.9;margin:8px 0}.journal-reset-notice button{padding:8px 15px;border:1px solid #bbac87;border-radius:8px;background:#fffaf0;color:#6e674f;font-size:12px}.journal-reset-notice #journal-reset-status:empty{display:none}
