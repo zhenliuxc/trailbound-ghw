@@ -37,6 +37,9 @@
   ['westlake-basket','村口茶香','一盏茶等人坐下来','西湖 · 龙井村口','villagetea','brew','drip','tea','轻点茶盏，陪叶子慢慢展开，在村口歇一会儿。','一盏茶在村口冒着轻轻的热气，等叶子展开时，我也不着急赶路了。']
  ];
  const PROFILES=Object.fromEntries(rows.map(([id,tag,name,place,scene,play,interaction,icon,prompt,result,condition])=>[id,{edition:EDITION,tag,name,place,scene,play,interaction,icon,prompt,result,condition:condition||'沿途片刻',hint:prompt,memory:place+'，'+name+'。',badge:'badges/'+id+'-v3.svg'}]));
+ // Explicit scenery matches only; unmatched artwork does not invent new encounters.
+ const ART_V4={"meadow-bird":"wugong-grass-letter","meadow-butterfly":"wugong-cloud-island","meadow-flower":"wugong-stone-altar","gorge-goat":"tiger-river-below","gorge-eagle":"tiger-halfway-rest","gorge-sparkle":"tiger-longdong-waterfall","snow-tracks":"aotai-rock-facets","snow-lichen":"aotai-ridgeline","coast-sand":"maclehose-bay-reveal","coast-shell":"maclehose-tide-drawing","coast-pier":"maclehose-chek-keng","valley-moss":"changping-tree-double","valley-bridge":"changping-red-stone","valley-reflection":"changping-muluozi","bamboo-drop":"mogan-bamboo-reply","bamboo-step":"mogan-old-stone-path","westlake-stones":"westlake-creek-stones","westlake-tea":"westlake-longjing-bud"};
+ for(const [id,art] of Object.entries(ART_V4))PROFILES[id].artV4="badges/"+art+"-v4.webp";
  function profile(id){return PROFILES[id]||null;}
  const routeOf=id=>({meadow:'wugong',gorge:'tiger',snow:'aotai',coast:'maclehose',valley:'changping',bamboo:'mogan',westlake:'westlake'})[id.split('-')[0]];
  function evidence(id){return SOURCES[routeOf(id)]||null;}
