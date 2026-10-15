@@ -8,7 +8,10 @@
  let micro=null,microRefs=null,microReturn=null,microPointer=null,tripMoments=[];
  let journalRoute='all',journalPageSize=window.TrailJournal.PAGE_SIZE,choiceResult=null,reward=null,rewardReturn=null,rewardScroll='';
  let storage=null;try{storage=localStorage;}catch(_){}
- let trip=D.create(state.routeId),journal=D.loadMoments(storage),natureId=null,natureNode=null,naturePoint=null,natureArt=null,lifeActors=[],footprints=[],actionStarted=-Infinity;
+ const historyReset=D.resetHistory(storage);
+ let trip=D.create(state.routeId),journal=historyReset==='unavailable'?[]:D.loadMoments(storage),natureId=null,natureNode=null,naturePoint=null,natureArt=null,lifeActors=[],footprints=[],actionStarted=-Infinity;
+ if(historyReset==='cleared')$('journal-storage').textContent='旧手帐已清空，从这次旅程重新记起。相同的片刻只留一页。';
+ else if(historyReset==='unavailable')$('journal-storage').textContent='浏览器未允许清理或保存手帐，旧数据尚未确认删除；本次先从空白手帐开始。';
  // Keep the actual decoded image nodes: private hosting may revalidate a new request even for a small WebP.
  const photoCache=new Map();
  function preparePhoto(cp,priority='low'){
