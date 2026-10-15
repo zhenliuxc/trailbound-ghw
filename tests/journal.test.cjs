@@ -14,7 +14,7 @@ test('old notebooks retain their entries without fabricated dates, weather or an
 test('journal rejects unknown or mismatched routes, bounds retained history and survives denied storage',()=>{
  const trip=D.create('tiger',42),id=trip.slots[0].id,state={status:'walking',progress:trip.slots[0].at,elapsed:8},captured=D.capture(state,trip,id),m=D.moment(state,captured,id,{weather:'clear',now:1000});
  assert.equal(D.moment(state,trip,id),null);const values=[m,{...m,key:'wrong',route:'aotai'},{...m,key:'unknown',id:'unknown'},m];assert.deepEqual(D.cleanMoments(values),[m]);
- assert.equal(D.cleanMoments(Array.from({length:150},(_,i)=>({...m,key:'trip-'+i}))).length,D.MAX_MOMENTS);
+ assert.equal(D.cleanMoments(Array.from({length:150},(_,i)=>({...m,key:'trip-'+i}))).length,Math.min(150,D.MAX_MOMENTS));
  const denied={getItem(){throw Error('denied');},setItem(){throw Error('denied');}};assert.deepEqual(D.loadMoments(denied),[]);assert.equal(D.saveMoments(denied,[m]),false);
 });
 test('photo checkpoints do not create journal entries; choosing a moment does, and replay adds another page',()=>{

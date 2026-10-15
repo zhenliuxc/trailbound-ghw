@@ -1,0 +1,44 @@
+[
+  {
+    "id": "snow-light",
+    "route": "aotai",
+    "name": "雾隙见峰",
+    "season": "秦岭风雪季",
+    "sourcePath": "/workspace/generated_images/exec-6df7236f-42b5-46a2-afdf-cd2277a7e302.png"
+  },
+  {
+    "id": "bamboo-leaf",
+    "route": "mogan",
+    "name": "林隙远山",
+    "season": "湿润绿竹林",
+    "sourcePath": "/workspace/generated_images/exec-a72e831a-208a-45b4-b839-27cba897cfe8.png"
+  },
+  {
+    "id": "westlake-eaves",
+    "route": "westlake",
+    "name": "一盏龙井",
+    "season": "春日茶园与村落",
+    "sourcePath": "/workspace/generated_images/exec-f0635d8c-e4fb-4b34-8f08-fb97b1d96d46.png"
+  },
+  {
+    "id": "westlake-floating-leaf",
+    "route": "westlake",
+    "name": "水绕石行",
+    "season": "春日浅溪",
+    "sourcePath": "/workspace/generated_images/exec-ed296a1b-3095-4533-b52d-52ea7d1e0357.png"
+  },
+  {
+    "id": "westlake-leaf-shadow",
+    "route": "westlake",
+    "name": "茶垄流光",
+    "season": "春日茶园透光",
+    "sourcePath": "/workspace/generated_images/exec-ef60820e-700f-459c-a9ec-faf7be49c2dd.png"
+  },
+  {
+    "id": "westlake-basket",
+    "route": "westlake",
+    "name": "村口茶香",
+    "season": "春日村落雨后",
+    "sourcePath": "/workspace/generated_images/exec-15270eb0-cfee-4636-af9f-8bebd0093c9c.png"
+  }
+]

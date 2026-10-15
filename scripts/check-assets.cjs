@@ -38,3 +38,9 @@ const v4=require("../dist/badges/art-v4.json"),D=require("../dist/discoveries.js
 assert.equal(v4.runtimeBound,true);assert.equal(v4.runtimeBoundCount,23);
 for(const a of v4.entries){assert.ok(a.runtimeBound&&a.runtimeMomentIds.length);const b=fs.readFileSync(path.join(dir,a.file));assert.equal(crypto.createHash("sha256").update(b).digest("hex"),a.sha256);for(const id of a.runtimeMomentIds){assert.equal(D.item(id).artV4,a.file);assert.equal(D.item(id).route,a.route);}}
 console.log("PASS: all 23 watercolor images are bound to route-correct playable moments.");
+
+const additions=require('../dist/badges/art-v5.json');
+assert.equal(additions.artVersion,5);assert.equal(additions.entries.length,6);
+for(const a of additions.entries){const e=D.item(a.id),bytes=fs.readFileSync(path.join(dir,a.file));assert.equal(e.artV5,a.file);assert.equal(e.route,a.route);assert.equal(a.runtimeBound,true);assert.equal(bytes.toString('ascii',8,12),'WEBP');assert.equal(bytes.length,a.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),a.sha256);}
+assert.ok(D.CATALOG.every(e=>e.artV5||e.artV4));
+console.log('PASS: all 29 collectible types have runtime watercolor artwork; six new revisions preserve their historical SVG files.');

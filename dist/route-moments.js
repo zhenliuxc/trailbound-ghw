@@ -154,6 +154,7 @@
 ];
  for(const entry of ENCOUNTERS)PROFILES[entry.id]=entry;
  PROFILES['tiger-bell-first'].icon='bell';
+ for(const id of ['snow-light','bamboo-leaf','westlake-eaves','westlake-floating-leaf','westlake-leaf-shadow','westlake-basket'])PROFILES[id].artV5='badges/'+id+'-v5.webp';
  function profile(id){return PROFILES[id]||null;}
  const routeOf=id=>({meadow:'wugong',gorge:'tiger',snow:'aotai',coast:'maclehose',valley:'changping',bamboo:'mogan',westlake:'westlake'})[id.split('-')[0]];
  function evidence(id){const e=PROFILES[id];return e?.bonus?{...SOURCES[e.route],fact:'这一段人物或动物相遇是游戏创作，不代表现实路线必遇。'+SOURCES[e.route].fact}:SOURCES[routeOf(id)]||null;}
