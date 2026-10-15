@@ -13,7 +13,7 @@ test('three games require participation and do not time out or award idle users'
  for(const e of entries){let s=X.create(e);s=advance(s,60);assert.equal(s.done,false);assert.equal(X.outcome(s,e).earned,false);s=X.act(s,{assist:true});s=advance(s,8);assert.equal(X.outcome(s,e).earned,false);}
 });
 test('all three games can be completed through their real controls, with a delayed reward',()=>{
- for(const e of entries){let s=X.create(e);for(let i=0;i<8000&&!s.play.complete;i++){if(i%8===0)s=pilot(s);s=X.tick(s,.025);}assert.equal(s.play.complete,true,e.id+' must be reachable');assert.equal(s.done,false);assert.equal(X.outcome(s,e).earned,true);assert.ok(s.age>10);s=advance(s,1.2);assert.equal(s.done,true);assert.equal(s.events.filter(e=>e.type==='complete').length,1);}
+ for(const e of entries){let s=X.create(e);for(let i=0;i<8000&&!s.play.complete;i++){if(i%8===0)s=pilot(s);s=X.tick(s,.025);}assert.equal(s.play.complete,true,e.id+' must be reachable');assert.equal(s.done,false);assert.equal(X.outcome(s,e).earned,true);assert.ok(s.age>10);s=advance(s,s.game==='wind'?3.3:1.2);assert.equal(s.done,true);assert.equal(s.events.filter(e=>e.type==='complete').length,1);}
 });
 test('rain misses and flying outside the wind do not progress; retries reset all state',()=>{
  for(const e of entries.slice(1)){let s=X.create(e);s=X.move(s,{x:0,y:0});s=advance(s,10);if(s.game==='wind')assert.equal(s.gates,0);else assert.equal(s.caught,0);const fresh=X.create(e);assert.equal(fresh.play.progress,0);assert.equal(fresh.acted,false);assert.equal(fresh.events.length,0);}

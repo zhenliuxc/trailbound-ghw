@@ -157,3 +157,36 @@
 .micro-panel[data-game="wind"] .micro-surface{width:min(100%,calc((100dvh - 230px)*1.73913));justify-self:center}
 @media(max-width:680px){.micro-panel[data-game="wind"] .micro-surface{width:min(100%,calc((100dvh - 220px)*1.73913))}}
 @media(max-height:500px) and (orientation:landscape){.micro-panel[data-game="wind"] .micro-surface{width:min(100%,calc((100dvh - 140px)*1.73913))}}
+/* Wind: one continuous stage, from the first breeze to a page in the notebook. */
+.micro-panel[data-game="wind"]{background:#faf6e8;border-color:#d9d0b8;padding:14px;gap:9px;border-radius:20px}
+.micro-panel[data-game="wind"] .micro-surface{isolation:isolate;aspect-ratio:800/460;box-shadow:inset 0 0 0 1px #fff9df66,0 6px 20px #3d59431a}
+.micro-panel[data-game="wind"] #micro-art{width:100%;height:100%;aspect-ratio:auto;max-height:none}
+.micro-panel[data-game="wind"] .mini-game-canvas{transition:opacity .35s ease}.mini-game-canvas[data-ready="false"]{opacity:0}
+.micro-panel[data-game="wind"] .micro-heading button,.mini-controls button{transition:transform .15s,background .2s;min-height:44px}
+.micro-panel[data-game="wind"] .micro-heading button:active,.mini-controls button:active{transform:scale(.94);background:#e8e8d4}
+.micro-panel[data-game="wind"] .micro-progress{opacity:.5}.micro-panel[data-game="wind"] .micro-result{color:#708268}
+.wind-hud-top>span:first-child{background:#fcf8e7e6;backdrop-filter:blur(6px);border-radius:5px 14px 14px 5px}
+.wind-goals{display:flex;flex-direction:column;align-items:center;gap:5px}.wind-feathers{display:flex;gap:7px}.wind-feathers i{font:normal 12px var(--serif);display:grid;place-items:center;width:27px;height:32px;border-radius:45% 45% 45% 5%;transform:rotate(-12deg);background:#fff7dfb8;color:#687b66;border:1px solid #fff9e7;box-shadow:0 3px 9px #3653461a;transition:background .3s,transform .5s cubic-bezier(.2,1.7,.4,1),box-shadow .3s}
+.wind-feathers i[data-earned="true"]{background:#ead193;color:#3e5b4b;transform:rotate(8deg) translateY(-3px);box-shadow:0 0 15px #fff0b799}#wind-count{background:#f9f5e7dd;font-size:10px;padding:3px 8px}
+.wind-chapter{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:max-content;max-width:90%;text-align:center;color:#fffbea;text-shadow:0 2px 13px #17372b,0 1px 3px #17372b;animation:wind-chapter-in .65s cubic-bezier(.2,.8,.2,1) both}
+.wind-chapter[hidden]{display:none}.wind-chapter small{display:block;font-size:10px;letter-spacing:.23em;margin-bottom:9px}.wind-chapter strong{display:block;font:normal clamp(20px,3vw,32px) var(--serif);letter-spacing:.08em}.wind-chapter>span{display:block;font-size:11px;letter-spacing:.07em;margin-top:10px}
+.micro-panel[data-phase="invite"] .wind-chapter{top:39%;animation:wind-chapter-in .8s both,wind-invite-away 1s 2.8s forwards}
+.micro-panel[data-phase="caught"] .wind-chapter{top:45%;animation:wind-catch-title .85s ease-out both}
+.micro-panel[data-phase="soar"] .wind-hud-top,.micro-panel[data-phase="memory"] .wind-hud-top{opacity:0;transition:opacity .5s}
+.micro-panel[data-phase="memory"] .wind-chapter{color:#395749;text-shadow:0 1px 9px #fff9e7;top:58%}
+.micro-panel[data-phase="memory"] .wind-chapter:before{content:"";position:absolute;inset:-22px -32px;background:#fff8e7de;border:1px solid #ead7ac;box-shadow:0 8px 35px #2d4f3420;border-radius:2px;z-index:-1}
+.micro-panel[data-phase="soar"] .wind-hud-bottom,.micro-panel[data-phase="memory"] .wind-hud-bottom{opacity:0;transition:opacity .4s}
+.wind-hud-bottom{background:#284c43df;border-radius:7px 18px 18px 18px;transition:background .35s,transform .3s;box-shadow:0 4px 18px #1c3c3029}
+.wind-hud[data-in-wind="true"] .wind-hud-bottom{transform:translateY(-3px);background:#486b4fe8}
+.reward-overlay[data-wind="true"]{background:#214737a8;transition:background .5s;animation:wind-backdrop-in .4s ease-out}
+.reward-overlay[data-wind="true"] .reward-dialog{border-radius:6px 18px 18px 6px;background:#fcf6e6;box-shadow:0 30px 100px #142f3260,6px 6px 0 #ded9c4;animation:wind-memory-arrive .7s cubic-bezier(.18,.8,.2,1)}
+.reward-overlay[data-wind="true"] .reward-art{animation:wind-art-develop 1s ease-out}.reward-overlay[data-wind="true"] .reward-spark{color:#b69a62}.reward-overlay[data-collecting="true"]{background:#21473718;backdrop-filter:none}
+.wind-keepsake{position:fixed;z-index:90;bottom:max(24px,env(safe-area-inset-bottom));left:calc(50% - 36px);width:72px;height:70px;background:#f4eedb;border:1px solid #c8bd9e;border-left:6px solid #5e7a62;border-radius:3px 9px 9px 3px;box-shadow:0 6px 20px #193b3c33;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:wind-chapter-in .3s ease-out}.wind-keepsake[hidden]{display:none}.wind-keepsake span{font-size:23px;color:#b59b63}.wind-keepsake small{font:10px var(--serif);color:#53705a}
+@keyframes wind-chapter-in{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
+@keyframes wind-invite-away{to{opacity:0;translate:0 -8px}}
+@keyframes wind-catch-title{0%{opacity:0;translate:0 8px;scale:.92}25%,65%{opacity:1;translate:0 0;scale:1}100%{opacity:0;translate:0 -12px;scale:1}}
+@keyframes wind-memory-arrive{from{opacity:0;transform:translateY(12px) scale(1.035) rotate(-1.5deg)}to{opacity:1;transform:none}}
+@keyframes wind-art-develop{from{opacity:.15;filter:sepia(.6) brightness(1.25);transform:scale(.96)}to{opacity:1;filter:none;transform:none}}
+@keyframes wind-backdrop-in{from{background:#dcdcc000}to{background:#214737a8}}
+@media(max-width:680px) and (orientation:portrait){.micro-panel[data-game="wind"]{width:min(440px,calc(100vw - 16px));padding:10px;gap:7px}.micro-panel[data-game="wind"] .micro-surface{width:min(100%,calc(100dvh - 228px));aspect-ratio:1;max-height:none}.wind-hud{padding:12px}.wind-hud-top strong{font-size:15px}.wind-hud-top small{font-size:8px}.wind-chapter strong{font-size:23px}.wind-chapter>span{font-size:10px}.wind-feathers i{width:24px;height:29px}.wind-feathers{gap:5px}.wind-hud-bottom{font-size:11px;padding:8px 12px}.micro-panel[data-game="wind"] .micro-instruction{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.wind-chapter,.micro-panel[data-phase="invite"] .wind-chapter,.micro-panel[data-phase="caught"] .wind-chapter,.reward-overlay[data-wind="true"],.reward-overlay[data-wind="true"] .reward-dialog,.reward-overlay[data-wind="true"] .reward-art,.wind-keepsake{animation:none}.wind-feathers i,.wind-hud-bottom,.micro-panel[data-game="wind"] .mini-game-canvas{transition:none}.micro-panel[data-phase="invite"] .wind-chapter{opacity:1}}

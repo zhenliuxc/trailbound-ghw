@@ -49,3 +49,7 @@ const scenes=require('../dist/scenes/manifest.json');assert.equal(scenes.entries
 for(const e of scenes.entries){const data=fs.readFileSync(path.join(dir,e.file));assert.equal(data.toString('ascii',8,12),'WEBP');assert.equal(data.length,e.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),e.sha256);assert.ok(routes.some(r=>r.id===e.route));assert.equal(e.file,'scenes/'+e.route+'-v1.webp');}
 assert.ok(!html.includes('journal-import'));
 console.log('PASS: seven illustrated scene backgrounds are packaged for their routes; removed journal import is absent.');
+
+const windLayers=require('../dist/sprites/wind-layers.json');
+for(const a of windLayers.entries){const b=fs.readFileSync(path.join(dir,a.file));assert.equal(b.toString('ascii',8,12),'WEBP');assert.equal(b.length,a.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),a.sha256);assert.ok(b.length<220000);assert.ok(fs.readFileSync(path.join(dir,'wind-scene.js'),'utf8').includes(a.file));}
+console.log('PASS: generated Wugong foreground is packaged, hash-verified and used by the scene.');
