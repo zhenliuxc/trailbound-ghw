@@ -6,7 +6,8 @@
  const artCache=window.TrailImageCache?.create(window.Image);
  let miniPendingPoint=null,miniSoundSerial=0,rewardCollecting=false,rewardFlight=null,windWasOpen=false;
  let micro=null,microRefs=null,microReturn=null,microPointer=null,tripMoments=[];
- let journalOpen=false,journalTrigger=null,journalReturn=null,journalScroll='';
+ let journalOpen=false,journalTrigger=null,journalReturn=null,journalScroll='',journalEntries=[],journalIndex=0,journalSwipe=null,journalFlip=null;
+ const journalPictures=new Map();
  let journalRoute='all',journalPageSize=window.TrailJournal.PAGE_SIZE,choiceResult=null,reward=null,rewardReturn=null,rewardScroll='';
  let storage=null;try{storage=localStorage;}catch(_){}
  let trip=D.create(state.routeId),journal=D.loadMoments(storage),natureId=null,natureNode=null,naturePoint=null,natureArt=null,lifeActors=[],footprints=[],actionStarted=-Infinity;
@@ -62,28 +63,51 @@
   else{shape('path',{d:'M0-18L5-5L15 0L5 5L0 18L-5 5L-15 0L-5-5Z',fill:'#e6c673',stroke:'#bbaf67','stroke-width':1});path('M-18 16Q-8 12 0 16Q8 20 18 16','#779f96',2);}
  }
  function momentContext(moment){const parts=[moment.place];if(moment.weather&&G.WEATHER[moment.weather])parts.push(G.WEATHER[moment.weather].name);if(Number.isFinite(moment.elapsed))parts.push(`走了${Math.floor(moment.elapsed/60)}分${Math.floor(moment.elapsed%60)}秒`);return parts.join(' · ');}
- function tagImage(parent,file,label){
+ function tagImage(parent,file,label,reading=false){
+  const key=file+'|'+label,cached=reading&&journalPictures.get(key);
+  if(cached){parent.appendChild(cached);return cached;}
   const badge=html('span',null,parent,'journal-badge-art journal-tag-art');badge.setAttribute('role','img');badge.setAttribute('aria-label',label+' · 手绘收藏标签');
   const status=html('span','画作展开中',badge,'journal-art-status'),image=html('img',null,badge,'journal-tag-image');status.setAttribute('aria-hidden','true');image.setAttribute('alt','');image.setAttribute('loading','lazy');image.setAttribute('decoding','async');image.style.opacity='0';
-  image.onload=()=>{status.hidden=true;image.style.opacity='1';};image.onerror=()=>{status.textContent='画作暂未加载';image.hidden=true;badge.setAttribute('aria-label',label+' · 画作暂未加载，文字回忆仍可阅读');};image.setAttribute('src',file);return badge;
+  if(reading){image.setAttribute('loading','eager');journalPictures.set(key,badge);}
+  const reveal=()=>{status.hidden=true;image.style.opacity='1';};
+  image.onload=()=>{if(reading&&image.decode)image.decode().then(reveal,reveal);else reveal();};image.onerror=()=>{status.textContent='画作暂未加载';image.hidden=true;badge.setAttribute('aria-label',label+' · 画作暂未加载，文字回忆仍可阅读');};image.setAttribute('src',file);return badge;
  }
- function momentBadge(parent,moment){
+ function momentBadge(parent,moment,reading=false){
   if(moment.edition===3&&!D.hasTag(moment)){const note=html('span',null,parent,'journal-memory-label');const sketch=svg('svg',{viewBox:'0 0 72 44','aria-hidden':'true'},note);svg('path',{d:'M8 34L25 12L37 28L47 18L65 34M20 34H54M26 38H47',fill:'none',stroke:'currentColor','stroke-width':1.3,'stroke-linecap':'round','stroke-linejoin':'round'},sketch);html('span','沿途记事',note);html('small','未获得标签',note);return note;}
-  const file=D.tagArt(moment);if(file)return tagImage(parent,file,moment.tag);
+  const file=D.tagArt(moment);if(file)return tagImage(parent,file,moment.tag,reading);
   const entryIndex=D.CATALOG.findIndex(entry=>entry.id===moment.id),index=entryIndex%9,badge=html('span',null,parent,'journal-badge-art');badge.setAttribute('role','img');badge.setAttribute('aria-label',moment.title+'的山野徽章');badge.style.backgroundImage=`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v2'][Math.floor(entryIndex/9)]}.webp')`;badge.style.backgroundPosition=`${index%3*50}% ${Math.floor(index/3)*50}%`;return badge;
  }
  function setupJournalTools(){
   const dialog=$('journal-detail');
   $('journal-detail-close').addEventListener('click',()=>dialog.close());
-  dialog.addEventListener('keydown',event=>event.stopPropagation());
+  $('journal-detail-prev').addEventListener('click',()=>turnJournal(-1));
+  $('journal-detail-next').addEventListener('click',()=>turnJournal(1));
+  dialog.addEventListener('keydown',event=>{
+   event.stopPropagation();
+   if(event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||event.target.isContentEditable||/^(INPUT|SELECT|TEXTAREA)$/.test(event.target.tagName))return;
+   if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();turnJournal(event.key==='ArrowLeft'?-1:1);}
+  });
+  const page=$('journal-detail-page');
+  page.addEventListener('pointerdown',event=>{
+   journalSwipe=null;
+   if(event.pointerType!=='touch'||!event.isPrimary||event.target.closest?.('button,a,summary,details'))return;
+   journalSwipe={id:event.pointerId,x:event.clientX,y:event.clientY,time:event.timeStamp,scroll:page.scrollTop};
+  });
+  page.addEventListener('pointerup',event=>{
+   const start=journalSwipe;journalSwipe=null;
+   if(!start||start.id!==event.pointerId||event.timeStamp-start.time>650||Math.abs(page.scrollTop-start.scroll)>8)return;
+   const dx=event.clientX-start.x,dy=event.clientY-start.y;
+   if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.7)turnJournal(dx<0?1:-1);
+  });
+  page.addEventListener('pointercancel',()=>{journalSwipe=null;});
   dialog.addEventListener('close',()=>{
    if(!journalOpen)return;
-   journalOpen=false;document.body.style.overflow=journalScroll;
+   journalOpen=false;document.body.style.overflow=journalScroll;journalSwipe=null;journalFlip?.cancel();journalFlip=null;
    journalTrigger?.setAttribute('aria-expanded','false');
    if(journalReturn==='walking'&&!audioBackground&&!document.hidden)state=J.resume(state);
    journalReturn=null;uiKey='';render();updatePosition(0);ensureLoop();
    if(journalTrigger?.isConnected)journalTrigger.focus({preventScroll:true});
-   journalTrigger=null;
+   journalTrigger=null;journalEntries=[];journalPictures.clear();page.replaceChildren();
   });
   for(const r of G.ROUTES){const option=html('option',r.name,$('journal-route'));option.setAttribute('value',r.id);}
   $('journal-route').addEventListener('change',()=>{journalRoute=G.ROUTES.some(r=>r.id===$('journal-route').value)?$('journal-route').value:'all';journalPageSize=window.TrailJournal.PAGE_SIZE;renderJournal();});
@@ -94,7 +118,7 @@
   $('journal-count').textContent=`${book.totalAll}个瞬间`;
   $('trip-count').textContent=`本次记下${trip.found.length}个瞬间`;
   const routeName=G.ROUTES.find(r=>r.id===journalRoute)?.name||'全部路线';
-  $('journal-filter-count').textContent=book.total?`${routeName} · ${book.total}段回忆 · 已展开${book.entries.length}段`:`${routeName} · 等待新的回忆`;
+  $('journal-filter-count').textContent=book.total?`${routeName} · ${book.total}段回忆${book.remaining?`，已展示${book.entries.length}段`:''}`:`${routeName} · 等待新的回忆`;
   $('journal-more').hidden=book.remaining===0;
   $('journal-more').textContent=`再翻${Math.min(window.TrailJournal.PAGE_SIZE,book.remaining)}段回忆 ↓`;
   const offset=append?list.children.length:0;
@@ -103,14 +127,27 @@
   for(const moment of book.entries.slice(offset)){
    const li=html('li',null,list,'journal-entry found');li.setAttribute('data-route',moment.route);li.setAttribute('data-moment',moment.key);li.setAttribute('data-kind',D.hasTag(moment)?'tag':'note');
    const button=html('button',null,li,'journal-wall-button');button.setAttribute('type','button');button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-controls','journal-detail');button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','翻看'+moment.title+' · '+moment.place);
-   momentBadge(button,moment);html('strong',moment.title,button,'journal-wall-title');html('small',moment.place.split(' · ')[0],button,'journal-wall-place');
+   momentBadge(button,moment);html('strong',moment.title,button,'journal-wall-title');html('small',moment.place.split(' · ')[0],button,'journal-wall-place');const hint=html('span','翻看回忆 ↗',button,'journal-wall-hint');hint.setAttribute('aria-hidden','true');
    button.addEventListener('click',()=>openJournalDetail(moment,button));
   }
  }
  function openJournalDetail(moment,button){
   if(journalOpen||reward)return;
-  const dialog=$('journal-detail'),page=$('journal-detail-page');page.replaceChildren();
-   if(D.hasTag(moment)){const art=html('div',null,page,'journal-illustration');momentBadge(art,moment);}
+  journalEntries=window.TrailJournal.page(journal,journalRoute,D.MAX_MOMENTS).entries;
+  journalIndex=journalEntries.findIndex(entry=>entry.route===moment.route&&entry.id===moment.id);
+  if(journalIndex<0)return;
+  renderJournalDetail();
+  $('journal-detail').showModal();journalOpen=true;journalTrigger=button;journalReturn=state.status;button.setAttribute('aria-expanded','true');
+  journalScroll=document.body.style.overflow||'';document.body.style.overflow='hidden';state=J.pause(state);
+  clearMicroPointer();if(micro)micro=X.release(micro);cancelLoop();uiKey='';render();$('journal-detail-close').focus({preventScroll:true});
+ }
+ function turnJournal(direction){
+  const next=journalIndex+direction;if(!journalOpen||next<0||next>=journalEntries.length)return;
+  journalIndex=next;renderJournalDetail(direction);
+ }
+ function renderJournalDetail(direction=0){
+  const moment=journalEntries[journalIndex],page=$('journal-detail-page');journalFlip?.cancel();journalFlip=null;page.replaceChildren();page.scrollTop=0;
+   if(D.hasTag(moment)){const art=html('div',null,page,'journal-illustration');momentBadge(art,moment,true);html('span','一幅手绘，留住这一刻',art,'journal-art-caption');}
    const copy=html('div',null,page,'journal-copy');
    html('p',moment.place,copy,'journal-location');
    const title=html('h3',moment.title,copy,'journal-entry-title');title.id='journal-detail-title';
@@ -122,9 +159,23 @@
    const weather=G.WEATHER[moment.weather];if(weather)html('span',weather.name,meta,'journal-entry-weather');
    const proof=moment.edition===3?window.TrailRouteMoments.evidence(moment.id):null,note=proof?{fact:proof.fact}:K.observation(moment.id),source=proof||(note&&K.source(note.source));
    if(note&&source){const detail=html('details',null,copy,'journal-place-note');html('summary','关于这片山野',detail);html('p',note.fact,detail);const link=html('a',source.name+' ↗',detail,'journal-source');link.setAttribute('href',source.url);link.setAttribute('target','_blank');link.setAttribute('rel','noopener noreferrer');}
-  dialog.showModal();journalOpen=true;journalTrigger=button;journalReturn=state.status;button.setAttribute('aria-expanded','true');
-  journalScroll=document.body.style.overflow||'';document.body.style.overflow='hidden';state=J.pause(state);
-  clearMicroPointer();if(micro)micro=X.release(micro);cancelLoop();uiKey='';render();$('journal-detail-close').focus({preventScroll:true});
+  $('journal-detail-route').textContent=G.ROUTES.find(route=>route.id===moment.route)?.name||moment.place;
+  $('journal-detail-position').textContent=`${journalIndex+1} / ${journalEntries.length}`;
+  $('journal-detail-announcement').textContent=`第${journalIndex+1}段，共${journalEntries.length}段：${moment.title}`;
+  const previous=journalEntries[journalIndex-1],next=journalEntries[journalIndex+1];
+  for(const [id,entry,label] of [['journal-detail-prev',previous,'上一枚'],['journal-detail-next',next,'下一枚']]){
+   const control=$(id);control.setAttribute('aria-disabled',!entry);control.setAttribute('aria-label',entry?label+'：'+entry.title:label==='上一枚'?'已是第一枚':'已是最后一枚');
+  }
+  $('journal-detail-hint').textContent=journalEntries.length===1?'这一刻，值得留住':!previous?'从这一枚，慢慢翻看':!next?'已翻到最后一枚':'左右翻看沿途回忆';
+  // Retain decoded current/adjacent pictures only; back-and-forth paging reuses nodes.
+  const keep=new Set();
+  for(const entry of [previous,moment,next].filter(Boolean)){
+   const file=D.hasTag(entry)&&D.tagArt(entry);if(!file)continue;
+   const key=file+'|'+entry.tag;keep.add(key);
+   if(!journalPictures.has(key))tagImage(html('div'),file,entry.tag,true);
+  }
+  for(const key of journalPictures.keys())if(!keep.has(key))journalPictures.delete(key);
+  if(direction&&!motionReduced&&page.animate)journalFlip=page.animate([{opacity:.35,transform:`translateX(${direction*16}px)`},{opacity:1,transform:'translateX(0)'}],{duration:220,easing:'ease-out'});
  }
  function renderEndingJournal(){const section=$('ending-journal'),list=$('ending-badges'),detail=$('ending-detail');const collected=tripMoments.filter(D.hasTag);section.hidden=!collected.length;list.replaceChildren();detail.textContent='';for(const moment of collected){const button=html('button',null,list,'ending-badge-button');button.setAttribute('type','button');button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ending-detail');button.setAttribute('aria-label','翻看'+moment.title);momentBadge(button,moment);html('small',moment.title,button);button.addEventListener('click',()=>{const open=button.getAttribute('aria-expanded')==='true';for(const b of list.children)b.setAttribute('aria-expanded','false');button.setAttribute('aria-expanded',!open);detail.textContent=open?'':moment.place+' · '+moment.memory;});}}
  function fillNature(prefix,note){
