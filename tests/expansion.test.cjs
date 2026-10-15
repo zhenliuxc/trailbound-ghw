@@ -24,9 +24,9 @@ test('new route moments can all be remembered through the walking UI and persist
  }
  assert.equal(D.loadMoments(storage).length,10);assert.equal(h.$('journal-count').textContent,'10个瞬间');assert.equal(harness(storage).$('journal-list').children.length,10);
 });
-test('compatible old memories keep their correct atlas cells and inline titles',()=>{
+test('compatible old memories keep their correct atlas cells and wall titles',()=>{
  const moments=D.CATALOG.filter(e=>!e.bonus).map((entry,i)=>({key:'saved-'+entry.id,id:entry.id,route:entry.route,createdAt:1234+i,progress:entry.at,elapsed:60,weather:'clear'}));const h=harness({getItem:()=>JSON.stringify({version:2,moments}),setItem(){}});
- h.click('journal-more');assert.equal(h.$('journal-list').children.length,D.CATALOG.filter(e=>!e.bonus).length);for(const card of h.$('journal-list').children){const id=card.attributes['data-moment'].slice(6),index=D.CATALOG.findIndex(e=>e.id===id),page=card.querySelector('article'),art=page.querySelector('span');assert.equal(art.style.backgroundImage,`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v2'][Math.floor(index/9)]}.webp')`);assert.equal(art.style.backgroundPosition,`${index%3*50}% ${Math.floor(index%9/3)*50}%`);assert.equal(page.querySelector('h3').textContent,D.LEGACY[id].name);}
+ h.click('journal-more');assert.equal(h.$('journal-list').children.length,D.CATALOG.filter(e=>!e.bonus).length);for(const card of h.$('journal-list').children){const id=card.attributes['data-moment'].slice(6),index=D.CATALOG.findIndex(e=>e.id===id),page=card.querySelector('button'),art=page.querySelector('span');assert.equal(art.style.backgroundImage,`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v2'][Math.floor(index/9)]}.webp')`);assert.equal(art.style.backgroundPosition,`${index%3*50}% ${Math.floor(index%9/3)*50}%`);assert.equal(page.querySelector('strong').textContent,D.LEGACY[id].name);}
 });
 test('coastal sea closes on the water side and new scenery preserves its input coordinates',()=>{
  const r=G.getRoute('maclehose'),points=[[100,500],[200,300],[300,100]],context={features:[{kind:'coast',line:Array.from({length:12},(_,i)=>[400,550-i*40])}]},before=JSON.stringify(context),plan=S.build(r,points,context);

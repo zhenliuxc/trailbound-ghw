@@ -9,9 +9,13 @@ class Element{
   replaceWith(el){const parent=this.parentNode,index=parent.children.indexOf(this);parent.children[index]=el;el.parentNode=parent;this.parentNode=null;}
   querySelector(selector){for(const child of this.children){if(child.tagName?.toLowerCase()===selector)return child;const found=child.querySelector?.(selector);if(found)return found;}return null;}
   addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
-  emit(type,event={}){const pending=[];for(const fn of this.listeners[type]??[]){const r=fn({target:this,preventDefault(){this.prevented=true;},...event});if(r?.then)pending.push(r);}return Promise.all(pending);}
+  emit(type,event={}){const pending=[];for(const fn of this.listeners[type]??[]){const r=fn({target:this,stopPropagation(){this.stopped=true;},preventDefault(){this.prevented=true;},...event});if(r?.then)pending.push(r);}return Promise.all(pending);}
   click(){return this.emit('click');}remove(){if(this.parentNode)this.parentNode.children=this.parentNode.children.filter(n=>n!==this);this.parentNode=null;}
   focus(){this.doc.activeElement=this;}
+  get isConnected(){let node=this;while(node){if(node===this.doc.body)return true;node=node.parentNode;}return false;}
+  // Model dialog events only: native focus trapping / rendering still need a browser.
+  showModal(){this.open=true;this.setAttribute('open','');}
+  close(){if(!this.open)return;this.open=false;this.removeAttribute('open');this.emit('close');}
   setPointerCapture(id){this.captured.add(id);}hasPointerCapture(id){return this.captured.has(id);}releasePointerCapture(id){this.captured.delete(id);}
   getBoundingClientRect(){return {left:0,top:0,...(this.doc.viewport||{width:720,height:600})};}
 }
