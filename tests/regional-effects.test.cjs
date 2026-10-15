@@ -1,0 +1,16 @@
+const test=require('node:test'),assert=require('node:assert/strict'),D=require('../dist/discoveries'),X=require('../dist/micro-moments'),{harness}=require('./dom-harness.cjs');
+function scene(entry){const h=harness(),root=h.$('micro-art'),svg=(tag,attrs,p)=>{const n=h.document.createElementNS('',tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);p?.appendChild(n);return n;};return{root,refs:X.draw(svg,root,entry)};}
+const snapshot=n=>JSON.stringify({tag:n.tagName,attrs:n.attributes,children:n.children.map(c=>JSON.parse(snapshot(c)))});
+const entries=D.CATALOG.filter(e=>e.route!=='westlake');
+test('all eighteen regional encounters have place-specific prompts, visible feedback and distinct memories',()=>{
+ const prompts=new Set(),memories=new Set();for(const entry of entries){const {root,refs}=scene(entry);let s=X.create(entry);X.paint(refs,s);const quiet=snapshot(root);s=X.act(s,{x:.7,y:.5});s={...s,age:1.1,reaction:1.1};X.paint(refs,s);assert.notEqual(snapshot(root),quiet,entry.id);assert.ok(!/NaN|Infinity|undefined/.test(snapshot(root)));prompts.add(X.instruction(entry));const m=X.outcome(s,entry);assert.ok(m.memory.startsWith(entry.memory));assert.equal(m.interaction,'tap');assert.notEqual(X.outcome({...s,gesture:'drag'},entry).memory,m.memory);assert.notEqual(X.outcome(X.create(entry),entry).memory,m.memory);memories.add(m.memory.slice(entry.memory.length));assert.ok(snapshot(root).length<110000,entry.id+' has bounded geometry');}assert.equal(prompts.size,18);assert.equal(memories.size,18);
+});
+test('route-local feedback follows a continuous drag and reduced motion freezes idle scenery deeply',()=>{
+ for(const entry of entries){const {root,refs}=scene(entry);let s=X.create(entry);X.paint(refs,s,true);const idle=snapshot(root);X.paint(refs,{...s,age:4},true);assert.equal(snapshot(root),idle,entry.id);s=X.move(s,{x:.25,y:.4});s={...s,age:1,reaction:1};X.paint(refs,s);const first=snapshot(root);s=X.move(s,{x:.8,y:.6});X.paint(refs,s);assert.notEqual(snapshot(root),first,entry.id+' responds to new coordinates');X.paint(refs,s,true);assert.ok(!/NaN|Infinity|undefined/.test(snapshot(root)));}
+});
+test('bamboo rain travels from the leaf tip to the puddle and finishes with rings',()=>{
+ const entry=D.item('bamboo-drop'),{refs}=scene(entry);let s=X.act(X.create(entry));X.paint(refs,{...s,reaction:.3});assert.equal(refs.effects.bead.getAttribute('opacity'),'0.85');X.paint(refs,{...s,reaction:.8});assert.equal(refs.effects.bead.getAttribute('opacity'),'0');assert.equal(refs.drops[0].getAttribute('opacity'),'1');assert.equal(refs.drops[0].getAttribute('cx'),'106');X.paint(refs,{...s,reaction:1.5});assert.equal(refs.rings[0].getAttribute('cx'),'106');assert.ok(Number(refs.rings[0].getAttribute('rx'))>0);
+});
+test('forest bridge carries a leaf downstream; tide advances and recedes; mountain reflection settles',()=>{
+ for(const [id,key]of [['valley-bridge','leaf'],['coast-sand','foam'],['valley-reflection','reflection']]){const {refs}=scene(D.item(id)),s=X.act(X.create(D.item(id)));X.paint(refs,{...s,reaction:.5});const a=refs.effects[key].getAttribute('transform');X.paint(refs,{...s,reaction:2});assert.notEqual(refs.effects[key].getAttribute('transform'),a,id);}
+});

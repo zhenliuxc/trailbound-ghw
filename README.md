@@ -1,5 +1,7 @@
 # 山径 Trailbound · 七条山径与旅行瞬间手帐
 
+六条路线的18个瞬间已补充专属反馈，详见 [互动说明](docs/REGIONAL_INTERACTIONS.md)。当前候选154项测试通过，尚未部署。
+
 当前候选完整接入七条绘本旅程与路边微互动：可以跟随飞鸟、划动云影、查看脚印/贝壳/苔石纹理、点水纹、触叶和看雨滴。手帐记录实际参与方式，旅程结束后可翻看这次收下的徽章。代码已保存，尚未部署；完整玩法与验证见 [FULL_GAMEPLAY.md](docs/FULL_GAMEPLAY.md)。
 
 保留六条山径，新增西湖九溪十八涧—龙井村的溪谷茶园旅程。西湖轨迹、照片、徽章与验证范围见 [WESTLAKE_ROUTE.md](docs/WESTLAKE_ROUTE.md)，前三条扩展路线见 [ROUTE_EXPANSION.md](docs/ROUTE_EXPANSION.md)。

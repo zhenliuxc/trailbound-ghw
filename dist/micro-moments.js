@@ -65,5 +65,5 @@
    refs.rings.forEach((ring,i)=>{const phase=clamp((t-.62-i*.66)/1.25);ring.setAttribute('rx',phase*43);ring.setAttribute('ry',phase*10);ring.setAttribute('opacity',s.acted&&phase>0?1-phase:0);});
   }
  }
- return {create,act,move,release,tick,outcome,draw,paint,instruction:entry=>entry.route==='westlake'?({ripple:'轻触水面，或划出一圈水纹。',leaf:'轻碰茶叶，看看光怎样透过叶脉。',drip:'轻触屋檐，听雨后的水滴慢慢落下。'})[entry.interaction]:Y.instructions[entry.interaction]};
+ return {create,act,move,release,tick,outcome,draw,paint,instruction:entry=>entry.route==='westlake'?({ripple:'轻触水面，或划出一圈水纹。',leaf:'轻碰茶叶，看看光怎样透过叶脉。',drip:'轻触屋檐，听雨后的水滴慢慢落下。'})[entry.interaction]:Y.instruction(entry)};
 }));

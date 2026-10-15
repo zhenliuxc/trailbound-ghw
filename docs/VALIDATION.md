@@ -1,5 +1,7 @@
 # 七条绘本旅程与完整小互动（最新候选，未部署）
 
+最新六路线专属效果见 [REGIONAL_INTERACTIONS.md](REGIONAL_INTERACTIONS.md)，全部154项测试通过；当前候选仍未部署。
+
 `npm run check` 与全部 150 项 Node 测试通过；完整输出见 [full-gameplay-test-output.txt](full-gameplay-test-output.txt)，玩法、静态预览与设备验证限制见 [FULL_GAMEPLAY.md](FULL_GAMEPLAY.md)。七条路线均完成主动近景、参与回忆、结束徽章与重走流程回归。真实浏览器/GPU/手机体验仍待验证。原私有站点未更新。
 
 以下是此前验证记录。
