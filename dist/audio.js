@@ -384,7 +384,7 @@
   function output(g,gain,pan=0,space=0){const chain=[gain];let last=gain;if(context.createStereoPanner){const p=context.createStereoPanner();p.pan.value=pan;gain.connect(p);last=p;chain.push(p);}last.connect(g.bus);if(space&&reverb){const send=context.createGain();send.gain.value=space;last.connect(send);send.connect(reverb);chain.push(send);}return chain;}
   function tone(g,event,base=context.currentTime+.08){const start=base+event.at,length=Math.max(.06,event.length),partials=event.instrument==='felt'?[[1,.65],[2,.21],[3,.08]]:event.instrument==='bell'?[[1,.72],[2.71,.18],[4.08,.06]]:event.instrument==='air'?[[1,.72],[2,.16],[.5,.10]]:[[1,.78],[2,.17]];for(const [ratio,weight]of partials){const source=context.createOscillator(),gain=context.createGain(),attack=event.instrument==='air'?Math.min(.28,length*.22):event.instrument==='felt'?.028:.012;source.type=event.instrument==='wood'?'triangle':'sine';source.frequency.setValueAtTime(hz(event.midi)*ratio,start);gain.gain.value=0;gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(event.gain*weight,start+attack);if(event.instrument==='air')gain.gain.setValueAtTime(event.gain*weight*.75,start+length*.62);gain.gain.exponentialRampToValueAtTime(.0001,start+length);source.connect(gain);track(g,source,[source,...output(g,gain,event.pan,event.space)]).start(start);source.stop(start+length+.03);}}
   function texture(g,settings,base=context.currentTime+.08,loop=false){const source=context.createBufferSource(),filter=context.createBiquadFilter(),gain=context.createGain(),start=base+(settings.at||0);source.buffer=noiseBuffer;source.loop=loop;filter.type='lowpass';filter.frequency.value=settings.cutoff;filter.Q.value=.6;gain.gain.value=loop?settings.gain:0;if(loop&&settings.kind==='surf'){const swell=context.createOscillator(),depth=context.createGain();swell.type='sine';swell.frequency.value=.14;depth.gain.value=settings.gain*.45;swell.connect(depth);depth.connect(gain.gain);track(g,swell,[swell,depth]).start(start);}
-   if(!loop){gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(settings.gain,start+.04);gain.gain.exponentialRampToValueAtTime(.0001,start+settings.length);}source.connect(filter);filter.connect(gain);track(g,source,[source,filter,...output(g,gain,0,0)]).start(start);if(!loop)source.stop(start+settings.length+.03);return gain;}
+   if(!loop){gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(settings.gain,start+.04);gain.gain.exponentialRampToValueAtTime(.0001,start+settings.length);}source.connect(filter);filter.connect(gain);track(g,source,[source,filter,...output(g,gain,settings.pan||0,settings.space||0)]).start(start);if(!loop)source.stop(start+settings.length+.03);return gain;}
   function effect(g,e,base){if(e.kind==='texture'){texture(g,e,base);return;}if(e.kind==='note'){tone(g,e,base);return;}const source=context.createOscillator(),gain=context.createGain(),start=base+e.at,length=e.kind==='chirp'?.28:.09;source.type='sine';source.frequency.setValueAtTime(e.frequency,start);source.frequency.exponentialRampToValueAtTime(e.frequency*(e.kind==='chirp'?1.28:.6),start+length*.65);gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(e.kind==='chirp'?.010:.026,start+.015);gain.gain.exponentialRampToValueAtTime(.0001,start+length);source.connect(gain);track(g,source,[source,...output(g,gain,e.pan||0,.12)]).start(start);source.stop(start+length+.02);}
   function init(){if(!AudioContext)throw Error('Web Audio unavailable');context=new AudioContext();context.addEventListener?.('statechange',()=>{if(!disposed)onStateChange();});master=context.createGain();master.gain.value=.7;const compressor=context.createDynamicsCompressor?.();if(compressor){compressor.threshold.value=-24;compressor.knee.value=20;compressor.ratio.value=4;master.connect(compressor);compressor.connect(context.destination);}else master.connect(context.destination);
    noiseBuffer=context.createBuffer(1,Math.ceil(context.sampleRate*3),context.sampleRate);noiseBuffer.getChannelData(0).set(noise(noiseBuffer.length));if(context.createConvolver){reverb=context.createConvolver();const impulse=context.createBuffer(2,Math.ceil(context.sampleRate*1.6),context.sampleRate);for(let c=0;c<2;c++){const data=impulse.getChannelData(c),raw=noise(data.length,101+c);for(let i=0;i<data.length;i++)data[i]=raw[i]*Math.pow(1-i/data.length,2.4);}reverb.buffer=impulse;reverbGain=context.createGain();reverbGain.gain.value=.13;reverb.connect(reverbGain);reverbGain.connect(master);}
@@ -427,12 +427,27 @@
   function mini(game,event,{x=.5,index=0}={}){
    if(!enabled||!group||group.retired||group.disposed||context?.state!=='running')return false;
    const pan=(Math.max(0,Math.min(1,x))-.5)*.8,start=context.currentTime+.02;
+   if(event==='wind-point'||event==='frame'){
+    if(context.currentTime-(group.lastFrame??-1)<.22)return false;group.lastFrame=context.currentTime;
+    if(!transient('paper',pan,event==='frame'?.055:.11,event==='frame'?1.3:.85))texture(group,{kind:'wind',cutoff:900,length:.09,gain:.006},start);return true;
+   }
+   if(event==='wind-send'){
+    texture(group,{kind:'wind',cutoff:1400,length:2.7,gain:.034,pan:-.3},start);transient('paper',-.25,.19,.76);tone(group,{at:.3,midi:62,length:1.4,gain:.014,instrument:'air',pan:.25,space:.3},start);return true;
+   }
+   if(event==='wind-turn'){texture(group,{kind:'wind',cutoff:950,length:.75,gain:.018,pan,space:.15},start);return true;}
+   if(event==='wind-blocked'){
+    texture(group,{kind:'wind',cutoff:350,length:.55,gain:.025},start);tone(group,{at:0,midi:50,length:.4,gain:.012,instrument:'felt',pan,space:.08},start);return true;
+   }
+   if(['hello','offer','show-photo','goodbye'].includes(event)){
+    transient('paper',pan,event==='show-photo'?.24:.12,event==='goodbye'?.82:1.04);
+    const midi={hello:67,offer:64,'show-photo':72,goodbye:69}[event];tone(group,{at:.05,midi,length:.7,gain:.018,instrument:'felt',pan,space:.17},start);if(event==='goodbye')tone(group,{at:.3,midi:76,length:1,gain:.012,instrument:'air',pan:.3,space:.22},start);return true;
+   }
    if(event==='focus'||event==='inspect'){
     if(context.currentTime-(group.lastFocus??-1)<.2)return false;group.lastFocus=context.currentTime;
     if(!transient('paper',pan,event==='focus'?.12:.08,event==='focus'?.92:.72))texture(group,{kind:'wind',cutoff:event==='focus'?1800:700,length:.12,gain:.009},start);return true;
    }
    if(event==='shutter'||event==='detail'){
-    if(event==='shutter')transient('paper',pan,.32,1.28);
+    if(event==='shutter'){transient('paper',pan,.22,1.4);texture(group,{kind:'wind',cutoff:3800,length:.045,gain:.022},start);tone(group,{at:0,midi:92,length:.045,gain:.016,instrument:'wood',pan,space:0},start);tone(group,{at:.065,midi:85,length:.045,gain:.014,instrument:'wood',pan,space:0},start);}
     // An observation cue, never a sound suggesting the player hits the monument.
     tone(group,{at:0,midi:[64,69,72][Math.max(0,index-1)%3],length:1.1,gain:.021,instrument:event==='detail'?'felt':'air',pan,space:.24},start);return true;
    }

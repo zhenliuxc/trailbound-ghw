@@ -1,6 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const Mini=require('../dist/mini-games.js'),D=require('../dist/discoveries.js'),X=Mini.enhance(require('../dist/micro-moments.js')),{harness}=require('./dom-harness.cjs'),{fixture}=require('./audio-fixture.cjs'),Audio=require('../dist/audio.js');
-const entries=Object.keys(Mini.kinds).map(id=>D.item(id));
+// The original three physics games have a different control model from the Wugong stories.
+const entries=['westlake-floating-leaf','bamboo-drop','meadow-bird'].map(id=>D.item(id));
 function advance(s,seconds){for(let i=0;i<seconds*40;i++)s=X.tick(s,.025);return s;}
 function pilot(s){
  if(s.game==='rain'){const drop=s.drops.reduce((a,b)=>!a||b.y>a.y?b:a,null);return X.move(s,{x:drop?.x??.5,y:.8});}
