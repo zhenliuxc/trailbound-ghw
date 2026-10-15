@@ -19,7 +19,7 @@ test('all three new routes offer non-animal, non-cloud travel moments with their
 });
 test('new route moments can all be remembered through the walking UI and persist across routes',()=>{
  let saved=null;const storage={getItem:()=>saved,setItem:(_,value)=>{saved=value;}},h=harness(storage);
- for(const id of added){h.click('route-'+id);h.click('overlay-action');for(let i=0;i<500&&h.$('ending-panel').hidden;i++){h.advance(.6);if(!h.$('story-panel').hidden)h.$('story-choices').querySelector('button').emit('click');else if(!h.$('photo-panel').hidden)h.click('photo-continue');else if(!h.$('observe-button').hidden)h.click('observe-button');}
+ for(const id of added){h.click('route-'+id);h.click('overlay-action');for(let i=0;i<500&&h.$('ending-panel').hidden;i++){h.advance(.6);if(!h.$('reward-overlay').hidden)h.click('reward-continue');else if(!h.$('story-panel').hidden)h.$('story-choices').querySelector('button').emit('click');else if(!h.$('photo-panel').hidden)h.click('photo-continue');else if(!h.$('observe-button').hidden)h.click('observe-button');}
   assert.equal(h.$('ending-panel').hidden,false,id);assert.equal(h.$('trip-count').textContent,'本次记下'+D.create(id,42).slots.length+'个瞬间',id);assert.equal(h.$('album-count').textContent,'3 / 3');assert.equal(h.pendingFrames(),0);
  }
  assert.equal(D.loadMoments(storage).length,10);assert.equal(h.$('journal-count').textContent,'10个瞬间');assert.equal(harness(storage).$('journal-list').children.length,10);

@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "generator": "built-in imagegen",
+  "stage": "runtime-integrated",
+  "entries": [
+    {
+      "route": "wugong",
+      "file": "scenes/wugong-v1.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 311190,
+      "sha256": "4a396b22a24d586cf055ad34307e980bbd475245b81fcdbaed1fdef54d2f1830",
+      "sourceGeneratedFile": "exec-7cb58f7f-9118-41d1-a17f-ce86319369a8.png",
+      "sourceSha256": "433fc3444b9e6f36571fe08b5bad6dfbc9e685bca6211bafb730ef960563defb"
+    },
+    {
+      "route": "tiger",
+      "file": "scenes/tiger-v1.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 383986,
+      "sha256": "1c608a5b4a41f477360f18c378ca750f1db465502d7a7ff85676500979c0c89d",
+      "sourceGeneratedFile": "exec-b5a91f9e-ca33-4604-8474-f5c5bf7949b5.png",
+      "sourceSha256": "39f7953d82f3514487f38748c41e2f00b462f669bf9e15382322fc2f42c7e73f"
+    },
+    {
+      "route": "aotai",
+      "file": "scenes/aotai-v1.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 278440,
+      "sha256": "ea2d22fe34cce9498e03dbf7d1fb61844c743b369683c12f1f6852f505087497",
+      "sourceGeneratedFile": "exec-4b735e8e-d513-443c-8071-f63609814b88.png",
+      "sourceSha256": "6ac556eb620694e865874079701096309ab58b56e21d1c76a3d9d007da5b6496"
+    },
+    {
+      "route": "maclehose",
+      "file": "scenes/maclehose-v1.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 303046,
+      "sha256": "8a87ec2da590e6d36302039d89c6b8c632c7533f288453c90a5a89ba82e62728",
+      "sourceGeneratedFile": "exec-af8f6512-2fd0-41c5-bba1-70daa49c7a19.png",
+      "sourceSha256": "03c40e5008ea0d92226acdaf27fc29b410b38fd8fadf6b051a7570a4efacaf93"
+    },
+    {
+      "route": "changping",
+      "file": "scenes/changping-v1.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 374882,
+      "sha256": "df03c7970fee6a66a4b1e5ee5472e2eb154355f2ece54858ef404ba84406faf9",
+      "sourceGeneratedFile": "exec-910b6000-3c79-428f-a45f-2b882a87e685.png",
+      "sourceSha256": "3d0291745ad1fd2480b5483a28569db7ad820ed38d85090b953680dede7c7915"
+    },
+    {
+      "route": "mogan",
+      "file": "scenes/mogan-v1.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 383066,
+      "sha256": "30a3585ae514d2f39f7b2c4e02cb8b5c29c9114ae065fde5a644e53063ac65a2",
+      "sourceGeneratedFile": "exec-1800feda-ecd8-4618-ad07-a5fefcd20c5f.png",
+      "sourceSha256": "924f84e4a5172327375cfd6b4a6a21b77f5e71b7fe750ebdf2aea9ec9db42251"
+    },
+    {
+      "route": "westlake",
+      "file": "scenes/westlake-v1.webp",
+      "width": 1280,
+      "height": 720,
+      "bytes": 386010,
+      "sha256": "98bf8f91a2c192c1f92c84d7938ee552b46cacf6e09621ef7ed9fa791933da40",
+      "sourceGeneratedFile": "exec-884b66b2-a79f-4b45-aeb2-f7b9c12e0c18.png",
+      "sourceSha256": "b6dcd0aaad274b4c8bc2832e5e514929ccea9e05a3ebf9d1c6d03df2a8b83cf8"
+    }
+  ]
+}

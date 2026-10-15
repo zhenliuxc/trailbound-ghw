@@ -44,3 +44,8 @@ assert.equal(additions.artVersion,5);assert.equal(additions.entries.length,6);
 for(const a of additions.entries){const e=D.item(a.id),bytes=fs.readFileSync(path.join(dir,a.file));assert.equal(e.artV5,a.file);assert.equal(e.route,a.route);assert.equal(a.runtimeBound,true);assert.equal(bytes.toString('ascii',8,12),'WEBP');assert.equal(bytes.length,a.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),a.sha256);}
 assert.ok(D.CATALOG.every(e=>e.artV5||e.artV4));
 console.log('PASS: all 29 collectible types have runtime watercolor artwork; six new revisions preserve their historical SVG files.');
+
+const scenes=require('../dist/scenes/manifest.json');assert.equal(scenes.entries.length,7);
+for(const e of scenes.entries){const data=fs.readFileSync(path.join(dir,e.file));assert.equal(data.toString('ascii',8,12),'WEBP');assert.equal(data.length,e.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),e.sha256);assert.ok(routes.some(r=>r.id===e.route));assert.equal(e.file,'scenes/'+e.route+'-v1.webp');}
+assert.ok(!html.includes('journal-import'));
+console.log('PASS: seven illustrated scene backgrounds are packaged for their routes; removed journal import is absent.');
