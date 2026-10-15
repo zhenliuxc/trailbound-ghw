@@ -411,6 +411,7 @@
   function mini(game,event,{x=.5,index=0}={}){
    if(!enabled||!group||group.retired||group.disposed||context?.state!=='running')return false;
    const pan=(Math.max(0,Math.min(1,x))-.5)*.8,start=context.currentTime+.02;
+   if(event==='lift'){texture(group,{kind:'wind',cutoff:1050,length:1.3,gain:.028},start);tone(group,{at:0,midi:64,length:1.1,gain:.012,instrument:'air',pan,space:.12},start);return true;}
    if(event==='complete'){for(const [i,midi]of [60,64,67,72].entries())tone(group,{at:i*.12,midi,length:.65,gain:.022,instrument:'bell',pan:0,space:.12},start);return true;}
    if(event==='catch'||event==='goal'){tone(group,{at:0,midi:[60,62,64,67,69,72,74,76][index%8],length:game==='rain'?.55:.8,gain:.035,instrument:game==='rain'?'wood':'bell',pan,space:.16},start);if(game==='rain')effect(group,{kind:'tap',at:0,frequency:1000,pan},start);return true;}
    if(event==='ripple'){texture(group,{kind:'stream',cutoff:1500,length:.38,gain:.025},start);return true;}

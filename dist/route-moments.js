@@ -156,7 +156,7 @@
  PROFILES['tiger-bell-first'].icon='bell';
  for(const id of ['snow-light','bamboo-leaf','westlake-eaves','westlake-floating-leaf','westlake-leaf-shadow','westlake-basket'])PROFILES[id].artV5='badges/'+id+'-v5.webp';
  // Current play descriptions only; saved journal text and badge editions stay untouched.
- Object.assign(PROFILES['meadow-bird'],{name:'草甸风口的纸鸢',prompt:'上下移动纸鸢，借风穿过三个山脊风口。方向键也可控制，错过可以再试。',result:'我牵着纸鸢借风穿过三个山脊风口，看草浪一层层向远处展开。'});
+ Object.assign(PROFILES['meadow-bird'],{name:'借一阵草甸的风',prompt:'上下拖动牵线，让燕子纸鸢在流动的风带里稳住，借三阵风飞向云海。方向键也可操作。',result:'我顺着草浪辨认风向，牵着燕子纸鸢借过三阵风，把它送向山脊的云海。'});
  Object.assign(PROFILES['bamboo-drop'],{name:'竹叶落雨，接成一段声音',prompt:'左右移动竹筒，接住八滴竹叶上的雨。接住才会奏响音符，漏接可以继续。',result:'竹叶上的雨落进竹筒，八个清亮的声音串起了这段竹林记忆。'});
  Object.assign(PROFILES['westlake-floating-leaf'],{prompt:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。',result:'我用一圈圈水纹，陪落叶终于转过溪石，漂进下游的光里。'});
  function profile(id){return PROFILES[id]||null;}

@@ -4,7 +4,7 @@ const entries=Object.keys(Mini.kinds).map(id=>D.item(id));
 function advance(s,seconds){for(let i=0;i<seconds*40;i++)s=X.tick(s,.025);return s;}
 function pilot(s){
  if(s.game==='rain'){const drop=s.drops.reduce((a,b)=>!a||b.y>a.y?b:a,null);return X.move(s,{x:drop?.x??.5,y:.8});}
- if(s.game==='wind')return X.move(s,{x:.5,y:Mini.gates[Math.min(2,s.gates)].y});
+ if(s.game==='wind')return X.move(s,{x:.5,y:Mini.windTarget(s)});
  const target=Mini.gates[Math.min(2,s.gates)],dy=target.y-s.actor.y;
  // Push from the opposite side; ordinary pointer input, no force-complete path.
  return X.act(s,{x:s.actor.x-.12,y:s.actor.y-Math.sign(dy)*.17});
@@ -15,7 +15,7 @@ test('three games require participation and do not time out or award idle users'
 test('all three games can be completed through their real controls, with a delayed reward',()=>{
  for(const e of entries){let s=X.create(e);for(let i=0;i<8000&&!s.play.complete;i++){if(i%8===0)s=pilot(s);s=X.tick(s,.025);}assert.equal(s.play.complete,true,e.id+' must be reachable');assert.equal(s.done,false);assert.equal(X.outcome(s,e).earned,true);assert.ok(s.age>10);s=advance(s,1.2);assert.equal(s.done,true);assert.equal(s.events.filter(e=>e.type==='complete').length,1);}
 });
-test('rain misses and missed wind gates do not progress; retries reset all state',()=>{
+test('rain misses and flying outside the wind do not progress; retries reset all state',()=>{
  for(const e of entries.slice(1)){let s=X.create(e);s=X.move(s,{x:0,y:0});s=advance(s,10);if(s.game==='wind')assert.equal(s.gates,0);else assert.equal(s.caught,0);const fresh=X.create(e);assert.equal(fresh.play.progress,0);assert.equal(fresh.acted,false);assert.equal(fresh.events.length,0);}
 });
 test('reduced motion preserves gameplay while suppressing ambient motion and geometry stays finite',()=>{
@@ -29,7 +29,7 @@ test('new app path keeps pause, skip without reward, retry, sound controls and k
 });
 test('new app gameplay completes a wind challenge and saves exactly one earned reward',()=>{
  const records={value:null,getItem(){return this.value;},setItem(k,v){this.value=v;}};const h=harness(records,{miniGames:true});h.click('overlay-action');h.advance(10);h.click('observe-button');
- const surface=h.$('micro-surface');for(const gate of Mini.gates){surface.emit('pointerdown',{pointerId:1,clientX:350,clientY:gate.y*600,button:0,isPrimary:true});surface.emit('pointerup',{pointerId:1,clientX:350,clientY:gate.y*600});h.advance(8.1);}h.advance(1.5);
+ const surface=h.$('micro-surface');for(const y of Mini.windLevels){surface.emit('pointerdown',{pointerId:1,clientX:350,clientY:y*600,button:0,isPrimary:true});surface.emit('pointerup',{pointerId:1,clientX:350,clientY:y*600});h.advance(6);}h.advance(1.5);
  assert.equal(h.$('micro-panel').hidden,true);assert.equal(h.$('reward-overlay').hidden,false);assert.equal(D.loadMoments(records).filter(m=>m.earned).length,1);h.click('reward-continue');h.click('reward-continue');assert.equal(D.loadMoments(records).filter(m=>m.earned).length,1);
 });
 test('event sounds respect mute and background suspension and clean up voices',async()=>{

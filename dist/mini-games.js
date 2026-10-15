@@ -2,11 +2,13 @@
  'use strict';
  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number.isFinite(v)?v:a));
  const kinds={'westlake-floating-leaf':'creek','bamboo-drop':'rain','meadow-bird':'wind'};
- const prompts={creek:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。方向键也能推动；可以随时重试。',rain:'左右拖动竹筒，接住八滴从竹叶落下的雨。接住才会奏响音符；方向键移动，漏接可以继续。',wind:'上下移动纸鸢，借着风穿过三个金色风口。留意风向的变化；方向键也能控制，错过可再试。'};
- const results={creek:'我用一圈圈水纹，陪落叶绕过溪石，终于漂进了下游的光里。',rain:'我用竹筒接住竹叶上的雨滴，八个清亮的声音串起了这段竹林记忆。',wind:'我牵着纸鸢借风穿过三个山脊风口，看草浪一层层向远处展开。'};
+ const prompts={creek:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。方向键也能推动；可以随时重试。',rain:'左右拖动竹筒，接住八滴从竹叶落下的雨。接住才会奏响音符；方向键移动，漏接可以继续。',wind:'上下拖动牵线，让纸鸢在流动的风带里稳住。借三阵风，送它飞向云海。也可用方向键操作。'};
+ const results={creek:'我用一圈圈水纹，陪落叶绕过溪石，终于漂进了下游的光里。',rain:'我用竹筒接住竹叶上的雨滴，八个清亮的声音串起了这段竹林记忆。',wind:'我顺着草浪辨认风向，牵着燕子纸鸢借过三阵风，把它送向山脊的云海。'};
  const gates=[{x:.34,y:.36},{x:.59,y:.66},{x:.84,y:.43}];
+ const windLevels=[.62,.42,.24],windNames=['草坡来风','越过山脊','云海展翼'];
+ function windTarget(s){return windLevels[Math.min(2,s.gates)]+(s.play.reduced?0:Math.sin(s.age*.65)*.025);}
  const rocks=[{x:.27,y:.64,r:.075},{x:.49,y:.34,r:.08},{x:.72,y:.68,r:.075}];
- function create(entry,options={}){return {id:entry.id,route:entry.route,kind:entry.interaction,game:kinds[entry.id],age:0,acted:false,gesture:'look',x:.5,y:.5,dragging:false,done:false,play:{type:'minigame',progress:0,complete:false,completedAt:null,reduced:!!options.reduced},actor:{x:kinds[entry.id]==='creek'?.1:.22,y:.5,vx:0,vy:0},control:{x:.5,y:.5},gates:0,caught:0,drops:[],spawn:0,serial:0,events:[],pulse:null,feedback:'准备好了就轻触画面开始。',cooldown:0};}
+ function create(entry,options={}){return {id:entry.id,route:entry.route,kind:entry.interaction,game:kinds[entry.id],age:0,acted:false,gesture:'look',x:.5,y:.5,dragging:false,done:false,play:{type:'minigame',progress:0,complete:false,completedAt:null,reduced:!!options.reduced},actor:{x:kinds[entry.id]==='creek'?.1:kinds[entry.id]==='wind'?.44:.22,y:kinds[entry.id]==='wind'?.72:.5,vx:0,vy:0},control:{x:.5,y:kinds[entry.id]==='wind'?.72:.5},windHold:0,windNear:false,gates:0,caught:0,drops:[],spawn:0,serial:0,events:[],pulse:null,feedback:'准备好了就轻触画面开始。',cooldown:0};}
  function event(s,type,x,y){s.serial++;s.events=[...s.events,{serial:s.serial,type,x,y,age:s.age}].slice(-8);}
  function input(state,point={},mode='tap'){
   if(!state||state.done||state.play.complete)return state;
@@ -35,10 +37,14 @@
    if(s.spawn<=0){const n=Math.floor(s.age/2);s.drops.push({x:.16+((n*37)%69)/100,y:.15,speed:.29+(n%3)*.025});s.spawn=2;}
    s.drops=s.drops.filter(d=>{d.y+=dt*d.speed;if(d.y>=.81&&d.y<.9&&Math.abs(d.x-a.x)<.085){s.caught++;event(s,'catch',d.x,.82);s.feedback='接住了 '+s.caught+' / 8 滴，听见竹筒的回声。';return false;}if(d.y>.94){event(s,'miss',d.x,.94);s.feedback='雨滴落回石阶，下一滴还会来。';return false;}return true;});s.play.progress=clamp(s.caught/8);
   }else{
-   const wind=Math.sin(s.age*.8)*.038;a.y=clamp(a.y+((s.control.y-a.y)*2.1+wind)*dt,.12,.86);a.x=.24;
-   const g=gates[s.gates];s.spawn+=dt;const gx=.92-s.spawn*.085;s.gateX=gx;
-   if(g&&gx<=a.x){if(Math.abs(a.y-g.y)<.13){s.gates++;event(s,'goal',a.x,a.y);s.feedback='穿过风口 '+s.gates+' / 3，下一阵风来了。';}else{event(s,'miss',a.x,a.y);s.feedback='风把纸鸢带偏了，调整高度，再试这个风口。';}s.spawn=0;}
-   s.play.progress=s.gates/3;
+   const target=windTarget(s),gust=s.play.reduced?0:Math.sin(s.age*1.7)*.018;
+   a.vy=clamp((a.vy+(s.control.y-a.y)*dt*4+gust*dt)*Math.exp(-dt*3),-.3,.3);a.y=clamp(a.y+a.vy*dt,.12,.84);a.x=.44+s.gates*.065;
+   const near=Math.abs(a.y-target)<.075&&Math.abs(a.vy)<.15;
+   if(near&&!s.windNear&&!s.cooldown){event(s,'lift',a.x,a.y);s.cooldown=1.4;}s.windNear=near;
+   s.windHold=clamp((s.windHold||0)+(near?dt:-dt*.65),0,2.6);
+   s.feedback=near?'风托住纸鸢了，稳住这阵风。':a.y>target?'草浪向上翻起，轻轻往上牵线。':'纸鸢飞得太高了，松一点线，回到风里。';
+   if(s.windHold>=2.6){s.gates++;s.windHold=0;s.windNear=false;event(s,'goal',a.x,a.y);s.feedback=s.gates<3?'接住这阵风了，下一阵在更高处。':'纸鸢越过山脊，云海在眼前展开。';}
+   s.play.progress=(s.gates+s.windHold/2.6)/3;
   }
   if(s.play.progress>=1){s.play.complete=true;s.play.completedAt=s.age;event(s,'complete',a.x,a.y);s.feedback='完成了，正在展开这一刻的手绘纪念。';}return s;
  }
@@ -69,7 +75,7 @@
   for(let i=5;i>0;i--)out.push(ellipse(640,80,28+i*9,24+i*7,'#fff1c9',.025));
   return out;
  }
- function foreground(s){
+ function foreground(s,painted=false){
   const out=[],t=s.play.reduced?0:s.age,a=s.actor,x=a.x*800,y=a.y*460;
   if(s.game==='creek'){
    for(let i=0;i<18;i++){const xx=((i*97+t*18)%850)-25,yy=110+(i*37)%280;out.push(line([xx,yy,xx+15,yy-2,xx+30,yy],'#e0efdc',1,.34));}
@@ -82,27 +88,38 @@
    out.push(ellipse(x,y+30,43,9,'#344e42',.25));out.push(poly([x-47,y-7,x+47,y-7,x+36,y+33,x-37,y+33],'#b8aa70'));out.push(poly([x-45,y-5,x-30,y-5,x-24,y+31,x-37,y+31],'#d8cb94'));out.push(ellipse(x,y-7,47,12,'#6b7854'));out.push(ellipse(x,y-7,38,7,'#8cb3a2'));out.push(line([x-37,y+22,x+36,y+22],'#857b49',2));
    for(let i=0;i<8;i++)out.push(ellipse(308+i*26,37,6,6,i<s.caught?'#e8cc7f':'#758f76',.85));
   }else{
-   const g=gates[Math.min(2,s.gates)],gx=(s.gateX??.92)*800;out.push({shape:'ring',x:gx,y:g.y*460,rx:23,ry:61,color:'#f4dd98',width:3,alpha:.8});
-   for(let i=0;i<12;i++){const xx=800-((t*60+i*73)%900),yy=50+(i*39)%300;out.push(line([xx,yy,xx+18,yy-3,xx+42,yy],'#f1efd1',1,.4));}
-   out.push(line([x,y+15,x-18,y+49,x-7,y+70,x-26,y+94],'#ddbe8b',2));out.push(line([x,y+18,90,430],'#e7dbc0',.8,.7));out.push(poly([x,y-31,x+25,y,x,y+26,x-25,y],'#e9d4a3'));out.push(poly([x,y-31,x,y+26,x-25,y],'#819b78'));out.push(line([x,y-31,x,y+26,x-25,y,x+25,y],'#566e55',1));
+   const target=windTarget(s)*460,near=s.windNear;
+   // Wind is a moving current in the landscape, not a floating checkpoint ring.
+   for(let j=0;j<5;j++){const path=[];for(let i=0;i<42;i++){const xx=60+i*18,yy=target+(j-2)*10+Math.sin(xx*.011-t*1.4+j*.45)*7;path.push(xx,yy);}out.push(line(path,'#435f61',3,j===2?.12:.06));out.push(line(path,near?'#fff1c2':'#fffbed',j===2?2:1,near?.64:.42));}
+   for(let i=0;i<16;i++){const xx=760-((t*67+i*53)%700),yy=target+Math.sin(xx*.011-t*1.4)*7+(i%5-2)*10;out.push(ellipse(xx,yy,2.8,1.1,near?'#f3d58a':'#f8efd1',.68));out.push(line([xx,yy,xx+9,yy-4],'#f8efd1',.8,.4));}
+   // Loose catenary-like line and separate cloth ribbons respond to the flight motion.
+   const cord=[];for(let i=0;i<=32;i++){const q=i/32;cord.push(72+(x-72)*q,445+(y+18-445)*q+Math.sin(q*Math.PI)*(20+a.vy*100));}out.push(line(cord,'#4f6254',2,.28));out.push(line(cord,'#f8e7bd',.9,.9));
+   for(let j=0;j<2;j++){const ribbon=[];for(let i=0;i<28;i++){const q=i/27;ribbon.push(x+(j?17:-17)+Math.sin(q*8-t*3+j)*q*17,y+26+q*76);}out.push(line(ribbon,j?'#c16d4a':'#d1ad68',3.4,.85));out.push(line(ribbon,'#ffe5b1',.65,.6));}
+   // Detailed swallow silhouette while the painted sprite is being decoded.
+   if(!painted){out.push(poly([x,y-33,x-8,y-16,x-27,y-27,x-70,y-48,x-57,y-10,x-30,y+1,x-10,y+16,x-15,y+41,x,y+30,x+15,y+41,x+10,y+16,x+30,y+1,x+57,y-10,x+70,y-48,x+27,y-27,x+8,y-16],'#e5d0a1'));
+   out.push(poly([x-7,y-17,x-28,y-25,x-63,y-43,x-52,y-13,x-26,y-2,x-9,y+14],'#557c79'));out.push(poly([x+7,y-17,x+28,y-25,x+63,y-43,x+52,y-13,x+26,y-2,x+9,y+14],'#557c79'));
+   for(const side of [-1,1])for(let j=0;j<5;j++)out.push(line([x+side*11,y+10-j*5,x+side*(27+j*7),y-6-j*6],'#cbd6b2',1,.85));out.push(ellipse(x,y+3,7,15,'#b97151'));out.push(line([x,y-28,x,y+30],'#b3a172',1.1));}
+   for(let i=0;i<22;i++){const xx=i*39-15,sway=s.play.reduced?0:Math.sin(t*1.8+i*.4)*8;out.push(line([xx,460,xx+8+sway*.5,437-i%4*4,xx+19+sway,421-i%3*7],'#a7be73',2,.6));out.push(line([xx+8+sway*.5,437-i%4*4,xx-3+sway,431-i%4*4],'#e4d89e',1,.55));}
+
   }
   for(const e of s.events){const age=s.age-e.age;if(age>1||!['catch','goal','complete','bump','miss'].includes(e.type))continue;const color=e.type==='miss'||e.type==='bump'?'#d9dfc5':'#fff0b0';for(let i=0;i<6;i++){const angle=i*Math.PI/3;out.push(ellipse(e.x*800+Math.cos(angle)*age*40,e.y*460+Math.sin(angle)*age*25-age*15,2,2,color,1-age));}}
   return out;
  }
  function drawSvg(svg,parent,shapes){parent.replaceChildren();for(const f of shapes){const common={fill:f.color,opacity:f.alpha??1};if(f.shape==='rect')svg('rect',{...common,x:f.x,y:f.y,width:f.w,height:f.h},parent);else if(f.shape==='ellipse'||f.shape==='ring')svg('ellipse',{...common,cx:f.x,cy:f.y,rx:f.rx,ry:f.ry,...(f.shape==='ring'?{fill:'none',stroke:f.color,'stroke-width':f.width}:{})},parent);else svg(f.shape==='line'?'polyline':'polygon',{...common,points:f.points.join(' '),...(f.shape==='line'?{fill:'none',stroke:f.color,'stroke-width':f.width,'stroke-linecap':'round','stroke-linejoin':'round'}:{})},parent);}}
  function drawPixi(P,g,shapes){g.clear();for(const f of shapes){if(f.shape==='rect')g.rect(f.x,f.y,f.w,f.h);else if(f.shape==='ellipse'||f.shape==='ring')g.ellipse(f.x,f.y,f.rx,f.ry);else{g.moveTo(f.points[0],f.points[1]);for(let i=2;i<f.points.length;i+=2)g.lineTo(f.points[i],f.points[i+1]);if(f.shape==='poly')g.closePath();}if(f.shape==='line'||f.shape==='ring')g.stroke({color:f.color,alpha:f.alpha??1,width:f.width,cap:'round',join:'round'});else g.fill({color:f.color,alpha:f.alpha??1});}}
- function draw(svg,parent,entry){const holder=svg('g',{transform:'scale(.5)'},parent),photo=svg('g',{},holder),bg=svg('g',{},holder),fg=svg('g',{},holder);drawSvg(svg,bg,background(kinds[entry.id]));return {mini:true,svg,parent,photo,bg,fg,disposed:false,renderer:null,latest:null};}
- async function mount(refs,P,host,asset){
+ function draw(svg,parent,entry){const holder=svg('g',{transform:'scale(.5)'},parent),photo=svg('g',{},holder),bg=svg('g',{},holder),fg=svg('g',{},holder),actorLayer=svg('g',{},holder);drawSvg(svg,bg,background(kinds[entry.id]));return {mini:true,svg,parent,photo,bg,fg,actorLayer,disposed:false,renderer:null,latest:null};}
+ async function mount(refs,P,host,asset,kiteAsset){
   if(!refs?.mini||!P?.Application)return false;let app;
   try{app=new P.Application();await app.init({width:800,height:460,resolution:Math.min(2,globalThis.devicePixelRatio||1),autoDensity:true,antialias:true,autoStart:false,preference:'webgl',backgroundAlpha:0});if(refs.disposed){app.destroy(true,{children:true});return false;}
-   const bg=new P.Graphics(),fg=new P.Graphics();app.stage.addChild(bg,fg);drawPixi(P,bg,background(refs.latest.game));app.canvas.className='mini-game-canvas';app.canvas.setAttribute('aria-hidden','true');host.appendChild(app.canvas);refs.renderer={app,fg,P,texture:null};
-   if(asset&&refs.latest.game!=='creek')asset.promise.then(e=>{if(refs.disposed||!refs.renderer||e.state!=='ready')return;try{const texture=P.Texture.from(e.image,true),sprite=new P.Sprite(texture);sprite.width=800;sprite.height=460;app.stage.addChildAt(sprite,0);bg.alpha=.14;refs.renderer.texture=texture;refs.svg('image',{href:e.file,width:800,height:460,preserveAspectRatio:'xMidYMid slice'},refs.photo);refs.bg.setAttribute('opacity',.14);paint(refs,refs.latest);}catch(_){/* The complete vector scene remains playable if upload fails. */}});
-   app.canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();disposeRenderer(refs);if(refs.latest)drawSvg(refs.svg,refs.fg,foreground(refs.latest));});paint(refs,refs.latest);return true;
+   const bg=new P.Graphics(),fg=new P.Graphics();app.stage.addChild(bg,fg);drawPixi(P,bg,background(refs.latest.game));app.canvas.className='mini-game-canvas';app.canvas.setAttribute('aria-hidden','true');host.appendChild(app.canvas);refs.renderer={app,fg,P,texture:null,kiteTexture:null,kite:null};
+   if(asset&&refs.latest.game!=='creek')asset.promise.then(e=>{if(refs.disposed||!refs.renderer||e.state!=='ready')return;try{const texture=P.Texture.from(e.image,true),sprite=new P.Sprite(texture);sprite.width=800;sprite.height=460;app.stage.addChildAt(sprite,0);bg.alpha=refs.latest.game==='wind'?0:.14;refs.renderer.texture=texture;refs.svg('image',{href:e.file,width:800,height:460,preserveAspectRatio:'xMidYMid slice'},refs.photo);refs.bg.setAttribute('opacity',refs.latest.game==='wind'?0:.14);paint(refs,refs.latest);}catch(_){/* The complete vector scene remains playable if upload fails. */}});
+   if(kiteAsset&&refs.latest.game==='wind')kiteAsset.promise.then(e=>{if(refs.disposed||!refs.renderer||e.state!=='ready')return;try{const texture=P.Texture.from(e.image,true),kite=new P.Sprite(texture);kite.anchor.set(.5,.5);kite.width=174;kite.height=174*texture.height/texture.width;app.stage.addChild(kite);refs.renderer.kiteTexture=texture;refs.renderer.kite=kite;refs.painted=true;refs.kiteSvg=refs.svg('image',{href:e.file,x:-87,y:-58,width:174,height:116},refs.actorLayer);paint(refs,refs.latest);}catch(_){}});
+   app.canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();disposeRenderer(refs);if(refs.latest)drawSvg(refs.svg,refs.fg,foreground(refs.latest,refs.painted));});paint(refs,refs.latest);return true;
   }catch(_){try{app?.destroy(true,{children:true});}catch(_){}return false;}
  }
- function disposeRenderer(refs){const r=refs.renderer;refs.renderer=null;if(r){try{r.app.destroy(true,{children:true});}catch(_){}try{r.texture?.destroy(true);}catch(_){}} }
+ function disposeRenderer(refs){const r=refs.renderer;refs.renderer=null;if(r){try{r.app.destroy(true,{children:true});}catch(_){}try{r.texture?.destroy(true);r.kiteTexture?.destroy(true);}catch(_){}} }
  function dispose(refs){if(!refs?.mini)return;refs.disposed=true;disposeRenderer(refs);}
- function paint(refs,s){if(!refs||refs.disposed||!s)return;refs.latest=s;const shapes=foreground(s);if(refs.renderer){try{drawPixi(refs.renderer.P,refs.renderer.fg,shapes);refs.renderer.app.render();}catch(_){disposeRenderer(refs);drawSvg(refs.svg,refs.fg,shapes);}}else drawSvg(refs.svg,refs.fg,shapes);}
+ function paint(refs,s){if(!refs||refs.disposed||!s)return;refs.latest=s;const shapes=foreground(s,refs.painted);const tilt=s.play.reduced?0:clamp(s.actor.vy*1.6,-.23,.23)+Math.sin(s.age*2.1)*.025;if(refs.kiteSvg)refs.actorLayer.setAttribute('transform',`translate(${s.actor.x*800} ${s.actor.y*460-8}) rotate(${tilt*180/Math.PI})`);if(refs.renderer){try{drawPixi(refs.renderer.P,refs.renderer.fg,shapes);if(refs.renderer.kite){refs.renderer.kite.position.set(s.actor.x*800,s.actor.y*460-8);refs.renderer.kite.rotation=tilt;refs.renderer.kite.scale.x=174/refs.renderer.kite.texture.width*(s.play.reduced?1:1+Math.sin(s.age*2.1)*.018); }refs.renderer.app.render();}catch(_){disposeRenderer(refs);drawSvg(refs.svg,refs.fg,shapes);}}else drawSvg(refs.svg,refs.fg,shapes);}
  function enhance(base){return {...base,create:(e,o)=>kinds[e.id]?create(e,o):base.create(e,o),act:(s,p)=>s.game?input(s,p):base.act(s,p),move:(s,p)=>s.game?input(s,p,'move'):base.move(s,p),release:s=>s.game?{...s,dragging:false}:base.release(s),tick:(s,dt)=>s.game?tick(s,dt):base.tick(s,dt),draw:(svg,p,e)=>kinds[e.id]?draw(svg,p,e):base.draw(svg,p,e),paint:(r,s,reduced)=>s.game?paint(r,s):base.paint(r,s,reduced),instruction:e=>prompts[kinds[e.id]]||base.instruction(e),status:s=>s.game?s.feedback:base.status(s),outcome:(s,e)=>s.game?{id:s.id,edition:e.edition,earned:s.play.complete,interaction:s.gesture,memory:e.memory+(s.play.complete?results[s.game]:'我试着与这里的风雨玩了一会儿，下次再来。'),title:s.play.complete?e.tag:e.name}:base.outcome(s,e)};}
- return {kinds,prompts,results,gates,rocks,create,input,tick,background,foreground,drawPixi,mount,dispose,enhance};
+ return {kinds,prompts,results,gates,windLevels,windNames,windTarget,rocks,create,input,tick,background,foreground,drawPixi,mount,dispose,enhance};
 }));
