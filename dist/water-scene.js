@@ -1,6 +1,8 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailWaterScene=api;}(typeof globalThis!=='undefined'?globalThis:this,function(){
  'use strict';
- const assets={creek:{scene:'sprites/creek-water-v1.webp',actor:'sprites/creek-leaf-v1.webp',stone:'sprites/creek-stone-v1.webp'},rain:{scene:'scenes/mogan-v1.webp',actor:'sprites/bamboo-cup-v1.webp'}};
+ const assets={creek:{scene:'sprites/creek-water-v1.webp',actor:'sprites/creek-leaf-v1.webp',stone:'sprites/creek-stone-v1.webp'},rain:{scene:'scenes/mogan-v1.webp',actor:'sprites/bamboo-cup-v2.webp'}};
+ // The cleaned sprite's opening is the origin for physics, water and artwork.
+ const cup={width:100,anchorY:.184,mouthY:.76,mouthRadius:38,waterRadius:34,waterDepth:14};
  const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n);};
  function finishDuration(s){return s.play.reduced?.45:2.8;}
  function nextDrop(index){return [.16,.53,.30,.74,.43,.84,.24,.65][index%8];}
@@ -13,6 +15,7 @@
  function create(P,app,game,{gates,rocks,rockShapes,drawPixi}){
   const root=new P.Container(),back=new P.Container(),land=new P.Graphics(),currents=new P.Graphics(),targets=new P.Container(),shade=new P.Graphics(),actorLayer=new P.Container(),water=new P.Graphics(),dropsLayer=new P.Container(),canopy=new P.Container(),effects=new P.Graphics(),paper=new P.Graphics();
   root.addChild(back,land,currents,targets,shade,actorLayer,water,dropsLayer,canopy,effects,paper);app.stage.addChild(root);
+  const cupWater=game==='rain'?new P.Graphics():null,cupMask=game==='rain'?new P.Graphics():null;if(game==='rain'){cupMask.ellipse(0,0,cup.mouthRadius,17).fill(0xffffff);actorLayer.addChild(cupWater,cupMask);cupWater.mask=cupMask;}
   const textures=[],gateNodes=[],stoneNodes=[],dropNodes=[],leafNodes=[];let disposed=false,scene=null,actor=null,hasScene=false,hasActor=false,lastHeight=0,original=null;
   if(game==='creek'){
    drawPixi(P,land,rockShapes);
@@ -27,8 +30,8 @@
    else if(kind==='stone'){land.visible=false;for(const [i,r]of rocks.entries()){const stone=new P.Sprite(texture);stone.anchor.set(.5);stone.width=r.r*1600;stone.height=r.r*920;stone.rotation=(i-1)*.08;back.addChild(stone);stoneNodes.push({stone,r});lastHeight=0;}}
    else if(kind==='actor'){
     actor=game==='creek'?new P.MeshPlane({texture,verticesX:9,verticesY:5}):new P.Sprite(texture);
-    if(game==='creek'){original=new Float32Array(actor.geometry.getBuffer('aPosition').data);actor.pivot.set(texture.width/2,texture.height/2);}else actor.anchor.set(.5,.22);
-    actorLayer.addChild(actor);hasActor=true;
+    if(game==='creek'){original=new Float32Array(actor.geometry.getBuffer('aPosition').data);actor.pivot.set(texture.width/2,texture.height/2);}else actor.anchor.set(.5,cup.anchorY);
+    actorLayer.addChildAt(actor,0);hasActor=true;
    }return true;
   }
   function paint(s){
@@ -43,22 +46,27 @@
     shade.ellipse(x+3,y+7,29,8).fill({color:0x244d44,alpha:.2});
     for(let i=0;i<3;i++){const q=(t*.6+i/3)%1;water.ellipse(x-8-q*27,y+4,17+q*20,4+q*7).stroke({color:0xeff5da,width:1,alpha:(1-q)*.3});}
    }else{
-    shade.ellipse(x,y+61,46,10).fill({color:0x244d44,alpha:.2});
+    shade.ellipse(x,y+(actor?cup.width*actor.texture.height/actor.texture.width*(1-cup.anchorY):100),43,8).fill({color:0x244d44,alpha:.2});
     for(let i=0;i<leafNodes.length;i++){leafNodes[i].position.set(nextDrop(i)*800-15,H*.24);leafNodes[i].rotation=s.play.reduced?0:Math.sin(t*1.3+i)*.025;}
     for(let i=0;i<dropNodes.length;i++){const node=dropNodes[i],d=s.drops[i];node.visible=!!d&&!s.play.complete;if(d){node.position.set(d.x*800,d.y*H);node.scale.set(1,1+Math.min(.4,(d.y-.16)*.65));}}
     // A growing bead predicts where the next playable drop will detach.
     if(s.acted&&!s.play.complete){const q=clamp(1-s.spawn/1.2),bx=nextDrop(s.dropIndex||0)*800;water.ellipse(bx,H*.24,2+q*3,3+q*6).fill({color:0xd5e5ce,alpha:.9});water.ellipse(bx-1,H*.24-1,1,2).fill({color:0xfff9e1,alpha:.9});}
     for(let i=0;i<24;i++){const xx=(i*71+t*6)%800,yy=(i*73+t*120)%H;currents.moveTo(xx,yy).lineTo(xx-1,yy+7).stroke({color:0xe8f1da,width:1,alpha:.19*(1-f.finish)});}
-    // Water is clipped visually to the cup mouth, with level and surface ripples.
-    const waterY=y-10-s.caught*.25;water.ellipse(x,waterY,38,10).fill({color:0x85b7a6,alpha:.32+s.caught*.045});water.ellipse(x,waterY,34,7).stroke({color:0xe2eed1,width:1,alpha:.6});
-    if(f.pulse)water.ellipse(x,waterY,8+(1-f.pulse)*28,2+(1-f.pulse)*6).stroke({color:0xfff5cf,width:1.6,alpha:f.pulse});
+    // Water and impact rings share the cup's mouth origin and stay inside its rim.
+    cupWater.clear();const waterY=4-s.caught*.35;
+    cupWater.ellipse(0,waterY,cup.waterRadius,cup.waterDepth).fill({color:0x6caa98,alpha:.28+s.caught*.035});
+    cupWater.ellipse(0,waterY,cup.waterRadius-2,cup.waterDepth-2).stroke({color:0xdaebc7,width:.8,alpha:.5});
+    for(const e of s.events){const age=s.age-e.age;if(e.type!=='catch'||age<0||age>.55)continue;const q=age/.55,localX=clamp((e.offsetX||0)*800,-27,27);
+     cupWater.ellipse(localX*(1-q),waterY,3+q*30,2+q*11).stroke({color:0xfff2c7,width:1.4,alpha:1-q});
+     for(let j=0;j<5;j++){const dx=(j-2)*3*q;cupWater.ellipse(localX+dx,waterY-Math.sin(q*Math.PI)*9+j%2,1.1,1.7).fill({color:0xe2eed4,alpha:1-q});}
+    }
    }
    if(actor){
-    const size=game==='creek'?79:118,base=size/actor.texture.width,tilt=game==='creek'?Math.sin(t*1.6)*.045+s.actor.vy*.7:clamp((s.control.x-s.actor.x)*.7,-.09,.09);
-    actor.position.set(x,game==='rain'?y-10:y);actor.rotation=s.play.reduced?0:tilt;actor.scale.set(base*(1+f.pulse*.045),base*(1-f.pulse*.04));actor.alpha=game==='creek'?1-f.finish*.75:1;
+    const size=game==='creek'?79:cup.width,base=size/actor.texture.width,tilt=game==='creek'?Math.sin(t*1.6)*.045+s.actor.vy*.7:clamp((s.control.x-s.actor.x)*.7,-.09,.09);
+    if(game==='rain'){actorLayer.position.set(x,y);actor.position.set(0,0);actor.rotation=0;actor.scale.set(base);}else{actor.position.set(x,y);actor.rotation=s.play.reduced?0:tilt;actor.scale.set(base*(1+f.pulse*.045),base*(1-f.pulse*.04));}actor.alpha=game==='creek'?1-f.finish*.75:1;
     if(original){const buffer=actor.geometry.getBuffer('aPosition'),v=buffer.data;for(let i=0;i<v.length;i+=2){v[i]=original[i];v[i+1]=original[i+1]+(s.play.reduced?0:Math.sin(original[i]/actor.texture.width*4+t*2)*Math.sin(original[i+1]/actor.texture.height*Math.PI)*3);}buffer.update();}
    }
-   for(const e of s.events){const age=s.age-e.age;if(age<0||age>1.15)continue;const success=['catch','goal','complete'].includes(e.type),ripple=e.type==='ripple';if(!success&&!ripple&&e.type!=='miss'&&e.type!=='bump')continue;const alpha=1-age/1.15,ex=e.x*800,ey=e.y*H;
+   for(const e of s.events){const age=s.age-e.age;if(age<0||age>1.15||game==='rain'&&e.type==='catch')continue;const success=['catch','goal','complete'].includes(e.type),ripple=e.type==='ripple';if(!success&&!ripple&&e.type!=='miss'&&e.type!=='bump')continue;const alpha=1-age/1.15,ex=e.x*800,ey=e.y*H;
     for(let j=0;j<(ripple?3:2);j++)effects.ellipse(ex,ey,5+age*65+j*11,3+age*24+j*4).stroke({color:success?0xffecc0:0xe2f0d9,width:success?1.7:1.2,alpha:alpha*.7});
     if(success)for(let j=0;j<8;j++){const angle=j*Math.PI/4;effects.ellipse(ex+Math.cos(angle)*age*40,ey-Math.sin(angle)*age*32-age*24+age*age*35,1.7,2.7).fill({color:0xffedb9,alpha});}
    }
@@ -67,5 +75,5 @@
   function dispose(){if(disposed)return;disposed=true;root.destroy({children:true});for(const t of textures)t.destroy(true);}
   return {root,install,paint,dispose,get ready(){return hasScene&&hasActor;}};
  }
- return {assets,nextDrop,finishDuration,sample,create};
+ return {assets,cup,nextDrop,finishDuration,sample,create};
 }));

@@ -198,3 +198,20 @@
 .micro-panel[data-game="creek"] .micro-surface{cursor:crosshair}
 
 .micro-panel[data-game="rain"]:is([data-phase="play"],[data-phase="caught"]) .wind-hud-bottom{opacity:0}
+
+/* Keep the dismissal at the card edge, independent of copy width. */
+.choice-feedback{padding-right:58px}
+.choice-feedback>div{flex:1;min-width:0;overflow-wrap:anywhere}
+.choice-feedback #choice-feedback-close{position:absolute;top:6px;right:6px;width:44px;height:44px;min-width:44px;padding:0;display:grid;place-items:center;border-radius:50%}
+.choice-feedback #choice-feedback-close:hover{background:#e8e9d5}
+@media(max-width:680px){.choice-feedback{padding-right:55px}.choice-feedback #choice-feedback-close{top:3px;right:3px}}
+/* Notes are deliberate notebook pages, never empty badge placeholders. */
+.journal-memory-label{width:96px;height:96px;box-sizing:border-box;padding:8px 5px;display:flex;flex-direction:column;gap:2px;justify-content:center;border:1px solid #d5dac2;border-left:3px solid #b5c4a0;border-radius:3px 9px 9px 3px;background:repeating-linear-gradient(0deg,transparent,transparent 17px,#8d9d7312 18px),#f2f2e4;color:#75896c}
+.journal-memory-label svg{width:57px;height:35px;flex:none}.journal-memory-label>span{font:12px var(--serif)}.journal-memory-label>small{font-size:8px;color:#8c967f}
+.journal-entry:has(.journal-memory-label){background:transparent}
+.journal-badge-button{height:100%;justify-content:flex-start}.journal-badge-button>.journal-badge-art,.journal-badge-button>.journal-memory-label{flex:none}
+.journal-entry.found strong{min-height:3.4em;overflow-wrap:anywhere}.journal-entry .journal-badge-place{margin-top:auto;padding-top:3px}
+.journal-tag-art{position:relative;background-image:none;display:grid;place-items:center;overflow:hidden}
+.journal-tag-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.journal-art-status{font-size:10px;line-height:1.7;color:#8a987c;text-align:center;padding:7px}.journal-art-status[hidden]{display:none}
+.journal-note-status{display:block;font-size:11px;line-height:1.8;color:#809073;margin:8px 0}
+@media(max-width:680px){.journal-memory-label{width:82px;height:82px;padding:5px}.journal-memory-label svg{width:48px;height:29px}.journal-memory-label>span{font-size:11px}.journal-memory-label>small{font-size:7px}}

@@ -55,6 +55,6 @@ for(const a of windLayers.entries){const b=fs.readFileSync(path.join(dir,a.file)
 console.log('PASS: generated Wugong foreground is packaged, hash-verified and used by the scene.');
 
 const waterLayers=require('../dist/sprites/water-layers.json'),water=require('../dist/water-scene.js');
-for(const a of waterLayers.entries){const b=fs.readFileSync(path.join(dir,a.file));assert.equal(b.toString('ascii',8,12),'WEBP');assert.equal(b.length,a.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),a.sha256);assert.ok(b.length<350000);assert.ok(Object.values(water.assets).some(group=>Object.values(group).includes(a.file)));}
+for(const a of waterLayers.entries){const b=fs.readFileSync(path.join(dir,a.file));assert.equal(b.toString('ascii',8,12),'WEBP');assert.equal(b.length,a.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),a.sha256);assert.ok(b.length<350000);assert.ok(a.supersededBy?waterLayers.entries.some(e=>e.file===a.supersededBy):Object.values(water.assets).some(group=>Object.values(group).includes(a.file)));}
 assert.ok(html.indexOf('src="water-scene.js"')<html.indexOf('src="mini-games.js"'));
 console.log('PASS: water encounter artwork is packaged, hash-verified and loaded before gameplay.');
