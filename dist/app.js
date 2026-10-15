@@ -6,12 +6,10 @@
  const artCache=window.TrailImageCache?.create(window.Image);
  let miniPendingPoint=null,miniSoundSerial=0,rewardCollecting=false,rewardFlight=null,windWasOpen=false;
  let micro=null,microRefs=null,microReturn=null,microPointer=null,tripMoments=[];
+ let journalOpen=false,journalTrigger=null,journalReturn=null,journalScroll='';
  let journalRoute='all',journalPageSize=window.TrailJournal.PAGE_SIZE,choiceResult=null,reward=null,rewardReturn=null,rewardScroll='';
  let storage=null;try{storage=localStorage;}catch(_){}
- const historyReset=D.historyState(storage);
- let trip=D.create(state.routeId),journal=historyReset==='unavailable'?[]:D.loadMoments(storage),natureId=null,natureNode=null,naturePoint=null,natureArt=null,lifeActors=[],footprints=[],actionStarted=-Infinity;
- $('journal-reset-notice').hidden=historyReset!=='legacy';
- if(historyReset==='unavailable')$('journal-storage').textContent='浏览器未允许清理或保存手帐，旧数据尚未确认删除；本次先从空白手帐开始。';
+ let trip=D.create(state.routeId),journal=D.loadMoments(storage),natureId=null,natureNode=null,naturePoint=null,natureArt=null,lifeActors=[],footprints=[],actionStarted=-Infinity;
  // Keep the actual decoded image nodes: private hosting may revalidate a new request even for a small WebP.
  const photoCache=new Map();
  function preparePhoto(cp,priority='low'){
@@ -75,16 +73,21 @@
   const entryIndex=D.CATALOG.findIndex(entry=>entry.id===moment.id),index=entryIndex%9,badge=html('span',null,parent,'journal-badge-art');badge.setAttribute('role','img');badge.setAttribute('aria-label',moment.title+'的山野徽章');badge.style.backgroundImage=`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v2'][Math.floor(entryIndex/9)]}.webp')`;badge.style.backgroundPosition=`${index%3*50}% ${Math.floor(index/3)*50}%`;return badge;
  }
  function setupJournalTools(){
-  $('journal-reset').addEventListener('click',()=>{
-   if(!window.confirm?.('永久删除当前浏览器中这份山径手帐的全部记录？此操作无法恢复，不影响其他浏览器或其他存档。'))return;
-   const result=D.resetHistory(storage);
-   if(result==='cleared'){journal=[];tripMoments=[];renderJournal();renderEndingJournal();$('journal-reset-notice').hidden=true;$('journal-storage').textContent='旧手帐已清空，从下一次完成互动重新记起。';}
-   else if(result==='ready'){$('journal-reset-notice').hidden=true;journal=D.loadMoments(storage);renderJournal();}
-   else $('journal-reset-status').textContent='浏览器未允许删除，旧手帐尚未清空。';
+  const dialog=$('journal-detail');
+  $('journal-detail-close').addEventListener('click',()=>dialog.close());
+  dialog.addEventListener('keydown',event=>event.stopPropagation());
+  dialog.addEventListener('close',()=>{
+   if(!journalOpen)return;
+   journalOpen=false;document.body.style.overflow=journalScroll;
+   journalTrigger?.setAttribute('aria-expanded','false');
+   if(journalReturn==='walking'&&!audioBackground&&!document.hidden)state=J.resume(state);
+   journalReturn=null;uiKey='';render();updatePosition(0);ensureLoop();
+   if(journalTrigger?.isConnected)journalTrigger.focus({preventScroll:true});
+   journalTrigger=null;
   });
   for(const r of G.ROUTES){const option=html('option',r.name,$('journal-route'));option.setAttribute('value',r.id);}
   $('journal-route').addEventListener('change',()=>{journalRoute=G.ROUTES.some(r=>r.id===$('journal-route').value)?$('journal-route').value:'all';journalPageSize=window.TrailJournal.PAGE_SIZE;renderJournal();});
-  $('journal-more').addEventListener('click',()=>{const previous=$('journal-list').children.length;journalPageSize+=window.TrailJournal.PAGE_SIZE;renderJournal(true);$('journal-list').children[previous]?.querySelector('article')?.focus();});
+  $('journal-more').addEventListener('click',()=>{const previous=$('journal-list').children.length;journalPageSize+=window.TrailJournal.PAGE_SIZE;renderJournal(true);$('journal-list').children[previous]?.querySelector('button')?.focus();});
  }
  function renderJournal(append=false){
   const list=$('journal-list'),book=window.TrailJournal.page(journal,journalRoute,journalPageSize);
@@ -99,11 +102,18 @@
   if(!book.total){const empty=html('li',null,list,'journal-empty');html('strong','这一页，留给下一次相遇',empty);html('p','一阵风、一片落叶，或一段安静的水声。沿途收下的手绘和回忆，会一起留在这里。',empty);return;}
   for(const moment of book.entries.slice(offset)){
    const li=html('li',null,list,'journal-entry found');li.setAttribute('data-route',moment.route);li.setAttribute('data-moment',moment.key);li.setAttribute('data-kind',D.hasTag(moment)?'tag':'note');
-   const page=html('article',null,li,'journal-spread');page.setAttribute('tabindex','-1');page.setAttribute('aria-label',moment.title+' · '+moment.place);
+   const button=html('button',null,li,'journal-wall-button');button.setAttribute('type','button');button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-controls','journal-detail');button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','翻看'+moment.title+' · '+moment.place);
+   momentBadge(button,moment);html('strong',moment.title,button,'journal-wall-title');html('small',moment.place.split(' · ')[0],button,'journal-wall-place');
+   button.addEventListener('click',()=>openJournalDetail(moment,button));
+  }
+ }
+ function openJournalDetail(moment,button){
+  if(journalOpen||reward)return;
+  const dialog=$('journal-detail'),page=$('journal-detail-page');page.replaceChildren();
    if(D.hasTag(moment)){const art=html('div',null,page,'journal-illustration');momentBadge(art,moment);}
    const copy=html('div',null,page,'journal-copy');
    html('p',moment.place,copy,'journal-location');
-   html('h3',moment.title,copy,'journal-entry-title');
+   const title=html('h3',moment.title,copy,'journal-entry-title');title.id='journal-detail-title';
    html('p',moment.memory,copy,'journal-memory');
    const meta=html('div',null,copy,'journal-entry-meta');
    if(Number.isFinite(moment.createdAt)){const date=new Date(moment.createdAt),time=html('time',date.toLocaleString('zh-CN',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}),meta,'journal-time');time.setAttribute('datetime',date.toISOString());}
@@ -112,7 +122,9 @@
    const weather=G.WEATHER[moment.weather];if(weather)html('span',weather.name,meta,'journal-entry-weather');
    const proof=moment.edition===3?window.TrailRouteMoments.evidence(moment.id):null,note=proof?{fact:proof.fact}:K.observation(moment.id),source=proof||(note&&K.source(note.source));
    if(note&&source){const detail=html('details',null,copy,'journal-place-note');html('summary','关于这片山野',detail);html('p',note.fact,detail);const link=html('a',source.name+' ↗',detail,'journal-source');link.setAttribute('href',source.url);link.setAttribute('target','_blank');link.setAttribute('rel','noopener noreferrer');}
-  }
+  dialog.showModal();journalOpen=true;journalTrigger=button;journalReturn=state.status;button.setAttribute('aria-expanded','true');
+  journalScroll=document.body.style.overflow||'';document.body.style.overflow='hidden';state=J.pause(state);
+  clearMicroPointer();if(micro)micro=X.release(micro);cancelLoop();uiKey='';render();$('journal-detail-close').focus({preventScroll:true});
  }
  function renderEndingJournal(){const section=$('ending-journal'),list=$('ending-badges'),detail=$('ending-detail');const collected=tripMoments.filter(D.hasTag);section.hidden=!collected.length;list.replaceChildren();detail.textContent='';for(const moment of collected){const button=html('button',null,list,'ending-badge-button');button.setAttribute('type','button');button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ending-detail');button.setAttribute('aria-label','翻看'+moment.title);momentBadge(button,moment);html('small',moment.title,button);button.addEventListener('click',()=>{const open=button.getAttribute('aria-expanded')==='true';for(const b of list.children)b.setAttribute('aria-expanded','false');button.setAttribute('aria-expanded',!open);detail.textContent=open?'':moment.place+' · '+moment.memory;});}}
  function fillNature(prefix,note){
@@ -238,11 +250,11 @@
  }
  function apply(next){const previous=state;state=next;uiKey='';render();updatePosition(state.status==='walking'?.1:0);if(state.status==='encounter'&&previous.pending?.id!==state.pending?.id){const button=state.pending.kind==='photo'?$('photo-continue'):$('story-choices').querySelector('button');button?.focus({preventScroll:true});}if(['finished','retreated'].includes(state.status)&&state.status!==previous.status)$('replay').focus({preventScroll:true});ensureLoop();}
  function cancelLoop(){if(rafId!==null){window.cancelAnimationFrame(rafId);rafId=null;}lastTime=null;}
- function ensureLoop(){const active=!reward&&!audioBackground&&!document.hidden&&(state.status==='walking'||micro);if(active&&rafId===null)rafId=window.requestAnimationFrame(frame);else if(!active)cancelLoop();}
+ function ensureLoop(){const active=!journalOpen&&!reward&&!audioBackground&&!document.hidden&&(state.status==='walking'||micro);if(active&&rafId===null)rafId=window.requestAnimationFrame(frame);else if(!active)cancelLoop();}
  function frame(time){rafId=null;const dt=lastTime===null?0:Math.max(0,Math.min(.25,(time-lastTime)/1000));lastTime=time;if(micro){if(audioBackground||document.hidden){cancelLoop();return;}if(miniPendingPoint){micro=X.move(micro,miniPendingPoint);miniPendingPoint=null;}micro=X.tick(micro,dt);updateMicroStatus();X.paint(microRefs,micro,motionReduced);if(micro.done)finishMicro(true);else ensureLoop();return;}const previous=state;if(state.status==='walking')gaitClock+=dt*state.pace;state=J.tick(state,dt);if(state.status==='encounter'&&previous.status==='walking'){render();updatePosition(0);const b=state.pending.kind==='photo'?$('photo-continue'):$('story-choices').querySelector('button');b?.focus({preventScroll:true});lastTime=null;}else{render();updatePosition(dt>0?1-Math.exp(-dt*6):.1);}if(state.status==='walking'){footstep();ensureLoop();}else{cancelLoop();if(['finished','retreated'].includes(state.status))$('replay').focus({preventScroll:true});}}
  function selectRoute(id){if(reward)closeReward(false);choiceResult=null;if(micro)finishMicro(false,false);tripMoments=[];cancelLoop();state=J.create(id);prepareRoutePhotos();trip=D.create(id,undefined,{recent:journal.filter(m=>m.route===id).slice(-3).map(m=>m.id)});natureId=null;natureNode=null;naturePoint=null;natureArt=null;actionStarted=-Infinity;$('transition-layer').replaceChildren();renderJournal();$('discovery-status').textContent='换一条山径，遇见新的瞬间。之前的回忆还在手帐里。';photoId=null;photoReturn=null;overview=false;echo='';gaitClock=0;hikerFacing=1;lastStrike=-1;lastWeather=null;uiKey='';view={x:0,y:0,w:720,h:600};$('photo-panel').hidden=true;describeRoute();drawMap();render();updatePosition(0);playTransition('route',J.routeOf(state).name);}
- function needsAudioResume(){return !reward&&sound&&!audioBackground&&!document.hidden&&(micro||photoId||['walking','encounter'].includes(state.status))&&!audioPlayer.running;}
- function syncAudio(){const requested=sound&&(!reward||window.TrailMiniGames?.kinds[reward.id])&&!audioBackground&&!document.hidden,mode=reward&&window.TrailMiniGames?.kinds[reward.id]?'moment':micro?'moment':photoId?'photo':state.status==='walking'?'walk':state.status==='encounter'?'choice':'silent';if(!requested){if(audioBackground||document.hidden)audioPlayer.hide();else if(reward&&sound)audioPlayer.setScene({routeId:state.routeId,mode:'silent'});}else audioPlayer.setScene({routeId:state.routeId,checkpointId:photoId,weather:J.weather(state),progress:state.progress,mode});const playing=requested&&audioPlayer.playing;$('sound-toggle').setAttribute('aria-pressed',sound);$('sound-toggle').textContent=soundBusy?'声音 · 开启中':soundError||(needsAudioResume()?'声音 · 点此恢复':`声音 · ${sound?'开':'关'}`);const p=window.TrailAudio.profile(photoId);$('photo-soundscape').hidden=!p;if(p){$('photo-soundscape').textContent=`♪ ${p.title} · ${playing?'正在播放':!sound?'声音关闭':audioBackground||document.hidden?'已暂停':'点声音按钮恢复'}`;$('photo-soundscape').setAttribute('data-playing',playing);}}
+ function needsAudioResume(){return !journalOpen&&!reward&&sound&&!audioBackground&&!document.hidden&&(micro||photoId||['walking','encounter'].includes(state.status))&&!audioPlayer.running;}
+ function syncAudio(){const requested=!journalOpen&&sound&&(!reward||window.TrailMiniGames?.kinds[reward.id])&&!audioBackground&&!document.hidden,mode=reward&&window.TrailMiniGames?.kinds[reward.id]?'moment':micro?'moment':photoId?'photo':state.status==='walking'?'walk':state.status==='encounter'?'choice':'silent';if(!requested){if(journalOpen||audioBackground||document.hidden)audioPlayer.hide();else if(reward&&sound)audioPlayer.setScene({routeId:state.routeId,mode:'silent'});}else audioPlayer.setScene({routeId:state.routeId,checkpointId:photoId,weather:J.weather(state),progress:state.progress,mode});const playing=requested&&audioPlayer.playing;$('sound-toggle').setAttribute('aria-pressed',sound);$('sound-toggle').textContent=soundBusy?'声音 · 开启中':soundError||(needsAudioResume()?'声音 · 点此恢复':`声音 · ${sound?'开':'关'}`);const p=window.TrailAudio.profile(photoId);$('photo-soundscape').hidden=!p;if(p){$('photo-soundscape').textContent=`♪ ${p.title} · ${playing?'正在播放':!sound?'声音关闭':audioBackground||document.hidden?'已暂停':'点声音按钮恢复'}`;$('photo-soundscape').setAttribute('data-playing',playing);}}
  function footstep(){const strike=Math.floor(gaitClock/.54);if(!sound||strike===lastStrike)return;lastStrike=strike;audioPlayer.step(state.routeId);}
  async function toggleSound(){if(soundBusy)return;if(!audioPlayer.available){soundError='此浏览器暂无音效';uiKey='';render();return;}soundError='';if(sound&&!needsAudioResume()){sound=false;audioPlayer.disable();uiKey='';render();return;}soundBusy=true;uiKey='';render();const ok=await audioPlayer.enable();soundBusy=false;sound=ok;if(!ok&&!soundError)soundError=audioPlayer.available?'声音未能开启，再试一次':'此浏览器暂无音效';uiKey='';render();}
  $('micro-skip').addEventListener('click',()=>finishMicro(!!micro?.acted||!!D.item(micro?.id)?.bonus));$('micro-surface').addEventListener('click',e=>{if(e.detail>0)return;performMicro({assist:true});});
@@ -257,7 +269,7 @@
  $('reward-continue').addEventListener('click',collectReward);$('choice-feedback-close').addEventListener('click',()=>{choiceResult=null;uiKey='';render();});
  $('overlay-action').addEventListener('click',()=>apply(J.start(state)));$('walk-toggle').addEventListener('click',()=>apply(state.status==='paused'?J.resume(state):J.pause(state)));$('photo-continue').addEventListener('click',closePhoto);$('photo-close').addEventListener('click',closePhoto);$('replay').addEventListener('click',()=>{const id=state.routeId;selectRoute(id);apply(J.start(state));});$('map-toggle').addEventListener('click',()=>{overview=!overview;uiKey='';render();updatePosition(0);});$('sound-toggle').addEventListener('click',toggleSound);$('observe-button').addEventListener('click',()=>{const active=discovery();if(active)captureDiscovery(active.id);});
  window.addEventListener('keydown',e=>{if(reward){if(e.key==='Escape'){e.preventDefault();closeReward();}else if(e.key==='Tab'){e.preventDefault();$('reward-continue').focus({preventScroll:true});}return;}if(e.ctrlKey||e.altKey||e.metaKey||e.repeat||['INPUT','TEXTAREA','SELECT'].includes(e.target?.tagName))return;if(e.key==='Escape'&&micro){e.preventDefault();finishMicro(micro.acted||D.item(micro.id).bonus);}else if(e.key==='Escape'&&photoId){e.preventDefault();closePhoto();}else if(['p','P','Escape'].includes(e.key)&&['walking','paused'].includes(state.status)&&!photoReturn&&!micro){e.preventDefault();apply(state.status==='paused'?J.resume(state):J.pause(state));}});
- const backgroundPause=()=>{audioBackground=true;if(reward)rewardReturn='paused';if(micro){microReturn='paused';micro=X.release(micro);clearMicroPointer();}if(state.status==='walking')apply(J.pause(state));cancelLoop();audioPlayer.hide();uiKey='';render();};const foreground=()=>{audioBackground=false;uiKey='';render();ensureLoop();};window.addEventListener('blur',backgroundPause);window.addEventListener('focus',foreground);document.addEventListener('visibilitychange',()=>{if(document.hidden)backgroundPause();else foreground();});window.addEventListener('pagehide',e=>{backgroundPause();if(!e.persisted){audioPlayer.destroy();window.TrailMiniGames?.dispose(microRefs);}});window.addEventListener('pageshow',e=>{if(e.persisted)foreground();});
+ const backgroundPause=()=>{audioBackground=true;if(journalOpen)journalReturn='paused';if(reward)rewardReturn='paused';if(micro){microReturn='paused';micro=X.release(micro);clearMicroPointer();}if(state.status==='walking')apply(J.pause(state));cancelLoop();audioPlayer.hide();uiKey='';render();};const foreground=()=>{audioBackground=false;uiKey='';render();ensureLoop();};window.addEventListener('blur',backgroundPause);window.addEventListener('focus',foreground);document.addEventListener('visibilitychange',()=>{if(document.hidden)backgroundPause();else foreground();});window.addEventListener('pagehide',e=>{backgroundPause();if(!e.persisted){audioPlayer.destroy();window.TrailMiniGames?.dispose(microRefs);}});window.addEventListener('pageshow',e=>{if(e.persisted)foreground();});
  prepareRoutePhotos();drawPicker();describeRoute();drawMap();setupJournalTools();renderJournal();render();updatePosition(0);
  window.addEventListener('resize',()=>updatePosition(0));
  if(window.PIXI&&window.TrailPixiScene){window.TrailPixiScene.create(window.PIXI,$('map-frame'),{onReady:()=>{$('map-frame').classList.toggle('gpu-ready',true);$('map-frame').setAttribute('data-renderer','pixi');},onFallback:()=>{$('map-frame').classList.toggle('gpu-ready',false);$('map-frame').setAttribute('data-renderer','svg');}}).then(renderer=>{sceneRenderer=renderer;if(renderer?.alive){renderer.setPlan(scenePlan);updatePosition(0);}}).catch(()=>{$('map-frame').classList.toggle('gpu-ready',false);});}

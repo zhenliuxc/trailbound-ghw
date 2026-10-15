@@ -264,4 +264,31 @@
  .journal-copy .journal-location{font-size:11px}.journal-notebook .journal-entry[data-kind="note"] .journal-spread{padding-block:24px}
 }
 
-.journal-reset-notice{padding:16px 20px;margin:16px 0;background:#f3eddb;border:1px solid #d9ccaa;border-radius:10px;color:#6e674f}.journal-reset-notice strong{font:18px var(--serif)}.journal-reset-notice p{font-size:12px;line-height:1.9;margin:8px 0}.journal-reset-notice button{padding:8px 15px;border:1px solid #bbac87;border-radius:8px;background:#fffaf0;color:#6e674f;font-size:12px}.journal-reset-notice #journal-reset-status:empty{display:none}
+
+/* Collected artwork is a responsive label wall; full memories open in a dialog. */
+.journal-notebook .journal-list{grid-template-columns:repeat(5,minmax(0,1fr));gap:20px 14px;align-items:stretch}
+.journal-notebook .journal-entry.found{border:0;background:transparent;box-shadow:none;text-align:center;border-radius:14px}
+.journal-wall-button{display:flex;flex-direction:column;align-items:center;width:100%;height:100%;padding:14px 8px 12px;border:1px solid transparent;border-radius:14px;background:transparent;color:#4f6948;transition:background .2s,border-color .2s,transform .2s;scroll-margin-block:24px}
+.journal-wall-button:hover,.journal-wall-button[aria-expanded="true"]{background:#eef1e3;border-color:#d5ddc5;transform:translateY(-2px)}
+.journal-wall-button>.journal-badge-art,.journal-wall-button>.journal-memory-label{width:128px;height:128px;max-width:100%;flex:none}
+.journal-notebook .journal-wall-title{font:normal 15px/1.7 var(--serif);color:#486344;min-height:3.4em;max-width:none;margin:12px 0 4px;overflow-wrap:anywhere}
+.journal-notebook .journal-wall-place{font-size:11px;line-height:1.8;color:#7c8b71;margin-top:auto;padding-top:3px}
+.journal-detail{width:min(720px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding:0;border:1px solid #d5d9c0;border-radius:16px;background:#fffdf4;color:var(--ink);box-shadow:0 24px 80px #253b3840;overscroll-behavior:contain}
+.journal-detail::backdrop{background:#263d3873}
+.journal-detail[open]{animation:journal-unfold .24s ease-out}
+.journal-detail-bar{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 24px;background:#fffdf4f5;border-bottom:1px solid #e2e4d4;font-size:11px;color:#7b896e}
+.journal-detail-bar button{width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:transparent;font-size:28px;font-weight:300;color:#77846b}
+.journal-detail-bar button:hover{background:#eef1e3}
+.journal-detail .journal-spread{grid-template-columns:230px minmax(0,1fr);gap:28px;padding:30px}
+.journal-detail .journal-illustration .journal-badge-art{width:230px;height:230px}
+.journal-detail .journal-copy .journal-entry-title{font-size:25px}
+.journal-detail .journal-memory{font-size:16px;line-height:1.95}
+.journal-detail .journal-place-note{margin-top:16px;padding-top:8px;border-top:1px solid #e2e4d4}
+.journal-detail .journal-place-note summary{cursor:pointer;min-height:44px;line-height:44px;font-size:12px}
+.journal-detail .journal-place-note p{font-size:12px;line-height:1.9}
+.journal-detail .journal-source{font-size:11px}
+.journal-detail .journal-spread:not(:has(.journal-illustration)){grid-template-columns:1fr}
+@keyframes journal-unfold{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@media(min-width:681px) and (max-width:960px){.journal-notebook .journal-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 10px}.journal-wall-button>.journal-badge-art,.journal-wall-button>.journal-memory-label{width:116px;height:116px}}
+@media(max-width:680px){.journal-notebook .journal-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}.journal-wall-button{padding:12px 6px}.journal-wall-button>.journal-badge-art,.journal-wall-button>.journal-memory-label{width:112px;height:112px}.journal-notebook .journal-wall-title{font-size:14px}.journal-detail{width:calc(100% - 24px);max-height:calc(100dvh - 24px);border-radius:14px}.journal-detail-bar{padding-left:18px}.journal-detail .journal-spread{grid-template-columns:1fr;gap:20px;padding:22px}.journal-detail .journal-illustration .journal-badge-art{width:200px;height:200px}.journal-detail .journal-copy .journal-entry-title{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.journal-detail[open]{animation:none}.journal-wall-button{transition:none}.journal-wall-button:hover,.journal-wall-button[aria-expanded="true"]{transform:none}}
