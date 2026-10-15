@@ -61,6 +61,6 @@
  }
  function draw(svg,parent,entry){const refs=P.custom(entry)?P.draw(svg,parent,entry):drawScene(svg,parent,entry);refs.playView=P.decorate(svg,parent,entry,refs);return refs;}
  function paint(refs,s,reduced=false){if(!refs.custom)paintScene(refs,s,reduced);P.paint(refs.playView,s,reduced);}
- function outcome(s,entry){return {id:s.id,interaction:s.gesture,memory:P.memory(s,entry),title:s.play.complete?P.LABELS[s.play.type]+'的一刻':entry.name};}
+ function outcome(s,entry){return {id:s.id,edition:entry.edition,earned:s.play.complete===true,interaction:s.gesture,memory:P.memory(s,entry),title:s.play.complete?entry.tag:entry.name};}
  return {create,act,move,release,tick,outcome,draw,paint,instruction:P.instruction,status:P.status,playType:P.type,playTarget:P.target};
 }));

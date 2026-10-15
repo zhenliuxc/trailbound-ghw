@@ -3,7 +3,7 @@ const storage=()=>{const data=new Map();return {getItem:key=>data.get(key)||null
 test('moments preserve the capture context and repeated trips keep separate memories of the same scene',()=>{
  const trip=D.create('wugong',42),id=trip.slots[0].id,state={routeId:'wugong',status:'walking',progress:trip.slots[0].at,elapsed:9},captured=D.capture(state,trip,id);
  const first=D.moment(state,captured,id,{weather:'clear',now:1000}),second=D.moment({...state,elapsed:12},captured,id,{weather:'wind',now:2000});
- state.elapsed=80;assert.equal(first.elapsed,9);assert.equal(first.route,'wugong');assert.match(first.place,/武功山/);assert.match(first.title,/小鸟/);assert.notEqual(first.key,second.key);
+ state.elapsed=80;assert.equal(first.elapsed,9);assert.equal(first.route,'wugong');assert.match(first.place,/武功山/);assert.match(first.title,/草甸/);assert.equal(D.hasTag(first),false);assert.notEqual(first.key,second.key);
  const s=storage();assert.equal(D.saveMoments(s,[first,second]),true);const saved=D.loadMoments(s);assert.equal(saved.length,2);assert.deepEqual(saved.map(m=>m.weather),['clear','wind']);assert.deepEqual(saved.map(m=>m.createdAt),[1000,2000]);
 });
 test('old notebooks retain their entries without fabricated dates, weather or animal encounters',()=>{

@@ -1,0 +1,222 @@
+{
+  "edition": 3,
+  "generator": "repo-native SVG, route-specific geometry",
+  "entries": [
+    {
+      "id": "meadow-bird",
+      "tag": "草浪来信",
+      "scene": "grass",
+      "play": "sweep",
+      "file": "badges/meadow-bird-v3.svg",
+      "bytes": 12104,
+      "sha256": "7c57f8809744f05ea9c30fc479b3c2c69ea86944490e4694908ec159786f8232"
+    },
+    {
+      "id": "meadow-butterfly",
+      "tag": "云海开信",
+      "scene": "cloudsea",
+      "play": "wait",
+      "file": "badges/meadow-butterfly-v3.svg",
+      "bytes": 2269,
+      "sha256": "47740157df9d646756ff8a7ff85e0e27e9f7812db51b87768ad21d58c7606ab7"
+    },
+    {
+      "id": "meadow-flower",
+      "tag": "金顶石语",
+      "scene": "altar",
+      "play": "turn",
+      "file": "badges/meadow-flower-v3.svg",
+      "bytes": 4933,
+      "sha256": "5c35616be200b4dea48bbfb46a3d4d92dc2008eb4cc2bc5be8cbac1dc89af6db"
+    },
+    {
+      "id": "gorge-goat",
+      "tag": "江谷回响",
+      "scene": "canyon",
+      "play": "panorama",
+      "file": "badges/gorge-goat-v3.svg",
+      "bytes": 2433,
+      "sha256": "93d16f9ac00b0b83ff5f414e1ba7bdf29e70a4d6a3452aed1e1a59777f8ad0a8"
+    },
+    {
+      "id": "gorge-eagle",
+      "tag": "雪山同坐",
+      "scene": "inn",
+      "play": "listen",
+      "file": "badges/gorge-eagle-v3.svg",
+      "bytes": 3424,
+      "sha256": "1cc1b7a997788710c8ce088651de3acb917e2d42a42c9d4a70b2d72ed9d82a34"
+    },
+    {
+      "id": "gorge-sparkle",
+      "tag": "瀑布来风",
+      "scene": "waterfall",
+      "play": "spray",
+      "file": "badges/gorge-sparkle-v3.svg",
+      "bytes": 5090,
+      "sha256": "35711f080e4ba0e9aa6c2aeb1e1201fae187b3e3a51e4e0e4233274afd994d84"
+    },
+    {
+      "id": "snow-tracks",
+      "tag": "石海折光",
+      "scene": "boulders",
+      "play": "turn",
+      "file": "badges/snow-tracks-v3.svg",
+      "bytes": 9661,
+      "sha256": "65a6bbeb205221e30d8ae9e8f03b3644438c734f9afe47228ac772d73e0d016d"
+    },
+    {
+      "id": "snow-lichen",
+      "tag": "秦岭脊线",
+      "scene": "ridge",
+      "play": "outline",
+      "file": "badges/snow-lichen-v3.svg",
+      "bytes": 1864,
+      "sha256": "2ab56f63de2109c63036bdfa8a6d90ce60b180d2c2a551d6884e915480b100c4"
+    },
+    {
+      "id": "snow-light",
+      "tag": "雾隙见峰",
+      "scene": "mistpeak",
+      "play": "wait",
+      "file": "badges/snow-light-v3.svg",
+      "bytes": 2641,
+      "sha256": "23c657e99c8cafef35489bae7dbdc8b4037f33d6d22cd4de9787da180f87ed9b"
+    },
+    {
+      "id": "coast-sand",
+      "tag": "海湾展开",
+      "scene": "bay",
+      "play": "panorama",
+      "file": "badges/coast-sand-v3.svg",
+      "bytes": 3212,
+      "sha256": "8d2bc1dbe8dedaf209659932c4d5db809ed65e335946ddc4d4767b9846140f2f"
+    },
+    {
+      "id": "coast-shell",
+      "tag": "潮汐收笔",
+      "scene": "sand",
+      "play": "sand",
+      "file": "badges/coast-shell-v3.svg",
+      "bytes": 4853,
+      "sha256": "a56467b7f6555981028dc965e7d5c85d26b3be1645778e528908f7f52bcfe319"
+    },
+    {
+      "id": "coast-pier",
+      "tag": "赤径慢潮",
+      "scene": "harbour",
+      "play": "settle",
+      "file": "badges/coast-pier-v3.svg",
+      "bytes": 4832,
+      "sha256": "965e4a48dda5b7e4af090548ec1e077e21ca1472a0fc8f6d88c1de0ee8570106"
+    },
+    {
+      "id": "valley-moss",
+      "tag": "枯树照影",
+      "scene": "deadtrees",
+      "play": "align",
+      "file": "badges/valley-moss-v3.svg",
+      "bytes": 4395,
+      "sha256": "704b4c1248dd8d90833671ddebf228c4b8f9551d51127c72cd785d6f21119894"
+    },
+    {
+      "id": "valley-bridge",
+      "tag": "红石微光",
+      "scene": "redrock",
+      "play": "inspect",
+      "file": "badges/valley-bridge-v3.svg",
+      "bytes": 6824,
+      "sha256": "13cb969204801f28c5355d092ad4df790f003012e4f6c8c017efba63229a96ad"
+    },
+    {
+      "id": "valley-reflection",
+      "tag": "木骡子开阔",
+      "scene": "alpine",
+      "play": "panorama",
+      "file": "badges/valley-reflection-v3.svg",
+      "bytes": 4144,
+      "sha256": "bf37701625d5c518812be52d8eed884b862de7207da584921c316841c1fb2cdd"
+    },
+    {
+      "id": "bamboo-drop",
+      "tag": "竹涛一阵",
+      "scene": "bamboowind",
+      "play": "sweep",
+      "file": "badges/bamboo-drop-v3.svg",
+      "bytes": 16348,
+      "sha256": "4091fabbce6ca927e6fa3de09be52d548e3da6e5d738ecd13b881ab0f70e153b"
+    },
+    {
+      "id": "bamboo-step",
+      "tag": "古道留痕",
+      "scene": "stonepath",
+      "play": "inspect",
+      "file": "badges/bamboo-step-v3.svg",
+      "bytes": 6928,
+      "sha256": "b0eefdaf15063fc89de13a585bd6d4148c2129c1eec4b94fb8bec77811ddd574"
+    },
+    {
+      "id": "bamboo-leaf",
+      "tag": "林隙远山",
+      "scene": "forestwindow",
+      "play": "panorama",
+      "file": "badges/bamboo-leaf-v3.svg",
+      "bytes": 3916,
+      "sha256": "fddc0cea3146b86de0af515f3aa79df0d6482d60119e01b21d2084a834101350"
+    },
+    {
+      "id": "westlake-stones",
+      "tag": "涉溪清响",
+      "scene": "creeksteps",
+      "play": "trail",
+      "file": "badges/westlake-stones-v3.svg",
+      "bytes": 4077,
+      "sha256": "c8972c6387659c6d9b948265d126e4d36e462ad8ea60650480354bd9550edfe5"
+    },
+    {
+      "id": "westlake-tea",
+      "tag": "一芽春信",
+      "scene": "teasprig",
+      "play": "inspect",
+      "file": "badges/westlake-tea-v3.svg",
+      "bytes": 7733,
+      "sha256": "21ee7edb8823a465a402185f74c8b93f7866ed01423215226c60fa4aac0439ee"
+    },
+    {
+      "id": "westlake-eaves",
+      "tag": "一盏龙井",
+      "scene": "teacup",
+      "play": "brew",
+      "file": "badges/westlake-eaves-v3.svg",
+      "bytes": 6261,
+      "sha256": "bf0562b24e82a553db449fa27f2cdff066e89b022eff2426bd85908a0996bf41"
+    },
+    {
+      "id": "westlake-floating-leaf",
+      "tag": "水绕石行",
+      "scene": "creekleaf",
+      "play": "guide",
+      "file": "badges/westlake-floating-leaf-v3.svg",
+      "bytes": 3249,
+      "sha256": "4a5ed1795a9a29f6b0df9d0ec0aa6c8e2c4f09a7172ae81363c3cc878b1a52ca"
+    },
+    {
+      "id": "westlake-leaf-shadow",
+      "tag": "茶垄流光",
+      "scene": "tealight",
+      "play": "align",
+      "file": "badges/westlake-leaf-shadow-v3.svg",
+      "bytes": 3337,
+      "sha256": "cec05bfe1ad23c5a84cecfeb21b385e05ba1f347c7b6cad47c8f89402c64738e"
+    },
+    {
+      "id": "westlake-basket",
+      "tag": "村口茶香",
+      "scene": "villagetea",
+      "play": "brew",
+      "file": "badges/westlake-basket-v3.svg",
+      "bytes": 6656,
+      "sha256": "791f40348d7b0849a9a25d4aa914abd95d2c3d249bc856bbaeaf81d4b409377a"
+    }
+  ]
+}

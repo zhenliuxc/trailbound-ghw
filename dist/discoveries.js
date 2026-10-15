@@ -1,4 +1,4 @@
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailDiscoveries=api;}(typeof globalThis!=='undefined'?globalThis:this,function(){
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./route-moments.js'):root.TrailRouteMoments);if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailDiscoveries=api;}(typeof globalThis!=='undefined'?globalThis:this,function(R){
  'use strict';
  const KEY='trailbound.field-journal.v1';
  // Travel moments belong to a landscape, rather than to its photo checkpoints.
@@ -158,6 +158,8 @@
  for(const entry of CATALOG.filter(x=>x.route==='westlake'))entry.interaction=entry.interaction||({stones:'ripple',tea:'leaf',eaves:'drip'})[entry.icon];
  const interactions={'meadow-bird':'watch','meadow-butterfly':'breeze','meadow-flower':'breeze','gorge-goat':'watch','gorge-eagle':'watch','gorge-sparkle':'ripple','snow-tracks':'trace','snow-lichen':'trace','snow-light':'breeze','coast-sand':'ripple','coast-shell':'trace','coast-pier':'ripple','valley-moss':'trace','valley-bridge':'ripple','valley-reflection':'ripple','bamboo-drop':'drip','bamboo-step':'trace','bamboo-leaf':'breeze'};
  for(const entry of CATALOG)if(interactions[entry.id])entry.interaction=interactions[entry.id];
+ const LEGACY=Object.fromEntries(CATALOG.map(e=>[e.id,{...e}]));
+ for(const entry of CATALOG)Object.assign(entry,R.profile(entry.id));
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}
@@ -177,17 +179,19 @@
  const finite=(value,min,max)=>Number.isFinite(value)?Math.max(min,Math.min(max,value)):null;
  function moment(state,trip,id,{weather=null,now=Date.now(),experience=null}={}){
   const entry=item(id);if(!entry||entry.route!==trip.route||!trip.found.includes(id))return null;
-  return {key:`${now}-${trip.seed}-${id}`,id,route:entry.route,place:entry.place,title:experience?.id===id?experience.title:entry.name,memory:experience?.id===id?experience.memory:entry.memory,...(experience?.id===id?{interaction:experience.interaction}:{}),icon:entry.icon,progress:finite(state.progress,0,1),elapsed:finite(state.elapsed,0,86400),weather:WEATHER.has(weather)?weather:null,createdAt:finite(now,0,8640000000000000),legacy:false};
+  return {edition:3,earned:experience?.id===id&&experience.edition===3&&experience.earned===true,tag:experience?.id===id&&experience.edition===3&&experience.earned===true?entry.tag:null,key:`${now}-${trip.seed}-${id}`,id,route:entry.route,place:entry.place,title:experience?.id===id?experience.title:entry.name,memory:experience?.id===id?experience.memory:entry.memory,...(experience?.id===id?{interaction:experience.interaction,...(experience.edition===3?{edition:3,earned:experience.earned===true,tag:experience.earned===true?entry.tag:null}: {})}: {}),icon:entry.icon,progress:finite(state.progress,0,1),elapsed:finite(state.elapsed,0,86400),weather:WEATHER.has(weather)?weather:null,createdAt:finite(now,0,8640000000000000),legacy:false};
  }
  function cleanMoments(values){
   if(!Array.isArray(values))return [];const keys=new Set(),out=[];
   for(const value of values){const entry=item(value?.id);if(!entry||value.route!==entry.route||typeof value.key!=='string'||!value.key||value.key.length>100||keys.has(value.key))continue;keys.add(value.key);
    const text=(name,fallback,max)=>typeof value[name]==='string'&&value[name].trim()?value[name].slice(0,max):fallback;
-   out.push({key:value.key,id:entry.id,route:entry.route,place:text('place',entry.place,80),title:text('title',entry.name,80),memory:text('memory',entry.memory,400),...(['look','tap','drag'].includes(value.interaction)?{interaction:value.interaction}:{}),icon:entry.icon,progress:finite(value.progress,0,1),elapsed:finite(value.elapsed,0,86400),weather:WEATHER.has(value.weather)?value.weather:null,createdAt:finite(value.createdAt,0,8640000000000000),legacy:!!value.legacy});
+   const current=value.edition===3,base=current?entry:LEGACY[entry.id];out.push({...(current?{edition:3,earned:value.earned===true,tag:value.earned===true?entry.tag:null}:{}),key:value.key,id:entry.id,route:entry.route,place:text('place',base.place,80),title:text('title',base.name,80),memory:text('memory',base.memory,400),...(['look','tap','drag'].includes(value.interaction)?{interaction:value.interaction}:{}),icon:current?entry.icon:typeof value.icon==='string'&&value.icon.length<32?value.icon:base.icon,progress:finite(value.progress,0,1),elapsed:finite(value.elapsed,0,86400),weather:WEATHER.has(value.weather)?value.weather:null,createdAt:finite(value.createdAt,0,8640000000000000),legacy:!!value.legacy});
   }return out.slice(-MAX_MOMENTS);
  }
- function loadMoments(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');if(data?.version===2)return cleanMoments(data.moments);if(data?.version===1)return clean(data.found).map(id=>{const entry=item(id);return {key:'legacy-'+id,id,route:entry.route,place:entry.place.split(' · ')[0],title:'从旧手帐带来的一页',memory:'这是以前在这段路线保存的回忆。新的旅途瞬间会记下当时的风景与心情。',icon:entry.icon,progress:null,elapsed:null,weather:null,createdAt:null,legacy:true};});return [];}catch(_){return [];}}
+ function loadMoments(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');if(data?.version===2)return cleanMoments(data.moments);if(data?.version===1)return clean(data.found).map(id=>{const entry=LEGACY[id];return {key:'legacy-'+id,id,route:entry.route,place:entry.place.split(' · ')[0],title:'从旧手帐带来的一页',memory:'这是以前在这段路线保存的回忆。新的旅途瞬间会记下当时的风景与心情。',icon:entry.icon,progress:null,elapsed:null,weather:null,createdAt:null,legacy:true};});return [];}catch(_){return [];}}
  function saveMoments(storage,moments){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:2,moments:cleanMoments(moments)}));return true;}catch(_){return false;}}
- return {KEY,CATALOG,item,clean,create,visible,capture,load,save,MAX_MOMENTS,moment,cleanMoments,loadMoments,saveMoments};
+ const hasTag=moment=>moment?.edition===3?moment.earned===true:!!moment;
+ const tagArt=moment=>moment?.edition===3&&hasTag(moment)?R.profile(moment.id)?.badge:null;
+ return {LEGACY,hasTag,tagArt,KEY,CATALOG,item,clean,create,visible,capture,load,save,MAX_MOMENTS,moment,cleanMoments,loadMoments,saveMoments};
 
 }));
