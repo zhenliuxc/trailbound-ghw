@@ -25,3 +25,27 @@
 - **鳌山白起庙实拍**：鳌山白起庙的历史实景照片。打卡点参考鳌山段近似布置，照片不代表鳌山山顶，也不是当前通行信息。
 - **太白山的秦岭山脊实景**：2016年太白山区域山脊实拍，用于展示秦岭山地环境；不是太白梁这一精确位置的照片。
 - **太白山区域山景实拍**：2016年太白山区域实景。历史轨迹末点不延伸到拔仙台；照片展示周边山景，不冒充轨迹终点现场。
+
+
+## 新增路线区域照片（2026-10-14）
+
+照片均来自原摄影者在 Wikimedia Commons 的授权素材，压缩为本地 WebP；只做等比缩放和编码，未生成或改写景物。照片展示所在区域，不冒充游戏站点的精确摄影机位。图片来源折叠在照片下方。
+
+- 西湾沙滩：[Sai Wan.jpg](https://commons.wikimedia.org/wiki/File:Sai_Wan.jpg)，摄影 Smallpei，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/maclehose-saiwan.webp`。
+- 咸田海湾：[Ham Tin Wan beach.jpg](https://commons.wikimedia.org/wiki/File:Ham_Tin_Wan_beach.jpg)，摄影 Kaldari，[CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en)；`dist/photos/maclehose-hamtin.webp`。
+- 赤径村落：[ChekKeng3.JPG](https://commons.wikimedia.org/wiki/File:ChekKeng3.JPG)，摄影 山民主義，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/maclehose-chekkeng.webp`。
+- 苔木森林：[Xiaojin, Aba, Sichuan, China - panoramio (42).jpg](https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(42).jpg)，摄影 jetsun，[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0)；`dist/photos/changping-forest.webp`。
+- 溪谷云雾：[Xiaojin, Aba, Sichuan, China - panoramio (52).jpg](https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(52).jpg)，摄影 jetsun，[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0)；`dist/photos/changping-valley.webp`。
+- 草甸远眺：[Xiaojin, Aba, Sichuan, China - panoramio (57).jpg](https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(57).jpg)，摄影 jetsun，[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0)；`dist/photos/changping-meadow.webp`。
+- 竹林深处：[Mount Mogan bamboo forest.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_bamboo_forest.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-bamboo.webp`。
+- 山间步道：[Mount Mogan Path3.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_Path3.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-path.webp`。
+- 山泉小溪：[Mount Mogan River.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_River.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-stream.webp`。
+
+
+## 西湖九溪龙井照片
+
+三张真实照片只做等比缩放和 WebP 编码，保留各自原许可。图片来源折叠在图片下方；没有历史说明覆盖图像。
+
+- 九溪溪谷：[Jiuxi 20161004.jpg](https://commons.wikimedia.org/wiki/File:Jiuxi_20161004.jpg)，摄影 Tyg728，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-creek.webp`。
+- 十八涧石径：[九溪十八涧.jpg](https://commons.wikimedia.org/wiki/File:%E4%B9%9D%E6%BA%AA%E5%8D%81%E5%85%AB%E6%B6%A7.jpg)，摄影 三猎，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-path.webp`。
+- 龙井茶村：[Longjing tea village Hangzhou.jpg](https://commons.wikimedia.org/wiki/File:Longjing_tea_village_Hangzhou.jpg)，摄影 Niklas Dougherty，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-tea.webp`。

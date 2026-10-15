@@ -1,0 +1,37 @@
+{
+  "version": 4,
+  "items": [
+    {
+      "id": "wugong-grass-letter",
+      "route": "wugong",
+      "name": "草浪来信",
+      "season": "暖季绿色草甸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-d299f00c-430a-47d0-8316-67866237bc97.png",
+      "reused": false
+    },
+    {
+      "id": "wugong-cloud-island",
+      "route": "wugong",
+      "name": "云海浮岛",
+      "season": "暖季绿色草甸·云海片刻",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-d3730d87-d75c-45bf-b9f3-a654ba6d9f15.png",
+      "reused": false
+    },
+    {
+      "id": "wugong-stone-altar",
+      "route": "wugong",
+      "name": "金顶石语",
+      "season": "暖季绿色草甸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-229fc16d-c5a7-4510-939f-71f9c3e19ee0.png",
+      "reused": false
+    },
+    {
+      "id": "tiger-river-below",
+      "route": "tiger",
+      "name": "江在脚下",
+      "season": "暖季峡谷·雨后通透",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-39542901-893a-4efc-94b2-0f231ddd1928.png",
+      "reused": false
+    }
+  ]
+}

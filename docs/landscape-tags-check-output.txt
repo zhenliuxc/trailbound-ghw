@@ -1,0 +1,11 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> trailbound-ghw@0.13.0-rc.1 check
+> node --check dist/geography.js && node --check dist/geography-extra.js && node --check dist/routes.js && node --check dist/game.js && node --check dist/journey.js && node --check dist/nature.js && node --check dist/route-moments.js && node --check dist/route-scenes.js && node --check dist/discoveries.js && node --check dist/moment-scenes.js && node --check dist/moment-play.js && node --check dist/micro-moments.js && node --check dist/landscape-data.js && node --check dist/terrain.js && node --check dist/illustration.js && node --check dist/scenery.js && node --check dist/motion.js && node --check dist/life.js && node --check dist/pixi-scene.js && node --check dist/audio.js && node --check dist/checkpoints.js && node --check dist/app.js && node scripts/check-assets.cjs
+
+PASS: local assets, unique IDs, SVG symbol references, viewport and accessible status.
+PASS: all checkpoint photos are packaged WebP assets with authorship, license, source and alt text.
+PASS: pinned PixiJS browser bundle matches the installed upstream package and includes its license.
+PASS: all generated badges map to their moments through lightweight WebP atlases.
+PASS: lightweight recorded sound materials retain verified sources, licenses and hashes.
+PASS: all 24 current interaction labels have matching native SVG artwork and hashes; historical atlases remain intact.

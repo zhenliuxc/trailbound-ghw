@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "creek",
+      "file": "audio/westlake-creek-v1.mp3",
+      "bytes": 192717,
+      "sha256": "138277b8e1b4ef172feac89d37447dce7a2699c26ace8af1366875d2808cc0ea",
+      "source": "https://commons.wikimedia.org/wiki/File:Swale.ogg",
+      "originalTitle": "Swale.ogg",
+      "author": "<a href=\"//commons.wikimedia.org/wiki/User:Ksd5\" class=\"mw-redirect\" title=\"User:Ksd5\">Ksd5</a>",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "changes": "Excerpt 2–26s, mono 32kHz MP3 64kbps, filtered/levelled and short endpoint fades; sound-design material, not recorded in Hangzhou."
+    },
+    {
+      "id": "leaves",
+      "file": "audio/westlake-leaves-v1.mp3",
+      "bytes": 208845,
+      "sha256": "306ebe089e79337b7875145e0fa237339cdb9a7974012fe44107186e2cc2172f",
+      "source": "https://commons.wikimedia.org/wiki/File:Leaves_falling_from_the_trees_during_autumn_in_the_forest.wav",
+      "originalTitle": "Leaves falling from the trees during autumn in the forest.wav",
+      "author": "<bdi><a href=\"https://www.wikidata.org/wiki/Q115464159\" class=\"extiw\" title=\"d:Q115464159\"><span title=\"developer analyst and photographer from Venezuela\">Wilfredor</span></a></bdi>",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "changes": "Excerpt 32–58s, mono 32kHz MP3 64kbps, filtered/levelled and short endpoint fades; sound-design material, not recorded in Hangzhou."
+    },
+    {
+      "id": "drips",
+      "file": "audio/westlake-drips-v1.mp3",
+      "bytes": 120141,
+      "sha256": "25f76796a9680c5f72a917cbf06d0d0f824ed0927d9c957e934f3bb2ac871dbd",
+      "source": "https://commons.wikimedia.org/wiki/File:Water_drops_dripping.ogg",
+      "originalTitle": "Water drops dripping.ogg",
+      "author": "<a href=\"//commons.wikimedia.org/wiki/User:ZooFari\" class=\"mw-redirect\" title=\"User:ZooFari\">ZooFari</a>",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "changes": "Excerpt 1–16s, mono 32kHz MP3 64kbps, filtered/levelled and short endpoint fades; sound-design material, not recorded in Hangzhou."
+    }
+  ]
+}

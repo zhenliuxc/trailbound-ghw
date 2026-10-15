@@ -16,3 +16,20 @@ const bundled=fs.readFileSync(path.join(dir,'vendor/pixi-8.22.0.min.js')),upstre
 assert.equal(crypto.createHash('sha256').update(bundled).digest('hex'),crypto.createHash('sha256').update(upstream).digest('hex'),'Vendored PixiJS differs from installed upstream distribution');
 assert.ok(fs.existsSync(path.join(dir,'vendor/PIXI-LICENSE.txt')));
 console.log('PASS: pinned PixiJS browser bundle matches the installed upstream package and includes its license.');
+const badges=JSON.parse(fs.readFileSync(path.join(dir,'badges/manifest.json'),'utf8')),moments=require('../dist/discoveries.js').CATALOG;
+assert.equal(badges.version,2);assert.equal(badges.columns,3);assert.equal(badges.rows,3);assert.equal(badges.cell,192);assert.equal(badges.entries.length,moments.length);
+for(const [index,entry] of badges.entries.entries()){
+ assert.equal(entry.id,moments[index].id,'Badge art does not match the journal moment');assert.equal(entry.column,index%3);assert.equal(entry.row,Math.floor(index%9/3));assert.equal(entry.atlas,badges.atlases[Math.floor(index/9)].file);
+ const buffer=fs.readFileSync(path.join(dir,entry.file));assert.equal(buffer.toString('ascii',8,12),'WEBP');assert.equal(crypto.createHash('sha256').update(buffer).digest('hex'),entry.sha256);
+}
+for(const sheet of badges.atlases){const atlas=fs.readFileSync(path.join(dir,sheet.file));assert.equal(atlas.toString('ascii',8,12),'WEBP');assert.equal(atlas.length,sheet.bytes);assert.ok(atlas.length<200000,'Badge atlas is too large for a small journal gallery');}
+console.log('PASS: all generated badges map to their moments through lightweight WebP atlases.');
+
+const audio=require('../dist/audio.js'),recordings=JSON.parse(fs.readFileSync(path.join(dir,'audio/credits.json')));let recordedBytes=0;
+for(const entry of recordings.entries){const data=fs.readFileSync(path.join(dir,entry.file));recordedBytes+=data.length;assert.equal(entry.file,audio.SAMPLES[entry.id]);assert.equal(data.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),entry.sha256);assert.ok(entry.author&&entry.source&&entry.license&&entry.licenseUrl&&entry.changes);}
+assert.ok(recordedBytes<600000);console.log('PASS: lightweight recorded sound materials retain verified sources, licenses and hashes.');
+
+const current=JSON.parse(fs.readFileSync(path.join(dir,'badges/landscape-v3.json'),'utf8'));
+assert.equal(current.edition,3);assert.equal(current.entries.length,moments.length);
+for(const e of moments){const art=current.entries.find(a=>a.id===e.id);assert.equal(art.tag,e.tag);assert.equal(art.scene,e.scene);assert.equal(art.play,e.play);assert.equal(art.file,e.badge);const b=fs.readFileSync(path.join(dir,art.file));assert.equal(b.length,art.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),art.sha256);assert.match(b.toString(),/viewBox="0 0 192 192"/);assert.ok(!/<script|<foreignObject|(?:href|src)="https?:|<image/.test(b.toString()));}
+console.log('PASS: all 24 current interaction labels have matching native SVG artwork and hashes; historical atlases remain intact.');

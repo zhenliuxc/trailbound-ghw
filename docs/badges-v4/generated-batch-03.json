@@ -1,0 +1,37 @@
+{
+  "version": 4,
+  "items": [
+    {
+      "id": "maclehose-bay-reveal",
+      "route": "maclehose",
+      "name": "转角见海",
+      "season": "暖季绿色海岸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-5cdf803c-ca98-44b5-9a90-9541f72a5665.png",
+      "reused": false
+    },
+    {
+      "id": "maclehose-tide-drawing",
+      "route": "maclehose",
+      "name": "潮汐收笔",
+      "season": "暖季海岸·潮线片刻",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-cade9c50-2491-450e-8e66-3d5401c30b4b.png",
+      "reused": false
+    },
+    {
+      "id": "maclehose-chek-keng",
+      "route": "maclehose",
+      "name": "赤径慢潮",
+      "season": "暖季绿色海岸·静潮",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-7d3e74d9-4bad-4fc8-9ef0-aabed4da4847.png",
+      "reused": false
+    },
+    {
+      "id": "changping-red-stone",
+      "route": "changping",
+      "name": "红石微光",
+      "season": "绿林溪谷·暖季",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-b3df327b-fe91-4839-9b3e-01eb65855a13.png",
+      "reused": false
+    }
+  ]
+}

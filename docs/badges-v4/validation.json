@@ -1,0 +1,18 @@
+{
+  "count": 23,
+  "totalBytes": 1633076,
+  "meanBytes": 71003,
+  "maxBytes": 82166,
+  "dimensions": "384×384",
+  "transparentCorners": true,
+  "distinctHashes": true,
+  "routeCounts": {
+    "wugong": 4,
+    "tiger": 4,
+    "aotai": 3,
+    "maclehose": 4,
+    "changping": 3,
+    "mogan": 2,
+    "westlake": 3
+  }
+}
