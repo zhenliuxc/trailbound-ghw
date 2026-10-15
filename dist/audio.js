@@ -408,11 +408,19 @@
    }
    const id=({ripple:'creek',leaf:'leaves',drip:'drips'})[kind];if(!id)return false;const buffer=buffers.get(id);if(buffer){const source=context.createBufferSource(),gain=context.createGain(),length=kind==='drip'?2.1:1.25;source.buffer=buffer;gain.gain.setValueAtTime(0,start);gain.gain.linearRampToValueAtTime(kind==='drip'?.6:.72,start+.07);gain.gain.setValueAtTime(kind==='drip'?.6:.72,start+length-.15);gain.gain.linearRampToValueAtTime(0,start+length);source.connect(gain);track(group,source,[source,...output(group,gain,0,.06)]).start(start,kind==='drip'?2:4);source.stop(start+length);}else texture(group,{kind:id,cutoff:kind==='leaf'?3300:1400,length:1.2,gain:.065},start);return true;}
 
+  function mini(game,event,{x=.5,index=0}={}){
+   if(!enabled||!group||group.retired||group.disposed||context?.state!=='running')return false;
+   const pan=(Math.max(0,Math.min(1,x))-.5)*.8,start=context.currentTime+.02;
+   if(event==='complete'){for(const [i,midi]of [60,64,67,72].entries())tone(group,{at:i*.12,midi,length:.65,gain:.022,instrument:'bell',pan:0,space:.12},start);return true;}
+   if(event==='catch'||event==='goal'){tone(group,{at:0,midi:[60,62,64,67,69,72,74,76][index%8],length:game==='rain'?.55:.8,gain:.035,instrument:game==='rain'?'wood':'bell',pan,space:.16},start);if(game==='rain')effect(group,{kind:'tap',at:0,frequency:1000,pan},start);return true;}
+   if(event==='ripple'){texture(group,{kind:'stream',cutoff:1500,length:.38,gain:.025},start);return true;}
+   if(event==='bump'||event==='miss'){tone(group,{at:0,midi:game==='wind'?55:43,length:.12,gain:.012,instrument:'wood',pan,space:.03},start);return true;}return false;
+  }
   function disable(){enabled=false;clear();if(context)suspendAfter(480);}
   function hide(){cancelSuspend();clear(true);context?.suspend?.().catch?.(onError);}
   function step(routeId){if(!enabled||!group||context?.state!=='running'||!currentKey.startsWith('walk:'))return;tone(group,{at:0,midi:routeId==='aotai'?41:48,length:.075,gain:.023,instrument:'wood',pan:0,space:0});}
   function destroy(){disposed=true;enabled=false;cancelSuspend();clear(true);buffers.clear();loads.clear();context?.close?.().catch?.(onError);context=null;}
-  return {enable,disable,hide,setScene,interact,step,destroy,get enabled(){return enabled;},get running(){return enabled&&context?.state==='running';},get playing(){return enabled&&!!group&&context?.state==='running';},get key(){return currentKey;},get available(){return !!AudioContext;},get voiceCount(){return groups.reduce((n,g)=>n+g.voices.size,0);},get groupCount(){return groups.length;}};
+  return {enable,disable,hide,setScene,interact,mini,step,destroy,get enabled(){return enabled;},get running(){return enabled&&context?.state==='running';},get playing(){return enabled&&!!group&&context?.state==='running';},get key(){return currentKey;},get available(){return !!AudioContext;},get voiceCount(){return groups.reduce((n,g)=>n+g.voices.size,0);},get groupCount(){return groups.length;}};
  }
  return {PROFILES,SAMPLES,westlakeMix,profile,score,noise,selection,hz,create};
 }));
