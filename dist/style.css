@@ -215,3 +215,51 @@
 .journal-tag-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.journal-art-status{font-size:10px;line-height:1.7;color:#8a987c;text-align:center;padding:7px}.journal-art-status[hidden]{display:none}
 .journal-note-status{display:block;font-size:11px;line-height:1.8;color:#809073;margin:8px 0}
 @media(max-width:680px){.journal-memory-label{width:82px;height:82px;padding:5px}.journal-memory-label svg{width:48px;height:29px}.journal-memory-label>span{font-size:11px}.journal-memory-label>small{font-size:7px}}
+/* One notebook: artwork and its memory stay together, in the reading flow. */
+.journal-notebook{margin-top:42px;padding-top:28px;border-top:1px solid #d5dcc9}
+.journal-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.journal-heading .eyebrow{margin:0 0 5px;font-size:9px;letter-spacing:1.5px}
+.journal-heading h2{margin:0;font:normal 28px var(--serif);letter-spacing:2px;color:#3f5c43}
+.journal-heading #journal-count{font-size:11px;color:#7b886e;white-space:nowrap}
+.journal-notebook>.journal-intro{font:normal 14px/1.9 var(--serif);color:#7b886f;margin:12px 0 18px}
+.journal-notebook>#discovery-status{font-size:11px;margin:0 0 12px;color:#6a805d}
+.journal-notebook>#discovery-status:empty{display:none}
+.journal-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 0;border-block:1px solid #dfe3d1}
+.journal-route-picker{display:flex;align-items:center;gap:12px;min-width:0}
+.journal-route-picker label{font-size:12px;color:#7b886e}
+.journal-route-picker select{max-width:100%;min-height:44px;padding:8px 34px 8px 12px;font:13px var(--sans);color:#4e6949;background:#fffdf3;border:1px solid #d4dcc5;border-radius:8px}
+.journal-route-picker select:focus-visible{outline:3px solid #cc9b53;outline-offset:3px}
+.journal-toolbar #trip-count{font-size:11px;color:#7b886e}
+.journal-notebook>#journal-filter-count{font-size:11px;margin:14px 0;color:#7b886e;min-height:18px}
+.journal-notebook .journal-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:20px;list-style:none;padding:0;margin:0}
+.journal-notebook .journal-entry.found{padding:0;border:1px solid #dddcc8;border-radius:4px 14px 14px 4px;background:linear-gradient(100deg,#eee9d744,transparent 18%),#fffdf5;box-shadow:0 5px 16px #4d60420a;text-align:left;animation:none;min-width:0}
+.journal-spread{display:grid;grid-template-columns:132px minmax(0,1fr);gap:18px;align-items:start;padding:24px 20px;overflow-wrap:anywhere;scroll-margin-block:24px}
+.journal-spread:focus{outline:none}.journal-spread:focus-visible{outline:2px solid #a39063;outline-offset:4px;border-radius:5px 14px 14px 5px}
+.journal-illustration{display:grid;place-items:start center;padding-top:2px;min-width:0}
+.journal-illustration .journal-badge-art{width:132px;height:132px;max-width:100%;margin:0;filter:drop-shadow(0 5px 5px #586b3d18)}
+.journal-copy{min-width:0}
+.journal-copy .journal-location{font-size:10px;line-height:1.8;letter-spacing:.5px;color:#7d8b70;margin:0 0 8px}
+.journal-copy .journal-entry-title{font:normal 20px/1.55 var(--serif);color:#416047;margin:0 0 12px;letter-spacing:.5px}
+.journal-copy .journal-memory{font:normal 14px/2 var(--serif);color:#627359;letter-spacing:.3px;margin:0;white-space:pre-line}
+.journal-entry-meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;margin-top:16px;padding-top:10px;border-top:1px solid #e6e6d7;font-size:10px;line-height:1.8;color:#859078}
+.journal-entry-meta .journal-time{margin:0;font-size:10px;color:inherit}
+.journal-entry-kind{color:#7b886e}
+.journal-notebook .journal-place-note{border:0;border-radius:0;background:transparent;padding:0;margin:9px 0 0}
+.journal-notebook .journal-place-note summary{font-size:11px;line-height:44px;min-height:44px;color:#7b886e}
+.journal-notebook .journal-place-note p{font-size:11px;line-height:1.9;margin:4px 0 10px;color:#7b886e}
+.journal-notebook .journal-source{font-size:10px;overflow-wrap:anywhere}
+.journal-notebook .journal-entry[data-kind="note"] .journal-spread{grid-template-columns:minmax(0,1fr);border-left:3px solid #b9c4a4}
+.journal-notebook .journal-empty{padding:32px 26px;background:#fffdf5;border-color:#d9ddc7}
+.journal-notebook .journal-more{min-height:46px;margin:24px auto 0;padding:10px 24px;background:#f5f3e7;border:1px solid #cbd5ba;border-radius:24px;font-size:12px;color:#5e7753}
+.journal-notebook .journal-more:hover{background:#edf1e2}
+.journal-notebook>.journal-storage{font-size:10px;text-align:center;line-height:1.9;margin:20px 0 0;padding-top:15px;border-top:1px solid #dfe3d1}
+@media(min-width:681px) and (max-width:960px){.journal-notebook .journal-list{grid-template-columns:minmax(0,1fr)}.journal-spread{grid-template-columns:172px minmax(0,1fr);gap:28px;padding:26px}.journal-illustration .journal-badge-art{width:172px;height:172px}}
+@media(max-width:680px){
+ .journal-notebook{margin-top:30px;padding-top:22px}.journal-heading h2{font-size:25px}.journal-heading .eyebrow{font-size:8px;letter-spacing:1px}
+ .journal-notebook>.journal-intro{font-size:13px}.journal-toolbar{gap:8px}.journal-toolbar #trip-count{font-size:10px}
+ .journal-notebook .journal-list{grid-template-columns:minmax(0,1fr);gap:16px}
+ .journal-spread{grid-template-columns:minmax(0,1fr);gap:18px;padding:22px}
+ .journal-illustration{padding:0}.journal-illustration .journal-badge-art{width:172px;height:172px}
+ .journal-copy .journal-entry-title{font-size:21px;margin-bottom:10px}.journal-copy .journal-memory{font-size:15px;line-height:1.95}
+ .journal-copy .journal-location{font-size:11px}.journal-notebook .journal-entry[data-kind="note"] .journal-spread{padding-block:24px}
+}

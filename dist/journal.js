@@ -1,11 +1,12 @@
-(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./discoveries.js'):root.TrailDiscoveries);if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailJournal=api;}(typeof globalThis!=='undefined'?globalThis:this,function(D){
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailJournal=api;}(typeof globalThis!=='undefined'?globalThis:this,function(){
  'use strict';
- const FORMAT='trailbound-journal';
- function backup(moments,now=Date.now()){return JSON.stringify({format:FORMAT,backupVersion:1,exportedAt:new Date(now).toISOString(),version:2,moments:D.cleanMoments(moments)},null,2);}
- function collection(moments,route='all'){
-  const earned=new Map();for(const m of moments)if(m.edition===3&&D.hasTag(m))earned.set(m.id,m);
-  const entries=D.CATALOG.filter(e=>route==='all'||e.route===route).map(e=>({entry:e,record:earned.get(e.id)||null,earned:earned.has(e.id)}));
-  return {entries,earned:entries.filter(e=>e.earned).length,total:entries.length};
+ const PAGE_SIZE=12;
+ // A read-only view: preserve historical artwork, duplicate visits and storage order.
+ function page(moments,route='all',limit=PAGE_SIZE){
+  const matching=moments.filter(moment=>route==='all'||moment.route===route);
+  const size=Number.isFinite(limit)?Math.max(PAGE_SIZE,Math.floor(limit)):PAGE_SIZE;
+  const entries=matching.slice().reverse().slice(0,size);
+  return {entries,total:matching.length,remaining:Math.max(0,matching.length-entries.length)};
  }
- return {FORMAT,backup,collection};
+ return {PAGE_SIZE,page};
 }));
