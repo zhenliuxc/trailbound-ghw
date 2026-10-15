@@ -4,8 +4,8 @@ const flush=async()=>{for(let i=0;i<30;i++)await Promise.resolve();};
 const storage=()=>{let data=null;return{getItem:()=>data,setItem:(_,s)=>{data=s;}};};
 function atCreek(options={}){const h=harness(options.storage,options);h.click('route-westlake');h.click('overlay-action');h.advance(10);assert.equal(h.$('observe-button').hidden,false);return h;}
 test('six Nine Creeks candidates yield three geographically ordered encounters and avoid repeating a full recent set',()=>{
- const pool=D.CATALOG.filter(e=>e.route==='westlake');assert.equal(pool.length,6);assert.deepEqual([...new Set(pool.map(e=>e.interaction))].sort(),['drip','leaf','ripple']);
- const combos=new Set();for(let i=0;i<32;i++){const seed=Math.imul(i+1,2654435761)>>>0,t=D.create('westlake',seed);assert.equal(t.slots.length,3);assert.deepEqual(t.slots.map(s=>D.item(s.id).order),[0,1,2]);const recent=t.slots.map(s=>s.id),again=D.create('westlake',seed,{recent});assert.notDeepEqual(again.slots.map(s=>s.id),recent);combos.add(recent.join(','));assert.deepEqual(D.create('westlake',seed),t);assert.ok(t.slots[0].until<.14);}
+ const pool=D.CATALOG.filter(e=>!e.bonus&&e.route==='westlake');assert.equal(pool.length,6);assert.deepEqual([...new Set(pool.map(e=>e.interaction))].sort(),['drip','leaf','ripple']);
+ const combos=new Set();for(let i=0;i<32;i++){const seed=Math.imul(i+1,2654435761)>>>0,t=D.create('westlake',seed);t.slots=t.slots.filter(s=>!D.item(s.id).bonus);assert.equal(t.slots.length,3);assert.deepEqual(t.slots.map(s=>D.item(s.id).order),[0,1,2]);const recent=t.slots.map(s=>s.id),again=D.create('westlake',seed,{recent});assert.notDeepEqual(again.slots.map(s=>s.id),recent);combos.add(recent.join(','));assert.deepEqual(D.create('westlake',seed).slots.filter(s=>!D.item(s.id).bonus),t.slots);assert.ok(t.slots[0].until<.14);}
  assert.ok(combos.size>=6);assert.equal(D.item('westlake-stones').place,'西湖 · 九溪溪谷');
 });
 test('one tap or drag changes the memory, validates coordinates and completes on a bounded scene clock',()=>{

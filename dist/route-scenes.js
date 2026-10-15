@@ -16,6 +16,12 @@
   function waterlines(p=world){for(let i=0;i<7;i++)path(`M${i*67-22} ${132+i%3*34}q31-8 63 0`,'none','#e9efda',1,p);}
   function background(p=world){hill('M-10 148Q64 54 151 92T410 69V240H-10Z','#c6d4b0',p);hill('M-10 193Q111 111 232 163T410 137V240H-10Z','#9fb795',p);}
   const scene=e.scene;
+  if(scene==='encounter-art'){
+   // The approved watercolor is the scene itself; overlays only show gesture targets and progress.
+   refs.encounter=add('image',{href:e.artV4,x:85,y:0,width:230,height:230,'aria-hidden':'true'},world);
+   refs.encounterMarks=[0,1,2].map(i=>add('circle',{cx:184+i*16,cy:216,r:3,fill:'#758e68',opacity:.18}));
+   if(e.play==='yield')add('ellipse',{cx:60,cy:150,rx:23,ry:13,fill:'#e2e9d0',stroke:'#9eb28a','stroke-dasharray':'3 4'});
+  }
   if(['grass','cloudsea','mistpeak','alpine','bay','forestwindow','canyon','inn','bamboowind','tealight'].includes(scene))background();
   if(scene==='grass'||scene==='cloudsea'){
    hill('M-10 217Q98 151 199 190T411 173V240H-10Z','#becb96');
@@ -74,6 +80,8 @@
  }
  function paint(refs,s,reduced=false){
   if(!refs?.story)return;const p=s.play||{progress:1,complete:true},q=reduced&&!s.acted?0:clamp(p.progress),t=reduced?0:s.age||0,dx=s.acted?(s.x-.5)*32:0;
+  refs.encounterMarks?.forEach((g,i)=>g.setAttribute('opacity',q>i/3?.9:.18));
+  if(refs.encounter){const shift=refs.entry.play==='yield'||refs.entry.play==='trail'?q*22:refs.entry.play==='sweep'?(s.x-.5)*12:0;refs.encounter.setAttribute('transform',`translate(${shift} 0)`);}
   refs.plants.forEach((g,i)=>g.setAttribute('transform',`${g.base} rotate(${reduced?0:s.acted?(s.x-.5)*12+Math.sin(t*2-i*.18)*q*3:Math.sin(t-i*.18)*1.5})`));
   if(refs.fog){refs.fog.setAttribute('opacity',1-q*.9);refs.fog.setAttribute('transform',`translate(${q*66} ${q*35})`);}
   if(['panorama','listen'].includes(p.type))refs.world.setAttribute('transform',`translate(${dx} 0) scale(${p.type==='panorama'?1.08-q*.08:1})`);

@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),R=require('../dist/route-moments'),K=require('../dist/nature'),D=require('../dist/discoveries'),G=require('../dist/game'),S=require('../dist/scenery'),{harness}=require('./dom-harness.cjs');
 test('checkpoint knowledge and separate travel moments retain regional context and source links',()=>{
  for(const route of G.ROUTES){for(const cp of route.checkpoints){const note=K.checkpoint(cp.id);assert.equal(note.route,route.id);assert.ok(note.look&&note.fact);assert.match(K.source(note.source).url,/^https:\/\//);}
- for(const entry of D.CATALOG.filter(e=>e.route===route.id)){assert.equal(entry.checkpointId,undefined);assert.ok(entry.place);assert.ok(!entry.icon.startsWith('place:'));const note=K.observation(entry.id);assert.equal(note.route,route.id);assert.equal(note.checkpointId,undefined);assert.equal(note.place,D.LEGACY[entry.id].place);assert.match(R.evidence(entry.id).url,/^https:\/\//);assert.match(K.source(note.source).url,/^https:\/\//);}}
+ for(const entry of D.CATALOG.filter(e=>!e.bonus&&e.route===route.id)){assert.equal(entry.checkpointId,undefined);assert.ok(entry.place);assert.ok(!entry.icon.startsWith('place:'));const note=K.observation(entry.id);assert.equal(note.route,route.id);assert.equal(note.checkpointId,undefined);assert.equal(note.place,D.LEGACY[entry.id].place);assert.match(R.evidence(entry.id).url,/^https:\/\//);assert.match(K.source(note.source).url,/^https:\/\//);}}
  assert.equal(K.checkpoint('unknown'),null);assert.equal(K.observation('unknown'),null);
 });
 test('three regional compositions remain finite and preserve the original reference geography',()=>{

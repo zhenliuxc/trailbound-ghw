@@ -40,8 +40,122 @@
  // Explicit scenery matches only; unmatched artwork does not invent new encounters.
  const ART_V4={"meadow-bird":"wugong-grass-letter","meadow-butterfly":"wugong-cloud-island","meadow-flower":"wugong-stone-altar","gorge-goat":"tiger-river-below","gorge-eagle":"tiger-halfway-rest","gorge-sparkle":"tiger-longdong-waterfall","snow-tracks":"aotai-rock-facets","snow-lichen":"aotai-ridgeline","coast-sand":"maclehose-bay-reveal","coast-shell":"maclehose-tide-drawing","coast-pier":"maclehose-chek-keng","valley-moss":"changping-tree-double","valley-bridge":"changping-red-stone","valley-reflection":"changping-muluozi","bamboo-drop":"mogan-bamboo-reply","bamboo-step":"mogan-old-stone-path","westlake-stones":"westlake-creek-stones","westlake-tea":"westlake-longjing-bud"};
  for(const [id,art] of Object.entries(ART_V4))PROFILES[id].artV4="badges/"+art+"-v4.webp";
+ const ENCOUNTERS=[
+  {
+    "id": "wugong-wind-hiker",
+    "route": "wugong",
+    "order": 1.5,
+    "at": 0.55,
+    "tag": "吊带追风",
+    "name": "风口遇见的徒步者",
+    "place": "武功山 · 草甸风口",
+    "play": "sweep",
+    "interaction": "breeze",
+    "prompt": "轻轻横划，把草甸上的一阵风送到徒步者身旁。",
+    "result": "风吹起衣角，我们隔着草坡挥了挥手。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "轻轻横划，把草甸上的一阵风送到徒步者身旁。",
+    "memory": "武功山 · 草甸风口，风口遇见的徒步者。",
+    "artV4": "badges/wugong-wind-hiker-v4.webp",
+    "badge": "badges/wugong-wind-hiker-v4.webp"
+  },
+  {
+    "id": "tiger-bell-first",
+    "route": "tiger",
+    "order": 1.5,
+    "at": 0.55,
+    "tag": "铃声先到",
+    "name": "转弯前传来的铃声",
+    "place": "虎跳峡 · 高路转弯处",
+    "play": "listen",
+    "interaction": "breeze",
+    "prompt": "依次轻点画面的左、中、右三处，听铃声沿山路慢慢走近。",
+    "result": "先听见铃声，再望见山路上的旅伴。这段相遇轻轻留在了峡谷里。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "依次轻点画面的左、中、右三处，听铃声沿山路慢慢走近。",
+    "memory": "虎跳峡 · 高路转弯处，转弯前传来的铃声。",
+    "artV4": "badges/tiger-bell-first-v4.webp",
+    "badge": "badges/tiger-bell-first-v4.webp"
+  },
+  {
+    "id": "aotai-takin-first",
+    "route": "aotai",
+    "order": 1.5,
+    "at": 0.55,
+    "tag": "牛牛先请",
+    "name": "把山径留给羚牛",
+    "place": "秦岭 · 虚拟雪地林缘",
+    "play": "yield",
+    "interaction": "trace",
+    "prompt": "轻点画面左侧的退让处，再停住指尖，让羚牛从远处先经过。",
+    "result": "我退在路旁，没有靠近或喂食。羚牛从远处慢慢走过，雪地又安静下来。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "轻点画面左侧的退让处，再停住指尖，让羚牛从远处先经过。",
+    "memory": "秦岭 · 虚拟雪地林缘，把山径留给羚牛。",
+    "artV4": "badges/aotai-takin-first-v4.webp",
+    "badge": "badges/aotai-takin-first-v4.webp"
+  },
+  {
+    "id": "maclehose-sideways-crab",
+    "route": "maclehose",
+    "order": 1.5,
+    "at": 0.73,
+    "tag": "横着也能到",
+    "name": "沙地上的小小横行者",
+    "place": "麦理浩径 · 海湾沙地",
+    "play": "trail",
+    "interaction": "ripple",
+    "prompt": "从左到右点亮沙地上的三个落脚处，远远陪螃蟹横着走回岸边。",
+    "result": "小螃蟹横着走过沙地。我留在原处，没有触碰它，也没有挡住它回家的路。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "从左到右点亮沙地上的三个落脚处，远远陪螃蟹横着走回岸边。",
+    "memory": "麦理浩径 · 海湾沙地，沙地上的小小横行者。",
+    "artV4": "badges/maclehose-sideways-crab-v4.webp",
+    "badge": "badges/maclehose-sideways-crab-v4.webp"
+  },
+  {
+    "id": "westlake-five-more-minutes",
+    "route": "westlake",
+    "order": 2.5,
+    "at": 0.945,
+    "tag": "再坐五分钟",
+    "name": "茶村里多坐一小会儿",
+    "place": "西湖 · 龙井村歇脚处",
+    "play": "brew",
+    "interaction": "drip",
+    "prompt": "轻点茶盏，再陪热气慢慢升起；几秒就好，不必真的等五分钟。",
+    "result": "我在茶村坐下来，等热气慢慢升起。这一小段不赶路的时间，也值得留下。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "轻点茶盏，再陪热气慢慢升起；几秒就好，不必真的等五分钟。",
+    "memory": "西湖 · 龙井村歇脚处，茶村里多坐一小会儿。",
+    "artV4": "badges/westlake-five-more-minutes-v4.webp",
+    "badge": "badges/westlake-five-more-minutes-v4.webp"
+  }
+];
+ for(const entry of ENCOUNTERS)PROFILES[entry.id]=entry;
+ PROFILES['tiger-bell-first'].icon='bell';
  function profile(id){return PROFILES[id]||null;}
  const routeOf=id=>({meadow:'wugong',gorge:'tiger',snow:'aotai',coast:'maclehose',valley:'changping',bamboo:'mogan',westlake:'westlake'})[id.split('-')[0]];
- function evidence(id){return SOURCES[routeOf(id)]||null;}
- return {EDITION,PROFILES,SOURCES,profile,evidence};
+ function evidence(id){const e=PROFILES[id];return e?.bonus?{...SOURCES[e.route],fact:'这一段人物或动物相遇是游戏创作，不代表现实路线必遇。'+SOURCES[e.route].fact}:SOURCES[routeOf(id)]||null;}
+ return {EDITION,ENCOUNTERS,PROFILES,SOURCES,profile,evidence};
 }));

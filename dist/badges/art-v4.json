@@ -1,7 +1,7 @@
 {
   "artVersion": 4,
-  "stage": "partial-runtime-integration",
-  "runtimeBound": false,
+  "stage": "runtime-integrated",
+  "runtimeBound": true,
   "generator": "built-in imagegen",
   "format": "webp",
   "transparent": true,
@@ -19,8 +19,10 @@
       "sourceGeneratedFile": "exec-6b2d428f-9ca9-456c-8369-6a7214da51fb.png",
       "sourceSha256": "e0a742769a5f62207fbdcd1c27f047023cc2ce8fd6c25fb2d2739d7f0e634a5c",
       "reused": true,
-      "runtimeMomentIds": [],
-      "runtimeBound": false
+      "runtimeMomentIds": [
+        "wugong-wind-hiker"
+      ],
+      "runtimeBound": true
     },
     {
       "id": "wugong-grass-letter",
@@ -89,8 +91,10 @@
       "sourceGeneratedFile": "exec-4bc9bf9f-9870-4079-ae78-cdad132675da.png",
       "sourceSha256": "b7cf98ac0c6e1752d9eba516f662949a9995ef3f86d5625f48e1ff49f9db5431",
       "reused": true,
-      "runtimeMomentIds": [],
-      "runtimeBound": false
+      "runtimeMomentIds": [
+        "tiger-bell-first"
+      ],
+      "runtimeBound": true
     },
     {
       "id": "tiger-river-below",
@@ -159,8 +163,10 @@
       "sourceGeneratedFile": "exec-05e57d9e-d3fb-4c31-936e-930dfbb5b6d0.png",
       "sourceSha256": "da8c7bbb449a946dfb96ce926dbc7202017eed13bbc24fd226a1437b531e0dab",
       "reused": true,
-      "runtimeMomentIds": [],
-      "runtimeBound": false
+      "runtimeMomentIds": [
+        "aotai-takin-first"
+      ],
+      "runtimeBound": true
     },
     {
       "id": "aotai-rock-facets",
@@ -211,8 +217,10 @@
       "sourceGeneratedFile": "exec-c47d19d5-a459-42f3-8da9-aaffc6f327c2.png",
       "sourceSha256": "0d8deabad958567d6c4ed715e0ed5970681bda8559305f7f55c65c2c5f378659",
       "reused": true,
-      "runtimeMomentIds": [],
-      "runtimeBound": false
+      "runtimeMomentIds": [
+        "maclehose-sideways-crab"
+      ],
+      "runtimeBound": true
     },
     {
       "id": "maclehose-bay-reveal",
@@ -371,8 +379,10 @@
       "sourceGeneratedFile": "exec-c88b4f46-2008-4624-bdaa-92ba1cc72251.png",
       "sourceSha256": "dbde7cae8e94353db4596ae745b0a4e6be89956282bd9eba552c9a12a1b294ca",
       "reused": true,
-      "runtimeMomentIds": [],
-      "runtimeBound": false
+      "runtimeMomentIds": [
+        "westlake-five-more-minutes"
+      ],
+      "runtimeBound": true
     },
     {
       "id": "westlake-creek-stones",
@@ -411,5 +421,5 @@
       "runtimeBound": true
     }
   ],
-  "runtimeBoundCount": 18
+  "runtimeBoundCount": 23
 }

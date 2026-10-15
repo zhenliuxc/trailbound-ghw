@@ -14,8 +14,9 @@
  const RESULTS={follow:'它在我的视线里掠过，草尖的风像也慢了一点。',sweep:'云影被拨开，藏着的山脊一点点露出来。',align:'那一束光刚好落在眼前，细小的轮廓都亮了起来。',wait:'我停住了动作，它终于放松下来，转头看了我一眼。',echo:'我点过不同的溪石，水声像在一近一远地回答。',trail:'我按顺序看清了那一小段痕迹，下一段路在转角出现。',inspect:'透镜里有一个细小的绿色世界，纹理比想象中更丰富。',sand:'我在湿沙上留了一笔，下一道潮水轻轻把它收走。',turn:'换个角度，纹理和光泽就不一样了。我把它留在原处。',settle:'我停止搅动水面，倒着的山慢慢回到眼前。',guide:'落叶沿着弯弯的水路过去，终于转过了那块石头。',rhythm:'几滴雨跟着我的节奏落下，短短一段，只在这次旅程里响过。',place:'竹叶停在石头浅浅的凹处，风经过，它也没有再滑走。'};
  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number.isFinite(v)?v:a));
  const type=entry=>entry.play||TYPES[entry.id];
- const points=s=>s.play?.type==='guide'?[{x:.34,y:.82},{x:.52,y:.76},{x:.73,y:.7}]:s.id==='bamboo-step'?[{x:.27,y:.79},{x:.49,y:.57},{x:.7,y:.34}]:[{x:.34,y:.8},{x:.52,y:.59},{x:.65,y:.37}];
+ const points=s=>s.id==='maclehose-sideways-crab'?[{x:.25,y:.78},{x:.5,y:.78},{x:.75,y:.78}]:s.play?.type==='guide'?[{x:.34,y:.82},{x:.52,y:.76},{x:.73,y:.7}]:s.id==='bamboo-step'?[{x:.27,y:.79},{x:.49,y:.57},{x:.7,y:.34}]:[{x:.34,y:.8},{x:.52,y:.59},{x:.65,y:.37}];
  function target(s){
+  if(s.play.type==='yield')return {x:.15,y:.65};
   if(['trail','guide','outline'].includes(s.play.type))return points(s)[Math.min(2,s.play.step)];
   if(['echo','listen'].includes(s.play.type))return {x:[.1875,.5,.8125][Math.min(2,s.play.step)],y:.6};
   if(s.play.type==='rhythm')return {x:[.38,.5,.62][Math.min(2,s.play.step)],y:.65};
@@ -32,7 +33,7 @@
   // A keyboard/switch activation operates the next focusable object, without requiring a pointer.
   if(point.assist){x=t.x;y=t.y;p.assisted=true;}
   const delta=Math.hypot(x-s.x,y-s.y);p.lastInput=s.age;
-  if(['wait','settle'].includes(p.type)){if(delta>.025||mode==='tap'){p.still=0;p.progress=0;p.complete=false;p.completedAt=null;}}
+  if(['wait','settle','yield'].includes(p.type)){if(delta>.025||mode==='tap'){p.still=0;p.progress=0;p.complete=false;p.completedAt=null;}}
   if(['sweep','panorama'].includes(p.type)){p.travel=clamp(p.travel+(point.assist?.6:mode==='move'?Math.abs(x-s.x):.09),0,2);p.progress=clamp(p.travel/.65);}
   if(p.type==='turn'){p.turn=clamp(p.turn+(point.assist?.38:mode==='move'?(x-s.x)*1.8:.08),-1,1);p.progress=Math.max(p.progress,clamp(Math.abs(p.turn)/.6));}
   if(p.type==='sand'&&mode==='move'){p.progress=clamp(p.progress+delta*1.4);}
@@ -54,12 +55,13 @@
   if(!s.play)return s;let p={...s.play};const t=target(s),near=Math.hypot(s.x-t.x,s.y-t.y)<.16;
   if(p.type==='wait'||p.type==='settle'){p.still=Math.min(3,p.still+dt);p.progress=clamp(p.still/(p.type==='wait'?1.8:2.2));}
   if(['align','inspect','follow','spray'].includes(p.type)&&s.acted){p.still=near?p.still+dt:Math.max(0,p.still-dt*.6);p.progress=clamp(p.still/(p.type==='follow'?.65:.55));}
+  if(p.type==='yield'&&s.acted&&!p.complete){p.still=near&&!s.dragging?p.still+dt:0;p.progress=clamp(p.still/1.8);}
   if(p.type==='brew'&&s.acted)p.progress=clamp(s.reaction/1.8);
   if(p.type==='sand'&&!p.complete&&s.acted&&!s.dragging&&p.progress>.15&&s.age-p.lastInput>2)p=complete(p,s.age);
   if(!p.complete&&p.progress>=1&&p.type!=='sand')p=complete(p,s.age);return {...s,play:p};
  }
  function instruction(entry){return entry.prompt||PROMPTS[type(entry)];}
- function status(s){const p=s.play;if(p?.complete)return p.tag?'已收下「'+p.tag+'」标签，准备继续走。':'这一刻刚刚好，留在手帐里。';if(p?.type==='wait')return '停住指尖，等云雾慢慢让出山脊。';if(p?.type==='settle')return p.still>.8?'水纹变浅了，岸边的倒影正在回来。':'水纹散开了，停一会儿看看。';if(['trail','outline','guide'].includes(p?.type))return p.step?'下一处转折亮起来了。':'从最近的一处亮点开始。';if(p?.type==='brew')return s.acted?'叶子正在舒展，陪它慢慢等一会儿。':'轻点茶盏，让这一小段歇脚开始。';if(p?.type==='listen')return p.step?'再听一处，让近声和远声有一点距离。':'轻点画面的近、中、远处，安静听一会儿。';return s.acted?'可以继续试一试，也可以随时继续走。':'也可以安静观看；完成互动后收下对应标签。';}
+ function status(s){const p=s.play;if(p?.complete)return p.tag?'已收下「'+p.tag+'」标签，准备继续走。':'这一刻刚刚好，留在手帐里。';if(p?.type==='yield')return p.still>.2?'路留出来了，安静等它从远处经过。':'轻点左侧退让处，再停住指尖。';if(s.id==='tiger-bell-first'&&!p.complete)return p.step?'再听一处，铃声沿山路慢慢走近。':'轻点左、中、右三处，听铃声的位置。';if(s.id==='maclehose-sideways-crab'&&!p.complete)return '从左到右，远远陪它经过三个亮点。';if(p?.type==='wait')return '停住指尖，等云雾慢慢让出山脊。';if(p?.type==='settle')return p.still>.8?'水纹变浅了，岸边的倒影正在回来。':'水纹散开了，停一会儿看看。';if(['trail','outline','guide'].includes(p?.type))return p.step?'下一处转折亮起来了。':'从最近的一处亮点开始。';if(p?.type==='brew')return s.acted?'叶子正在舒展，陪它慢慢等一会儿。':'轻点茶盏，让这一小段歇脚开始。';if(p?.type==='listen')return p.step?'再听一处，让近声和远声有一点距离。':'轻点画面的近、中、远处，安静听一会儿。';return s.acted?'可以继续试一试，也可以随时继续走。':'也可以安静观看；完成互动后收下对应标签。';}
  function memory(s,entry){if(entry.edition===3){const result=s.play.complete?entry.result:(!s.acted?'我在这里安静看了一会儿。':'我试着看了看这段景物，还想留一点好奇给下次。');return entry.memory+result;}return entry.memory+(s.play.complete?RESULTS[s.play.type]:'我停下来，多看了一会儿。');}
  const CUSTOM=new Set(['sand','turn','inspect','trail','place','echo']);
  function custom(entry){return entry.edition===3||entry.route!=='westlake'&&CUSTOM.has(type(entry));}
@@ -97,7 +99,7 @@
  function decorate(svg,parent,entry,refs){
   const add=(tag,a={},p=parent)=>svg(tag,a,p),path=(d,fill,stroke='none',w=1,p=parent)=>add('path',{d,fill,stroke,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'},p);
   const v={type:type(entry),refs,custom:!!refs.custom};
-  if(['follow','align','inspect','guide','place','trail','outline','spray'].includes(v.type)){v.goal=add('ellipse',{cx:270,cy:126,rx:v.type==='inspect'?28:20,ry:v.type==='inspect'?25:14,fill:'none',stroke:'#f9f0bb','stroke-width':2,'stroke-dasharray':'3 4'});}
+  if(['follow','align','inspect','guide','place','trail','outline','spray','yield'].includes(v.type)){v.goal=add('ellipse',{cx:270,cy:126,rx:v.type==='inspect'?28:20,ry:v.type==='inspect'?25:14,fill:'none',stroke:'#f9f0bb','stroke-width':2,'stroke-dasharray':'3 4'});}
   if(['trail','guide','echo','outline','listen'].includes(v.type))v.cursor=add('circle',{cx:200,cy:130,r:7,fill:'#f9f1c1',opacity:0});
   if(v.type==='follow'||v.type==='inspect'){v.lens=add('g');add('circle',{r:v.type==='inspect'?36:33,fill:v.type==='inspect'?'#eef1c7':'none','fill-opacity':.25,stroke:'#e8dbab','stroke-width':2},v.lens);path('M24 25L44 45','none','#a5916d',4,v.lens);}
   if(v.type==='inspect'){const defs=add('defs'),clip=add('clipPath',{id:'play-lens-clip',clipPathUnits:'userSpaceOnUse'},defs);add('circle',{r:33},clip);v.zoom=add('g',{'clip-path':'url(#play-lens-clip)'},v.lens);v.zoomPoints=[];const samples=refs.samples||Array.from({length:32},(_,i)=>({x:79+(i*47)%240,y:114+(i*19)%52,d:'M0 9V-4m0 8l-5-5m5 6l6-6',fill:'none',color:i%2?'#6f985a':'#c0d59b'}));for(const a of samples){const g=add('g',{},v.zoom);path(a.d,a.fill,a.color,.9,g);v.zoomPoints.push({g,x:a.x,y:a.y});}}
