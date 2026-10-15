@@ -78,7 +78,7 @@
  }
  function renderJournal(append=false){
   const list=$('journal-list'),book=window.TrailJournal.page(journal,journalRoute,journalPageSize);
-  $('journal-count').textContent=`${journal.length}个瞬间`;
+  $('journal-count').textContent=`${book.totalAll}个瞬间`;
   $('trip-count').textContent=`本次记下${trip.found.length}个瞬间`;
   const routeName=G.ROUTES.find(r=>r.id===journalRoute)?.name||'全部路线';
   $('journal-filter-count').textContent=book.total?`${routeName} · ${book.total}段回忆 · 已展开${book.entries.length}段`:`${routeName} · 等待新的回忆`;
@@ -115,7 +115,21 @@
   const point=G.position({routeId:state.routeId,distance:G.metric(state.routeId).total*(active.at+.045)}),[x,y]=projection.point(point.lon,point.lat),g=svg('g',{id:'active-discovery',role:'button',tabindex:0,class:'nature-marker','aria-label':`记住${D.item(active.id).name}`,'data-discovery':active.id},$('nature-discoveries'));naturePoint=[Math.max(48,Math.min(672,x+active.side*42)),Math.max(55,Math.min(530,y-42))];natureNode=g;svg('circle',{r:42,fill:'transparent'},g);svg('circle',{r:D.item(active.id).icon==='butterfly'?14:22,fill:entry.interaction?'transparent':'#fffaf0',stroke:entry.interaction?'none':'#dac691','stroke-width':1.5},g);natureArt=svg('g',{},g);if(entry.edition===3)svg('image',{href:entry.artV5||entry.artV4||entry.badge,x:-24,y:-24,width:48,height:48,'aria-hidden':'true'},natureArt);else natureIcon(natureArt,D.item(active.id).icon);const label=svg('text',{y:D.item(active.id).icon==='butterfly'?28:37,'text-anchor':'middle',fill:'#557350','font-size':11,'font-weight':600},g);label.textContent=entry.interaction?'看看这里':'记住这一刻';const collect=e=>{e.stopPropagation?.();captureDiscovery(active.id);};g.addEventListener('click',collect);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();collect(e);}});
  }
  function animateDiscovery(){if(!natureNode)return;const icon=D.item(natureId).icon,p=D.item(natureId).edition===3?{angle:0,wing:1}:L.creature(icon,state.elapsed,motionReduced);natureNode.setAttribute('transform',`translate(${naturePoint[0].toFixed(2)} ${(naturePoint[1]+(motionReduced?0:Math.sin(state.elapsed*2.2)*1.5)).toFixed(2)})`);natureArt.setAttribute('transform',`rotate(${p.angle.toFixed(2)})`);for(const wing of natureArt.motionWings||[])wing.setAttribute('transform',`scale(${p.wing.toFixed(3)} 1)`);}
- function saveMoment(moment,entry){if(!moment)return;tripMoments.push(moment);actionStarted=state.elapsed;playTransition('discovery',moment.title,null,entry.icon);state={...state,memories:[...state.memories,moment.memory]};const atCapacity=journal.length>=D.MAX_MOMENTS;if(!atCapacity)journal=D.cleanMoments([...journal,moment]);const saved=!atCapacity&&D.saveMoments(storage,journal);$('journal-storage').textContent=atCapacity?'手帐已满，原回忆已保留。这个新片刻仍可在本次旅程结尾查看。':saved?'回忆自动保存在这个浏览器，每次重游都会接着写下去。':'这个浏览器无法保存手帐，本次打开页面期间仍可以记下瞬间。';$('discovery-status').textContent=`${D.hasTag(moment)?'刚刚收下标签':'刚刚记下一段回忆'}「${moment.title}」 · ${moment.place}`;echo=moment.memory;echoUntil=state.elapsed+7;renderJournal();uiKey='';render();updatePosition(0);}
+ function saveMoment(moment,entry){
+  if(!moment)return;
+  tripMoments.push(moment);actionStarted=state.elapsed;playTransition('discovery',moment.title,null,entry.icon);
+  state={...state,memories:[...state.memories,moment.memory]};
+  const result=window.TrailJournal.remember(journal,moment);
+  if(result.status==='full')$('journal-storage').textContent='手帐已满，原回忆已保留。这个新片刻仍可在本次旅程结尾查看。';
+  else if(result.status!=='unchanged'){
+   journal=result.moments;
+   const saved=D.saveMoments(storage,journal);
+   $('journal-storage').textContent=saved?'回忆自动保存在这个浏览器，相同的片刻只留一页。':'这个浏览器无法保存手帐，本次打开页面期间仍可以记下瞬间。';
+  }
+  const message=result.status==='unchanged'?'再次遇见，手帐中已留存':result.status==='upgraded'?'手帐已补上手绘':D.hasTag(moment)?'刚刚收下标签':'刚刚记下一段回忆';
+  $('discovery-status').textContent=`${message}「${moment.title}」 · ${moment.place}`;
+  echo=moment.memory;echoUntil=state.elapsed+7;renderJournal();uiKey='';render();updatePosition(0);
+ }
  function captureDiscovery(id){const active=discovery();if(!active||active.id!==id)return;const entry=D.item(id);if(entry.interaction){beginMicro(entry);return;}const next=D.capture(state,trip,id);if(next===trip)return;trip=next;saveMoment(D.moment(state,trip,id,{weather:J.weather(state)}),entry);}
  function beginMicro(entry){windWasOpen=!!window.TrailMiniGames?.kinds[entry.id];$('mini-retry').disabled=false;miniPendingPoint=null;miniSoundSerial=0;microReturn=state.status;state=J.pause(state);cancelLoop();micro=X.create(entry,{reduced:motionReduced});$('micro-art').replaceChildren();microRefs=X.draw(svg,$('micro-art'),entry);X.paint(microRefs,micro,motionReduced); $('micro-panel').setAttribute('data-game',micro.game||'');$('wind-hud').hidden=!micro.game;$('mini-place-label').textContent=({wind:'武功山 · 借风',creek:'九溪 · 推叶',rain:'莫干山 · 接雨'})[micro.game]||'';$('mini-controls').hidden=!micro.game;artCache?.request(entry.artV5||entry.artV4||entry.badge,'high');$('micro-place').textContent=entry.place+' · '+entry.condition;$('micro-title').textContent=entry.name;$('micro-instruction').textContent=X.instruction(entry);$('micro-surface').setAttribute('aria-label',$('micro-instruction').textContent);$('micro-result').textContent=X.status(micro);updateMicroStatus();$('micro-panel').hidden=false;uiKey='';render();window.TrailMiniGames?.mount(microRefs,window.PIXI,$('micro-surface'),artCache?.request(window.TrailMiniGames?.waterAssets[micro.game]?.scene||'scenes/'+entry.route+'-v1.webp','high'),entry.id==='meadow-bird'?artCache?.request('sprites/wugong-swallow-kite-v1.webp','high'):window.TrailMiniGames?.waterAssets[micro.game]?artCache?.request(window.TrailMiniGames.waterAssets[micro.game].actor,'high'):null,entry.id==='meadow-bird'?artCache?.request('sprites/wugong-meadow-grass-v1.webp','high'):micro.game==='creek'?artCache?.request(window.TrailMiniGames.waterAssets.creek.stone,'high'):null);$('micro-surface').focus({preventScroll:true});ensureLoop();}
  function updateMicroStatus(){if(!micro)return;if(micro.game==='wind'){
