@@ -355,7 +355,7 @@
  for(const id of ['westlake-creek','westlake-path','westlake-tea'])PROFILES[id].instrument='felt';
  const SAMPLES={creek:'audio/westlake-creek-v1.mp3',leaves:'audio/westlake-leaves-v1.mp3',drips:'audio/westlake-drips-v1.mp3',drop:'audio/mini-drop-v1.mp3',splash:'audio/mini-splash-v1.mp3',paper:'audio/mini-paper-v1.mp3'};
  const MINI_SAMPLES={westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['paper']};
- function momentMix(routeId){return routeId==='westlake'?{creek:.36,leaves:.06}:routeId==='mogan'?{leaves:.16,drips:.19}:routeId==='wugong'?{leaves:.17}:null;}
+ function momentMix(routeId,game=null){return routeId==='westlake'?{creek:.36,leaves:.06}:routeId==='mogan'?{leaves:.16,drips:.19}:routeId==='wugong'?{leaves:game==='altar'?.06:game==='clouds'?.10:game==='greet'?.18:.17}:null;}
  const smooth=(a,b,p)=>{const t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);};
  function westlakeMix(progress=0){const tea=smooth(.38,.70,progress),village=smooth(.80,.96,progress);return {creek:(.50*(1-tea)+.055)*(1-village),leaves:(.10+.34*tea)*(1-.64*village),drips:.27*village};}
  for(const p of Object.values(PROFILES)){Object.freeze(p.melody);Object.freeze(p.chord);Object.freeze(p.ambience);Object.freeze(p);}Object.freeze(PROFILES);
@@ -373,7 +373,7 @@
   return events.sort((a,b)=>a.at-b.at);
  }
  function noise(length,seed=19){const out=new Float32Array(length);let brown=0;for(let i=0;i<length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;brown=(brown+(seed/4294967296*2-1)*.10)/1.035;out[i]=brown;}return out;}
- function selection({routeId,checkpointId=null,weather='clear',mode='walk',progress=0}){if(mode==='silent')return {key:`silent:${routeId}`,silent:true};const p=mode==='photo'?profile(checkpointId):null;const ambience=p?.ambience||({westlake:{kind:'stream',cutoff:1020,gain:.027},maclehose:{kind:'surf',cutoff:780,gain:.034},changping:{kind:'stream',cutoff:1100,gain:.028},mogan:{kind:'bamboo',cutoff:1280,gain:.022}}[routeId])||{kind:routeId==='tiger'?'river':routeId==='aotai'?'snow':'wind',cutoff:routeId==='tiger'?950:routeId==='aotai'?620:430,gain:routeId==='tiger'?.033:.025};return {key:`${mode}:${routeId}:${p?checkpointId:''}:${weather}`,routeId,progress,mix:mode==='moment'&&momentMix(routeId)?momentMix(routeId):routeId==='westlake'?westlakeMix(mode==='photo'?({'westlake-creek':.25,'westlake-path':.62,'westlake-tea':.97}[checkpointId]||progress):progress):null,profile:p,ambience:{...ambience,gain:ambience.gain*(weather==='blizzard'?1.3:1)},events:p?score(checkpointId):[]};}
+ function selection({routeId,checkpointId=null,weather='clear',mode='walk',progress=0,momentGame=null}){if(mode==='silent')return {key:`silent:${routeId}`,silent:true};const p=mode==='photo'?profile(checkpointId):null;const ambience=p?.ambience||({westlake:{kind:'stream',cutoff:1020,gain:.027},maclehose:{kind:'surf',cutoff:780,gain:.034},changping:{kind:'stream',cutoff:1100,gain:.028},mogan:{kind:'bamboo',cutoff:1280,gain:.022}}[routeId])||{kind:routeId==='tiger'?'river':routeId==='aotai'?'snow':'wind',cutoff:routeId==='tiger'?950:routeId==='aotai'?620:430,gain:routeId==='tiger'?.033:.025};return {key:`${mode}:${routeId}:${p?checkpointId:''}${mode==='moment'&&momentGame?':'+momentGame:''}:${weather}`,routeId,progress,mix:mode==='moment'&&momentMix(routeId,momentGame)?momentMix(routeId,momentGame):routeId==='westlake'?westlakeMix(mode==='photo'?({'westlake-creek':.25,'westlake-path':.62,'westlake-tea':.97}[checkpointId]||progress):progress):null,profile:p,ambience:{...ambience,gain:ambience.gain*(weather==='blizzard'?1.3:1)},events:p?score(checkpointId):[]};}
  function create({AudioContext=null,navigator=null,fetch=null,timers=globalThis,onError=()=>{},onStateChange=()=>{}}={}){let context=null,master=null,reverb=null,reverbGain=null,noiseBuffer=null,enabled=false,currentKey='',group=null,groups=[],suspendTimer=null,disposed=false,lastInteraction=-Infinity;const buffers=new Map(),loads=new Map();
   function cancelSuspend(){if(suspendTimer!==null){timers.clearTimeout?.(suspendTimer);suspendTimer=null;}}
   function disconnect(node){try{node.disconnect();}catch(_){}}
@@ -427,6 +427,22 @@
   function mini(game,event,{x=.5,index=0}={}){
    if(!enabled||!group||group.retired||group.disposed||context?.state!=='running')return false;
    const pan=(Math.max(0,Math.min(1,x))-.5)*.8,start=context.currentTime+.02;
+   if(event==='focus'||event==='inspect'){
+    if(context.currentTime-(group.lastFocus??-1)<.2)return false;group.lastFocus=context.currentTime;
+    if(!transient('paper',pan,event==='focus'?.12:.08,event==='focus'?.92:.72))texture(group,{kind:'wind',cutoff:event==='focus'?1800:700,length:.12,gain:.009},start);return true;
+   }
+   if(event==='shutter'||event==='detail'){
+    if(event==='shutter')transient('paper',pan,.32,1.28);
+    // An observation cue, never a sound suggesting the player hits the monument.
+    tone(group,{at:0,midi:[64,69,72][Math.max(0,index-1)%3],length:1.1,gain:.021,instrument:event==='detail'?'felt':'air',pan,space:.24},start);return true;
+   }
+   if(event==='call'){
+    transient('paper',.22,.13,.85);tone(group,{at:0,midi:67,length:.35,gain:.014,instrument:'air',pan:.25,space:.17},start);tone(group,{at:.16,midi:72,length:.5,gain:.012,instrument:'air',pan:.25,space:.17},start);return true;
+   }
+   if(event==='reply'){
+    transient('paper',-.15,.18,1.05);tone(group,{at:0,midi:[64,69,76][Math.max(0,index-1)%3],length:.7,gain:.023,instrument:'felt',pan:-.2,space:.18},start);return true;
+   }
+   if(event==='early'){tone(group,{at:0,midi:55,length:.13,gain:.008,instrument:'felt',pan:0,space:.05},start);return true;}
    if(event==='tug'){if(context.currentTime-(group.lastTug??-1)<.28)return false;group.lastTug=context.currentTime;if(transient('paper',pan,.25,1.12))return true;texture(group,{kind:'wind',cutoff:2200,length:.12,gain:.012},start);return true;}
    if(event==='slip'){texture(group,{kind:'wind',cutoff:650,length:.4,gain:.018},start);return true;}
    if(event==='reveal'||event==='collect'){if(!transient('paper',0,.5,event==='collect'?1.12:.9))texture(group,{kind:'wind',cutoff:event==='collect'?1800:1100,length:.38,gain:.022},start);tone(group,{at:.09,midi:event==='collect'?76:72,length:.65,gain:.018,instrument:'felt',pan:0,space:.12},start);return true;}

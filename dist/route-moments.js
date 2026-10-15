@@ -157,6 +157,10 @@
  for(const id of ['snow-light','bamboo-leaf','westlake-eaves','westlake-floating-leaf','westlake-leaf-shadow','westlake-basket'])PROFILES[id].artV5='badges/'+id+'-v5.webp';
  // Current play descriptions only; saved journal text and badge editions stay untouched.
  Object.assign(PROFILES['meadow-bird'],{name:'借一阵草甸的风',prompt:'上下拖动牵线，让燕子纸鸢在流动的风带里稳住，借三阵风飞向云海。方向键也可操作。',result:'我顺着草浪辨认风向，牵着燕子纸鸢借过三阵风，把它送向山脊的云海。'});
+ Object.assign(PROFILES['meadow-butterfly'],{name:'等云开，留住山脊',prompt:'移动取景框，找到亮起的山脊；等薄云让开，稳稳留下三段云海。',result:'草脊、小岛与远山，在取景框里一处一处清楚了。我把等待云开的时间也留在手帐里。'});
+ Object.assign(PROFILES['meadow-flower'],{name:'在石缝里，读一段时间',prompt:'移动小透镜，依次看清石拱、石缝与苔色。只观察，不移动石块。',result:'我沿着石拱、石缝与苔色仔细看了一遍，没有触碰石块；一座小小的石坛，也有许多细节。'});
+ Object.assign(PROFILES['wugong-wind-hiker'],{name:'隔着草坡，挥一挥手',prompt:'看她举手，在「现在回应」亮起时轻点画面。隔着草坡，互相送出三次问候。',result:'她在草坡另一边挥手，我顺着风声回应了三次；我们没有走近，那一声问候已经到了。'});
+ for(const id of ['meadow-bird','meadow-butterfly','meadow-flower','wugong-wind-hiker'])PROFILES[id].hint=PROFILES[id].prompt;
  Object.assign(PROFILES['bamboo-drop'],{name:'竹叶落雨，接成一段声音',prompt:'左右移动竹筒，接住八滴竹叶上的雨。接住才会奏响音符，漏接可以继续。',result:'竹叶上的雨落进竹筒，八个清亮的声音串起了这段竹林记忆。'});
  Object.assign(PROFILES['westlake-floating-leaf'],{prompt:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。',result:'我用一圈圈水纹，陪落叶终于转过溪石，漂进下游的光里。'});
  function profile(id){return PROFILES[id]||null;}
