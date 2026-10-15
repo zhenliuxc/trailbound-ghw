@@ -1,22 +1,16 @@
-(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./moment-scenes.js'):root.TrailMomentScenes);if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailMicroMoments=api;}(typeof globalThis!=='undefined'?globalThis:this,function(Y){
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./moment-scenes.js'):root.TrailMomentScenes,typeof module==='object'&&module.exports?require('./moment-play.js'):root.TrailMomentPlay);if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailMicroMoments=api;}(typeof globalThis!=='undefined'?globalThis:this,function(Y,P){
  'use strict';
  const clamp=(v,min=0,max=1)=>Number.isFinite(v)?Math.max(min,Math.min(max,v)):min;
- function create(entry){return {id:entry.id,route:entry.route,kind:entry.interaction,age:0,reaction:0,acted:false,gesture:'look',x:.5,y:.56,distance:0,trail:[],dragging:false,done:false};}
- function act(s,{x=.5,y=.56,gesture='tap'}={}){if(!s||s.acted||s.done)return s;return {...s,acted:true,reaction:0,x:clamp(x),y:clamp(y),gesture:gesture==='drag'?'drag':'tap',trail:[{x:clamp(x),y:clamp(y)}]};}
- function tick(s,dt){if(!s||s.done||!Number.isFinite(dt)||dt<=0)return s;dt=Math.min(.25,dt);const age=s.age+dt,reaction=s.acted?s.reaction+dt:0;return {...s,age,reaction,done:age>=10||(s.acted?!s.dragging&&reaction>=3.4:age>=6)};}
- function move(s,{x,y}={}){if(!s||s.done)return s;const p={x:clamp(x),y:clamp(y)},next=s.acted?s:act(s,{...p,gesture:'drag'}),last=next.trail.at(-1)||p,delta=Math.hypot(p.x-last.x,p.y-last.y);if(delta<.003)return {...next,dragging:true};let trail=[...next.trail,p];if(trail.length>24)trail=trail.filter((_,i)=>i%2===0||i===trail.length-1);return {...next,...p,gesture:'drag',dragging:true,distance:Math.min(3,next.distance+delta),trail};}
- function release(s){return s?.dragging?{...s,dragging:false}:s;}
- function outcome(s,entry){
-  if(entry.route!=='westlake')return Y.outcome(s,entry);
-  let title=entry.name,memory=entry.memory;
-  if(s.acted){
-   if(s.kind==='ripple'){const leaf=s.id==='westlake-floating-leaf';title=leaf?(s.gesture==='drag'?'它终于转过了那块石头':'落叶跟着涟漪走了一小圈'):'指尖开出的一圈水纹';memory=leaf?'九溪溪谷里，我轻轻划了一下水面。那片绕了好久的叶子，终于转过石头，顺着溪水往前走了。':'九溪的水从石头旁经过。我轻触水面，看水纹慢慢散开，溪声像离自己更近了一点。';}
-   else if(s.kind==='leaf'){title=s.id==='westlake-leaf-shadow'?'叶脉里透过来的一点光':'茶叶轻轻翻了一下';memory='龙井茶园里，我轻轻碰了一片茶叶。叶子翻过来，云缝里的光透过细细的叶脉，叶影也跟着换了个方向。';}
-   else{title=s.id==='westlake-basket'?'一只等雨停的竹篮':'屋檐下，雨滴慢下来';memory=s.id==='westlake-basket'?'龙井村口的屋檐还在滴水。我听着那串小声音，一只竹篮安静放在凳上，像也在等下一段路。':'我在龙井村口的屋檐下停了一会儿。雨后的水滴渐渐稀了，听着听着，自己的脚步也不着急了。';}
-  }else memory=entry.memory+'我没有碰它，只安静看了一会儿。';
-  return {id:s.id,title,memory,interaction:s.gesture};
+ function create(entry,options){return {play:P.create(entry,options),id:entry.id,route:entry.route,kind:entry.interaction,age:0,reaction:0,acted:false,gesture:'look',x:.5,y:.56,distance:0,trail:[],dragging:false,done:false};}
+ function act(s,point={}){
+  if(!s||s.done)return s;const gesture=point.gesture==='drag'?'drag':'tap';
+  const updated=P.input(s,point,gesture==='drag'?'move':'tap');if(updated===s)return s;
+  return {...updated,acted:true,reaction:s.acted?s.reaction:0,gesture:s.gesture==='drag'?'drag':gesture,trail:s.trail.length?s.trail:[{x:updated.x,y:updated.y}]};
  }
- function draw(svg,parent,entry){
+ function tick(s,dt){if(!s||s.done||!Number.isFinite(dt)||dt<=0)return s;dt=Math.min(.25,dt);const age=s.age+dt,reaction=s.acted?s.reaction+dt:0,next=P.tick({...s,age,reaction},dt),limit=s.route==='westlake'||next.play.complete?3.4:6;return {...next,done:age>=10||(s.acted?!s.dragging&&reaction>=limit&&(!next.play.complete||age-next.play.completedAt>=.7):age>=6)};}
+ function move(s,{x,y}={}){if(!s||s.done)return s;const p={x:clamp(x),y:clamp(y)},next=s.acted?s:act(s,{...p,gesture:'drag'}),last=next.trail.at(-1)||p,delta=Math.hypot(p.x-last.x,p.y-last.y);if(delta<.003)return {...next,dragging:true};let trail=[...next.trail,p];if(trail.length>24)trail=trail.filter((_,i)=>i%2===0||i===trail.length-1);return {...P.input(next,p,'move'),gesture:'drag',dragging:true,distance:Math.min(3,next.distance+delta),trail};}
+ function release(s){return s?.dragging?{...s,dragging:false}:s;}
+ function drawScene(svg,parent,entry){
   if(entry.route!=='westlake')return Y.draw(svg,parent,entry);
   const kind=entry.interaction,refs={kind},add=(tag,attrs={},p=parent)=>svg(tag,attrs,p),path=(d,fill,stroke,width=1.4,p=parent)=>add('path',{d,fill,stroke:stroke||'none','stroke-width':width,'stroke-linecap':'round','stroke-linejoin':'round'},p);
   const defs=add('defs'),water=add('linearGradient',{id:'micro-water',x2:1,y2:1},defs);add('stop',{offset:0,'stop-color':'#c8dfd4'},water);add('stop',{offset:1,'stop-color':'#72a9a4'},water);
@@ -52,7 +46,7 @@
   }
   return refs;
  }
- function paint(refs,s,reduced=false){
+ function paintScene(refs,s,reduced=false){
   if(refs.regional){Y.paint(refs,s,reduced);return;}
   const t=s.reaction;
   if(refs.kind==='ripple'){
@@ -65,5 +59,8 @@
    refs.rings.forEach((ring,i)=>{const phase=clamp((t-.62-i*.66)/1.25);ring.setAttribute('rx',phase*43);ring.setAttribute('ry',phase*10);ring.setAttribute('opacity',s.acted&&phase>0?1-phase:0);});
   }
  }
- return {create,act,move,release,tick,outcome,draw,paint,instruction:entry=>entry.route==='westlake'?({ripple:'轻触水面，或划出一圈水纹。',leaf:'轻碰茶叶，看看光怎样透过叶脉。',drip:'轻触屋檐，听雨后的水滴慢慢落下。'})[entry.interaction]:Y.instruction(entry)};
+ function draw(svg,parent,entry){const refs=P.custom(entry)?P.draw(svg,parent,entry):drawScene(svg,parent,entry);refs.playView=P.decorate(svg,parent,entry,refs);return refs;}
+ function paint(refs,s,reduced=false){if(!refs.custom)paintScene(refs,s,reduced);P.paint(refs.playView,s,reduced);}
+ function outcome(s,entry){return {id:s.id,interaction:s.gesture,memory:P.memory(s,entry),title:s.play.complete?P.LABELS[s.play.type]+'的一刻':entry.name};}
+ return {create,act,move,release,tick,outcome,draw,paint,instruction:P.instruction,status:P.status,playType:P.type,playTarget:P.target};
 }));
