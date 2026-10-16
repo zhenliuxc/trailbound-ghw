@@ -58,3 +58,12 @@ const waterLayers=require('../dist/sprites/water-layers.json'),water=require('..
 for(const a of waterLayers.entries){const b=fs.readFileSync(path.join(dir,a.file));assert.equal(b.toString('ascii',8,12),'WEBP');assert.equal(b.length,a.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),a.sha256);assert.ok(b.length<350000);assert.ok(a.supersededBy?waterLayers.entries.some(e=>e.file===a.supersededBy):Object.values(water.assets).some(group=>Object.values(group).includes(a.file)));}
 assert.ok(html.indexOf('src="water-scene.js"')<html.indexOf('src="mini-games.js"'));
 console.log('PASS: water encounter artwork is packaged, hash-verified and loaded before gameplay.');
+
+const artProps=require('../dist/sprites/art-play-props-v1.json'),artAtlas=require('../dist/art-play-atlas.js'),artGames=require('../dist/art-games.js');
+const propBytes=fs.readFileSync(path.join(dir,artProps.file));
+assert.equal(propBytes.length,artProps.bytes);assert.equal(crypto.createHash('sha256').update(propBytes).digest('hex'),artProps.sha256);assert.ok(propBytes.length<350000);
+assert.deepEqual(artAtlas.frames,artProps.frames);assert.equal(artAtlas.frames.length,8);
+for(const frame of artAtlas.frames){assert.ok(frame.w>0&&frame.h>0&&frame.x>=0&&frame.y>=0&&frame.x+frame.w<=artAtlas.width&&frame.y+frame.h<=artAtlas.height);}
+for(const group of Object.values(artGames.assets))for(const file of Object.values(group))assert.ok(fs.existsSync(path.join(dir,file)),file);
+for(const file of ['art-play-atlas.js','art-games.js','art-game-scene.js'])assert.ok(html.indexOf('src="'+file+'"')<html.indexOf('src="mini-games.js"'));
+console.log('PASS: watercolor play atlas, frame bounds and three artwork-game resources are packaged.');

@@ -54,6 +54,6 @@ test('the painted scene and pointer share one map on square phones and wide scre
  }
 });
 
-test('existing altar detail inspection is still completable through the same public API',()=>{
- let s=make('meadow-flower');for(let i=0;i<3;i++){s=X.move(s,N.target(s));s=advance(s,2.5);}assert.equal(s.play.complete,true);assert.equal(X.outcome(s,D.item(s.id)).earned,true);
+test('the stone-altar moment now uses the jigsaw and no longer completes by holding a lens',()=>{
+ let s=make('meadow-flower');assert.equal(s.game,'puzzle');s=X.move(s,{x:.5,y:.5});s=advance(s,30);assert.equal(s.play.complete,false);assert.equal(X.outcome(s,D.item(s.id)).earned,false);
 });

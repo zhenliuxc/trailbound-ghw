@@ -5,9 +5,11 @@ class Element{
   set id(value){this.attributes.id=value;this.doc.ids.set(value,this);}get id(){return this.attributes.id;}
   setAttribute(name,value){this.attributes[name]=String(value);if(name==='id')this.doc.ids.set(String(value),this);if(name.startsWith('data-'))this.dataset[name.slice(5)]=String(value);if(name==='class')this.classes=new Set(String(value).split(/\s+/));}
   getAttribute(name){return this.attributes[name]??null;}removeAttribute(name){if(name==='id')this.doc.ids.delete(this.id);delete this.attributes[name];}
-  appendChild(el){el.parentNode=this;this.children.push(el);return el;}replaceChildren(...els){for(const child of this.children)child.parentNode=null;this.children=els;for(const child of els)child.parentNode=this;}
+  appendChild(el){el.remove?.();el.parentNode=this;this.children.push(el);return el;}replaceChildren(...els){for(const child of this.children)child.parentNode=null;this.children=els;for(const child of els)child.parentNode=this;}
   replaceWith(el){const parent=this.parentNode,index=parent.children.indexOf(this);parent.children[index]=el;el.parentNode=parent;this.parentNode=null;}
-  querySelector(selector){for(const child of this.children){if(child.tagName?.toLowerCase()===selector)return child;const found=child.querySelector?.(selector);if(found)return found;}return null;}
+  matches(selector){const attr=/^\[([\w-]+)(?:="([^"]*)")?\]$/.exec(selector);return attr?this.getAttribute(attr[1])!==null&&(attr[2]===undefined||this.getAttribute(attr[1])===attr[2]):this.tagName.toLowerCase()===selector;}
+  closest(selector){for(let node=this;node;node=node.parentNode)if(node.matches?.(selector))return node;return null;}
+  querySelector(selector){for(const child of this.children){if(child.matches?.(selector))return child;const found=child.querySelector?.(selector);if(found)return found;}return null;}
   addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
   emit(type,event={}){const pending=[];for(const fn of this.listeners[type]??[]){const r=fn({target:this,stopPropagation(){this.stopped=true;},preventDefault(){this.prevented=true;},...event});if(r?.then)pending.push(r);}return Promise.all(pending);}
   click(){return this.emit('click');}remove(){if(this.parentNode)this.parentNode.children=this.parentNode.children.filter(n=>n!==this);this.parentNode=null;}

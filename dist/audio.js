@@ -355,7 +355,7 @@
  for(const id of ['westlake-creek','westlake-path','westlake-tea'])PROFILES[id].instrument='felt';
  const SAMPLES={creek:'audio/westlake-creek-v1.mp3',leaves:'audio/westlake-leaves-v1.mp3',drips:'audio/westlake-drips-v1.mp3',drop:'audio/mini-drop-v1.mp3',splash:'audio/mini-splash-v1.mp3',paper:'audio/mini-paper-v1.mp3'};
  const MINI_SAMPLES={westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['paper']};
- function momentMix(routeId,game=null){return routeId==='westlake'?{creek:.36,leaves:.06}:routeId==='mogan'?{leaves:.16,drips:.19}:routeId==='wugong'?{leaves:game==='altar'?.06:game==='clouds'?.10:game==='greet'?.18:.17}:null;}
+ function momentMix(routeId,game=null){return routeId==='westlake'?(game==='match'?{creek:.13,leaves:.16}:{creek:.36,leaves:.06}):routeId==='mogan'?(game==='sling'?{leaves:.22,drips:.07}:{leaves:.16,drips:.19}):routeId==='wugong'?{leaves:['altar','puzzle'].includes(game)?.06:game==='clouds'?.10:game==='greet'?.18:.17}:null;}
  const smooth=(a,b,p)=>{const t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);};
  function westlakeMix(progress=0){const tea=smooth(.38,.70,progress),village=smooth(.80,.96,progress);return {creek:(.50*(1-tea)+.055)*(1-village),leaves:(.10+.34*tea)*(1-.64*village),drips:.27*village};}
  for(const p of Object.values(PROFILES)){Object.freeze(p.melody);Object.freeze(p.chord);Object.freeze(p.ambience);Object.freeze(p);}Object.freeze(PROFILES);
@@ -427,6 +427,36 @@
   function mini(game,event,{x=.5,index=0}={}){
    if(!enabled||!group||group.retired||group.disposed||context?.state!=='running')return false;
    const pan=(Math.max(0,Math.min(1,x))-.5)*.8,start=context.currentTime+.02;
+   // Recorded leaf foley supplies the close paper texture; wood/felt/air voices layer the response.
+   // These cues are triggered by model events, never by a delayed sample download.
+   if(['piece-pick','piece-turn','card-swap','card-return','sling-draw'].includes(event)){
+    if(context.currentTime-(group.lastArtTouch??-1)<.055)return false;group.lastArtTouch=context.currentTime;
+    transient('paper',pan,event==='sling-draw'?.23:.15,event==='piece-turn'?.88:event==='card-return'?.78:1.13);
+    if(event==='sling-draw')texture(group,{kind:'wind',cutoff:730,length:.24,gain:.009,pan},start);
+    else tone(group,{at:.025,midi:event==='card-return'?48:57,length:.08,gain:.005,instrument:'wood',pan,space:.02},start);return true;
+   }
+   if(event==='piece-lock'){
+    transient('paper',pan,.28,.91);tone(group,{at:.02,midi:[60,62,64,67,69,72][Math.max(0,index-1)%6],length:.32,gain:.017,instrument:'felt',pan,space:.09},start);return true;
+   }
+   if(event==='piece-miss'){
+    transient('paper',pan,.14,.72);tone(group,{at:0,midi:47,length:.09,gain:.006,instrument:'wood',pan,space:.02},start);return true;
+   }
+   if(event==='card-shuffle'){
+    transient('paper',-.18,.32,.91);tone(group,{at:.08,midi:59,length:.22,gain:.008,instrument:'felt',pan:.18,space:.07},start);return true;
+   }
+   if(event==='card-clear'){
+    transient('paper',pan,.27,1.13+Math.min(index,5)*.035);const midi=[64,67,69,72,76][Math.max(0,index-1)%5];
+    tone(group,{at:.025,midi,length:.42,gain:.019,instrument:'felt',pan,space:.12},start);tone(group,{at:.12,midi:midi+7,length:.35,gain:.007,instrument:'air',pan:-pan,space:.16},start);return true;
+   }
+   if(event==='sling-release'){
+    transient('paper',pan,.23,1.36);texture(group,{kind:'wind',cutoff:2100,length:.29,gain:.021,pan},start);tone(group,{at:0,midi:57,length:.095,gain:.012,instrument:'wood',pan,space:.03},start);return true;
+   }
+   if(event==='sling-hit'||event==='sling-fall'){
+    transient('paper',pan,event==='sling-hit'?.23:.11,.78);if(event==='sling-hit')tone(group,{at:0,midi:49,length:.16,gain:.018,instrument:'wood',pan,space:.07},start);return true;
+   }
+   if(event==='sling-catch'){
+    transient('paper',pan,.35,.91);tone(group,{at:.035,midi:69,length:.48,gain:.019,instrument:'felt',pan,space:.12},start);tone(group,{at:.16,midi:76,length:.6,gain:.009,instrument:'air',pan,space:.17},start);return true;
+   }
    if(event==='wind-point'||event==='frame'){
     if(context.currentTime-(group.lastFrame??-1)<.22)return false;group.lastFrame=context.currentTime;
     if(!transient('paper',pan,event==='frame'?.055:.11,event==='frame'?1.3:.85))texture(group,{kind:'wind',cutoff:900,length:.09,gain:.006},start);return true;
@@ -462,7 +492,7 @@
    if(event==='slip'){texture(group,{kind:'wind',cutoff:650,length:.4,gain:.018},start);return true;}
    if(event==='reveal'||event==='collect'){if(!transient('paper',0,.5,event==='collect'?1.12:.9))texture(group,{kind:'wind',cutoff:event==='collect'?1800:1100,length:.38,gain:.022},start);tone(group,{at:.09,midi:event==='collect'?76:72,length:.65,gain:.018,instrument:'felt',pan:0,space:.12},start);return true;}
    if(event==='lift'){texture(group,{kind:'wind',cutoff:1050,length:1.3,gain:.028},start);tone(group,{at:0,midi:64,length:1.1,gain:.012,instrument:'air',pan,space:.12},start);return true;}
-   if(event==='complete'){for(const [i,midi]of [60,64,67,72].entries())tone(group,{at:i*.12,midi,length:.65,gain:.022,instrument:'bell',pan:0,space:.12},start);return true;}
+   if(event==='complete'){const art=['puzzle','match','sling'].includes(game);for(const [i,midi]of [60,64,67,72].entries())tone(group,{at:i*.12,midi,length:.65,gain:art?.014:.022,instrument:art?'felt':'bell',pan:0,space:.12},start);return true;}
    if(event==='catch'||event==='goal'){tone(group,{at:0,midi:[60,62,64,67,69,72,74,76][index%8],length:game==='rain'?.55:.8,gain:.035,instrument:game==='rain'?'wood':'bell',pan,space:.16},start);if(game==='rain'&&!transient('drop',pan,.75,1+(index%3)*.04))effect(group,{kind:'tap',at:0,frequency:1000,pan},start);if(game==='creek')transient('splash',pan,.42,1.08);return true;}
    if(event==='ripple'){if(context.currentTime-(group.lastRipple??-1)<.14)return false;group.lastRipple=context.currentTime;if(transient('splash',pan,.58,1+(index%3)*.05))return true;texture(group,{kind:'stream',cutoff:1500,length:.38,gain:.025},start);return true;}
    if(event==='bump'||event==='miss'){if(event==='miss'&&game==='rain'&&transient('drop',pan,.24,.82))return true;tone(group,{at:0,midi:game==='wind'?55:43,length:.12,gain:.012,instrument:'wood',pan,space:.03},start);return true;}return false;

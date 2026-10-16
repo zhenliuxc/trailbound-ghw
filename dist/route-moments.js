@@ -158,11 +158,14 @@
  // Current play descriptions only; saved journal text and badge editions stay untouched.
  Object.assign(PROFILES['meadow-bird'],{name:'借一阵草甸的风',prompt:'上下拖动牵线，让燕子纸鸢在流动的风带里稳住，借三阵风飞向云海。方向键也可操作。',result:'我顺着草浪辨认风向，牵着燕子纸鸢借过三阵风，把它送向山脊的云海。'});
  Object.assign(PROFILES['meadow-butterfly'],{name:'让风穿过云的缝隙',prompt:'沿谷地点选或连线，把来风口接到远谷出口，再送出这阵风。避开挡风的高脊与回流的洼地，可以撤回重画。',result:'我沿着山坳画了一条风路。雾顺着谷地散开，草脊浮出云海，像一封慢慢打开的信。'});
- Object.assign(PROFILES['meadow-flower'],{name:'在石缝里，读一段时间',prompt:'移动小透镜，依次看清石拱、石缝与苔色。只观察，不移动石块。',result:'我沿着石拱、石缝与苔色仔细看了一遍，没有触碰石块；一座小小的石坛，也有许多细节。'});
+ Object.assign(PROFILES['meadow-flower'],{name:'把石拱，拼回纸上',prompt:'把六片石坛水彩拼回画框，根据拱线、石缝与苔色转正方向。拖放画片，或选片后点位置；可以随时查看底稿。',result:'我把散开的石坛画片一块块转正，接回拱线、石缝与苔色。一座石坛，在纸上重新完整了。'});
  Object.assign(PROFILES['wugong-wind-hiker'],{name:'在草甸的风里，遇见她',prompt:'和草坡旁的姑娘打声招呼，帮她把人物与远山一起拍进照片。拖动取景、按下快门，可以重拍；给她看过照片并告别，才留下这段相遇。',result:'草甸风口遇见一位笑着招手的姑娘。我帮她把身后的山也拍进照片，给她看过后，在风里说了再见。'});
  for(const id of ['meadow-bird','meadow-butterfly','meadow-flower','wugong-wind-hiker'])PROFILES[id].hint=PROFILES[id].prompt;
  Object.assign(PROFILES['bamboo-drop'],{name:'竹叶落雨，接成一段声音',prompt:'左右移动竹筒，接住八滴竹叶上的雨。接住才会奏响音符，漏接可以继续。',result:'竹叶上的雨落进竹筒，八个清亮的声音串起了这段竹林记忆。'});
  Object.assign(PROFILES['westlake-floating-leaf'],{prompt:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。',result:'我用一圈圈水纹，陪落叶终于转过溪石，漂进下游的光里。'});
+ Object.assign(PROFILES['westlake-tea'],{name:'让一芽春信，慢慢透亮',prompt:'交换相邻的茶芽卡，连成三个或更多同类叶形，清开六处露光。可以点选或滑动交换，提示、重排与撤回都可用。',result:'我交换叶形，让相连的春芽一片片舒展。六处露光散开，纸上的茶园重新透亮起来。'});
+ Object.assign(PROFILES['bamboo-leaf'],{name:'给远山，送一枚纸叶',prompt:'拉开纸叶，调整角度与力度，松手让它穿过竹隙，停在远山纸签上。碰到竹干可以重来，也可用调整条与按钮发射。',result:'我把一枚纸叶送进竹林的风里。它穿过竹影，稳稳停在远山窗旁的小纸签上。'});
+ for(const id of ['meadow-flower','westlake-tea','bamboo-leaf'])PROFILES[id].hint=PROFILES[id].prompt;
  function profile(id){return PROFILES[id]||null;}
  const routeOf=id=>({meadow:'wugong',gorge:'tiger',snow:'aotai',coast:'maclehose',valley:'changping',bamboo:'mogan',westlake:'westlake'})[id.split('-')[0]];
  function evidence(id){const e=PROFILES[id];return e?.bonus?{...SOURCES[e.route],fact:'这一段人物或动物相遇是游戏创作，不代表现实路线必遇。'+SOURCES[e.route].fact}:SOURCES[routeOf(id)]||null;}
