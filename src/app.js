@@ -3,7 +3,7 @@
   const G = window.TrailGame, J = window.TrailJourney, M = window.TrailMotion, D = window.TrailDiscoveries, L = window.TrailLife, K = window.TrailNature, X = window.TrailMiniGames ? window.TrailMiniGames.enhance(window.TrailMicroMoments) : window.TrailMicroMoments, $ = (id) => document.getElementById(id), NS = "http://www.w3.org/2000/svg", R = 6378137, rad = Math.PI / 180;
   let state = J.create("wugong"), projection = null, view = { x: 0, y: 0, w: 720, h: 600 }, overview = false, photoId = null, photoFromAlbum = false, photoSession = null, uiKey = "", echoUntil = 0, echo = "", sound = false, soundBusy = false, audioBackground = false, soundError = "", lastStrike = -1, scenePlan = null, sceneRenderer = null, cloudNodes = [], mistNodes = [], gaitClock = 0, hikerFacing = 1, lastWeather = null;
   const motionReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || false;
-  const audioPlayer = window.TrailAudio.create({ AudioContext: window.AudioContext || window.webkitAudioContext, navigator: window.navigator, fetch: window.fetch?.bind(window), timers: window, onStateChange: () => {
+  const audioPlayer = window.TrailAudio.create({ AudioContext: window.AudioContext || window.webkitAudioContext, navigator: window.navigator, fetch: window.fetch?.bind(window), timers: window, createMusic: window.TrailRuntime.createMusicLayer, onStateChange: () => {
     uiKey = "";
     render();
   }, onError: () => {
@@ -826,18 +826,28 @@
   function needsAudioResume() {
     return !journalController.open && !rewardController.current && sound && !audioBackground && !document.hidden && (miniController.state || photoId || ["walking", "encounter"].includes(state.status)) && !audioPlayer.running;
   }
+  function audioScene() {
+    const mode = rewardController.current ? "reward" : miniController.state ? "moment" : photoId ? "photo" : state.status === "walking" ? "walk" : state.status === "encounter" ? "choice" : "silent";
+    return { routeId: state.routeId, checkpointId: photoId, weather: J.weather(state), progress: state.progress, mode, momentId: miniController.state?.id || rewardController.current?.id || null, momentGame: miniController.state?.game || window.TrailMiniGames?.kinds[rewardController.current?.id] || null };
+  }
   function syncAudio() {
-    const requested = !journalController.open && sound && !audioBackground && !document.hidden, mode = rewardController.current ? "reward" : miniController.state ? "moment" : photoId ? "photo" : state.status === "walking" ? "walk" : state.status === "encounter" ? "choice" : "silent";
+    const requested = !journalController.open && sound && !audioBackground && !document.hidden;
     if (!requested) {
       if (journalController.open || audioBackground || document.hidden) audioPlayer.hide();
-    } else audioPlayer.setScene({ routeId: state.routeId, checkpointId: photoId, weather: J.weather(state), progress: state.progress, mode, momentId: miniController.state?.id || rewardController.current?.id || null, momentGame: miniController.state?.game || window.TrailMiniGames?.kinds[rewardController.current?.id] || null });
+    } else audioPlayer.setScene(audioScene());
     const playing = requested && audioPlayer.playing;
     $("sound-toggle").setAttribute("aria-pressed", sound);
     $("sound-toggle").textContent = soundBusy ? "声音 · 开启中" : soundError || (needsAudioResume() ? "声音 · 点此恢复" : `声音 · ${sound ? "开" : "关"}`);
+    const musicState = audioPlayer.musicState;
+    const retryMusic = requested && state.routeId === "wugong" && audioScene().mode !== "silent" && ["blocked", "error"].includes(musicState);
+    $("music-retry").hidden = !retryMusic;
+    $("mini-music-retry").hidden = !retryMusic;
     const p = window.TrailAudio.profile(photoId);
     $("photo-soundscape").hidden = !p;
     if (p) {
-      $("photo-soundscape").textContent = `♪ ${p.title} · ${playing ? "正在播放" : !sound ? "声音关闭" : audioBackground || document.hidden ? "已暂停" : "点声音按钮恢复"}`;
+      const title = state.routeId === "wugong" ? "Reverie · Scott Buckley" : p.title;
+      const status = !sound ? "声音关闭" : audioBackground || document.hidden || journalController.open ? "已暂停" : !playing ? "点声音按钮恢复" : state.routeId !== "wugong" || musicState === "playing" ? "正在播放" : musicState === "loading" ? "配乐载入中 · 环境声已开启" : "配乐暂未播放 · 环境声已开启";
+      $("photo-soundscape").textContent = `♪ ${title} · ${status}`;
       $("photo-soundscape").setAttribute("data-playing", playing);
     }
   }
@@ -866,12 +876,18 @@
     soundBusy = true;
     uiKey = "";
     render();
-    const ok = await audioPlayer.enable();
+    const ok = await audioPlayer.enable(audioScene());
     soundBusy = false;
     sound = ok;
     if (!ok && !soundError) soundError = audioPlayer.available ? "声音未能开启，再试一次" : "此浏览器暂无音效";
     uiKey = "";
     render();
+  }
+  for (const id of ["music-retry", "mini-music-retry"]) {
+    $(id).addEventListener("click", () => {
+      audioPlayer.retryMusic();
+      syncAudio();
+    });
   }
   $("choice-feedback-close").addEventListener("click", () => {
     choiceResult = null;

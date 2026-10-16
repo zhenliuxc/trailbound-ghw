@@ -29,6 +29,22 @@ const audio=require('../dist/audio.js'),recordings=JSON.parse(fs.readFileSync(pa
 for(const entry of recordings.entries){const data=fs.readFileSync(path.join(dir,entry.file));recordedBytes+=data.length;assert.equal(entry.file,audio.SAMPLES[entry.id]);assert.equal(data.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),entry.sha256);assert.ok(entry.author&&entry.source&&entry.license&&entry.licenseUrl&&entry.changes);}
 assert.ok(recordedBytes<600000);console.log('PASS: lightweight recorded sound materials retain verified sources, licenses and hashes.');
 
+const wugongAudio=JSON.parse(fs.readFileSync(path.join(dir,'audio/wugong-credits.json'))),runtime=require('../dist/runtime.js');
+let musicBytes=0,foleyBytes=0;
+const themeFiles=new Set(Object.values(runtime.WUGONG_THEMES).map(track=>track.file));
+assert.deepEqual(new Set(wugongAudio.music.map(track=>track.file)),themeFiles);
+assert.equal(themeFiles.size,4);assert.equal(wugongAudio.music.length,4);assert.equal(wugongAudio.cost.materialLicenseFee,0);assert.equal(wugongAudio.cost.paidSubscriptions,false);assert.equal(wugongAudio.cost.paidCommissions,false);
+for(const entry of [...wugongAudio.music,...wugongAudio.effects]){
+ const data=fs.readFileSync(path.join(dir,entry.file));assert.equal(data.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),entry.sha256);
+ assert.ok(entry.author&&entry.source&&entry.acquiredFrom&&entry.license&&entry.licenseUrl&&entry.changes&&entry.sourceFileSha256);
+ if(wugongAudio.music.includes(entry)){assert.ok(themeFiles.has(entry.file));assert.ok(entry.duration>60&&entry.duration<230);assert.ok(entry.attribution);assert.equal(entry.license,'CC BY 4.0');assert.ok(entry.bytes<wugongAudio.budgets.musicFileBytes);musicBytes+=data.length;}
+ else{assert.equal(entry.file,audio.SAMPLES[entry.id]);foleyBytes+=data.length;}
+}
+assert.ok(musicBytes<wugongAudio.budgets.musicBytes&&wugongAudio.budgets.musicBytes<=6000000);assert.ok(wugongAudio.budgets.musicFileBytes<=3000000);
+assert.ok(foleyBytes<wugongAudio.budgets.effectsBytes&&wugongAudio.budgets.effectsBytes<=100000);
+assert.ok(fs.existsSync(path.join(dir,'audio/KENNEY-RPG-LICENSE.txt')));
+console.log('PASS: four free Wugong themes and short foley retain attribution, provenance, hashes and separate streaming/effects budgets.');
+
 const current=JSON.parse(fs.readFileSync(path.join(dir,'badges/landscape-v3.json'),'utf8'));
 assert.equal(current.edition,3);assert.equal(current.entries.length,moments.length);
 for(const e of moments){const art=current.entries.find(a=>a.id===e.id);assert.equal(art.tag,e.tag);assert.equal(art.scene,e.scene);assert.equal(art.play,e.play);assert.equal(art.file,e.badge);const b=fs.readFileSync(path.join(dir,art.file));assert.equal(b.length,art.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),art.sha256);assert.match(b.toString(),/viewBox="0 0 192 192"/);assert.ok(!/<script|<foreignObject|(?:href|src)="https?:|<image/.test(b.toString()));}

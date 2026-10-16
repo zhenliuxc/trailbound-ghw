@@ -2,6 +2,7 @@
 // This checks Chromium with emulated viewports; it is not physical-phone or audio-listening QA.
 const assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=require('node:path');
 const {chromium}=require(process.env.TRAILBOUND_PLAYWRIGHT_MODULE||'playwright');
+const audioChecks=process.env.TRAILBOUND_TEST_AUDIO==='1'?require('./audio-browser-probe.cjs'):null;
 const base=process.env.TRAILBOUND_TEST_URL||'http://127.0.0.1:4173/',out=process.env.TRAILBOUND_REVIEW_DIR||'/tmp/trailbound-wugong-browser';
 const selected=(process.env.TRAILBOUND_TEST_GAMES||'wind,clouds,greet,puzzle').split(',');
 assert.ok(selected.length&&selected.every(game=>['wind','clouds','greet','puzzle'].includes(game))&&new Set(selected).size===selected.length);
@@ -38,7 +39,7 @@ async function waitArt(page){
  throw Error('Artwork or GPU canvas was not ready: '+await page.locator('#micro-surface').getAttribute('aria-busy'));
 }
 async function play(page,game,label){
- phase=label+' wait artwork '+game;await waitArt(page);phase=label+' operate '+game;assert.equal(await page.locator('#micro-surface canvas[data-ready="true"]').count(),1);
+ phase=label+' wait artwork '+game;await waitArt(page);if(audioChecks){phase=label+' native audio '+game;await audioChecks.beforeGame(page,game,label,click);}phase=label+' operate '+game;assert.equal(await page.locator('#micro-surface canvas[data-ready="true"]').count(),1);
  await page.screenshot({path:path.join(out,label+'-'+game+'.png'),animations:'disabled'});
  if(game==='wind'){
   const start=await page.evaluate(()=>performance.now());
@@ -56,16 +57,23 @@ async function play(page,game,label){
   await advance(page,2900);
  }else throw Error('Unexpected Wugong game '+game);
  assert.equal(await visible(page,'micro-panel'),false,game+' must finish');assert.equal(await visible(page,'reward-overlay'),true,game+' must reveal earned painting');
+ if(audioChecks)await audioChecks.reward(page,game);
  await page.screenshot({path:path.join(out,label+'-'+game+'-reward.png'),animations:'disabled'});await click(page,'reward-continue');await advance(page,1000);await new Promise(r=>setTimeout(r,850));await advance(page,80);assert.equal(await visible(page,'reward-overlay'),false);
+ if(audioChecks)await audioChecks.collected(page,game);
 }
 (async()=>{
  await fs.mkdir(out,{recursive:true});phase='launch';browser=await chromium.launch({executablePath:process.env.TRAILBOUND_CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const results=[];
  for(const [label,viewport]of [['desktop',{width:1280,height:900}],['phone',{width:390,height:844}]]){
-  phase=label+' create page';const page=await browser.newPage({viewport,deviceScaleFactor:1,isMobile:label==='phone',hasTouch:label==='phone',reducedMotion:label==='phone'?'reduce':'no-preference'}),errors=[],failed=[];page.on('pageerror',error=>errors.push(String(error)));page.on('requestfailed',request=>failed.push({url:request.url(),error:request.failure()?.errorText}));
-  phase=label+' clock';await page.clock.install({time:new Date('2026-10-16T04:00:00Z')});await page.clock.pauseAt(new Date('2026-10-16T04:00:01Z'));phase=label+' load';await page.goto(base,{waitUntil:'networkidle'});await advance(page,200);phase=label+' start';await click(page,'overlay-action');const games=[];
+  phase=label+' create page';const page=await browser.newPage({viewport,deviceScaleFactor:1,isMobile:label==='phone',hasTouch:label==='phone',reducedMotion:label==='phone'?'reduce':'no-preference'}),errors=[],failed=[];page.on('pageerror',error=>errors.push(String(error)));page.on('requestfailed',request=>{if(!audioChecks?.expectedFailure(page,request))failed.push({url:request.url(),error:request.failure()?.errorText});});
+  if(audioChecks)await audioChecks.setup(page);
+  phase=label+' clock';await page.clock.install({time:new Date('2026-10-16T04:00:00Z')});await page.clock.pauseAt(new Date('2026-10-16T04:00:01Z'));phase=label+' load';await page.goto(base,{waitUntil:'networkidle'});await advance(page,200);if(audioChecks)await audioChecks.enabled(page,click);phase=label+' start';await click(page,'overlay-action');if(audioChecks)await audioChecks.walking(page);const games=[];
   for(let turn=0;turn<500&&games.length<selected.length;turn++){phase=label+' route step '+turn;if(turn%20===0)console.log(JSON.stringify({phase,journey:await page.locator('#journey-state').innerText(),progress:await page.locator('#journey-progress').getAttribute('aria-valuenow')}));
-   if(await visible(page,'micro-panel')){const game=await page.locator('#micro-panel').getAttribute('data-game');if(!selected.includes(game)){await click(page,'micro-skip');if(/继续/.test(await page.locator('#walk-toggle').innerText()))await click(page,'walk-toggle');await advance(page,5000);continue;}phase=label+' play '+game;console.log(phase);await play(page,game,label);games.push(game);}
+   if(await visible(page,'micro-panel')){const game=await page.locator('#micro-panel').getAttribute('data-game');if(!selected.includes(game)){await click(page,'micro-skip');if(/继续/.test(await page.locator('#walk-toggle').innerText()))await click(page,'walk-toggle');await advance(page,5000);continue;}phase=label+' play '+game;console.log(phase);await play(page,game,label);games.push(game);
+    // Backgrounding deliberately keeps the journey paused after collecting.
+    // Resume through its visible control before checking the next encounter.
+    if(audioChecks&&/继续/.test(await page.locator('#walk-toggle').innerText()))await click(page,'walk-toggle');
+   }
    else if(await visible(page,'observe-button'))await click(page,'observe-button');
    else if(await visible(page,'photo-panel'))await click(page,'photo-continue');
    else if(await visible(page,'story-panel')){const button=page.locator('#story-choices button').first();await button.click({force:true});await advance(page,100);}
@@ -73,7 +81,8 @@ async function play(page,game,label){
   }
   assert.deepEqual(new Set(games),new Set(selected));assert.deepEqual(errors,[],'No uncaught page errors');assert.deepEqual(failed,[],'No failed requests');
   const journal=await page.evaluate(()=>TrailDiscoveries.loadMoments(localStorage).filter(m=>m.route==='wugong'&&m.earned));assert.equal(journal.length,selected.length);assert.equal(new Set(journal.map(m=>m.id)).size,selected.length);
-  results.push({viewport:label,games,earned:journal.length,pageErrors:errors,failedRequests:failed,renderer:'Chromium WebGL via SwiftShader',reducedMotion:label==='phone'});await page.close();
+  const audio=audioChecks?await audioChecks.finish(page,label,click):undefined;
+  results.push({viewport:label,games,earned:journal.length,pageErrors:errors,failedRequests:failed,renderer:'Chromium WebGL via SwiftShader',reducedMotion:label==='phone',audio});await page.close();
  }
  await browser.close();browser=null;await fs.writeFile(path.join(out,'results.json'),JSON.stringify(results,null,2));console.log(JSON.stringify({passed:true,results,screenshots:out},null,2));
 })().catch(async error=>{console.error(error);if(browser)await browser.close();process.exitCode=1;});

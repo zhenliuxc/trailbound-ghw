@@ -72,7 +72,7 @@
   recording.creek={cutoff:routeId==='tiger'?zone==='waterfall'?3200:950:routeId==='maclehose'?1600:2600,highpass:routeId==='tiger'?75:170,rate:routeId==='tiger'?.84:routeId==='maclehose'?.76:1,pan:routeId==='tiger'?-.16:.08,mod:routeId==='maclehose'?.115:0,depth:zone==='harbour'?.25:.60};
   recording.leaves={cutoff:routeId==='aotai'?1250:routeId==='wugong'?1900:3500,highpass:routeId==='aotai'?200:450,rate:routeId==='aotai'?.75:routeId==='wugong'?.92:1,pan:-.12};
   recording.drips={cutoff:3700,highpass:200,rate:.97,pan:.16};
-  if(routeId==='wugong'){layers[0].gain*=zone==='ridge'?1.15:zone==='summit'?1.30:.80;layers[0].cutoff=zone==='meadow'?1200:700;}
+  if(routeId==='wugong'){layers[0].gain*=(zone==='ridge'?1.15:zone==='summit'?1.30:.80)*.22;layers[0].cutoff=zone==='meadow'?1200:700;}
   if(routeId==='tiger'&&zone==='waterfall')layers[0]={...layers[0],kind:'spray',cutoff:4200,highpass:550,gain:.027};
   if(routeId==='maclehose'&&zone==='harbour')layers[0]={...layers[0],cutoff:1200,gain:.012,depth:.27,mod:.19};
   if(routeId==='changping'&&zone==='meadow')layers[0]={...layers[0],kind:'wind',gain:.012,cutoff:900};

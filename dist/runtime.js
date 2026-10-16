@@ -22,12 +22,17 @@ var TrailRuntime = (() => {
   // .build/typescript/runtime/index.js
   var index_exports = {};
   __export(index_exports, {
+    WUGONG_MUSIC: () => WUGONG_MUSIC,
+    WUGONG_THEMES: () => WUGONG_THEMES,
     createDom: () => createDom,
     createFrameLoop: () => createFrameLoop,
     createJournalController: () => createJournalController,
     createMiniGameController: () => createMiniGameController,
+    createMusicLayer: () => createMusicLayer,
     createRewardController: () => createRewardController,
-    createSceneManager: () => createSceneManager
+    createSceneManager: () => createSceneManager,
+    musicLevel: () => musicLevel,
+    musicTrack: () => musicTrack
   });
 
   // .build/typescript/runtime/dom.js
@@ -1214,6 +1219,405 @@ var TrailRuntime = (() => {
       destroy() {
         close(false);
         bindings.destroy();
+      }
+    };
+  }
+
+  // .build/typescript/runtime/music-layer.js
+  var WUGONG_MUSIC = Object.freeze({
+    id: "wugong-reverie",
+    file: "audio/wugong-reverie-v1.mp3",
+    title: "Reverie",
+    author: "Scott Buckley",
+    source: "https://www.scottbuckley.com.au/library/reverie/",
+    license: "CC BY 4.0"
+  });
+  var theme = (slug, title) => Object.freeze({
+    id: "wugong-" + slug,
+    file: "audio/wugong-" + slug + "-loop-v1.mp3",
+    title,
+    author: "Scott Buckley",
+    source: "https://www.scottbuckley.com.au/library/" + slug + "/",
+    license: "CC BY 4.0"
+  });
+  var WUGONG_THEMES = Object.freeze({
+    wind: theme("childhood", "Childhood"),
+    clouds: theme("cirrus", "Cirrus"),
+    greet: theme("a-kind-of-hope", "A Kind Of Hope"),
+    puzzle: WUGONG_MUSIC
+  });
+  var momentGames = Object.freeze({
+    "meadow-bird": "wind",
+    "meadow-butterfly": "clouds",
+    "wugong-wind-hiker": "greet",
+    "meadow-flower": "puzzle"
+  });
+  function musicLevel(scene) {
+    if (scene.routeId !== "wugong" || !scene.mode || scene.mode === "silent")
+      return 0;
+    const game = scene.momentGame || momentGames[scene.momentId || ""];
+    let level = scene.mode === "photo" ? 0.47 : scene.mode === "choice" ? 0.24 : scene.mode === "reward" ? 0.42 : 0.4;
+    if (scene.mode === "moment")
+      level = game === "greet" ? 0.25 : game === "puzzle" ? 0.35 : game === "clouds" ? 0.32 : 0.29;
+    if (scene.weather === "storm")
+      level *= 0.65;
+    else if (scene.weather === "rain")
+      level *= 0.82;
+    return level;
+  }
+  function musicTrack(scene) {
+    if (!musicLevel(scene))
+      return null;
+    const game = scene.momentGame || momentGames[scene.momentId || ""];
+    if ((scene.mode === "moment" || scene.mode === "reward") && game && Object.hasOwn(WUGONG_THEMES, game))
+      return WUGONG_THEMES[game];
+    return WUGONG_MUSIC;
+  }
+  function createTrackLayer({ context, destination, track, createMedia = () => typeof Audio === "function" ? new Audio() : null, timers = globalThis, onStateChange = () => {
+  } }) {
+    let media = null;
+    let source = null;
+    let volume = null;
+    let state = "off";
+    let desired = false, destroyed = false, failed = false, pending = false;
+    let failureState = "error";
+    let epoch = 0, target = 0;
+    let stopTimer = null;
+    let fade = null;
+    let lastDuck = -Infinity;
+    const listeners = [];
+    function publish(next) {
+      if (state === next || destroyed)
+        return;
+      state = next;
+      onStateChange();
+    }
+    function cancelStop() {
+      if (stopTimer !== null)
+        timers.clearTimeout(stopTimer);
+      stopTimer = null;
+    }
+    function hold() {
+      if (!volume)
+        return 0;
+      const now = context.currentTime, param = volume.gain;
+      const held = fade ? fade.from + (fade.to - fade.from) * Math.max(0, Math.min(1, (now - fade.at) / fade.duration)) : param.value;
+      if (param.cancelAndHoldAtTime)
+        param.cancelAndHoldAtTime(now);
+      else {
+        param.cancelScheduledValues(now);
+        param.setValueAtTime(held, now);
+      }
+      return held;
+    }
+    function ramp(level, duration) {
+      if (!volume)
+        return;
+      const from = hold(), now = context.currentTime;
+      volume.gain.linearRampToValueAtTime(level, now + duration);
+      fade = { from, to: level, at: now, duration };
+    }
+    function silence() {
+      if (!volume)
+        return;
+      volume.gain.cancelScheduledValues(context.currentTime);
+      volume.gain.setValueAtTime(0, context.currentTime);
+      fade = null;
+    }
+    function listen(type, fn) {
+      const listener = fn;
+      media.addEventListener(type, listener);
+      listeners.push([type, listener]);
+    }
+    function prepare() {
+      if (media)
+        return true;
+      if (typeof context.createMediaElementSource !== "function") {
+        failed = true;
+        state = failureState = "unavailable";
+        return false;
+      }
+      try {
+        media = createMedia();
+        if (!media) {
+          failed = true;
+          state = failureState = "unavailable";
+          return false;
+        }
+        media.preload = "none";
+        media.loop = true;
+        media.setAttribute("playsinline", "");
+        source = context.createMediaElementSource(media);
+        volume = context.createGain();
+        volume.gain.value = 0;
+        source.connect(volume);
+        volume.connect(destination);
+        listen("playing", () => {
+          if (!desired || destroyed || failed) {
+            media?.pause();
+            return;
+          }
+          failed = false;
+          ramp(target, 2.4);
+          publish("playing");
+        });
+        listen("waiting", () => {
+          if (desired) {
+            silence();
+            publish("loading");
+          }
+        });
+        listen("error", () => {
+          if (!desired || destroyed)
+            return;
+          failed = true;
+          pending = false;
+          ++epoch;
+          failureState = "error";
+          silence();
+          media?.pause();
+          publish("error");
+        });
+        media.src = track.file;
+        return true;
+      } catch (_) {
+        failed = true;
+        source?.disconnect();
+        volume?.disconnect();
+        source = null;
+        volume = null;
+        media?.pause();
+        if (media)
+          for (const [type, fn] of listeners)
+            media.removeEventListener(type, fn);
+        listeners.length = 0;
+        media = null;
+        state = failureState = "unavailable";
+        return false;
+      }
+    }
+    function play() {
+      if (pending || failed || !media || !desired || destroyed)
+        return;
+      if (!media.paused) {
+        if (state === "paused") {
+          state = "playing";
+          ramp(target, 1.4);
+        }
+        return;
+      }
+      const token = ++epoch;
+      pending = true;
+      state = "loading";
+      try {
+        Promise.resolve(media.play()).then(() => {
+          if (destroyed || !desired) {
+            media?.pause();
+            return;
+          }
+          if (token !== epoch)
+            return;
+          pending = false;
+          ramp(target, 2.4);
+          publish("playing");
+        }).catch((error) => {
+          if (token !== epoch || destroyed || !desired)
+            return;
+          pending = false;
+          failed = true;
+          silence();
+          media?.pause();
+          failureState = error instanceof Error && error.name === "NotAllowedError" ? "blocked" : "error";
+          publish(failureState);
+        });
+      } catch (_) {
+        pending = false;
+        failed = true;
+        silence();
+        state = failureState = "error";
+      }
+    }
+    function pause(immediate = false, duration = 0.32) {
+      if (destroyed)
+        return;
+      desired = false;
+      pending = false;
+      const token = ++epoch;
+      cancelStop();
+      if (!media)
+        return;
+      if (immediate || media.paused) {
+        silence();
+        media.pause();
+      } else {
+        ramp(0, duration);
+        stopTimer = timers.setTimeout(() => {
+          stopTimer = null;
+          if (token === epoch && !desired)
+            media?.pause();
+        }, Math.round(duration * 1e3) + 20);
+      }
+      state = "paused";
+    }
+    function sync(scene) {
+      if (destroyed)
+        return;
+      const next = musicLevel(scene);
+      if (!next) {
+        if (desired)
+          pause();
+        return;
+      }
+      cancelStop();
+      const wasDesired = desired, changed = Math.abs(next - target) > 2e-3;
+      target = next;
+      desired = true;
+      if (failed) {
+        state = failureState;
+        return;
+      }
+      if (!prepare())
+        return;
+      if (!wasDesired && !media.paused) {
+        state = "playing";
+        ramp(target, 1.4);
+      } else if (changed && state === "playing")
+        ramp(target, 1.2);
+      play();
+    }
+    function resume(scene) {
+      if (destroyed)
+        return;
+      failed = false;
+      if (media?.error)
+        media.load();
+      sync(scene);
+    }
+    function duck(strength = 0.78, length = 0.65) {
+      if (!volume || !desired || state !== "playing" || context.currentTime - lastDuck < 0.12)
+        return;
+      lastDuck = context.currentTime;
+      const now = context.currentTime;
+      hold();
+      const lower = target * Math.max(0.5, Math.min(1, strength));
+      volume.gain.linearRampToValueAtTime(lower, now + 0.04);
+      volume.gain.linearRampToValueAtTime(target, now + length);
+      fade = { from: lower, to: target, at: now + 0.04, duration: length - 0.04 };
+    }
+    function destroy() {
+      if (destroyed)
+        return;
+      pause(true);
+      destroyed = true;
+      cancelStop();
+      if (media) {
+        for (const [type, fn] of listeners)
+          media.removeEventListener(type, fn);
+        media.removeAttribute("src");
+        media.load();
+      }
+      source?.disconnect();
+      volume?.disconnect();
+      media = null;
+      source = null;
+      volume = null;
+    }
+    return { sync, resume, pause, duck, destroy, get state() {
+      return state;
+    }, get playing() {
+      return desired && state === "playing";
+    } };
+  }
+  function createMusicLayer(options) {
+    const layers = /* @__PURE__ */ new Map();
+    let requested = null;
+    let previous = null;
+    let desired = false, destroyed = false;
+    function fadePrevious(duration) {
+      const id = previous;
+      previous = null;
+      if (id && id !== requested?.id)
+        layers.get(id)?.pause(false, duration);
+    }
+    function getLayer(track) {
+      let layer = layers.get(track.id);
+      if (!layer) {
+        layer = createTrackLayer({ ...options, track, onStateChange: () => {
+          if (destroyed)
+            return;
+          if (desired && requested?.id === track.id) {
+            const current = layers.get(track.id);
+            if (current?.state === "playing")
+              fadePrevious(0.95);
+            else if (current && ["error", "blocked", "unavailable"].includes(current.state))
+              fadePrevious(0.32);
+          }
+          options.onStateChange?.();
+        } });
+        layers.set(track.id, layer);
+      }
+      return layer;
+    }
+    function pause(immediate = false) {
+      desired = false;
+      previous = null;
+      for (const layer of layers.values())
+        layer.pause(immediate);
+    }
+    function select(scene, retry) {
+      if (destroyed)
+        return;
+      const track = musicTrack(scene);
+      if (!track) {
+        if (desired)
+          pause();
+        return;
+      }
+      if (requested?.id !== track.id) {
+        const outgoing = requested && layers.get(requested.id)?.playing ? requested.id : previous;
+        for (const [id, layer] of layers)
+          if (id !== track.id && id !== outgoing)
+            layer.pause(true);
+        previous = outgoing !== track.id ? outgoing : null;
+        requested = track;
+      }
+      desired = true;
+      if (previous)
+        layers.get(previous)?.sync(scene);
+      const current = getLayer(track);
+      retry ? current.resume(scene) : current.sync(scene);
+      if (current.state === "playing")
+        fadePrevious(0.95);
+      else if (["error", "blocked", "unavailable"].includes(current.state))
+        fadePrevious(0.32);
+    }
+    function destroy() {
+      if (destroyed)
+        return;
+      destroyed = true;
+      desired = false;
+      previous = null;
+      for (const layer of layers.values())
+        layer.destroy();
+      layers.clear();
+    }
+    return {
+      sync: (scene) => select(scene, false),
+      resume: (scene) => select(scene, true),
+      pause,
+      duck: (strength, length) => {
+        if (desired && requested)
+          layers.get(requested.id)?.duck(strength, length);
+      },
+      destroy,
+      get track() {
+        return requested;
+      },
+      get state() {
+        return requested ? layers.get(requested.id)?.state || "off" : "off";
+      },
+      get playing() {
+        return !!(desired && requested && layers.get(requested.id)?.playing);
       }
     };
   }

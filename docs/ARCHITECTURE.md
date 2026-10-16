@@ -16,6 +16,7 @@ src/
     mini-game-view.ts             各类小游戏的工具栏、提示和进度显示
     reward-controller.ts          纪念画展开、收起、焦点、收藏过渡
     journal-controller.ts         标签墙、图文详情、翻页与自动保存
+    music-layer.ts                武功山四种独立配乐、流式切换与暂停清理
     index.ts                      公共入口及类型导出
 scripts/
   build-runtime.mjs               TypeScript 编译、浏览器打包
@@ -49,9 +50,13 @@ flowchart TD
   App --> Audio[原有 Web Audio 引擎]
   Mini --> Audio
   Reward --> Audio
+  Audio --> Music[TypeScript 独立配乐层]
+  Music --> Stream[站内授权 MP3 流式播放]
 ```
 
 `app.js` 保留路线选择、旅程状态的组装、地图坐标、角色与环境绘制、打卡照片和音频场景选择。小游戏输入、独有工具栏、手帐阅读和保存、纪念画展示已移到各自控制器，不再同时放在主程序里。迁移后的入口也整理为可阅读的源码；这是一轮职责拆分，不是下载体积或帧率优化。
+
+版本 41 之后的新武功山音效工作加入 `createMusicLayer`，通过入口依赖注入交给旧引擎。四个小游戏独立选用免费署名配乐，当前游戏和对应奖励持续同一音轨，进入其他游戏时等新流就绪再淡出旧流；只缓存四种已知主题，切后台或退出会暂停全部。短音效仍由 Web Audio 缓存/调度。设计与许可见 [wugong-music-design.md](wugong-music-design.md)，本轮独立验证及发布状态见 [wugong-free-audio-release.md](wugong-free-audio-release.md)，不继承下文重构阶段的验证结论。
 
 ### 场景与时钟
 

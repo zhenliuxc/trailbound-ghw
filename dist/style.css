@@ -322,3 +322,9 @@
 
 /* Continuous flight uses travel distance, rather than three held-wind stamps. */
 .micro-panel[data-game="wind"] .wind-feathers{display:none}
+
+/* Sound retry appears only after a music load/playback failure. */
+.stage-heading .sound-controls{margin-left:auto;justify-content:flex-end;flex-wrap:wrap;flex-shrink:0}.stage-heading #music-retry{color:#6e7c58;border-style:dashed}
+@media(max-width:480px){.stage-heading:has(#music-retry:not([hidden])){flex-wrap:wrap}.stage-heading:has(#music-retry:not([hidden])) .sound-controls{width:100%;justify-content:flex-end}}
+
+.mini-controls:has(#mini-music-retry:not([hidden])){flex-wrap:wrap}

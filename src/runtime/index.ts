@@ -4,6 +4,7 @@ export { createFrameLoop } from './frame-loop';
 export { createMiniGameController } from './mini-game-controller';
 export { createRewardController } from './reward-controller';
 export { createJournalController } from './journal-controller';
+export { createMusicLayer, musicLevel, musicTrack, WUGONG_MUSIC, WUGONG_THEMES } from './music-layer';
 export type * from './contracts';
 export type { SceneManager, SceneSession } from './scene-manager';
 export type { FinishedMini } from './mini-game-controller';
