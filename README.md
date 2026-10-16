@@ -1,6 +1,6 @@
 # 山径 Trailbound · 七条山径与旅行瞬间手帐
 
-当前已发布基线为版本 40。本轮已完成公共流程的渐进 TypeScript 迁移：公共场景、小游戏、纪念画和旅行手帐控制器位于 `src/runtime/`，入口位于 `src/app.js`；必要构建生成 `dist/runtime.js` 与 `dist/app.js`。**本轮已集中验证，按用户要求只推送 Git，不发布站点**。源码边界见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)，实际验证范围与限制见 [验证说明](docs/runtime-refactor-verification.md)。下文包含历史版本记录，不能将历史的测试或发布描述当成本轮状态。
+当前源码包含七路线场景音效及已完成的公共流程 TypeScript 迁移：公共场景、小游戏、纪念画和旅行手帐控制器位于 `src/runtime/`，入口位于 `src/app.js`；必要构建生成 `dist/runtime.js` 与 `dist/app.js`。已完成集中验证和 Git 推送，用户随后批准发布整合版试听。源码边界见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)，验证范围见 [验证说明](docs/runtime-refactor-verification.md)，发布准备见 [发布记录](docs/audio-runtime-release.md)；实际线上版本以 Sites 返回为准。下文包含历史版本记录，不能将历史的测试或发布描述当成本轮状态。
 
 修改上述源码后运行 `npm run build` 生成浏览器文件；`dist/` 下其他 JavaScript 模块暂时保留原有源码。测试继续遵循 `AGENTS.md`：完成实现后先询问用户，不在每次修改后自行执行。
 

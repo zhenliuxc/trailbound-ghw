@@ -1,6 +1,6 @@
 # 山径的运行架构与 TypeScript 迁移
 
-本轮从 GitHub `codex/recover-site` 的 `b292790` 开始，该提交对应已发布的版本 40。下面描述重构后的源码架构；**已完成集中验证，本轮不发布站点**。用户确认保留 PixiJS、渐进引入 TypeScript、拆分公共流程，并随后明确要求“测试完成后，推送 git”。验证记录见 [runtime-refactor-verification.md](runtime-refactor-verification.md)。
+本轮从 GitHub `codex/recover-site` 的 `b292790` 开始，该提交对应版本 40。下面描述重构后的源码架构；**已完成集中验证并推送 Git，随后用户批准原站点整合发布**。验证记录见 [runtime-refactor-verification.md](runtime-refactor-verification.md)，后续发布准备见 [audio-runtime-release.md](audio-runtime-release.md)。
 
 ## 源码与发布目录
 
@@ -105,4 +105,4 @@ TypeScript 的严格模式及 esbuild 构建选项参考[TypeScript 官方说明
 
 实际 Chromium 在 1280×900、390×844 两种尺寸完成武功山四项小游戏、奖励与保存，另检验手帐往返、接雨重试、退出清理及声音生命周期。完整范围、首次失败、探针修正和原始结果都记录于 [验证说明](runtime-refactor-verification.md)。
 
-实体手机、人工试听及真实硬件性能仍待验收，其他路线所有小游戏的真实浏览器完整通关也未覆盖。本轮按用户要求只推送 Git，原站点继续保持版本 40。
+实体手机、人工试听及真实硬件性能仍待验收，其他路线所有小游戏的真实浏览器完整通关也未覆盖。重构先按用户要求完成验证并推送 Git，之后用户批准将音效与最新架构一并上线试听；实际发布状态以 Sites 返回为准。
