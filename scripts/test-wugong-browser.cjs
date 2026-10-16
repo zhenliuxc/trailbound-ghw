@@ -26,7 +26,6 @@ async function waitArt(page){
  for(let i=0;i<120;i++){await advance(page,40);await new Promise(r=>setTimeout(r,15));if(await page.evaluate(()=>document.getElementById('micro-surface').getAttribute('aria-busy')!=='true'&&!!document.querySelector('#micro-surface canvas[data-ready="true"]')))return;}
  throw Error('Artwork or GPU canvas was not ready: '+await page.locator('#micro-surface').getAttribute('aria-busy'));
 }
-async function artAction(page,action){const b=page.locator('#art-actions button[data-action="'+action+'"]');assert.equal(await b.isDisabled(),false);await b.evaluate(el=>el.scrollIntoView({block:'nearest',behavior:'instant'}));await b.click({force:true});await advance(page,80);}
 async function play(page,game,label){
  phase=label+' wait artwork '+game;await waitArt(page);phase=label+' operate '+game;assert.equal(await page.locator('#micro-surface canvas[data-ready="true"]').count(),1);
  await page.screenshot({path:path.join(out,label+'-'+game+'.png'),animations:'disabled'});
@@ -37,11 +36,11 @@ async function play(page,game,label){
    await point(page,p);await advance(page,560);if(i===10)await page.screenshot({path:path.join(out,label+'-wind-flight.png'),animations:'disabled'});
   }
  }else if(game==='clouds'){
-  for(const i of [1,3,5,7])await point(page,await page.evaluate(i=>TrailWugongStories.nodes[i],i));await click(page,'wugong-primary');await advance(page,7500);
+  assert.equal(await visible(page,'wugong-tools'),false);for(const cloud of await page.evaluate(()=>TrailWugongStories.cloudSeeds))await point(page,cloud);await advance(page,4400);
  }else if(game==='greet'){
   await click(page,'wugong-primary');await click(page,'wugong-primary');await point(page,{x:.55,y:.47});await click(page,'wugong-primary');assert.match(await page.locator('#wugong-primary').innerText(),/给她/);await page.screenshot({path:path.join(out,label+'-photograph.png'),animations:'disabled'});await click(page,'wugong-primary');await click(page,'wugong-primary');await advance(page,4800);
  }else if(game==='puzzle'){
-  for(let i=0;i<6;i++){await page.locator('#micro-surface').focus();await page.keyboard.press(String(i+1));if(i===1)await artAction(page,'rotate-left');if(i===4)await artAction(page,'rotate-right');await point(page,await page.evaluate(i=>TrailArtGames.slotPoint(i),i));}
+  for(let i=0;i<6;i++){await page.locator('#micro-surface').focus();await page.keyboard.press(String(i+1));await point(page,await page.evaluate(i=>TrailArtGames.slotPoint(i),i));}
   await advance(page,2900);
  }else throw Error('Unexpected Wugong game '+game);
  assert.equal(await visible(page,'micro-panel'),false,game+' must finish');assert.equal(await visible(page,'reward-overlay'),true,game+' must reveal earned painting');

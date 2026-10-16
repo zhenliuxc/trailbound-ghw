@@ -4,8 +4,8 @@
  const kinds={'meadow-flower':'puzzle','westlake-tea':'match','bamboo-leaf':'sling'};
  const assets={puzzle:{scene:'scenes/wugong-altar-v1.webp'},match:{scene:'badges/westlake-longjing-bud-v4.webp',actor:Atlas.file},sling:{scene:'scenes/mogan-v1.webp',actor:Atlas.file}};
  const routes={puzzle:'wugong',match:'westlake',sling:'mogan'};
- const prompts={puzzle:'把六片石坛水彩拼回画框。拖放画片，或先选画片再点位置；转向按钮可旋转。方向键选择格位，1–6 选片，Q／E 旋转，Enter 放下。',match:'交换相邻的茶芽卡，连成三个或更多同类叶形，清开六处露光印记。可点选或滑动交换，方向键选卡、Enter 确认；提示与重排随时可用。',sling:'向后拉开纸叶，调整角度和力度，再松手送过竹隙，让它停在远山纸签上。也可用下方按钮发射；方向键调整，按住空格蓄力、松开发射。'};
- const results={puzzle:'我把散开的石坛画片一块块转正，接回拱线、石缝与苔色。一座石坛，在纸上重新完整了。',match:'我交换叶形，让相连的春芽一片片舒展。六处露光散开，纸上的茶园重新透亮起来。',sling:'我把一枚纸叶送进竹林的风里。它穿过竹影，稳稳停在远山窗旁的小纸签上。'};
+ const prompts={puzzle:'把下面的六片画片拖进画框。也可以先点画片，再点对应位置。',match:'交换相邻的茶芽卡，连成三个或更多同类叶形，清开六处露光印记。可点选或滑动交换，方向键选卡、Enter 确认；提示与重排随时可用。',sling:'向后拉开纸叶，调整角度和力度，再松手送过竹隙，让它停在远山纸签上。也可用下方按钮发射；方向键调整，按住空格蓄力、松开发射。'};
+ const results={puzzle:'我把散开的石坛画片一块块拼好，接回拱线、石缝与苔色。一座石坛，在纸上重新完整了。',match:'我交换叶形，让相连的春芽一片片舒展。六处露光散开，纸上的茶园重新透亮起来。',sling:'我把一枚纸叶送进竹林的风里。它穿过竹影，稳稳停在远山窗旁的小纸签上。'};
  const puzzleBoard={x:.15,y:.075,w:.70,h:.70*2/3};
  const matchBoard={x:.085,y:.12,w:.83,h:.83};
  const stamps=[0,2,9,12,15,23];
@@ -33,7 +33,7 @@
  }
  function create(entry,{reduced=false}={}){
   const game=kinds[entry.id],s={id:entry.id,route:entry.route,kind:entry.interaction,game,age:0,acted:false,gesture:'look',x:.5,y:.5,dragging:false,done:false,actor:{x:.5,y:.5,vx:0,vy:0},control:{x:.5,y:.5},play:{type:'minigame',progress:0,complete:false,completedAt:null,reduced},serial:0,events:[],gates:0,near:false,seed:20261016,cellSerial:0,feedback:prompts[game],cursor:0};
-  if(game==='puzzle')s.puzzle={selected:null,held:null,pieces:[3,0,5,2,1,4].map((id,tray)=>({id,tray,turn:id===1?1:id===4?3:0,placed:false,placedAt:null})),guide:true};
+  if(game==='puzzle')s.puzzle={selected:null,held:null,pieces:[3,0,5,2,1,4].map((id,tray)=>({id,tray,placed:false,placedAt:null})),guide:true,keyboard:false};
   if(game==='match')s.match={cells:freshBoard(s),remaining:stamps.slice(),selected:null,dragFrom:null,stage:'idle',at:0,swap:null,popping:[],poppedDews:[],chain:0,moves:0,undo:[],hint:null,hintUntil:0};
   if(game==='sling')s.sling={angle:24,power:.50,stage:'ready',charge:false,aiming:false,shot:null,shots:0,at:0,trail:[]};
   return s;
@@ -46,21 +46,21 @@
  }
  function event(s,type,x=.5,y=.5,index=0){s.events.push({serial:++s.serial,type,x,y,index,age:s.age});s.events=s.events.slice(-20);}
  function complete(s){if(s.play.complete)return;s.play.complete=true;s.play.progress=1;s.play.completedAt=s.age;event(s,'complete');}
- function pickPiece(s,id){const p=s.puzzle.pieces.find(p=>p.id===id&&!p.placed);if(!p)return false;s.puzzle.selected=id;s.puzzle.held=null;s.feedback='这一片已拿起，转一转，再接上画里的纹路。';event(s,'piece-pick',trayPoint(p.tray).x,trayPoint(p.tray).y);return true;}
+ function pickPiece(s,id){const p=s.puzzle.pieces.find(p=>p.id===id&&!p.placed);if(!p)return false;s.puzzle.selected=id;s.puzzle.held=null;s.feedback='把这一片放到画里相同的位置。';event(s,'piece-pick',trayPoint(p.tray).x,trayPoint(p.tray).y);return true;}
  function placePiece(s,index){
   const p=s.puzzle.pieces.find(p=>p.id===s.puzzle.selected);if(!p||p.placed||index<0)return;
   const pos=slotPoint(index),from=s.puzzle.held||trayPoint(p.tray);s.puzzle.held=null;s.dragging=false;
-  if(p.id===index&&p.turn===0){p.placed=true;p.placedAt=s.age;p.placeFrom={...from};s.puzzle.selected=null;s.gates=s.puzzle.pieces.filter(p=>p.placed).length;s.play.progress=s.gates/6;s.feedback=s.gates===6?'拱线与石缝接上了，整幅画又完整起来。':'纸边接住了这一片，继续拼下一处。';event(s,'piece-lock',pos.x,pos.y,s.gates);if(s.gates===6)complete(s);}
-  else{s.feedback=p.id===index?'位置对了，把这一片再转正一些。':'这片纹路还没接上，换个位置试试。';event(s,'piece-miss',pos.x,pos.y);}
+  if(p.id===index){p.placed=true;p.placedAt=s.age;p.placeFrom={...from};s.puzzle.selected=null;s.gates=s.puzzle.pieces.filter(p=>p.placed).length;s.play.progress=s.gates/6;s.feedback=s.gates===6?'整幅画拼好了。':'拼好 '+s.gates+' / 6 片，接着放下一片吧。';event(s,'piece-lock',pos.x,pos.y,s.gates);if(s.gates===6)complete(s);}
+  else{s.feedback='这片还没接上，换个位置试试。';event(s,'piece-miss',pos.x,pos.y);}
  }
  function puzzleInput(s,p,action,mode){
   if(action==='next'){const free=s.puzzle.pieces.filter(p=>!p.placed),i=free.findIndex(p=>p.id===s.puzzle.selected);if(free.length)pickPiece(s,free[(i+1)%free.length].id);return;}
-  if(action==='rotate-left'||action==='rotate-right'){const piece=s.puzzle.pieces.find(p=>p.id===s.puzzle.selected&&!p.placed);if(piece){const delta=action==='rotate-left'?-1:1,targetTurn=piece.turnVisual??piece.turn;piece.turnFrom=piece.turnAt===undefined?piece.turn:piece.turnFrom+(targetTurn-piece.turnFrom)*(s.play.reduced?1:ease((s.age-piece.turnAt)/.18));piece.turnVisual=targetTurn+delta;piece.turnAt=s.age;piece.turn=(piece.turn+delta+4)%4;event(s,'piece-turn');}return;}
-  if(action==='guide'){s.puzzle.guide=!s.puzzle.guide;return;}
-  if(action==='place'||action==='confirm'){if(s.puzzle.selected===null){const next=s.puzzle.pieces.find(p=>!p.placed);if(next)pickPiece(s,next.id);}else placePiece(s,s.cursor);return;}
-  if(action==='choose-piece'){pickPiece(s,clamp(p.value,0,5));return;}
-  if(p.key){s.cursor=clamp(Math.floor(s.cursor/3)+(p.dy>0?1:p.dy<0?-1:0),0,1)*3+clamp(s.cursor%3+(p.dx>0?1:p.dx<0?-1:0),0,2);return;}
+  if(action==='place'||action==='confirm'){s.puzzle.keyboard=true;if(s.puzzle.selected===null){const next=s.puzzle.pieces.find(p=>!p.placed);if(next)pickPiece(s,next.id);}else placePiece(s,s.cursor);return;}
+  if(action==='choose-piece'){s.puzzle.keyboard=true;pickPiece(s,clamp(p.value,0,5));return;}
+  if(p.key){s.puzzle.keyboard=true;s.cursor=clamp(Math.floor(s.cursor/3)+(p.dy>0?1:p.dy<0?-1:0),0,1)*3+clamp(s.cursor%3+(p.dx>0?1:p.dx<0?-1:0),0,2);return;}
+  if(action)return;
   if(p.phase==='press'){
+   s.puzzle.keyboard=false;
    const selected=s.puzzle.pieces.find(piece=>!piece.placed&&Math.hypot(p.x-trayPoint(piece.tray).x,p.y-trayPoint(piece.tray).y)<.105);if(selected)pickPiece(s,selected.id);
    if(s.puzzle.selected!==null){s.puzzle.held={x:p.x,y:p.y};s.dragging=true;}return;
   }
@@ -145,7 +145,7 @@
  const finishDuration=s=>s.play.reduced?.45:2.6;
  function controls(s){
   if(s.play.complete)return [];
-  if(s.game==='puzzle')return [{action:'next',label:'下一片'},{action:'rotate-left',label:'↶ 左转',disabled:s.puzzle.selected===null},{action:'rotate-right',label:'右转 ↷',disabled:s.puzzle.selected===null},{action:'place',label:'放入选中位置',primary:true,disabled:s.puzzle.selected===null},{action:'guide',label:s.puzzle.guide?'收起底稿':'看看底稿'}];
+  if(s.game==='puzzle')return [];
   if(s.game==='match')return [{action:'confirm',label:s.match.selected===null?'选中这片':'与选中叶形交换',primary:true,disabled:s.match.stage!=='idle'},{action:'hint',label:'看看提示',disabled:s.match.stage!=='idle'},{action:'shuffle',label:'重新排叶',disabled:s.match.stage!=='idle'},{action:'undo',label:'撤回一步',disabled:s.match.stage!=='idle'||!s.match.undo.length}];
   return [{action:'fire',label:s.sling.stage==='flight'?'纸叶在风里…':s.sling.stage==='miss'?'稍等纸叶落下':'送出纸叶',primary:true,disabled:s.sling.stage!=='ready'}];
  }
@@ -159,7 +159,6 @@
   const arrows={ArrowLeft:[-.08,0],ArrowRight:[.08,0],ArrowUp:[0,-.1],ArrowDown:[0,.1]};
   if(arrows[key]){const [dx,dy]=arrows[key];return input(state,{key:true,dx,dy},'move');}
   if(state.game==='puzzle'&&/^[1-6]$/.test(key))return input(state,{action:'choose-piece',value:Number(key)-1});
-  if(state.game==='puzzle'&&['q','Q','e','E'].includes(key))return input(state,{action:['q','Q'].includes(key)?'rotate-left':'rotate-right'});
   if(key===' '&&state.game==='sling')return input(state,{action:'charge'});
   if(key===' '||key==='Enter')return input(state,{action:'confirm'});return state;
  }

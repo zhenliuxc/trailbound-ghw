@@ -157,8 +157,8 @@
  for(const id of ['snow-light','bamboo-leaf','westlake-eaves','westlake-floating-leaf','westlake-leaf-shadow','westlake-basket'])PROFILES[id].artV5='badges/'+id+'-v5.webp';
  // Current play descriptions only; saved journal text and badge editions stay untouched.
  Object.assign(PROFILES['meadow-bird'],{name:'借一阵草甸的风',prompt:'上下拖动牵线，陪纸鸢从草坡起飞、穿过侧风，再缓缓放线进入云海。跟着风带调整，脱风后可重新找回航线；方向键也能牵线。',result:'我顺着草浪牵起纸鸢，带它穿过山脊的侧风，再缓缓放线。它沿着一整段风路，飞向了云海。'});
- Object.assign(PROFILES['meadow-butterfly'],{name:'让风穿过云的缝隙',prompt:'沿谷地点选或连线，把来风口接到远谷出口，再送出这阵风。避开挡风的高脊与回流的洼地，可以撤回重画。',result:'我沿着山坳画了一条风路。雾顺着谷地散开，草脊浮出云海，像一封慢慢打开的信。'});
- Object.assign(PROFILES['meadow-flower'],{name:'把石拱，拼回纸上',prompt:'把六片石坛水彩拼回画框，根据拱线、石缝与苔色转正方向。拖放画片，或选片后点位置；可以随时查看底稿。',result:'我把散开的石坛画片一块块转正，接回拱线、石缝与苔色。一座石坛，在纸上重新完整了。'});
+ Object.assign(PROFILES['meadow-butterfly'],{name:'拨开云，看看山',prompt:'点一点或划过云朵，让山脊露出来。',result:'我轻轻拨开山脊前的云。云絮随着风散去，绿色的草脊浮出云海，像一封慢慢打开的信。'});
+ Object.assign(PROFILES['meadow-flower'],{name:'把石拱，拼回纸上',prompt:'把下面的六片画片拖进画框。也可以先点画片，再点对应位置。',result:'我把散开的石坛画片一块块拼好，接回拱线、石缝与苔色。一座石坛，在纸上重新完整了。'});
  Object.assign(PROFILES['wugong-wind-hiker'],{name:'在草甸的风里，遇见她',prompt:'和草坡旁的姑娘打声招呼，帮她把人物与远山一起拍进照片。拖动取景、按下快门，可以重拍；给她看过照片并告别，才留下这段相遇。',result:'草甸风口遇见一位笑着招手的姑娘。我帮她把身后的山也拍进照片，给她看过后，在风里说了再见。'});
  for(const id of ['meadow-bird','meadow-butterfly','meadow-flower','wugong-wind-hiker'])PROFILES[id].hint=PROFILES[id].prompt;
  Object.assign(PROFILES['bamboo-drop'],{name:'竹叶落雨，接成一段声音',prompt:'左右移动竹筒，接住八滴竹叶上的雨。接住才会奏响音符，漏接可以继续。',result:'竹叶上的雨落进竹筒，八个清亮的声音串起了这段竹林记忆。'});

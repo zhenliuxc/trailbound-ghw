@@ -16,16 +16,17 @@ test('all three artworks keep their IDs and waiting alone earns nothing',()=>{
  for(const id of Object.keys(A.kinds)){let s=make(id);assert.equal(s.game,A.kinds[id]);s=advance(s,45);assert.equal(s.play.complete,false);assert.equal(X.outcome(s,D.item(id)).earned,false);}
 });
 
-test('the jigsaw rejects a wrong place and a correct place with the wrong rotation',()=>{
+test('the jigsaw rejects a wrong position and accepts the matching position without any rotation',()=>{
  let s=act(make('meadow-flower'),'choose-piece',1);s=X.act(s,{...A.slotPoint(0),phase:'release'});assert.equal(s.gates,0);
- s=X.act(s,{...A.slotPoint(1),phase:'release'});assert.equal(s.gates,0);assert.match(s.feedback,/转正/);
- s=act(s,'rotate-left');s=X.act(s,{...A.slotPoint(1),phase:'release'});assert.equal(s.gates,1);assert.equal(s.play.complete,false);
+ for(const action of ['rotate-left','rotate-right'])s=act(s,action);for(const key of ['q','e'])s=A.key(s,key);
+ assert.ok(s.puzzle.pieces.every(p=>!Object.hasOwn(p,'turn')));assert.equal(s.events.filter(e=>e.type==='piece-turn').length,0);
+ s=X.act(s,{...A.slotPoint(1),phase:'release'});assert.equal(s.gates,1);assert.equal(s.play.complete,false);
 });
 
-test('six correctly oriented pieces complete the painting once through the public API',()=>{
+test('six correctly placed upright pieces complete the painting once through the public API',()=>{
  for(const reduced of [false,true]){
   let s=make('meadow-flower',{reduced});
-  for(let id=0;id<6;id++){s=act(s,'choose-piece',id);while(s.puzzle.pieces.find(p=>p.id===id).turn!==0)s=act(s,'rotate-right');s=X.act(s,{...A.slotPoint(id),phase:'release'});}
+  for(let id=0;id<6;id++){s=act(s,'choose-piece',id);s=X.act(s,{...A.slotPoint(id),phase:'release'});}
   assert.equal(s.play.complete,true);assert.equal(X.outcome(s,D.item(s.id)).earned,true);assert.equal(s.done,false);s=advance(s,3);assert.equal(s.done,true);assert.equal(s.events.filter(e=>e.type==='complete').length,1);
  }
 });

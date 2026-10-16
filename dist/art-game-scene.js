@@ -12,8 +12,7 @@
  function piecePose(s,p){
   const selected=p.id===s.puzzle.selected,base=p.placed?A.slotPoint(p.id):s.puzzle.held&&selected?s.puzzle.held:A.trayPoint(p.tray),settle=p.placed&&p.placeFrom&&!s.play.reduced?ease((s.age-p.placedAt)/.25):1;
   let point=base;if(p.placed&&p.placeFrom)point={x:mix(p.placeFrom.x,base.x,settle),y:mix(p.placeFrom.y,base.y,settle)};
-  const turn=p.turnVisual===undefined?p.turn:mix(p.turnFrom,p.turnVisual,s.play.reduced?1:ease((s.age-p.turnAt)/.18));
-  return {...point,turn,selected,scale:p.placed?mix(.72,1,settle):s.puzzle.held&&selected?1:.70};
+  return {...point,selected,scale:p.placed?mix(.72,1,settle):s.puzzle.held&&selected?1:.70};
  }
  function cardPose(s,index){
   const m=s.match,c=m.cells[index],end=A.cellPoint(index),duration=s.play.reduced?.10:m.stage==='fall'?.42:.28,t=ease((s.age-m.at)/duration),p=c.from&&['swap','return','fall'].includes(m.stage)?{x:mix(c.from.x,end.x,t),y:mix(c.from.y,end.y,t)}:end;
@@ -49,8 +48,8 @@
   if(s.game==='puzzle'){
    const r=A.puzzleBoard;attrs(refs.board,{x:b.x+r.x*b.w-8,y:b.y+r.y*b.h-8,width:r.w*b.w+16,height:r.h*b.h+16});attrs(refs.scene,{x:b.x+r.x*b.w,y:b.y+r.y*b.h,width:r.w*b.w,height:r.h*b.h,opacity:s.puzzle.guide?.18:0});
    if(refs.lastSelected!==s.puzzle.selected){if(s.puzzle.selected!==null)refs.layers.appendChild(refs.pieces[s.puzzle.selected].g);refs.lastSelected=s.puzzle.selected;}
-   for(const piece of s.puzzle.pieces){const view=piecePose(s,piece),node=refs.pieces[piece.id],at=p(view);attrs(node.g,{transform:'translate('+at.x+' '+at.y+') rotate('+(view.turn*90)+') scale('+(r.w/3*b.w*view.scale)+')',opacity:piece.placed?1:1-f.paper});attrs(node.number,{opacity:piece.placed?0:1});attrs(node.line,{stroke:view.selected?'#8c9d6b':'#f9f1df','stroke-width':view.selected?.018:.012});}
-   const at=p(A.slotPoint(s.cursor)),w=r.w/3*b.w;attrs(refs.cursor,{x:at.x-w/2+3,y:at.y-w/2+3,width:w-6,height:w-6,opacity:s.play.complete?0:.4});
+   for(const piece of s.puzzle.pieces){const view=piecePose(s,piece),node=refs.pieces[piece.id],at=p(view);attrs(node.g,{transform:'translate('+at.x+' '+at.y+') scale('+(r.w/3*b.w*view.scale)+')',opacity:piece.placed?1:1-f.paper});attrs(node.number,{opacity:!piece.placed&&s.puzzle.keyboard?1:0});attrs(node.line,{stroke:view.selected?'#8c9d6b':'#f9f1df','stroke-width':view.selected?.018:.012});}
+   const at=p(A.slotPoint(s.cursor)),w=r.w/3*b.w;attrs(refs.cursor,{x:at.x-w/2+3,y:at.y-w/2+3,width:w-6,height:w-6,opacity:!s.play.complete&&s.puzzle.keyboard?.4:0});
   }else if(s.game==='match'){
    const r=A.matchBoard,w=r.w/5*b.w;attrs(refs.matchClip,{x:b.x+r.x*b.w,y:b.y+r.y*b.h,width:r.w*b.w,height:r.h*b.h});attrs(refs.board,{x:b.x+r.x*b.w-8,y:b.y+r.y*b.h-8,width:r.w*b.w+16,height:r.h*b.h+16});attrs(refs.scene,{x:b.x+.08*b.w,y:b.y+.08*b.h,width:.84*b.w,height:.84*b.h,opacity:s.play.complete?f.paper:.035});
    refs.cards.forEach((node,i)=>{const v=cardPose(s,i),at=p(v),frame=A.Atlas.frames[v.type],iconSize=w*.78;attrs(node.g,{transform:'translate('+at.x+' '+at.y+')',opacity:(1-f.paper)*v.alpha});attrs(node.base,{x:-w*.47,y:-w*.47,width:w*.94,height:w*.94});attrs(node.icon,{x:-iconSize*v.scale/2,y:-iconSize*v.scale/2,width:iconSize*v.scale,height:iconSize*v.scale,viewBox:[frame.x,frame.y,frame.w,frame.h].join(' ')});});
@@ -97,8 +96,8 @@
    paper.position.set(0,0);paper.children.forEach(node=>{if(node instanceof P.Sprite){node.width=800;node.height=H;}});if(fallbackPaper)fallbackPaper.clear().rect(0,0,800,H).fill(0xf6f0df);plate.clear();guides.clear();marks.clear();boardMask.clear();
    if(game==='puzzle'){
     const r=A.puzzleBoard,cell=r.w*b.w/3;plate.roundRect(b.x+r.x*b.w-8,b.y+r.y*b.h-8,r.w*b.w+16,r.h*b.h+16,7).fill({color:0xfff9e8,alpha:.92}).stroke({color:0xc8b993,width:1.2,alpha:.8});if(scene){scene.position.set(b.x+r.x*b.w,b.y+r.y*b.h);scene.width=r.w*b.w;scene.height=r.h*b.h;scene.alpha=s.puzzle.guide?.18:0;}
-    for(const piece of s.puzzle.pieces){const view=piecePose(s,piece),at=p(view),item=pieces[piece.id];if(!item)continue;item.node.position.set(at.x,at.y);item.node.scale.set(cell*view.scale);item.node.rotation=view.turn*Math.PI/2;item.node.alpha=piece.placed?1:fade;item.number.visible=!piece.placed;item.line.tint=view.selected?0x95a875:0xffffff;if(view.selected)actors.setChildIndex(item.node,actors.children.length-1);}
-    if(!s.play.complete){const at=p(A.slotPoint(s.cursor));guides.roundRect(at.x-cell/2+4,at.y-cell/2+4,cell-8,cell-8,4).stroke({color:0x6e8b5d,width:1.8,alpha:.5});}
+    for(const piece of s.puzzle.pieces){const view=piecePose(s,piece),at=p(view),item=pieces[piece.id];if(!item)continue;item.node.position.set(at.x,at.y);item.node.scale.set(cell*view.scale);item.node.alpha=piece.placed?1:fade;item.number.visible=!piece.placed&&s.puzzle.keyboard;item.line.tint=view.selected?0x95a875:0xffffff;if(view.selected)actors.setChildIndex(item.node,actors.children.length-1);}
+    if(!s.play.complete&&s.puzzle.keyboard){const at=p(A.slotPoint(s.cursor));guides.roundRect(at.x-cell/2+4,at.y-cell/2+4,cell-8,cell-8,4).stroke({color:0x6e8b5d,width:1.8,alpha:.5});}
    }else if(game==='match'){
     const r=A.matchBoard,w=r.w*b.w/5;boardMask.rect(b.x+r.x*b.w,b.y+r.y*b.h,r.w*b.w,r.h*b.h).fill(0xffffff);if(scene){scene.anchor.set(.5);scene.position.set(b.x+b.w*.5,b.y+b.h*.5);scene.width=b.w*.86;scene.height=b.h*.86;scene.alpha=s.play.complete?f.paper:.035;}
     plate.roundRect(b.x+r.x*b.w-9,b.y+r.y*b.h-9,r.w*b.w+18,r.h*b.h+18,11).fill({color:0xf3eedb,alpha:.94*fade}).stroke({color:0xc5c7aa,width:1,alpha:fade*.8});

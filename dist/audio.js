@@ -457,6 +457,10 @@
    if(event==='sling-catch'){
     transient('paper',pan,.35,.91);tone(group,{at:.035,midi:69,length:.48,gain:.019,instrument:'felt',pan,space:.12},start);tone(group,{at:.16,midi:76,length:.6,gain:.009,instrument:'air',pan,space:.17},start);return true;
    }
+   if(event==='cloud-clear'){
+    transient('paper',pan,.12,1.18);texture(group,{kind:'wind',cutoff:1250,length:.65,gain:.027,pan,space:.15},start);
+    tone(group,{at:.07,midi:[67,71,74][Math.max(0,index-1)%3],length:.48,gain:.011,instrument:'air',pan,space:.2},start);return true;
+   }
    if(event==='wind-point'||event==='frame'){
     if(context.currentTime-(group.lastFrame??-1)<.22)return false;group.lastFrame=context.currentTime;
     if(!transient('paper',pan,event==='frame'?.055:.11,event==='frame'?1.3:.85))texture(group,{kind:'wind',cutoff:900,length:.09,gain:.006},start);return true;

@@ -3,28 +3,30 @@ const S=require('../dist/wugong-stories.js'),N=require('../dist/wugong-games.js'
 const make=(id,options)=>X.create(D.item(id),options);
 function advance(s,seconds){for(let i=0;i<Math.ceil(seconds*40);i++)s=X.tick(s,.025);return s;}
 const act=(s,action)=>X.act(s,{action});
-function connect(s,path){for(const i of path)s=X.release(X.act(s,S.nodes[i]));return s;}
+function clouds(s){for(const point of S.cloudSeeds)s=X.act(s,point);return s;}
 function meet(){return act(act(make('wugong-wind-hiker'),'advance'),'advance');}
 
-test('clouds need a connected valley route and an explicit send; idling never earns the painting',()=>{
+test('only touching the cloud patches reveals the ridge, with one reward after the mist clears',()=>{
  let s=make('meadow-butterfly');s=advance(s,60);assert.equal(s.play.complete,false);
- s=connect(s,[1,3,5,7]);assert.deepEqual(s.path,[0,1,3,5,7]);s=advance(s,30);assert.equal(s.play.complete,false);
- const planned=s;s=act(s,'send');assert.equal(planned.flight,null);assert.equal(s.play.complete,false);assert.equal(X.act(s,S.nodes[2]),s,'the route cannot change while wind is travelling');
- s=advance(s,5);assert.equal(s.play.complete,true);assert.equal(s.done,false);assert.equal(X.outcome(s,D.item(s.id)).earned,true);
+ s=X.act(s,{x:.02,y:.05});assert.equal(s.gates,0);assert.equal(X.outcome(s,D.item(s.id)).earned,false);
+ const before=s;s=X.act(s,S.cloudSeeds[0]);assert.equal(before.gates,0);assert.equal(s.gates,1);assert.equal(s.play.complete,false);
+ for(let i=0;i<5;i++)s=X.act(s,S.cloudSeeds[0]);assert.equal(s.gates,1,'one cloud clears only once');
+ for(const point of S.cloudSeeds.slice(1))s=X.act(s,point);assert.equal(s.gates,3);assert.equal(s.play.complete,false,'let the last cloud finish dispersing');
+ s=advance(s,1.1);assert.equal(s.play.complete,true);assert.equal(s.gates,3);assert.equal(s.done,false);assert.equal(X.outcome(s,D.item(s.id)).earned,true);
  s=advance(s,3);assert.equal(s.done,true);assert.equal(s.events.filter(e=>e.type==='complete').length,1);
 });
 
-test('ridge, hollow and unfinished routes give distinct feedback and remain editable',()=>{
- for(const [path,message]of [[[2],/高脊/],[[1,8],/洼地/],[[1,3],/半路/]]){
-  let s=connect(make('meadow-butterfly'),path);const original=s.path.slice();s=advance(act(s,'send'),5);
-  assert.equal(s.play.complete,false);assert.equal(s.flight,null);assert.match(s.feedback,message);assert.deepEqual(s.path,original);assert.equal(X.outcome(s,D.item(s.id)).earned,false);
-  s=act(s,'undo');assert.equal(s.path.length,original.length-1);s=act(s,'clear');assert.deepEqual(s.path,[0]);
- }
+test('a deliberate sweep reaches the visible clouds while idle cursor motion and legacy route actions earn nothing',()=>{
+ let s=make('meadow-butterfly');s=X.move(s,S.cloudSeeds[0]);assert.equal(s.gates,0);
+ for(const action of ['send','undo','clear'])s=act(s,action);assert.equal(s.gates,0);
+ s=X.act(s,{x:.03,y:.47,phase:'press'});s=X.move(s,{x:.97,y:.47});s=X.release(s);assert.equal(s.gates,3);assert.equal(s.pointer,null);assert.equal(s.dragging,false);
+ assert.equal(s.events.filter(e=>e.type==='cloud-clear').length,3);assert.equal(advance(s,1.1).play.complete,true);
 });
 
-test('keyboard cursor movement alone selects no wind points, and cancel clears the drag origin',()=>{
- let s=make('meadow-butterfly');s=X.move(s,{...S.nodes[1],key:true});assert.deepEqual(s.path,[0]);s=X.act(s,{assist:true});assert.deepEqual(s.path,[0,1]);
- s=X.move(s,S.nodes[3]);assert.ok(s.pointer);s=X.release(s);assert.equal(s.pointer,null);assert.equal(s.dragging,false);
+test('a cancelled cloud tap does not clear a cloud, and keyboard selection needs an explicit blow',()=>{
+ let s=make('meadow-butterfly');s=X.act(s,{...S.cloudSeeds[0],phase:'press'});s=X.release(s);s=X.act(s,{...S.cloudSeeds[0],phase:'release'});assert.equal(s.gates,0);
+ s=X.move(s,{key:true,dx:.08,dy:0});assert.equal(s.gates,0);assert.equal(s.cloudCursor,1);assert.equal(s.keyboard,true);
+ s=act(s,'blow');assert.equal(s.gates,1);assert.equal(s.clouds[1].clearedAt,s.age);
 });
 
 test('photography requires a usable composition, showing the photograph and saying goodbye',()=>{
@@ -42,7 +44,7 @@ test('a cropped-out subject can be retaken and cannot unlock a reward through re
 });
 
 test('reduced motion keeps both completion rules and omits an idle or waiting shortcut',()=>{
- let clouds=connect(make('meadow-butterfly',{reduced:true}),[1,3,5,7]);assert.equal(advance(clouds,10).play.complete,false);clouds=advance(act(clouds,'send'),2);assert.equal(clouds.play.complete,true);
+ let mist=make('meadow-butterfly',{reduced:true});assert.equal(advance(mist,10).play.complete,false);mist=advance(clouds(mist),.2);assert.equal(mist.play.complete,true);assert.equal(mist.gates,3);
  let photo=make('wugong-wind-hiker',{reduced:true});photo=act(act(photo,'advance'),'advance');photo=X.move(photo,{x:.55,y:.47});photo=act(photo,'shutter');assert.equal(advance(photo,30).play.complete,false);photo=act(act(photo,'advance'),'advance');photo=advance(photo,.4);assert.equal(photo.play.complete,true);
 });
 
