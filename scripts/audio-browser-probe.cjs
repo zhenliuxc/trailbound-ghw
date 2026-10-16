@@ -7,9 +7,9 @@ const cues={wind:['wugong-line-v1.mp3','wugong-flutter-v1.mp3'],clouds:['wugong-
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function poll(page,fn,description){for(let i=0;i<160;i++){const value=await fn();if(value)return value;await page.clock.fastForward(30);await wait(75);}throw Error('Native audio timeout: '+description+' '+JSON.stringify(await snapshot(page)));}
 async function snapshot(page){return page.evaluate(()=>window.__qaNative.snapshot());}
-async function setup(page){
+async function setup(page,{failFirstTheme=true}={}){
  records.set(page,{expected:new WeakSet(),failures:[],games:[],seen:new Set(),offset:0,background:false,mute:false});
- await page.route('**/audio/wugong-childhood-loop-v1.mp3',async route=>{const r=records.get(page);r.expected.add(route.request());r.failures.push('intentional first-theme request failure');await route.abort('failed');});
+ if(failFirstTheme)await page.route('**/audio/wugong-childhood-loop-v1.mp3',async route=>{const r=records.get(page);r.expected.add(route.request());r.failures.push('intentional first-theme request failure');await route.abort('failed');});
  await page.addInitScript(()=>{
   const media=[],streams=[],contexts=[],starts=[],requests=[],decoded=new WeakMap(),arrays=new WeakMap();let maxPlaying=0;
   const update=()=>{maxPlaying=Math.max(maxPlaying,media.filter(m=>!m.paused&&m.readyState>=2).length);};
@@ -69,4 +69,4 @@ async function finish(page,label,click){
  await poll(page,async()=>{const t=await snapshot(page);return t.contexts[0]==='suspended'&&t.media.every(m=>m.paused);},'final mute');
  return {viewport:label,games:r.games,maxPlaying:s.maxPlaying,cachedThemes:s.media.length,initialMusicRequestFailed:r.failures.length>0,retryRecovered:true,backgroundSimulation:r.background,inGameMute:r.mute,finalMute:true,listeningNotPerformed:true,physicalPhoneNotTested:true};
 }
-module.exports={setup,expectedFailure,enabled,walking,beforeGame,reward,collected,finish};
+module.exports={setup,snapshot,theme,expectedFailure,enabled,walking,beforeGame,reward,collected,finish};

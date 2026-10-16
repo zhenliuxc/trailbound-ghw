@@ -45,6 +45,20 @@ assert.ok(foleyBytes<wugongAudio.budgets.effectsBytes&&wugongAudio.budgets.effec
 assert.ok(fs.existsSync(path.join(dir,'audio/KENNEY-RPG-LICENSE.txt')));
 console.log('PASS: four free Wugong themes and short foley retain attribution, provenance, hashes and separate streaming/effects budgets.');
 
+const moganAudio=JSON.parse(fs.readFileSync(path.join(dir,'audio/mogan-credits.json')));
+assert.equal(moganAudio.cost.materialLicenseFee,0);assert.equal(moganAudio.cost.newAudioBytes,0);
+assert.equal(moganAudio.music.length,4);
+for(const entry of [...moganAudio.music,...moganAudio.effects]){
+ const bytes=fs.readFileSync(path.join(dir,entry.file));assert.equal(bytes.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),entry.sha256);assert.ok(entry.author&&entry.source&&entry.license&&entry.licenseUrl);
+}
+for(const [game,track]of Object.entries(runtime.MOGAN_THEMES))assert.equal(moganAudio.music.find(row=>row.scene===game).file,track.file);
+const moganProps=JSON.parse(fs.readFileSync(path.join(dir,'sprites/mogan-props-v1.json'))),moganBytes=fs.readFileSync(path.join(dir,moganProps.file));
+assert.equal(moganBytes.length,moganProps.bytes);assert.equal(crypto.createHash('sha256').update(moganBytes).digest('hex'),moganProps.sha256);assert.ok(moganBytes.length<350000);assert.equal(moganProps.frames.length,4);
+for(const frame of moganProps.frames)assert.ok(frame.x>=0&&frame.y>=0&&frame.w>0&&frame.h>0&&frame.x+frame.w<=moganProps.width&&frame.y+frame.h<=moganProps.height);
+assert.ok(moganProps.tip.x>=0&&moganProps.tip.x<=1&&moganProps.tip.y>=0&&moganProps.tip.y<=1);
+assert.deepEqual(Object.keys(runtime.MOGAN_GAMES).sort(),['bamboo-drop','bamboo-leaf','bamboo-step']);
+console.log('PASS: Mogan registered games retain packaged watercolor props, source metadata and free audio reuse without duplicate downloads.');
+
 const current=JSON.parse(fs.readFileSync(path.join(dir,'badges/landscape-v3.json'),'utf8'));
 assert.equal(current.edition,3);assert.equal(current.entries.length,moments.length);
 for(const e of moments){const art=current.entries.find(a=>a.id===e.id);assert.equal(art.tag,e.tag);assert.equal(art.scene,e.scene);assert.equal(art.play,e.play);assert.equal(art.file,e.badge);const b=fs.readFileSync(path.join(dir,art.file));assert.equal(b.length,art.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),art.sha256);assert.match(b.toString(),/viewBox="0 0 192 192"/);assert.ok(!/<script|<foreignObject|(?:href|src)="https?:|<image/.test(b.toString()));}

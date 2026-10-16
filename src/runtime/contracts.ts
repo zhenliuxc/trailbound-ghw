@@ -2,7 +2,7 @@
 export type RouteId = 'wugong' | 'tiger' | 'aotai' | 'maclehose' | 'changping' | 'mogan' | 'westlake';
 export type JourneyStatus = 'ready' | 'walking' | 'paused' | 'encounter' | 'finished' | 'retreated';
 export type SceneName = 'photo' | 'minigame' | 'reward' | 'journal';
-export type GameKind = 'wind' | 'creek' | 'rain' | 'clouds' | 'greet' | 'altar' | 'puzzle' | 'match' | 'sling';
+export type GameKind = 'wind' | 'creek' | 'rain' | 'footsteps' | 'clouds' | 'greet' | 'altar' | 'puzzle' | 'match' | 'sling';
 export type AssetState = 'queued' | 'loading' | 'ready' | 'error' | 'cancelled';
 
 export interface RouteSummary { id: RouteId; name: string }
@@ -117,6 +117,7 @@ export interface MiniViewRefs {
   art?: boolean;
   wugong?: boolean;
   story?: boolean;
+  mogan?: boolean;
   waitsForArt?: boolean;
   contentState?: 'loading' | 'ready' | 'error';
   disposed?: boolean;
@@ -131,7 +132,7 @@ export interface MiniOutcome {
 }
 export type SvgFactory = (tag: string, attributes: Record<string, string | number | boolean>, parent?: Element) => SVGElement;
 export interface MiniApi {
-  create(entry: MomentEntry, options: { reduced: boolean }): MiniState;
+  create(entry: MomentEntry, options: { reduced: boolean; weather?: string }): MiniState;
   act(state: MiniState, input: MiniInput): MiniState;
   move(state: MiniState, input: MiniInput): MiniState;
   release(state: MiniState): MiniState;
@@ -145,6 +146,10 @@ export interface MiniApi {
   assets?(entry: MomentEntry): GameAssets;
   mount?(refs: MiniViewRefs, context: { pixi: unknown; host: HTMLElement; cache?: ImageCache; entry: MomentEntry }): void | Promise<void>;
   dispose?(refs: MiniViewRefs): void;
+  /** Adapter-owned coordinates, controls and keys, shared by both renderer paths. */
+  point?(refs: MiniViewRefs, point: MiniInput): MiniInput;
+  present?(state: MiniState, refs: MiniViewRefs): void;
+  key?(state: MiniState, key: string, phase: 'down' | 'up'): MiniState | null;
 }
 export interface GameAssets { scene?: string; actor?: string; front?: string; stone?: string }
 export interface ActionControl { action: string; label: string; disabled?: boolean; primary?: boolean }

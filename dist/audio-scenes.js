@@ -34,7 +34,7 @@
   'valley-bridge':{zone:'creek',cue:'stone'},
   'valley-reflection':{zone:'meadow',cue:'air'},
   'bamboo-drop':{zone:'bamboo',cue:'bamboo',game:'rain'},
-  'bamboo-step':{zone:'path',cue:'stone'},
+  'bamboo-step':{zone:'path',cue:'stone',game:'footsteps'},
   'bamboo-leaf':{zone:'forest',cue:'leaf',game:'sling'},
   'westlake-stones':{zone:'creek',cue:'water'},
   'westlake-floating-leaf':{zone:'creek',cue:'water',game:'creek'},
@@ -73,6 +73,7 @@
   recording.leaves={cutoff:routeId==='aotai'?1250:routeId==='wugong'?1900:3500,highpass:routeId==='aotai'?200:450,rate:routeId==='aotai'?.75:routeId==='wugong'?.92:1,pan:-.12};
   recording.drips={cutoff:3700,highpass:200,rate:.97,pan:.16};
   if(routeId==='wugong'){layers[0].gain*=(zone==='ridge'?1.15:zone==='summit'?1.30:.80)*.22;layers[0].cutoff=zone==='meadow'?1200:700;}
+  if(routeId==='mogan')layers[0].gain*=.30;
   if(routeId==='tiger'&&zone==='waterfall')layers[0]={...layers[0],kind:'spray',cutoff:4200,highpass:550,gain:.027};
   if(routeId==='maclehose'&&zone==='harbour')layers[0]={...layers[0],cutoff:1200,gain:.012,depth:.27,mod:.19};
   if(routeId==='changping'&&zone==='meadow')layers[0]={...layers[0],kind:'wind',gain:.012,cutoff:900};
@@ -83,6 +84,7 @@
   if(game==='clouds'){mix.leaves=.07;layers[0].gain*=.85;}
   if(game==='creek'){mix.creek=.31;mix.leaves=.055;mix.drips=0;}
   if(game==='rain'){mix.leaves=.13;mix.drips=.065;layers[0].gain*=.65;}
+  if(game==='footsteps'){mix.leaves=.105;mix.drips=.035;layers[0].gain*=.55;}
   if(game==='sling'){mix.leaves=.16;mix.drips=.025;}
   if(['rain','storm'].includes(weather)){
    layers.push({id:'weather',kind:'rain',highpass:1500,cutoff:6000,gain:weather==='storm'?.018:.009,mod:.27,depth:.13,space:0});

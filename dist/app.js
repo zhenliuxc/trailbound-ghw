@@ -26,12 +26,13 @@
   const photoCache = /* @__PURE__ */ new Map();
   const Runtime = window.TrailRuntime;
   const dom = Runtime.createDom(document);
+  const miniGameKind = (id) => window.TrailArtGames && Runtime.MOGAN_GAMES[id] || window.TrailMiniGames?.kinds[id];
   const scenes = Runtime.createSceneManager({ status: () => state.status, pause: () => {
     state = J.pause(state);
   }, resume: () => {
     state = J.resume(state);
   }, hidden: () => document.hidden });
-  const rewardController = Runtime.createRewardController({ dom, scenes, catalog: D, cache: artCache, audio: audioPlayer, reduced: motionReduced, gameKind: (id) => window.TrailMiniGames?.kinds[id], refresh: refreshRuntime, stopLoop: cancelLoop });
+  const rewardController = Runtime.createRewardController({ dom, scenes, catalog: D, cache: artCache, audio: audioPlayer, reduced: motionReduced, gameKind: miniGameKind, refresh: refreshRuntime, stopLoop: cancelLoop });
   const journalController = Runtime.createJournalController({
     dom,
     scenes,
@@ -63,6 +64,7 @@
     scenes,
     api: X,
     platform: window.TrailMiniGames,
+    weather: () => J.weather(state),
     pixi: window.PIXI,
     svg,
     cache: artCache,
@@ -83,6 +85,8 @@
       return rewardController.show(moment, finished.returnStatus);
     }
   });
+  const moganGames = window.TrailMiniGames && window.TrailArtGames ? Runtime.createMoganGames({ dom, legacy: window.TrailArtGames, onAction: (name, value) => miniController.action(name, value) }) : null;
+  if (moganGames) miniController.registerGame(Object.keys(Runtime.MOGAN_GAMES), moganGames.adapter);
   const loop = Runtime.createFrameLoop({ request: (callback) => window.requestAnimationFrame(callback), cancel: (id) => window.cancelAnimationFrame(id), active: () => scenes.canAnimate(miniController.active), update: frame });
   function refreshRuntime() {
     uiKey = "";
@@ -131,7 +135,7 @@
       photoCache.delete(file);
     }
     cps.forEach((cp, i) => preparePhoto(cp, i === 0 ? "high" : "low"));
-    const gameArt = state.routeId === "westlake" ? Object.values(window.TrailMiniGames?.waterAssets?.creek || {}) : state.routeId === "mogan" ? Object.values(window.TrailMiniGames?.waterAssets?.rain || {}) : state.routeId === "wugong" ? Object.values(window.TrailMiniGames?.wugongAssets || {}).flatMap(Object.values) : [];
+    const gameArt = state.routeId === "westlake" ? Object.values(window.TrailMiniGames?.waterAssets?.creek || {}) : state.routeId === "mogan" ? Runtime.MOGAN_ROUTE_ASSETS : state.routeId === "wugong" ? Object.values(window.TrailMiniGames?.wugongAssets || {}).flatMap(Object.values) : [];
     const art = D.CATALOG.filter((e) => e.route === state.routeId).map((e) => e.artV5 || e.artV4 || e.badge).filter(Boolean);
     artCache?.prefetch([.../* @__PURE__ */ new Set([...gameArt, ...window.TrailMiniGames?.artRouteAssets(state.routeId) || [], "scenes/" + state.routeId + "-v1.webp", ...state.routeId === "wugong" ? ["sprites/wugong-swallow-kite-v1.webp", "sprites/wugong-meadow-grass-v1.webp"] : [], ...art])]);
   }
@@ -828,7 +832,7 @@
   }
   function audioScene() {
     const mode = rewardController.current ? "reward" : miniController.state ? "moment" : photoId ? "photo" : state.status === "walking" ? "walk" : state.status === "encounter" ? "choice" : "silent";
-    return { routeId: state.routeId, checkpointId: photoId, weather: J.weather(state), progress: state.progress, mode, momentId: miniController.state?.id || rewardController.current?.id || null, momentGame: miniController.state?.game || window.TrailMiniGames?.kinds[rewardController.current?.id] || null };
+    return { routeId: state.routeId, checkpointId: photoId, weather: J.weather(state), progress: state.progress, mode, momentId: miniController.state?.id || rewardController.current?.id || null, momentGame: miniController.state?.game || miniGameKind(rewardController.current?.id) || null };
   }
   function syncAudio() {
     const requested = !journalController.open && sound && !audioBackground && !document.hidden;
@@ -839,14 +843,15 @@
     $("sound-toggle").setAttribute("aria-pressed", sound);
     $("sound-toggle").textContent = soundBusy ? "声音 · 开启中" : soundError || (needsAudioResume() ? "声音 · 点此恢复" : `声音 · ${sound ? "开" : "关"}`);
     const musicState = audioPlayer.musicState;
-    const retryMusic = requested && state.routeId === "wugong" && audioScene().mode !== "silent" && ["blocked", "error"].includes(musicState);
+    const track = Runtime.musicTrack(audioScene());
+    const retryMusic = requested && !!track && ["blocked", "error"].includes(musicState);
     $("music-retry").hidden = !retryMusic;
     $("mini-music-retry").hidden = !retryMusic;
     const p = window.TrailAudio.profile(photoId);
     $("photo-soundscape").hidden = !p;
     if (p) {
-      const title = state.routeId === "wugong" ? "Reverie · Scott Buckley" : p.title;
-      const status = !sound ? "声音关闭" : audioBackground || document.hidden || journalController.open ? "已暂停" : !playing ? "点声音按钮恢复" : state.routeId !== "wugong" || musicState === "playing" ? "正在播放" : musicState === "loading" ? "配乐载入中 · 环境声已开启" : "配乐暂未播放 · 环境声已开启";
+      const title = track ? `${track.title} · ${track.author}` : p.title;
+      const status = !sound ? "声音关闭" : audioBackground || document.hidden || journalController.open ? "已暂停" : !playing ? "点声音按钮恢复" : !track || musicState === "playing" ? "正在播放" : musicState === "loading" ? "配乐载入中 · 环境声已开启" : "配乐暂未播放 · 环境声已开启";
       $("photo-soundscape").textContent = `♪ ${title} · ${status}`;
       $("photo-soundscape").setAttribute("data-playing", playing);
     }
@@ -954,6 +959,7 @@
     backgroundPause();
     if (!event.persisted) {
       miniController.destroy();
+      moganGames?.destroy();
       journalController.destroy();
       rewardController.destroy();
       scenes.reset();

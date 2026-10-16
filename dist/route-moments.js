@@ -37,6 +37,11 @@
   ['westlake-basket','村口茶香','一盏茶等人坐下来','西湖 · 龙井村口','villagetea','brew','drip','tea','轻点茶盏，陪叶子慢慢展开，在村口歇一会儿。','一盏茶在村口冒着轻轻的热气，等叶子展开时，我也不着急赶路了。']
  ];
  const PROFILES=Object.fromEntries(rows.map(([id,tag,name,place,scene,play,interaction,icon,prompt,result,condition])=>[id,{edition:EDITION,tag,name,place,scene,play,interaction,icon,prompt,result,condition:condition||'沿途片刻',hint:prompt,memory:place+'，'+name+'。',badge:'badges/'+id+'-v3.svg'}]));
+ // Keep collectible identities and existing journal text. Fresh Mogan encounters
+ // describe their actual registered games, including the earned reward copy.
+ Object.assign(PROFILES['bamboo-drop'],{name:'叶尖落下的一段小调',hint:'看叶尖蓄水，移动竹筒，把滴雨接成一段旋律。',prompt:'看叶尖蓄水，左右移动竹筒，把落雨接成一段旋律。',result:'叶尖先亮起一颗水珠。我挪过竹筒，接住一声又一声轻响；最后一滴落下，竹林里留下了一小段雨的旋律。'});
+ Object.assign(PROFILES['bamboo-step'],{name:'跟着脚步走一段古道',hint:'脚印合上时，交替迈左脚、右脚，走过十级石阶。',prompt:'脚印合上时，点亮起的那只脚，走完这段石阶。',result:'我跟着石阶的长短，左脚、右脚，慢慢走过雨后的古道。苔色留在石边，十次轻轻的落脚，把山路接成了自己的节奏。'});
+ Object.assign(PROFILES['bamboo-leaf'],{name:'送过竹隙的一枚纸叶',hint:'向后拉开纸叶，松手送到远山窗旁的纸签。',prompt:'向后拉开纸叶，松手送过竹隙，落在远山纸签上。',result:'我把一枚纸叶放上竹弓，试着借一小段风。纸叶穿过竹隙，轻轻停在远山纸签上；林子里的那扇窗，也亮了起来。'});
  // Explicit scenery matches only; unmatched artwork does not invent new encounters.
  const ART_V4={"meadow-bird":"wugong-grass-letter","meadow-butterfly":"wugong-cloud-island","meadow-flower":"wugong-stone-altar","gorge-goat":"tiger-river-below","gorge-eagle":"tiger-halfway-rest","gorge-sparkle":"tiger-longdong-waterfall","snow-tracks":"aotai-rock-facets","snow-lichen":"aotai-ridgeline","coast-sand":"maclehose-bay-reveal","coast-shell":"maclehose-tide-drawing","coast-pier":"maclehose-chek-keng","valley-moss":"changping-tree-double","valley-bridge":"changping-red-stone","valley-reflection":"changping-muluozi","bamboo-drop":"mogan-bamboo-reply","bamboo-step":"mogan-old-stone-path","westlake-stones":"westlake-creek-stones","westlake-tea":"westlake-longjing-bud"};
  for(const [id,art] of Object.entries(ART_V4))PROFILES[id].artV4="badges/"+art+"-v4.webp";

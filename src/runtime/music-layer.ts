@@ -26,8 +26,12 @@ export const WUGONG_THEMES = Object.freeze({
   greet: theme('a-kind-of-hope', 'A Kind Of Hope'),
   puzzle: WUGONG_MUSIC,
 });
-const momentGames: Readonly<Record<string, keyof typeof WUGONG_THEMES>> = Object.freeze({
+// Reuse the same freely licensed recordings; do not download duplicate tracks.
+export const MOGAN_MUSIC = WUGONG_THEMES.greet;
+export const MOGAN_THEMES = Object.freeze({ rain: WUGONG_THEMES.clouds, footsteps: WUGONG_MUSIC, sling: WUGONG_THEMES.wind });
+const momentGames: Readonly<Record<string, string>> = Object.freeze({
   'meadow-bird': 'wind', 'meadow-butterfly': 'clouds', 'wugong-wind-hiker': 'greet', 'meadow-flower': 'puzzle',
+  'bamboo-drop': 'rain', 'bamboo-step': 'footsteps', 'bamboo-leaf': 'sling',
 });
 
 export interface MusicScene {
@@ -48,10 +52,13 @@ export interface MusicLayerOptions {
 
 /** Gains are a mixing starting point; headphones and phone speakers still need listening. */
 export function musicLevel(scene: MusicScene): number {
-  if (scene.routeId !== 'wugong' || !scene.mode || scene.mode === 'silent') return 0;
+  if (!['wugong', 'mogan'].includes(scene.routeId || '') || !scene.mode || scene.mode === 'silent') return 0;
   const game = scene.momentGame || momentGames[scene.momentId || ''];
   let level = scene.mode === 'photo' ? .47 : scene.mode === 'choice' ? .24 : scene.mode === 'reward' ? .42 : .40;
   if (scene.mode === 'moment') level = game === 'greet' ? .25 : game === 'puzzle' ? .35 : game === 'clouds' ? .32 : .29;
+  if (scene.routeId === 'mogan') {
+    level = scene.mode === 'moment' ? game === 'footsteps' ? .20 : game === 'rain' ? .24 : .30 : scene.mode === 'reward' ? .34 : scene.mode === 'choice' ? .20 : .33;
+  }
   if (scene.weather === 'storm') level *= .65;
   else if (scene.weather === 'rain') level *= .82;
   return level;
@@ -60,6 +67,10 @@ export function musicLevel(scene: MusicScene): number {
 export function musicTrack(scene: MusicScene): MusicTrack | null {
   if (!musicLevel(scene)) return null;
   const game = scene.momentGame || momentGames[scene.momentId || ''];
+  if (scene.routeId === 'mogan') {
+    if ((scene.mode === 'moment' || scene.mode === 'reward') && game && Object.hasOwn(MOGAN_THEMES, game)) return MOGAN_THEMES[game as keyof typeof MOGAN_THEMES];
+    return MOGAN_MUSIC;
+  }
   if ((scene.mode === 'moment' || scene.mode === 'reward') && game && Object.hasOwn(WUGONG_THEMES, game)) return WUGONG_THEMES[game as keyof typeof WUGONG_THEMES];
   return WUGONG_MUSIC;
 }

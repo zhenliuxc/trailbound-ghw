@@ -21,6 +21,7 @@ interface MiniOptions {
   catalog: MomentCatalog;
   audio: SoundPlayer;
   reduced: boolean;
+  weather?(): string;
   sound(): boolean;
   toggleSound(): Promise<void>;
   stopLoop(): void;
@@ -52,6 +53,7 @@ export function createMiniGameController(options: MiniOptions) {
   function updateStatus() {
     if (!current || !refs) return;
     view.update(current, refs);
+    api.present?.(current, refs);
     if (current.game) {
       if (current.game === 'wind' && games) options.audio.wind?.(games.flow(current).energy, current.play.complete);
       for (const event of current.events || []) if (event.serial > soundSerial) {
@@ -71,6 +73,7 @@ export function createMiniGameController(options: MiniOptions) {
   }
   function inputReady(input: MiniInput = {}) {
     if (!interactive() || !current || !refs) return false;
+    if (refs.mogan && refs.contentState !== 'ready') return false;
     if (refs.art && !view.artReady(refs)) return false;
     if ((current.game === 'wind' || current.game === 'clouds') && refs.contentState !== 'ready') return false;
     if (refs.story && refs.contentState !== 'ready' && (input.action === 'shutter' || input.assist && current.game === 'greet' && current.stage === 'camera')) return false;
@@ -92,17 +95,19 @@ export function createMiniGameController(options: MiniOptions) {
     options.stopLoop();
     session = scenes.enter('minigame', returnStatus);
     api = registered.get(entry.id) || options.api;
-    current = api.create(entry, { reduced: options.reduced });
+    current = api.create(entry, { reduced: options.reduced, weather: options.weather?.() });
     soundSerial = 0; genericCompletionSound = false; pendingPoint = null; view.reset();
     $<HTMLButtonElement>('mini-retry').disabled = false;
     $('micro-art').replaceChildren(); refs = api.draw(options.svg, $('micro-art'), entry);
-    refs.waitsForArt = !!(refs.art || refs.story || current.game === 'wind');
+    refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || current.game === 'wind');
     if (refs.waitsForArt) refs.contentState = 'loading';
     surface.setAttribute('aria-busy', String(refs.waitsForArt)); paint();
     $('wugong-tools').hidden = true; $('art-tools').hidden = true;
+    $('mogan-tools').hidden = !refs.mogan;
+    $('micro-panel').setAttribute('data-mogan', String(!!refs.mogan));
     $('micro-panel').setAttribute('data-art-game', String(!!refs.art));
     $('micro-panel').setAttribute('data-game', current.game || '');
-    $('wind-hud').hidden = !current.game || !!refs.art;
+    $('wind-hud').hidden = !current.game || !!refs.art || !!refs.mogan;
     const labels = { wind: '武功山 · 借风', clouds: '武功山 · 拨云见山', altar: '武功山 · 金顶石语', greet: '武功山 · 风口相遇', creek: '九溪 · 推叶', rain: '莫干山 · 接雨' };
     $('mini-place-label').textContent = current.game && current.game in labels ? labels[current.game as keyof typeof labels] : '';
     $('mini-controls').hidden = !current.game;
@@ -119,7 +124,7 @@ export function createMiniGameController(options: MiniOptions) {
     const actorAsset = actor ? options.cache?.request(actor, 'high') || null : null;
     const frontAsset = front ? options.cache?.request(front, 'high') || null : null;
     const openingRefs = refs;
-    if (openingRefs.waitsForArt) {
+    if (openingRefs.waitsForArt && !api.mount) {
       openingRefs.contentState = sceneAsset ? 'loading' : 'error';
       const assetsToWait = [sceneAsset, actorAsset, frontAsset].filter((asset): asset is NonNullable<typeof asset> => !!asset);
       Promise.all(assetsToWait.map(asset => asset.promise)).then(items => {
@@ -155,6 +160,7 @@ export function createMiniGameController(options: MiniOptions) {
   }
   function update(dt: number) {
     if (!interactive() || !current || !refs) return;
+    if (refs.mogan && refs.contentState !== 'ready') { updateStatus(); paint(); return; }
     if (pendingPoint) { current = api.move(current, pendingPoint); pendingPoint = null; }
     current = api.tick(current, dt);
     if (!current.game && current.play.complete && !genericCompletionSound) { genericCompletionSound = true; options.audio.mini?.('memory', 'complete'); }
@@ -164,7 +170,7 @@ export function createMiniGameController(options: MiniOptions) {
   function point(event: PointerEvent): MiniInput {
     const rect = surface.getBoundingClientRect();
     const p = { x: (event.clientX - rect.left) / rect.width, y: (event.clientY - rect.top) / rect.height };
-    return refs && games ? games.point(refs, p) : p;
+    return refs && api.point ? api.point(refs, p) : refs && games ? games.point(refs, p) : p;
   }
   function retry() {
     if (!interactive() || !current || current.play.complete || !refs) return;
@@ -173,11 +179,12 @@ export function createMiniGameController(options: MiniOptions) {
       const returnStatus = session?.returnStatus;
       finish(false, false); begin(entry, returnStatus); return;
     }
-    current = api.create(entry, { reduced: options.reduced }); soundSerial = 0; genericCompletionSound = false;
+    current = api.create(entry, { reduced: options.reduced, weather: options.weather?.() }); soundSerial = 0; genericCompletionSound = false;
     updateStatus(); paint(); surface.focus({ preventScroll: true }); options.ensureLoop();
   }
   function action(name: string, value?: number) {
     if (!interactive() || !current || !refs) return;
+    if (refs.mogan && refs.contentState !== 'ready') return;
     if (refs.art && !view.artReady(refs)) return;
     pause(); perform({ action: name, value });
   }
@@ -187,6 +194,13 @@ export function createMiniGameController(options: MiniOptions) {
     if (current.game && event.key.toLowerCase() === 'r') { event.preventDefault(); retry(); return; }
     if (event.ctrlKey || event.altKey || event.metaKey) return;
     const arrows: Record<string, [number, number]> = { ArrowLeft: [-.08, 0], ArrowRight: [.08, 0], ArrowUp: [0, -.1], ArrowDown: [0, .1] };
+    if (api.key) {
+      if (event.repeat && !arrows[event.key]) { event.preventDefault(); return; }
+      if (!inputReady()) return;
+      const next = api.key(current, event.key, 'down');
+      if (next) { event.preventDefault(); current = next; paint(); updateStatus(); options.ensureLoop(); }
+      return;
+    }
     if (refs.art) {
       const supported = !!arrows[event.key] || ['Enter', ' '].includes(event.key) || current.game === 'puzzle' && /^[1-6]$/.test(event.key);
       if (!supported) return;
@@ -212,6 +226,11 @@ export function createMiniGameController(options: MiniOptions) {
     bindings.listen(surface, 'click', event => { if (event.detail > 0) return; perform({ assist: true }); });
     bindings.listen(surface, 'keydown', keydown);
     bindings.listen(surface, 'keyup', event => {
+      if (interactive() && current && refs?.mogan && api.key && inputReady()) {
+        const next = api.key(current, event.key, 'up');
+        if (next) { event.preventDefault(); current = next; paint(); updateStatus(); options.ensureLoop(); }
+        return;
+      }
       if (!interactive() || !current || !refs?.art || event.key !== ' ' || !games) return;
       event.preventDefault(); if (!view.artReady(refs)) return;
       current = games.artKey(current, event.key, 'up'); paint(); updateStatus(); options.ensureLoop();
@@ -220,7 +239,7 @@ export function createMiniGameController(options: MiniOptions) {
       if (!inputReady() || pointer || event.isPrimary === false || event.button !== undefined && event.button !== 0 || !current) return;
       event.stopPropagation?.(); pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, drag: false };
       surface.setPointerCapture?.(event.pointerId);
-      if (current.game) perform({ ...point(event), ...(refs?.art || current.game === 'clouds' ? { phase: 'press' as const } : {}) });
+      if (current.game) perform({ ...point(event), ...(refs?.art || refs?.mogan || current.game === 'clouds' ? { phase: 'press' as const } : {}) });
     });
     bindings.listen(surface, 'pointermove', event => {
       if (!interactive() || !pointer || pointer.id !== event.pointerId || !current) return;
@@ -240,9 +259,9 @@ export function createMiniGameController(options: MiniOptions) {
       if (!interactive() || !pointer || pointer.id !== event.pointerId || !current) return;
       event.stopPropagation?.();
       const dragged = pointer.drag, input = { ...point(event), gesture: dragged ? 'drag' as const : 'tap' as const };
-      if (refs?.art || current.game === 'clouds') {
+      if (refs?.art || refs?.mogan || current.game === 'clouds') {
         pendingPoint = null;
-        if (dragged && refs && (view.artReady(refs) || current.game === 'clouds' && refs.contentState === 'ready')) current = api.move(current, input);
+        if (dragged && refs && (view.artReady(refs) || (refs.mogan || current.game === 'clouds') && refs.contentState === 'ready')) current = api.move(current, input);
         perform({ ...input, phase: 'release', dragged });
       } else if (dragged) { pendingPoint = null; current = api.release(api.move(current, input)); }
       else perform(input);
@@ -269,7 +288,7 @@ export function createMiniGameController(options: MiniOptions) {
   return {
     get state() { return current; },
     get active() { return current !== null; },
-    begin, finish, update, pause, retry,
+    begin, finish, update, pause, retry, action,
     /** New typed adapters can be installed without adding a dispatch branch to app.js. */
     registerGame(ids: readonly string[], adapter: MiniApi) { for (const id of ids) registered.set(id, adapter); },
     destroy() { finish(false, false); bindings.destroy(); registered.clear(); },

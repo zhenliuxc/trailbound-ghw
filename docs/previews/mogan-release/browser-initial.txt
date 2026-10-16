@@ -1,0 +1,5 @@
+Mogan browser: desktop play rain
+Error: Mogan canvas/art was not ready
+    at ready (/workspace/trailbound-ghw/scripts/test-mogan-browser.cjs:22:8)
+    at async game (/workspace/trailbound-ghw/scripts/test-mogan-browser.cjs:25:2)
+    at async /workspace/trailbound-ghw/scripts/test-mogan-browser.cjs:61:140

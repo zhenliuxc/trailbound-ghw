@@ -34,7 +34,7 @@ test('new app gameplay completes a wind challenge and saves exactly one earned r
  assert.equal(h.$('micro-panel').hidden,true);assert.equal(h.$('reward-overlay').hidden,false);assert.equal(D.loadMoments(records).filter(m=>m.earned).length,1);h.click('reward-continue');h.click('reward-continue');assert.equal(D.loadMoments(records).filter(m=>m.earned).length,1);
 });
 test('event sounds respect mute and background suspension and clean up voices',async()=>{
- const f=fixture(),a=Audio.create({AudioContext:f.AudioContext,timers:f.timers});assert.equal(a.mini('rain','catch'),false);await a.enable();a.setScene({routeId:'mogan',mode:'moment'});for(const ev of ['catch','goal','ripple','bump','complete'])assert.equal(a.mini('rain',ev,{index:2,x:.7}),true);assert.ok(a.voiceCount>0);a.hide();assert.equal(a.mini('rain','catch'),false);a.destroy();assert.equal(a.voiceCount,0);
+ const f=fixture(),a=Audio.create({AudioContext:f.AudioContext,timers:f.timers});assert.equal(a.mini('rain','catch'),false);await a.enable();a.setScene({routeId:'mogan',mode:'moment'});for(const ev of ['begin','catch','rain-miss','complete'])assert.equal(a.mini('rain',ev,{index:2,x:.7}),true);assert.ok(a.voiceCount>0);a.hide();assert.equal(a.mini('rain','catch'),false);a.destroy();assert.equal(a.voiceCount,0);
 });
 test('renderer initialization cancelled by skip destroys its late GPU application',async()=>{
  const h=harness(),svg=(tag,attrs,parent)=>{const n=h.document.createElementNS('',tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);parent?.appendChild(n);return n;};const e=entries[0],refs=X.draw(svg,h.$('micro-art'),e);X.paint(refs,X.create(e));let finish,destroyed=0;class Application{init(){return new Promise(resolve=>finish=resolve);}destroy(){destroyed++;}}

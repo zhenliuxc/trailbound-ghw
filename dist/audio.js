@@ -356,6 +356,7 @@
  for(const id of ['westlake-creek','westlake-path','westlake-tea'])PROFILES[id].instrument='felt';
  const SAMPLES={creek:'audio/westlake-creek-v1.mp3',leaves:'audio/westlake-leaves-v1.mp3',drips:'audio/westlake-drips-v1.mp3',drop:'audio/mini-drop-v1.mp3',splash:'audio/mini-splash-v1.mp3',paper:'audio/mini-paper-v1.mp3',wugongPaper:'audio/wugong-paper-v1.mp3',wugongPlace:'audio/wugong-place-v1.mp3',wugongCloth:'audio/wugong-cloth-v1.mp3',wugongClick:'audio/wugong-click-v1.mp3',wugongTurn:'audio/wugong-turn-v1.mp3',wugongLine:'audio/wugong-line-v1.mp3',wugongFlutter:'audio/wugong-flutter-v1.mp3',wugongStep1:'audio/wugong-step-1-v1.mp3',wugongStep2:'audio/wugong-step-2-v1.mp3',wugongStep3:'audio/wugong-step-3-v1.mp3'};
  const WUGONG_STEPS=['wugongStep1','wugongStep2','wugongStep3'];
+ const MOGAN_FOLEY=['drop','splash','wugongPaper','wugongPlace','wugongCloth','wugongLine','wugongFlutter',...WUGONG_STEPS];
  const MINI_SAMPLES={tiger:['paper','splash'],aotai:['paper'],maclehose:['paper','splash'],changping:['paper','splash'],westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['wugongPaper','wugongPlace','wugongCloth','wugongClick','wugongTurn','wugongLine','wugongFlutter']};
  const momentMix=Scene.momentMix,westlakeMix=Scene.westlakeMix;
  for(const p of Object.values(PROFILES)){Object.freeze(p.melody);Object.freeze(p.chord);Object.freeze(p.ambience);Object.freeze(p);}Object.freeze(PROFILES);
@@ -376,7 +377,7 @@
  function selection(scene={}){
   const {routeId='wugong',checkpointId=null,weather='clear',mode='walk',progress=0,momentGame=null,momentId=null}=scene;
   if(mode==='silent')return {key:'silent:'+routeId,silent:true};const p=mode==='photo'?profile(checkpointId):null,landscape=Scene.landscape(scene);
-  return {key:[mode,routeId,p?checkpointId:'',mode==='moment'||mode==='reward'?momentId||momentGame||'':'',weather,landscape.zone].join(':'),routeId,progress,profile:p,landscape,mix:landscape.mix,ambience:landscape.ambience,events:p&&routeId!=='wugong'?score(checkpointId):[]};
+  return {key:[mode,routeId,p?checkpointId:'',mode==='moment'||mode==='reward'?momentId||momentGame||'':'',weather,landscape.zone].join(':'),routeId,progress,profile:p,landscape,mix:landscape.mix,ambience:landscape.ambience,events:p&&!['wugong','mogan'].includes(routeId)?score(checkpointId):[]};
  }
  function create({AudioContext=null,navigator=null,fetch=null,timers=globalThis,createMusic=null,onError=()=>{},onStateChange=()=>{}}={}){let context=null,master=null,reverb=null,reverbGain=null,noiseBuffer=null,brightBuffer=null,waterBuffer=null,music=null,sceneRequest=null,enabled=false,currentKey='',group=null,groups=[],suspendTimer=null,disposed=false,lastInteraction=-Infinity;const buffers=new Map(),loads=new Map(),loops=new Map(),automation=new WeakMap(),textureMods=new WeakMap();
   function cancelSuspend(){if(suspendTimer!==null){timers.clearTimeout?.(suspendTimer);suspendTimer=null;}}
@@ -407,6 +408,7 @@
    const param=g.ambienceBus.gain;automation.delete(param);if(param.cancelAndHoldAtTime)param.cancelAndHoldAtTime(now);else{param.cancelScheduledValues(now);param.setValueAtTime(param.value,now);}
    param.linearRampToValueAtTime(strength,now+.035);param.linearRampToValueAtTime(1,now+length);
    if(g.routeId==='wugong')music?.duck(Math.max(.76,strength),Math.max(.55,length));
+   else if(g.routeId==='mogan')music?.duck(Math.max(.66,strength),Math.max(.55,length));
   }
   function tone(g,event,base=context.currentTime+.04){
    if(g.voices.size>86)return false;
@@ -436,7 +438,7 @@
    if(!SAMPLES[id])return Promise.resolve(null);if(buffers.has(id))return Promise.resolve(buffers.get(id));if(loads.has(id))return loads.get(id);if(!fetch||!context?.decodeAudioData)return Promise.resolve(null);
    const owner=context,promise=Promise.resolve().then(()=>fetch(SAMPLES[id])).then(r=>{if(!r.ok)throw Error('Sound sample unavailable');return r.arrayBuffer();}).then(data=>owner.decodeAudioData(data)).then(buffer=>{if(!disposed&&owner===context)buffers.set(id,buffer);return buffer;}).catch(()=>{loads.delete(id);return null;});loads.set(id,promise);return promise;
   }
-  function preloadWugong(g,ids){
+  function preloadFoley(g,ids){
    let index=0;const worker=async()=>{while(enabled&&!disposed&&group===g&&!g.retired&&!g.disposed&&index<ids.length){const id=ids[index++];await loadSample(id);}};
    // Short foley uses at most two workers per current scene, alongside one leaf
    // bed. The long score is streamed separately and never decodeAudioData'd.
@@ -478,7 +480,8 @@
    group={bus,ambienceBus,effectsBus,musicBus,voices:new Set(),retired:false,disposed:false,samples:new Map(),modulations:new Map(),requested:new Set(),mix:next.mix,routeId:next.routeId,landscape:next.landscape,beds:new Map(),cues:new Map(),stepCount:0};groups.push(group);while(groups.length>3)disposeGroup(groups[0]);
    for(const settings of next.landscape.layers){const gain=texture(group,settings,context.currentTime,true);group.beds.set(settings.id,gain);if(settings.id==='landscape')group.fallback=group.ambienceGain=gain;}
    group.lastWind=-1;group.lastTug=-1;group.lastRipple=-1;
-   if(scene.routeId==='wugong')preloadWugong(group,[...(scene.mode==='walk'?WUGONG_STEPS:[]),...MINI_SAMPLES.wugong]);
+   if(scene.routeId==='wugong')preloadFoley(group,[...(scene.mode==='walk'?WUGONG_STEPS:[]),...MINI_SAMPLES.wugong]);
+   else if(scene.routeId==='mogan')preloadFoley(group,MOGAN_FOLEY);
    else{const preload=scene.mode==='walk'?['paper']:['moment','reward'].includes(scene.mode)?MINI_SAMPLES[scene.routeId]||['paper']:[];for(const id of preload)loadSample(id);}
    updateMix(group,next.mix);const base=context.currentTime+.12;for(const e of next.events)e.kind==='note'?tone(group,{...e,role:'music'},base):effect(group,e,base);return true;
   }
@@ -543,11 +546,26 @@
    if(['frame','focus','inspect','early'].includes(event))return true;
    return false;
   }
+  function moganMini(event,pan,index){
+   // Every note is a recorded droplet at an authored playback rate, not an oscillator.
+   if(event==='catch'){duck(group,.68,.72);const notes=[0,4,7,4,2,5,4,0];transient('drop',pan,.40,Math.pow(2,notes[Math.max(0,Math.min(7,index))]/12),{space:.11,cutoff:4800});transient('splash',pan,.095,1,{space:.025,cutoff:2600});return true;}
+   if(event==='step-land'){duck(group,.72,.65);transient(WUGONG_STEPS[Math.max(0,index)%3],pan,.42,1,{space:.02,cutoff:3800});return true;}
+   if(event==='rain-miss'){transient('drop',pan,.11,.86,{space:0,cutoff:1800});return true;}
+   if(event==='begin'||event==='step-miss'){transient('wugongCloth',pan,.08,1,{space:0,cutoff:2300});return true;}
+   if(event==='sling-draw'){transient('wugongLine',pan,.22,.96,{space:0,cutoff:3400});return true;}
+   if(event==='sling-release'){duck(group,.82,.6);transient('wugongFlutter',pan,.24,1,{space:.02,cutoff:4300});return true;}
+   if(event==='sling-hit'||event==='sling-fall'){transient(event==='sling-hit'?'wugongPlace':'wugongCloth',pan,.13,.96,{space:0,cutoff:2200});return true;}
+   if(event==='sling-catch'){duck(group,.72,.8);transient('wugongCloth',pan,.13,1,{space:.02});return true;}
+   if(event==='complete'){if(group.completedAudio)return false;group.completedAudio=true;duck(group,.66,.9);transient('wugongPaper',0,.20,.97,{space:.03});return true;}
+   if(event==='reveal'||event==='collect'){duck(group,.72,.8);transient(event==='collect'?'wugongPlace':'wugongPaper',0,event==='collect'?.29:.32,1,{space:.02});return true;}
+   return false;
+  }
   function mini(game,event,{x=.5,index=0}={}){
    const channel=['piece-pick','card-swap','card-return'].includes(event)?'paper':event,interval=({frame:.22,focus:.24,inspect:.24,tug:.25,ripple:.14,'cloud-clear':.08,'card-clear':.10,miss:.24,catch:.08,goal:.12,reveal:.6,collect:.6})[channel]??.065;
    if(!canCue(channel,interval))return false;
    const pan=(Math.max(0,Math.min(1,Number.isFinite(x)?x:.5))-.5)*.65,start=context.currentTime+.012,motif=group.landscape.motif;
    if(group.routeId==='wugong')return wugongMini(event,pan);
+   if(group.routeId==='mogan')return moganMini(event,pan,index);
    if(['piece-pick','card-swap','card-return','sling-draw'].includes(event)){
     if(!transient('paper',pan,event==='sling-draw'?.19:.14,event==='card-return'?.88:1.05))texture(group,{kind:'leaves',cutoff:3300,highpass:800,length:.10,gain:.012,pan},start);
     if(event==='sling-draw')texture(group,{kind:'wind',cutoff:900,highpass:200,length:.20,gain:.008,pan},start);return true;
@@ -612,7 +630,7 @@
   function step(routeId){
    if(!currentKey.startsWith('walk:')||!group||group.routeId!==routeId||!canCue('step',.24))return false;
    const material=group.landscape.steps,pan=(group.stepCount++%2?1:-1)*.045,start=context.currentTime+.006;
-   if(routeId==='wugong'){transient(WUGONG_STEPS[(group.stepCount-1)%WUGONG_STEPS.length],pan,material==='stone'?.27:.22,1,{space:0,cutoff:material==='stone'?4800:2700});return true;}
+   if(routeId==='wugong'||routeId==='mogan'){transient(WUGONG_STEPS[(group.stepCount-1)%WUGONG_STEPS.length],pan,material==='stone'?.27:.22,1,{space:0,cutoff:material==='stone'?4800:2700});return true;}
    const settings={snow:{kind:'snow',highpass:1400,cutoff:4800,length:.17,gain:.020},sand:{kind:'sand',highpass:900,cutoff:3400,length:.14,gain:.019},grass:{kind:'leaves',highpass:650,cutoff:3200,length:.13,gain:.023},earth:{kind:'stone',highpass:330,cutoff:2100,length:.11,gain:.020},stone:{kind:'stone',highpass:180,cutoff:2700,length:.075,gain:.023},wood:{kind:'bamboo',highpass:200,cutoff:1500,length:.09,gain:.019}}[material];
    texture(group,{...settings,pan,attack:.008},start);if(material==='stone'||material==='wood')tone(group,{at:.003,midi:material==='wood'?43:47,length:.055,gain:.007,instrument:'wood',pan,space:0},start);return true;
   }

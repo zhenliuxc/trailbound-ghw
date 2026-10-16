@@ -26,7 +26,7 @@ function musicFixture(hooks=[]){
 
 test('music is lazy and a game keeps its theme through its reward without restarting',async()=>{
  const f=musicFixture(),m=f.layer;
- m.sync({routeId:'mogan',mode:'walk'});m.sync({routeId:'wugong',mode:'silent'});
+ m.sync({routeId:'tiger',mode:'walk'});m.sync({routeId:'wugong',mode:'silent'});
  assert.equal(f.elements.length,0);
  m.resume(walk);await flush();
  const media=f.elements[0];media.currentTime=44;
