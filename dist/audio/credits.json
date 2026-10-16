@@ -73,5 +73,11 @@
       "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
       "changes": "Derived from packaged audio/westlake-leaves-v1.mp3, excerpt 8.5–8.95s, high-pass 90Hz, endpoint fades, mono MP3 64kbps. Gameplay sound-design material, not a location recording. Derivative retains CC0."
     }
-  ]
+  ],
+  "usage": {
+    "scope": "Seven route soundscapes, 21 postcard scenes and 29 artwork encounters.",
+    "processing": "Existing recordings are filtered, rate-adjusted and mixed at runtime with original synthesized wind, surf, rain, snow and material foley. No new field recordings were downloaded.",
+    "disclosure": "Not local recordings. The surf texture is sound design combining filtered water with synthesized waves; paper foley comes from recorded leaves.",
+    "filesUnchanged": true
+  }
 }
