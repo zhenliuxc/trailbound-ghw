@@ -12,8 +12,11 @@ src/
     dom.ts                        DOM 边界和可释放的事件绑定
     scene-manager.ts              场景栈、暂停、返回、后台状态
     frame-loop.ts                 唯一动画时钟及取消
+    map-viewport.ts               桌面概览画幅；等比路线投影和 GPU/SVG 共用取景
     mini-game-controller.ts       小游戏进入、输入、更新、重试、退出
     mini-game-view.ts             各类小游戏的工具栏、提示和进度显示
+    hint-art.ts                   共用水彩引导、SVG/Pixi 保留节点及铅笔降级
+    hint-asset.ts                 原创提示素材尺寸与实际箭尖锚点（打包生成）
     reward-controller.ts          纪念画展开、收起、焦点、收藏过渡
     journal-controller.ts         标签墙、图文详情、翻页与自动保存
     music-layer.ts                武功山/莫干山免费主题、流式切换与暂停清理
@@ -24,6 +27,7 @@ scripts/
 dist/
   runtime.js                      从 src/runtime/ 生成，请勿直接编辑
   app.js                          从 src/app.js 生成，请勿直接编辑
+  hint-art.js                     从 src/runtime/hint-art.ts 生成，供旧场景复用
   index.html / *.css              现有页面和水彩风格
   journey.js / journal.js / …     暂时保留的 JavaScript 规则与画面模块
   vendor/ / scenes/ / sprites/ …  原有 PixiJS、图片、声音与许可
@@ -60,6 +64,10 @@ flowchart TD
 版本 41 之后的新武功山音效工作加入 `createMusicLayer`，通过入口依赖注入交给旧引擎。四个小游戏独立选用免费署名配乐，当前游戏和对应奖励持续同一音轨，进入其他游戏时等新流就绪再淡出旧流；只缓存四种已知主题，切后台或退出会暂停全部。短音效仍由 Web Audio 缓存/调度。设计与许可见 [wugong-music-design.md](wugong-music-design.md)，本轮独立验证及发布状态见 [wugong-free-audio-release.md](wugong-free-audio-release.md)，不继承下文重构阶段的验证结论。
 
 莫干山三段现通过 `createMoganGames` 注册到公共控制器。新接雨与石阶规则在 `mogan/rules.ts`，弹弓继续使用旧规则；`scene-model.ts` 统一生成两个渲染路径的物件与遮罩描述，`scene.ts` 管理 PixiJS/SVG 和资源，`adapter.ts` 管理三段控件。适配器可自行处理坐标、按键、控件及进入时天气，不将专用分发加回主循环。实现见 [mogan-route-upgrade.md](mogan-route-upgrade.md)；本轮 85 项相关测试、两种浏览器尺寸与原生音频通过，具体范围及真机/听感限制见 [mogan-route-release.md](mogan-route-release.md)。
+
+后续鼠标/触屏直操调整移除了重复方向和调参面板，脚印绘制与命中共用 `stepSpot`；可选 `MiniApi.hover` 只让已开始的接雨跟随鼠标，其他玩法不受影响。上一段的通过结果仅指版本 43；本批直操、提示和桌面改造现已获用户授权集中验证，范围见 [direct-input-controls.md](direct-input-controls.md)，验证与修复见 [direct-input-release.md](direct-input-release.md)。
+
+用户随后要求黄色椭圆提示符合水彩画风，新增共用 `hint-art.ts`：溪流、石阶与纸叶使用同一份原创透明水彩箭头，按真实箭尖锚点指向目标；溪流只显示下一处水口。SVG 与 Pixi 都复用保留节点，素材由路线缓存提前请求，属于可选装饰，失败时显示铅笔笔触，不阻塞主画面和操作。旧 JavaScript 场景通过先加载的独立构建 `hint-art.js` 使用同一实现；莫干山直接导入 TypeScript 模块。本批验证与修复见 `direct-input-release.md`。
 
 ### 场景与时钟
 
@@ -101,7 +109,7 @@ npm run build
 python3 -m http.server 8000 --directory dist
 ```
 
-首次拉取需要开发依赖；玩家访问网站时不需要 Node.js。`npm run build` 用 TypeScript 编译实际的运行模块，再用 esbuild 打包浏览器脚本。两个产物保留在 `dist/`，便于现有静态托管和源码恢复。它不启动浏览器、不执行测试，也不发布站点。
+首次拉取需要开发依赖；玩家访问网站时不需要 Node.js。`npm run build` 用 TypeScript 编译实际的运行模块，再用 esbuild 打包浏览器脚本。`runtime.js`、`hint-art.js` 和 `app.js` 三个产物保留在 `dist/`，便于现有静态托管和源码恢复。它不启动浏览器、不执行测试，也不发布站点。
 
 修改 `src/` 后运行必要构建生成浏览器代码。`dist/` 下其余未迁移模块仍是现行源码，不要删除。上线仍沿用原 Sites 项目和访问范围。
 

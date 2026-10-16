@@ -7,7 +7,7 @@
   clouds:{scene:'scenes/wugong-cloudsea-v1.webp',front:'sprites/wugong-meadow-grass-v1.webp'},
   greet:{scene:'scenes/wugong-v1.webp',actor:'sprites/wugong-hiker-wave-v1.webp',front:'sprites/wugong-meadow-grass-v1.webp'}
  };
- const prompts={clouds:'点一点或划过云朵，让山脊露出来。',greet:'走近和她聊两句，再帮她拍张照。拖动取景框，让她和身后的山一起入镜，按快门后可以重拍。方向键取景，＋／－调整远近，空格拍照。'};
+ const prompts={clouds:'点一点或划过云朵，让山脊露出来。',greet:'走近和她聊两句，再帮她拍张照。拖动取景框，让她和身后的山一起入镜，按快门后可以重拍。'};
  const results={clouds:'我轻轻拨开山脊前的云。云絮随着风散去，绿色的草脊浮出云海，像一封慢慢打开的信。',greet:'草甸风口遇见一位笑着招手的姑娘。我帮她把身后的山也拍进照片，给她看过后，在风里说了再见。'};
  // Three touchable patches of foreground mist; the painted cloud sea stays in the valleys.
  const cloudSeeds=[{x:.22,y:.47,w:.42,h:.34},{x:.51,y:.38,w:.40,h:.34},{x:.78,y:.56,w:.42,h:.34}];

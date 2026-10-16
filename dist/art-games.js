@@ -4,7 +4,7 @@
  const kinds={'meadow-flower':'puzzle','westlake-tea':'match','bamboo-leaf':'sling'};
  const assets={puzzle:{scene:'scenes/wugong-altar-v1.webp'},match:{scene:'badges/westlake-longjing-bud-v4.webp',actor:Atlas.file},sling:{scene:'scenes/mogan-v1.webp',actor:Atlas.file}};
  const routes={puzzle:'wugong',match:'westlake',sling:'mogan'};
- const prompts={puzzle:'把下面的六片画片拖进画框。也可以先点画片，再点对应位置。',match:'交换相邻的茶芽卡，连成三个或更多同类叶形，清开六处露光印记。可点选或滑动交换，方向键选卡、Enter 确认；提示与重排随时可用。',sling:'向后拉开纸叶，调整角度和力度，再松手送过竹隙，让它停在远山纸签上。也可用下方按钮发射；方向键调整，按住空格蓄力、松开发射。'};
+ const prompts={puzzle:'把下面的六片画片拖进画框。也可以先点画片，再点对应位置。',match:'交换相邻的茶芽卡，连成三个或更多同类叶形，清开六处露光印记。可点选或滑动交换，提示与重排随时可用。',sling:'按住纸叶向后拉，松手送过竹隙，让它停在远山纸签上。'};
  const results={puzzle:'我把散开的石坛画片一块块拼好，接回拱线、石缝与苔色。一座石坛，在纸上重新完整了。',match:'我交换叶形，让相连的春芽一片片舒展。六处露光散开，纸上的茶园重新透亮起来。',sling:'我把一枚纸叶送进竹林的风里。它穿过竹影，稳稳停在远山窗旁的小纸签上。'};
  const puzzleBoard={x:.15,y:.075,w:.70,h:.70*2/3};
  const matchBoard={x:.085,y:.12,w:.83,h:.83};
@@ -146,8 +146,8 @@
  function controls(s){
   if(s.play.complete)return [];
   if(s.game==='puzzle')return [];
-  if(s.game==='match')return [{action:'confirm',label:s.match.selected===null?'选中这片':'与选中叶形交换',primary:true,disabled:s.match.stage!=='idle'},{action:'hint',label:'看看提示',disabled:s.match.stage!=='idle'},{action:'shuffle',label:'重新排叶',disabled:s.match.stage!=='idle'},{action:'undo',label:'撤回一步',disabled:s.match.stage!=='idle'||!s.match.undo.length}];
-  return [{action:'fire',label:s.sling.stage==='flight'?'纸叶在风里…':s.sling.stage==='miss'?'稍等纸叶落下':'送出纸叶',primary:true,disabled:s.sling.stage!=='ready'}];
+  if(s.game==='match')return [{action:'hint',label:'看看提示',disabled:s.match.stage!=='idle'},{action:'shuffle',label:'重新排叶',disabled:s.match.stage!=='idle'},{action:'undo',label:'撤回一步',disabled:s.match.stage!=='idle'||!s.match.undo.length}];
+  return [];
  }
  function sample(s){
   const ending=s.play.complete?s.age-s.play.completedAt:0,phase=s.play.complete?(s.play.reduced||ending>1.35?'memory':'soar'):!s.acted?'invite':'play';

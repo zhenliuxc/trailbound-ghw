@@ -43,13 +43,16 @@ var TrailRuntime = (() => {
     inputMogan: () => inputMogan,
     keyMogan: () => keyMogan,
     leafTip: () => leafTip,
+    mapViewport: () => mapViewport,
     moganBounds: () => stageBounds,
     moganFrame: () => moganFrame,
     musicLevel: () => musicLevel,
     musicTrack: () => musicTrack,
     releaseMogan: () => releaseMogan,
     stepFoot: () => stepFoot,
+    stepSpot: () => stepSpot,
     stepTiming: () => stepTiming,
+    stonePose: () => stonePose,
     tickMogan: () => tickMogan
   });
 
@@ -183,6 +186,13 @@ var TrailRuntime = (() => {
     return { ensure, stop };
   }
 
+  // .build/typescript/runtime/map-viewport.js
+  function mapViewport(width, height, desktop) {
+    const ratio = Number.isFinite(width) && Number.isFinite(height) && width > 0 && height > 0 ? width / height : 1.2;
+    const h = desktop ? Math.min(600, 720 / ratio) : 600;
+    return { x: 0, y: (600 - h) / 2, w: 720, h };
+  }
+
   // .build/typescript/runtime/mini-game-view.js
   function createMiniGameView({ dom, api, platform: games, sound }) {
     const { get: $, text, html } = dom;
@@ -239,19 +249,6 @@ var TrailRuntime = (() => {
           button.textContent = control.label;
         button.disabled = waiting || !!control.disabled;
         button.setAttribute("data-primary", String(!!control.primary));
-      }
-      const sling2 = s.game === "sling";
-      $("art-aim").hidden = !sling2 || s.play.complete;
-      if (sling2 && s.sling) {
-        const angle = Math.round(s.sling.angle), power = Math.round(s.sling.power * 100);
-        if ($("art-angle").value !== String(angle))
-          $("art-angle").value = String(angle);
-        if ($("art-power").value !== String(power))
-          $("art-power").value = String(power);
-        text("art-angle-value", angle + "°");
-        text("art-power-value", power + "%");
-        for (const id of ["art-angle", "art-power"])
-          $(id).disabled = waiting || s.sling.stage !== "ready";
       }
       const hints = { puzzle: "1–6 选片 · 方向键选格 · Enter 放下", match: "方向键选格 · Enter 选中／交换 · R 重试", sling: "方向键调整 · 按住空格蓄力、松开发射 · R 重试" };
       text("art-key-hint", s.game && s.game in hints ? hints[s.game] : "");
@@ -455,7 +452,9 @@ var TrailRuntime = (() => {
       text("micro-place", entry.place + " · " + entry.condition);
       text("micro-title", entry.name);
       text("micro-instruction", api.instruction(entry));
-      surface.setAttribute("aria-label", (dom.get("micro-instruction").textContent || "") + (current.game === "puzzle" ? " 键盘：1–6 选片，方向键选格，Enter 放下。" : current.game === "clouds" ? " 键盘：方向键选择云朵，空格或 Enter 吹散。" : ""));
+      const keyHints = { puzzle: "1–6 选片，方向键选格，Enter 放下。", match: "方向键选卡，Enter 选中或交换。", sling: "方向键调整，按住空格蓄力、松开发射。", greet: "方向键取景，＋／－调整远近，空格拍照。", clouds: "方向键选择云朵，空格或 Enter 吹散。" };
+      const keyHint = current.game && current.game in keyHints ? keyHints[current.game] : "";
+      surface.setAttribute("aria-label", (dom.get("micro-instruction").textContent || "") + (keyHint ? " 键盘辅助：" + keyHint : ""));
       updateStatus();
       $("micro-panel").hidden = false;
       options.refresh();
@@ -466,6 +465,7 @@ var TrailRuntime = (() => {
       const sceneAsset = options.cache?.request(scene, "high") || null;
       const actorAsset = actor ? options.cache?.request(actor, "high") || null : null;
       const frontAsset = front ? options.cache?.request(front, "high") || null : null;
+      const hintAsset = assets && assets.hint ? options.cache?.request(assets.hint, "high") || null : null;
       const openingRefs = refs;
       if (openingRefs.waitsForArt && !api.mount) {
         openingRefs.contentState = sceneAsset ? "loading" : "error";
@@ -492,7 +492,7 @@ var TrailRuntime = (() => {
           updateStatus();
         });
       } else
-        games?.mount(openingRefs, options.pixi, surface, sceneAsset, actorAsset, frontAsset);
+        games?.mount(openingRefs, options.pixi, surface, sceneAsset, actorAsset, frontAsset, hintAsset);
       surface.focus({ preventScroll: true });
       options.ensureLoop();
     }
@@ -688,7 +688,19 @@ var TrailRuntime = (() => {
           perform({ ...point(event), ...refs?.art || refs?.mogan || current.game === "clouds" ? { phase: "press" } : {} });
       });
       bindings.listen(surface, "pointermove", (event) => {
-        if (!interactive() || !pointer || pointer.id !== event.pointerId || !current)
+        if (!interactive() || !current)
+          return;
+        if (!pointer) {
+          if (event.pointerType === "mouse" && api.hover && inputReady()) {
+            const next = api.hover(current, point(event));
+            if (next !== current) {
+              current = next;
+              options.ensureLoop();
+            }
+          }
+          return;
+        }
+        if (pointer.id !== event.pointerId)
           return;
         event.stopPropagation?.();
         if (Math.hypot(event.clientX - pointer.x, event.clientY - pointer.y) > 8)
@@ -750,8 +762,6 @@ var TrailRuntime = (() => {
         if (button && !button.disabled && name)
           action(name);
       });
-      bindings.listen($("art-angle"), "input", (event) => action("angle", Number(event.target.value)));
-      bindings.listen($("art-power"), "input", (event) => action("power", Number(event.target.value) / 100));
       for (const id of ["wugong-primary", "wugong-secondary"])
         bindings.listen($(id), "click", () => {
           const name = $(id).getAttribute("data-action");
@@ -1702,9 +1712,9 @@ var TrailRuntime = (() => {
   var RAIN_NOTES = Object.freeze([60, 64, 67, 64, 62, 65, 64, 60]);
   var MOGAN_TITLES = { rain: "听一筒竹林的雨", footsteps: "沿着石阶慢慢走", sling: "给远山送一枚纸叶" };
   var MOGAN_PROMPTS = {
-    rain: "看叶尖蓄水，左右移动竹筒，把落雨接成一段旋律。",
-    footsteps: "脚印合上时，点亮起的那只脚，走完这段石阶。",
-    sling: "向后拉开纸叶，松手送过竹隙，落在远山纸签上。"
+    rain: "轻点画面开始，移动鼠标或滑动手指，让竹筒接住叶尖的雨滴。",
+    footsteps: "轻点脚印出发，等脚印亮起时再点，慢慢走过石阶。",
+    sling: "按住纸叶向后拉，松手送过竹隙，落在远山纸签上。"
   };
   var MOGAN_MEMORIES = {
     rain: "叶尖先亮起一颗水珠。我挪过竹筒，接住一声又一声轻响；最后一滴落下，竹林里留下了一小段雨的旋律。",
@@ -1764,6 +1774,15 @@ var TrailRuntime = (() => {
   function stepFoot(index) {
     return index % 2 ? "right" : "left";
   }
+  function stonePose(s, ordinal, height) {
+    const moving = s.play.reduced ? 0 : 1 - ease((s.age - s.steps.landedAt) / 0.48);
+    const relative = ordinal - s.steps.index + moving, q = clamp(1 - relative / 6, 0, 1.24);
+    return { x: 400 + Math.sin(ordinal * 0.73) * 24 * q, y: height * (0.18 + 0.67 * Math.pow(q, 1.7)), width: 100 + 555 * Math.pow(q, 1.6), q };
+  }
+  function stepSpot(s, height) {
+    const index = Math.min(9, s.steps.index), p = stonePose(s, index, height), foot = stepFoot(index);
+    return { x: p.x + (foot === "left" ? -1 : 1) * p.width * 0.135, y: p.y - p.width * 0.11, rx: p.width * 0.12, ry: p.width * 0.17, foot };
+  }
   function stepTiming(s) {
     const length = [1.55, 1.65, 1.95, 1.55, 2.1, 1.65, 1.55, 1.9, 1.6, 2.05][Math.min(9, s.steps.index)] * (s.steps.slow ? 1.5 : 1);
     const window = s.steps.slow ? 0.62 : 0.44;
@@ -1774,15 +1793,15 @@ var TrailRuntime = (() => {
       return legacy.input(state, p, mode);
     if (state.done || state.play.complete)
       return state;
-    if (state.game === "footsteps" && (mode === "move" || p.phase === "press") && !p.action)
+    if (state.game === "footsteps" && (mode === "move" || p.phase === "press" || p.action === "outside-step"))
       return state;
-    const s = clone(state), action = p.action || (p.assist ? "begin" : "");
+    const s = clone(state), action = p.action || (p.assist ? state.game === "footsteps" && state.acted ? "step" : "begin" : "");
     s.gesture = mode === "move" ? "drag" : "tap";
     if (s.game === "rain") {
       if (!s.acted) {
         s.acted = true;
         emit(s, "begin");
-        s.feedback = "先看叶尖的水珠，竹筒跟着你的指尖走。";
+        s.feedback = "竹筒跟着鼠标或指尖走，接住叶尖落下的雨滴。";
       }
       if (action === "left" || action === "right")
         s.rain.targetX = clamp(s.rain.targetX + (action === "left" ? -0.09 : 0.09), 0.08, 0.92);
@@ -1803,10 +1822,10 @@ var TrailRuntime = (() => {
       s.acted = true;
       s.steps.clock = 0;
       emit(s, "begin");
-      s.feedback = "先迈左脚。等描边合上，再轻轻落脚。";
+      s.feedback = "等脚印亮起，再轻轻点一下。";
       return s;
     }
-    const foot = action === "left" || action === "right" ? action : !action && Number.isFinite(p.x) && (p.y ?? 0) >= 0.45 ? p.x < 0.5 ? "left" : "right" : null;
+    const foot = action === "step" ? stepFoot(s.steps.index) : action === "left" || action === "right" ? action : null;
     if (!foot || s.steps.recovery > 0)
       return s;
     if (foot !== stepFoot(s.steps.index)) {
@@ -1830,7 +1849,7 @@ var TrailRuntime = (() => {
       s.feedback = "十级石阶走过了，竹林里的路还在向前。";
       complete(s);
     } else
-      s.feedback = (stepFoot(s.steps.index) === "left" ? "左脚" : "右脚") + "接着来，慢慢走就好。";
+      s.feedback = "跟着下一个脚印，亮起时再轻点。";
     return s;
   }
   function rainTick(s, dt) {
@@ -1924,7 +1943,7 @@ var TrailRuntime = (() => {
     if (s.game === "footsteps" && ["ArrowLeft", "ArrowRight", "a", "A", "d", "D"].includes(key))
       return inputMogan(s, { action: ["ArrowLeft", "a", "A"].includes(key) ? "left" : "right" }, legacy);
     if (key === "Enter" || key === " ")
-      return inputMogan(s, { action: "begin" }, legacy);
+      return inputMogan(s, { action: s.game === "footsteps" && s.acted ? "step" : "begin" }, legacy);
     return null;
   }
 
@@ -2032,16 +2051,146 @@ var TrailRuntime = (() => {
     ]
   };
 
+  // .build/typescript/runtime/hint-asset.js
+  var HINT_ART = {
+    "file": "sprites/hint-brush-v1.webp",
+    "width": 384,
+    "height": 96,
+    "tip": {
+      "x": 0.9921875,
+      "y": 0.4635416666666667
+    }
+  };
+
+  // .build/typescript/runtime/hint-art.js
+  function hintPose(key, at, width = 96, rotation = 0, alpha = 1) {
+    return { key, x: at.x, y: at.y, width, rotation, alpha };
+  }
+  var pencilPaths = [
+    [[20, 61], [84, 60], [151, 52], [220, 44], [295, 44], [380, 45]],
+    [[332, 16], [348, 29], [380, 45], [347, 61], [329, 78]]
+  ];
+  var attrs = (node, values) => {
+    for (const [key, value] of Object.entries(values))
+      if (node.getAttribute(key) !== String(value))
+        node.setAttribute(key, String(value));
+  };
+  function createSvgHints(svg, parent) {
+    const root = svg("g", { "pointer-events": "none", "aria-hidden": "true", "data-hint-style": "watercolor-brush" }, parent);
+    const nodes = /* @__PURE__ */ new Map();
+    let disposed = false;
+    return {
+      paint(poses) {
+        if (disposed)
+          return;
+        for (const node of nodes.values())
+          attrs(node, { display: "none" });
+        for (const pose of poses) {
+          let node = nodes.get(pose.key);
+          if (!node) {
+            node = svg("g", {}, root);
+            nodes.set(pose.key, node);
+            const pencil = svg("g", {}, node);
+            for (const [color, width] of [["#fff9e9", 17], ["#647955", 7]]) {
+              for (const points of pencilPaths)
+                svg("polyline", { points: points.map((p) => p.join(",")).join(" "), fill: "none", stroke: color, "stroke-width": width, "stroke-linecap": "round", "stroke-linejoin": "round" }, pencil);
+            }
+            const image = svg("image", { width: HINT_ART.width, height: HINT_ART.height, preserveAspectRatio: "xMidYMid meet" }, node);
+            image.addEventListener("load", () => {
+              if (!disposed)
+                attrs(pencil, { display: "none" });
+            });
+            image.addEventListener("error", () => {
+              if (!disposed) {
+                attrs(image, { display: "none" });
+                attrs(pencil, { display: "" });
+              }
+            });
+            image.setAttribute("href", HINT_ART.file);
+          }
+          attrs(node, { display: "", opacity: pose.alpha, transform: "translate(" + pose.x + " " + pose.y + ") rotate(" + pose.rotation * 180 / Math.PI + ") scale(" + pose.width / HINT_ART.width + ") translate(" + -HINT_ART.tip.x * HINT_ART.width + " " + -HINT_ART.tip.y * HINT_ART.height + ")" });
+        }
+      },
+      dispose() {
+        if (disposed)
+          return;
+        disposed = true;
+        root.remove();
+        nodes.clear();
+      }
+    };
+  }
+  function createPixiHints(P, parent, entry, changed) {
+    const root = new P.Container();
+    root.label = "watercolor-hints";
+    root.eventMode = "none";
+    parent.addChild(root);
+    const nodes = /* @__PURE__ */ new Map();
+    let disposed = false, texture = null;
+    if (entry)
+      entry.promise.then((item) => {
+        if (disposed || item.state !== "ready")
+          return;
+        try {
+          texture = P.Texture.from(item.image, true);
+          for (const node of nodes.values()) {
+            node.sprite.texture = texture;
+            node.sprite.visible = true;
+            node.pencil.visible = false;
+          }
+          changed?.();
+        } catch {
+        }
+      }).catch(() => {
+      });
+    return {
+      paint(poses) {
+        if (disposed)
+          return;
+        for (const node of nodes.values())
+          node.root.visible = false;
+        for (const pose of poses) {
+          let node = nodes.get(pose.key);
+          if (!node) {
+            const group = new P.Container(), pencil = new P.Graphics(), sprite2 = new P.Sprite(texture || P.Texture.EMPTY);
+            for (const [color, width] of [[16775657, 17], [6584661, 7]])
+              for (const points of pencilPaths) {
+                pencil.moveTo(points[0][0], points[0][1]);
+                for (const point of points.slice(1))
+                  pencil.lineTo(point[0], point[1]);
+                pencil.stroke({ color, width, cap: "round", join: "round" });
+              }
+            sprite2.visible = !!texture;
+            pencil.visible = !texture;
+            group.addChild(pencil, sprite2);
+            root.addChild(group);
+            nodes.set(pose.key, node = { root: group, sprite: sprite2, pencil });
+          }
+          node.root.visible = true;
+          node.root.position.set(pose.x, pose.y);
+          node.root.rotation = pose.rotation;
+          node.root.pivot.set(HINT_ART.tip.x * HINT_ART.width, HINT_ART.tip.y * HINT_ART.height);
+          node.root.scale.set(pose.width / HINT_ART.width);
+          node.root.alpha = pose.alpha;
+        }
+      },
+      dispose() {
+        if (disposed)
+          return;
+        disposed = true;
+        root.destroy({ children: true });
+        texture?.destroy(true);
+        texture = null;
+        nodes.clear();
+      }
+    };
+  }
+
   // .build/typescript/runtime/mogan/scene-model.js
   var stageBounds = (height) => {
     const side = Math.min(800, height * 0.98);
     return { x: (800 - side) / 2, y: (height - side) / 2, w: side, h: side };
   };
-  function stonePose(s, ordinal, height) {
-    const moving = s.play.reduced ? 0 : 1 - ease((s.age - s.steps.landedAt) / 0.48);
-    const relative = ordinal - s.steps.index + moving, q = clamp(1 - relative / 6, 0, 1.24);
-    return { x: 400 + Math.sin(ordinal * 0.73) * 24 * q, y: height * (0.18 + 0.67 * Math.pow(q, 1.7)), width: 100 + 555 * Math.pow(q, 1.6), q };
-  }
   function ellipse(list, x, y, rx, ry, color, alpha = 1, stroke) {
     list.push({ type: "ellipse", x, y, rx, ry, color, alpha, stroke });
   }
@@ -2062,7 +2211,7 @@ var TrailRuntime = (() => {
       ellipse(frame.effects, next.x * 800, next.y * height + 2, 2.3 + growing * 3.3, 3.5 + growing * 5, "#d0e5d8", 0.92);
       ellipse(frame.effects, next.x * 800 - 1, next.y * height, 1.1, 2, "#fffcee", 0.95);
       if (s.acted)
-        ellipse(frame.ambient, next.x * 800, y + 3, 12, 3.4, "#f7edcd", 0.22);
+        line(frame.ambient, [{ x: next.x * 800 - 14, y: y + 3 }, { x: next.x * 800 - 2, y: y + 1 }, { x: next.x * 800 + 13, y: y + 3 }], "#e8eee2", 1.5, 0.35);
     }
     const shadowY = y + CUP.width * 480 / 386 * (1 - CUP.anchorY);
     ellipse(frame.ambient, x + 3, shadowY + 3, 57, 9, "#224b42", 0.14);
@@ -2098,10 +2247,11 @@ var TrailRuntime = (() => {
       const landed = ordinal < step.index;
       if (landed || ordinal === target && !s.play.complete) {
         const left = stepFoot(ordinal) === "left", x = p.x + (left ? -1 : 1) * p.width * 0.135, y = p.y - p.width * 0.05;
-        sprite(frame, "shoe-" + ordinal, resource, { x, y }, p.width * 0.112, { frame: left ? 1 : 2, anchorY: 0.78, rotation: left ? -0.035 : 0.035, alpha: landed ? 0.76 : 0.25 + timing.progress * 0.52 });
-        if (!landed && s.acted && !step.recovery) {
-          const ready = step.clock >= timing.open, size = p.width * 0.105 * (s.play.reduced ? 1 : 1.9 - timing.progress * 0.9);
-          ellipse(frame.effects, x, y - p.width * 0.06, size, size * 1.5, ready ? "#f4d99a" : "#f2edce", ready ? 0.82 : 0.52, ready ? 2.5 : 1.5);
+        const ready = !s.acted || step.clock >= timing.open;
+        sprite(frame, "shoe-" + ordinal, resource, { x, y }, p.width * 0.112, { frame: left ? 1 : 2, anchorY: 0.78, rotation: left ? -0.035 : 0.035, alpha: landed ? 0.76 : ready ? 0.98 : 0.42 + timing.progress * 0.16 });
+        if (!landed && !step.recovery) {
+          const spot = stepSpot(s, height);
+          frame.hints.push(hintPose("next-footstep", { x: spot.x + (left ? -1 : 1) * spot.rx * 0.5, y: spot.y }, clamp(p.width * 0.17, 64, 100), left ? 0 : Math.PI, ready ? 0.95 : 0.2));
         }
       }
     }
@@ -2110,7 +2260,9 @@ var TrailRuntime = (() => {
     const recent = s.events.filter((e) => e.type === "step-land").at(-1), age = recent ? s.age - recent.age : 9;
     if (recent && age < 0.55 && !s.play.reduced) {
       const p = stonePose(s, recent.index ?? 0, height), x = p.x + ((recent.index ?? 0) % 2 ? 1 : -1) * p.width * 0.135;
-      ellipse(frame.effects, x, p.y - p.width * 0.04, 12 + age * 52, 5 + age * 14, "#f7edcd", 0.52 * (1 - age / 0.55), 1.2);
+      const y = p.y - p.width * 0.04;
+      for (const side of [-1, 1])
+        line(frame.effects, [{ x: x + side * 16, y: y + 9 }, { x: x + side * 25, y: y + 7 }, { x: x + side * 32, y: y + 10 }], "#e5e9d5", 2, 0.55 * (1 - age / 0.55));
     }
   }
   function sling(frame, s, height, legacy) {
@@ -2134,6 +2286,10 @@ var TrailRuntime = (() => {
     line(frame.effects, ends.map((p) => ({ x: p.x, y: p.y - 1 })), "#e8dab4", 0.85, 0.83);
     const leaf = q.shot || legacy.aimPouch(s), angle = q.shot ? Math.atan2(q.shot.vy, q.shot.vx || 1e-3) * 0.3 : -0.25;
     sprite(frame, "paper-leaf", "actor", toWorld(leaf), 0.057 * b.w, { frame: 5, rotation: angle + (s.play.reduced ? 0 : q.stage === "flight" ? Math.sin(s.age * 8) * 0.06 : 0) });
+    if (q.stage === "ready" && !q.aiming && !s.play.complete) {
+      const handle = toWorld(leaf);
+      frame.hints.push(hintPose("pull-paper-leaf", { x: handle.x - 16, y: handle.y + 10 }, 88, -0.55, s.play.reduced ? 0.9 : 0.82 + Math.sin(s.age * 1.5) * 0.08));
+    }
     if (q.stage === "ready" && !s.play.complete)
       for (const [i, p] of legacy.preview(s, 18).entries()) {
         const world = toWorld(p);
@@ -2151,7 +2307,7 @@ var TrailRuntime = (() => {
   }
   function moganFrame(s, height, legacy) {
     const elapsed = s.play.complete ? s.age - (s.play.completedAt ?? s.age) : 0;
-    const frame = { sprites: [], ambient: [], water: [], effects: [], clip: null, alpha: s.play.reduced ? 1 : 0.5 + 0.5 * ease(s.age / 0.65), paper: s.play.complete ? s.play.reduced ? 1 : ease((elapsed - 0.65) / 1.2) : 0 };
+    const frame = { sprites: [], ambient: [], water: [], effects: [], hints: [], clip: null, alpha: s.play.reduced ? 1 : 0.5 + 0.5 * ease(s.age / 0.65), paper: s.play.complete ? s.play.reduced ? 1 : ease((elapsed - 0.65) / 1.2) : 0 };
     sprite(frame, "background", "scene", { x: 400, y: height / 2 }, Math.max(800, height * 1280 / 720));
     if (s.weather === "fog") {
       frame.ambient.push({ type: "rect", x: 0, y: 0, w: 800, h: height, color: "#e3eadc", alpha: 0.23 });
@@ -2176,9 +2332,9 @@ var TrailRuntime = (() => {
 
   // .build/typescript/runtime/mogan/scene.js
   var MOGAN_BACKGROUND = "scenes/mogan-v1.webp";
-  var MOGAN_ROUTE_ASSETS = [MOGAN_BACKGROUND, "sprites/bamboo-cup-v2.webp", MOGAN_PROPS.file, SHARED_PROPS.file];
+  var MOGAN_ROUTE_ASSETS = [MOGAN_BACKGROUND, "sprites/bamboo-cup-v2.webp", MOGAN_PROPS.file, SHARED_PROPS.file, HINT_ART.file];
   function moganAssets(game) {
-    return { scene: MOGAN_BACKGROUND, actor: game === "rain" ? "sprites/bamboo-cup-v2.webp" : game === "footsteps" ? MOGAN_PROPS.file : SHARED_PROPS.file, ...game === "footsteps" ? {} : { front: MOGAN_PROPS.file } };
+    return { scene: MOGAN_BACKGROUND, actor: game === "rain" ? "sprites/bamboo-cup-v2.webp" : game === "footsteps" ? MOGAN_PROPS.file : SHARED_PROPS.file, hint: HINT_ART.file, ...game === "footsteps" ? {} : { front: MOGAN_PROPS.file } };
   }
   function source(game, resource) {
     if (resource === "scene")
@@ -2191,7 +2347,7 @@ var TrailRuntime = (() => {
     const image = source(game, pose.resource);
     return pose.frame === void 0 ? { x: 0, y: 0, w: image.width, h: image.height } : image.frames[pose.frame];
   }
-  var attrs = (node, values) => {
+  var attrs2 = (node, values) => {
     for (const [name, value] of Object.entries(values))
       if (node.getAttribute(name) !== String(value))
         node.setAttribute(name, String(value));
@@ -2201,6 +2357,7 @@ var TrailRuntime = (() => {
     const root = svg("g", {}, parent), defs = svg("defs", {}, root), clipId = "mogan-water-" + ++sequence;
     const clip = svg("clipPath", { id: clipId }, defs), clipEllipse = svg("ellipse", {}, clip);
     const background = svg("g", {}, root), ambient = svg("g", {}, root), actors = svg("g", {}, root), water = svg("g", { "clip-path": "url(#" + clipId + ")" }, root), effects = svg("g", {}, root);
+    const hints = createSvgHints(svg, root);
     const paper = svg("rect", { x: 0, y: 0, width: 800, height: 800, fill: "#fff8e6", opacity: 0 }, root);
     const nodes = /* @__PURE__ */ new Map(), pools = /* @__PURE__ */ new Map();
     let lastOrder = "";
@@ -2217,23 +2374,23 @@ var TrailRuntime = (() => {
         }
         if (!node)
           pool[i] = node = svg(tag, {}, layer);
-        attrs(node, { opacity: Math.max(0, Math.min(1, shape.alpha)), fill: shape.stroke ? "none" : shape.color, stroke: shape.stroke ? shape.color : "none", "stroke-width": shape.stroke || 0, "stroke-linecap": "round", "stroke-linejoin": "round", display: "" });
+        attrs2(node, { opacity: Math.max(0, Math.min(1, shape.alpha)), fill: shape.stroke ? "none" : shape.color, stroke: shape.stroke ? shape.color : "none", "stroke-width": shape.stroke || 0, "stroke-linecap": "round", "stroke-linejoin": "round", display: "" });
         if (shape.type === "ellipse")
-          attrs(node, { cx: shape.x, cy: shape.y, rx: Math.max(0, shape.rx), ry: Math.max(0, shape.ry) });
+          attrs2(node, { cx: shape.x, cy: shape.y, rx: Math.max(0, shape.rx), ry: Math.max(0, shape.ry) });
         else if (shape.type === "rect")
-          attrs(node, { x: shape.x, y: shape.y, width: shape.w, height: shape.h });
+          attrs2(node, { x: shape.x, y: shape.y, width: shape.w, height: shape.h });
         else
-          attrs(node, { points: shape.points.map((p) => p.x + "," + p.y).join(" ") });
+          attrs2(node, { points: shape.points.map((p) => p.x + "," + p.y).join(" ") });
       });
       for (let i = items.length; i < pool.length; i++)
-        attrs(pool[i], { display: "none" });
+        attrs2(pool[i], { display: "none" });
     }
     return {
       paint(frame, height) {
         parent.setAttribute("viewBox", "0 0 800 " + height);
-        attrs(root, { opacity: frame.alpha });
+        attrs2(root, { opacity: frame.alpha });
         for (const node of nodes.values())
-          attrs(node, { display: "none" });
+          attrs2(node, { display: "none" });
         for (const pose of frame.sprites) {
           const spec = source(game, pose.resource), box = region(game, pose);
           let node = nodes.get(pose.key);
@@ -2243,7 +2400,7 @@ var TrailRuntime = (() => {
             nodes.set(pose.key, node);
           }
           const height2 = pose.width * box.h / box.w;
-          attrs(node, { x: -pose.anchorX * pose.width, y: -pose.anchorY * height2, width: pose.width, height: height2, display: "", opacity: Math.min(1, pose.alpha), transform: "translate(" + pose.x + " " + pose.y + ") rotate(" + pose.rotation * 180 / Math.PI + ") scale(" + (pose.flip ? -1 : 1) + " 1)" });
+          attrs2(node, { x: -pose.anchorX * pose.width, y: -pose.anchorY * height2, width: pose.width, height: height2, display: "", opacity: Math.min(1, pose.alpha), transform: "translate(" + pose.x + " " + pose.y + ") rotate(" + pose.rotation * 180 / Math.PI + ") scale(" + (pose.flip ? -1 : 1) + " 1)" });
         }
         const order = frame.sprites.filter((pose) => pose.key !== "background").map((pose) => pose.key).join("|");
         if (order !== lastOrder) {
@@ -2255,28 +2412,33 @@ var TrailRuntime = (() => {
         shapes(ambient, frame.ambient);
         shapes(water, frame.water);
         shapes(effects, frame.effects);
+        hints.paint(frame.hints);
         if (frame.clip)
-          attrs(clipEllipse, { cx: frame.clip.x, cy: frame.clip.y, rx: frame.clip.rx, ry: frame.clip.ry });
-        attrs(paper, { height, opacity: frame.paper * 0.26 });
+          attrs2(clipEllipse, { cx: frame.clip.x, cy: frame.clip.y, rx: frame.clip.rx, ry: frame.clip.ry });
+        attrs2(paper, { height, opacity: frame.paper * 0.26 });
       },
       dispose() {
+        hints.dispose();
         root.remove();
         nodes.clear();
         pools.clear();
       }
     };
   }
-  async function renderer(P, host, game, resources, height, displayWidth, cancelled, onLost) {
+  async function renderer(P, host, game, resources, hintAsset, height, displayWidth, cancelled, onLost) {
     const app = new P.Application();
     const resolution = (width) => Math.min(2, Math.max(0.5, width / 800 * Math.min(2, globalThis.devicePixelRatio || 1)));
     let disposed = false;
     const textures = /* @__PURE__ */ new Map(), crops = /* @__PURE__ */ new Map(), nodes = /* @__PURE__ */ new Map();
     let lastOrder = "";
+    let hints = null;
     const background = new P.Container(), ambient = new P.Graphics(), actors = new P.Container(), water = new P.Graphics(), mask = new P.Graphics(), effects = new P.Graphics(), paper = new P.Graphics();
     function dispose() {
       if (disposed)
         return;
       disposed = true;
+      hints?.dispose();
+      hints = null;
       try {
         app.destroy(true, { children: true });
       } catch {
@@ -2320,6 +2482,11 @@ var TrailRuntime = (() => {
       app.stage.eventMode = "none";
       app.stage.addChild(background, ambient, actors, water, mask, effects, paper);
       water.mask = mask;
+      hints = createPixiHints(P, app.stage, hintAsset, () => {
+        if (!disposed)
+          app.render();
+      });
+      app.stage.addChild(paper);
       for (const [key, entry] of resources) {
         const texture = P.Texture.from(entry.image, true);
         textures.set(key, texture);
@@ -2397,6 +2564,7 @@ var TrailRuntime = (() => {
           shapes2(ambient, frame.ambient);
           shapes2(water, frame.water);
           shapes2(effects, frame.effects);
+          hints?.paint(frame.hints);
           mask.clear();
           if (frame.clip)
             mask.ellipse(frame.clip.x, frame.clip.y, frame.clip.rx, frame.clip.ry).fill(16777215);
@@ -2455,6 +2623,7 @@ var TrailRuntime = (() => {
       refs.resize.observe(host);
     }
     const resources = /* @__PURE__ */ new Map(), assets = moganAssets(refs.game);
+    const hintAsset = cache?.request(assets.hint, "high") || null;
     for (const key of ["scene", "actor", "front"]) {
       const file = assets[key];
       if (!file)
@@ -2481,7 +2650,7 @@ var TrailRuntime = (() => {
       await new Promise((resolve) => setTimeout(resolve, 0));
       if (refs.disposed)
         return;
-      refs.gpu = await renderer(P, host, refs.game, resources, refs.height, refs.displayWidth, () => !!refs.disposed, () => {
+      refs.gpu = await renderer(P, host, refs.game, resources, hintAsset, refs.height, refs.displayWidth, () => !!refs.disposed, () => {
         refs.gpu = null;
         if (!refs.disposed && refs.latest)
           paintMogan(refs, refs.latest, legacy);
@@ -2513,7 +2682,6 @@ var TrailRuntime = (() => {
   // .build/typescript/runtime/mogan/adapter.js
   function createMoganGames({ dom, legacy, onAction }) {
     const { get: $, text } = dom, bindings = new EventBindings();
-    let precision = false;
     function present(base, view) {
       const s = base, refs = view;
       const waiting = refs.contentState !== "ready", complete2 = s.play.complete;
@@ -2521,59 +2689,36 @@ var TrailRuntime = (() => {
       $("micro-panel").setAttribute("data-phase", waiting ? "loading" : complete2 ? "memory" : !s.acted ? "invite" : "play");
       text("micro-title", MOGAN_TITLES[s.game]);
       text("mogan-kicker", "莫干山 · " + chapterNames[s.game]);
-      const count = s.game === "rain" ? s.rain.caught + " / 8 声" : s.game === "footsteps" ? s.steps.index + " / 10 级" : complete2 ? "纸叶已送到" : "穿过竹隙，送给远山";
-      text("mogan-count", count);
+      text("mogan-count", s.game === "rain" ? s.rain.caught + " / 8 声" : s.game === "footsteps" ? s.steps.index + " / 10 级" : complete2 ? "纸叶已送到" : "穿过竹隙，送给远山");
       const status = waiting ? refs.contentState === "error" ? "画作暂时没有展开，点「重新试一次」可重新加载。" : "竹林画作正在展开，准备好就能出发。" : s.feedback;
       text("mogan-cue", status);
       text("micro-result", status);
       $("micro-surface").setAttribute("aria-busy", String(refs.contentState === "loading"));
-      $("micro-surface").setAttribute("aria-label", MOGAN_PROMPTS[s.game] + (s.game === "rain" ? " 键盘左右方向键或 A、D 移动，Enter 开始，R 重试。" : s.game === "footsteps" ? " A 或左方向键迈左脚，D 或右方向键迈右脚，Enter 开始，R 重试。" : " 方向键调整，空格蓄力、松开发射，Enter 发射，R 重试。"));
-      $("mogan-rain-controls").hidden = s.game !== "rain" || !s.acted || complete2;
-      $("mogan-step-controls").hidden = s.game !== "footsteps" || !s.acted || complete2;
-      $("mogan-slow").hidden = s.game !== "footsteps" || complete2;
-      $("mogan-tune").hidden = s.game !== "sling" || complete2;
-      $("mogan-aim").hidden = s.game !== "sling" || !precision || complete2;
+      $("micro-surface").setAttribute("aria-label", MOGAN_PROMPTS[s.game] + (s.game === "rain" ? " 键盘左右方向键或 A、D 移动，Enter 开始，R 重试。" : s.game === "footsteps" ? " Enter 或空格点脚印，也可用 A/D 或左右方向键落脚；R 重试。" : " 方向键调整，空格蓄力、松开发射，R 重试。"));
+      $("mogan-settings").hidden = s.game !== "footsteps" || complete2;
+      $("mogan-slow").disabled = waiting;
       $("mogan-notes").hidden = s.game !== "rain";
-      const start = $("mogan-start");
-      start.hidden = complete2 || s.game !== "sling" && s.acted;
-      start.disabled = waiting || s.game === "sling" && s.sling.stage !== "ready";
-      text("mogan-start", waiting ? "准备画作…" : s.game === "rain" ? "开始听雨 →" : s.game === "footsteps" ? "走上石阶 →" : s.sling.stage === "flight" ? "纸叶在风里…" : s.sling.stage === "miss" ? "等纸叶轻轻落下" : "送出纸叶 →");
-      start.setAttribute("data-action", s.game === "sling" ? "fire" : "begin");
-      for (const id of ["mogan-rain-left", "mogan-rain-right", "mogan-foot-left", "mogan-foot-right", "mogan-slow", "mogan-tune"])
-        $(id).disabled = waiting || complete2;
+      $("mogan-tools").setAttribute("data-beat", "");
       if (s.game === "rain") {
         for (const [i, note] of [...$("mogan-notes").children].entries()) {
           note.setAttribute("data-earned", String(i < s.rain.caught));
           note.setAttribute("data-next", String(i === s.rain.caught));
         }
       } else if (s.game === "footsteps") {
-        const next = stepFoot(s.steps.index), timing = stepTiming(s), open = s.steps.clock >= timing.open && !s.steps.recovery;
-        for (const foot of ["left", "right"]) {
-          $("mogan-foot-" + foot).setAttribute("data-next", String(next === foot));
-          $("mogan-foot-" + foot).setAttribute("data-ready", String(next === foot && open));
-        }
+        const timing = stepTiming(s), open = s.acted && s.steps.clock >= timing.open && s.steps.clock <= timing.close && !s.steps.recovery && !complete2;
+        $("mogan-tools").setAttribute("data-beat", open ? "open" : "wait");
         $("mogan-slow").setAttribute("aria-pressed", String(s.steps.slow));
         text("mogan-slow", s.steps.slow ? "恢复步速" : "慢一点");
-      } else {
-        $("mogan-tune").setAttribute("aria-expanded", String(precision));
-        text("mogan-tune", precision ? "收起微调 ↑" : "调整角度与力度 ↓");
-        for (const [id, value, label] of [["mogan-angle", Math.round(s.sling.angle), "°"], ["mogan-power", Math.round(s.sling.power * 100), "%"]]) {
-          const input = $(id);
-          if (input.value !== String(value))
-            input.value = String(value);
-          input.disabled = waiting || s.sling.stage !== "ready";
-          text(id + "-value", value + label);
-        }
       }
-      text("mogan-key-hint", s.game === "rain" ? "← → / A D 移动竹筒" : s.game === "footsteps" ? "A / ← 左脚 · D / → 右脚" : "方向键调整 · 空格蓄力，松开发射");
     }
     const adapter = {
-      create(entry, options) {
-        precision = false;
-        return createMoganState(entry, options.reduced, legacy, options.weather);
-      },
+      create: (entry, options) => createMoganState(entry, options.reduced, legacy, options.weather),
       act: (s, p) => inputMogan(s, p, legacy),
       move: (s, p) => inputMogan(s, p, legacy, "move"),
+      hover: (base, p) => {
+        const s = base;
+        return s.game === "rain" && s.acted && !s.play.complete ? releaseMogan(inputMogan(s, p, legacy, "move"), legacy) : s;
+      },
       release: (s) => releaseMogan(s, legacy),
       tick: (s, dt) => tickMogan(s, dt, legacy),
       draw: (svg, parent, entry) => drawMogan(svg, parent, MOGAN_GAMES[entry.id]),
@@ -2587,26 +2732,25 @@ var TrailRuntime = (() => {
       assets: (entry) => moganAssets(MOGAN_GAMES[entry.id]),
       mount: (refs, context) => mountMogan(refs, context.host, context.cache, context.pixi, legacy),
       dispose: (refs) => disposeMogan(refs),
-      point(refs, p) {
+      point(view, p) {
+        const refs = view;
+        if (refs.game === "footsteps") {
+          const s = refs.latest;
+          if (!s || s.game !== "footsteps")
+            return { ...p, action: "outside-step" };
+          const spot = stepSpot(s, refs.height), padding = 22 * 800 / Math.max(1, refs.displayWidth);
+          const distance = Math.hypot(((p.x ?? -1) * 800 - spot.x) / Math.max(spot.rx, padding), ((p.y ?? -1) * refs.height - spot.y) / Math.max(spot.ry, padding));
+          return { ...p, action: distance <= 1 ? "step" : "outside-step" };
+        }
         if (refs.game !== "sling")
           return p;
-        const height = refs.height, b = stageBounds(height);
-        return { ...p, x: ((p.x ?? 0) * 800 - b.x) / b.w, y: ((p.y ?? 0) * height - b.y) / b.h };
+        const b = stageBounds(refs.height);
+        return { ...p, x: ((p.x ?? 0) * 800 - b.x) / b.w, y: ((p.y ?? 0) * refs.height - b.y) / b.h };
       },
       present,
       key: (s, key, phase) => keyMogan(s, key, phase, legacy)
     };
-    for (const [id, action] of [["mogan-start", "begin"], ["mogan-rain-left", "left"], ["mogan-rain-right", "right"], ["mogan-foot-left", "left"], ["mogan-foot-right", "right"], ["mogan-slow", "slow"]]) {
-      bindings.listen($(id), "click", () => onAction(id === "mogan-start" ? $("mogan-start").getAttribute("data-action") || action : action));
-    }
-    bindings.listen($("mogan-tune"), "click", () => {
-      precision = !precision;
-      $("mogan-aim").hidden = !precision;
-      $("mogan-tune").setAttribute("aria-expanded", String(precision));
-      text("mogan-tune", precision ? "收起微调 ↑" : "调整角度与力度 ↓");
-    });
-    bindings.listen($("mogan-angle"), "input", (event) => onAction("angle", Number(event.target.value)));
-    bindings.listen($("mogan-power"), "input", (event) => onAction("power", Number(event.target.value) / 100));
+    bindings.listen($("mogan-slow"), "click", () => onAction("slow"));
     return { adapter, destroy: () => bindings.destroy() };
   }
   return __toCommonJS(index_exports);

@@ -4,11 +4,12 @@ import type { LegacySling, MoganKind, MoganState } from './rules';
 import type { MoganFrame, Resource, Shape, SpritePose } from './scene-model';
 import { moganFrame } from './scene-model';
 import { MOGAN_PROPS, SHARED_PROPS } from './assets';
+import { HINT_ART, createPixiHints, createSvgHints } from '../hint-art';
 
 export const MOGAN_BACKGROUND = 'scenes/mogan-v1.webp';
-export const MOGAN_ROUTE_ASSETS = [MOGAN_BACKGROUND, 'sprites/bamboo-cup-v2.webp', MOGAN_PROPS.file, SHARED_PROPS.file];
+export const MOGAN_ROUTE_ASSETS = [MOGAN_BACKGROUND, 'sprites/bamboo-cup-v2.webp', MOGAN_PROPS.file, SHARED_PROPS.file, HINT_ART.file];
 export function moganAssets(game: MoganKind): GameAssets {
-  return { scene: MOGAN_BACKGROUND, actor: game === 'rain' ? 'sprites/bamboo-cup-v2.webp' : game === 'footsteps' ? MOGAN_PROPS.file : SHARED_PROPS.file, ...(game === 'footsteps' ? {} : { front: MOGAN_PROPS.file }) };
+  return { scene: MOGAN_BACKGROUND, actor: game === 'rain' ? 'sprites/bamboo-cup-v2.webp' : game === 'footsteps' ? MOGAN_PROPS.file : SHARED_PROPS.file, hint: HINT_ART.file, ...(game === 'footsteps' ? {} : { front: MOGAN_PROPS.file }) };
 }
 interface Region { x: number; y: number; w: number; h: number }
 interface Source { file: string; width: number; height: number; frames?: readonly Region[] }
@@ -26,6 +27,7 @@ function fallback(svg: SvgFactory, parent: Element, game: MoganKind): Fallback {
   const root = svg('g', {}, parent), defs = svg('defs', {}, root), clipId = 'mogan-water-' + ++sequence;
   const clip = svg('clipPath', { id: clipId }, defs), clipEllipse = svg('ellipse', {}, clip);
   const background = svg('g', {}, root), ambient = svg('g', {}, root), actors = svg('g', {}, root), water = svg('g', { 'clip-path': 'url(#' + clipId + ')' }, root), effects = svg('g', {}, root);
+  const hints = createSvgHints(svg, root);
   const paper = svg('rect', { x: 0, y: 0, width: 800, height: 800, fill: '#fff8e6', opacity: 0 }, root);
   const nodes = new Map<string, SVGElement>(), pools = new Map<Element, SVGElement[]>();
   let lastOrder = '';
@@ -60,15 +62,16 @@ function fallback(svg: SvgFactory, parent: Element, game: MoganKind): Fallback {
       const order = frame.sprites.filter(pose => pose.key !== 'background').map(pose => pose.key).join('|');
       if (order !== lastOrder) { for (const pose of frame.sprites) if (pose.key !== 'background') actors.appendChild(nodes.get(pose.key)!); lastOrder = order; }
       shapes(ambient, frame.ambient); shapes(water, frame.water); shapes(effects, frame.effects);
+      hints.paint(frame.hints);
       if (frame.clip) attrs(clipEllipse, { cx: frame.clip.x, cy: frame.clip.y, rx: frame.clip.rx, ry: frame.clip.ry });
       attrs(paper, { height, opacity: frame.paper * .26 });
     },
-    dispose() { root.remove(); nodes.clear(); pools.clear(); },
+    dispose() { hints.dispose(); root.remove(); nodes.clear(); pools.clear(); },
   };
 }
 interface Renderer { paint(frame: MoganFrame, height: number, displayWidth: number): void; dispose(): void; canvas: HTMLCanvasElement }
 interface RenderNode { node: Pixi.Sprite | Pixi.MeshPlane; original?: Float32Array; texture: Pixi.Texture }
-async function renderer(P: typeof Pixi, host: HTMLElement, game: MoganKind, resources: Map<Resource, AssetEntry>, height: number, displayWidth: number, cancelled: () => boolean, onLost: () => void): Promise<Renderer | null> {
+async function renderer(P: typeof Pixi, host: HTMLElement, game: MoganKind, resources: Map<Resource, AssetEntry>, hintAsset: AssetEntry | null, height: number, displayWidth: number, cancelled: () => boolean, onLost: () => void): Promise<Renderer | null> {
   const app = new P.Application();
   // Render for the displayed CSS size, rather than allocating a 1600px canvas
   // for every narrow phone. Logical gameplay coordinates remain 800 units wide.
@@ -76,9 +79,11 @@ async function renderer(P: typeof Pixi, host: HTMLElement, game: MoganKind, reso
   let disposed = false;
   const textures = new Map<Resource, Pixi.Texture>(), crops = new Map<string, Pixi.Texture>(), nodes = new Map<string, RenderNode>();
   let lastOrder = '';
+  let hints: ReturnType<typeof createPixiHints> | null = null;
   const background = new P.Container(), ambient = new P.Graphics(), actors = new P.Container(), water = new P.Graphics(), mask = new P.Graphics(), effects = new P.Graphics(), paper = new P.Graphics();
   function dispose() {
     if (disposed) return; disposed = true;
+    hints?.dispose(); hints = null;
     try { app.destroy(true, { children: true }); } catch { /* init can be interrupted */ }
     for (const crop of crops.values()) crop.destroy(false);
     for (const texture of textures.values()) texture.destroy(true);
@@ -88,6 +93,8 @@ async function renderer(P: typeof Pixi, host: HTMLElement, game: MoganKind, reso
     await app.init({ width: 800, height, resolution: resolution(displayWidth), autoDensity: true, antialias: true, autoStart: false, preference: 'webgl', backgroundAlpha: 0 });
     if (cancelled()) { dispose(); return null; }
     app.stage.eventMode = 'none'; app.stage.addChild(background, ambient, actors, water, mask, effects, paper); water.mask = mask;
+    hints = createPixiHints(P, app.stage, hintAsset, () => { if (!disposed) app.render(); });
+    app.stage.addChild(paper);
     for (const [key, entry] of resources) {
       const texture = P.Texture.from(entry.image, true); textures.set(key, texture);
       // The packaged Pixi browser build may omit the optional Prepare extension.
@@ -139,6 +146,7 @@ async function renderer(P: typeof Pixi, host: HTMLElement, game: MoganKind, reso
         const order = frame.sprites.filter(pose => pose.key !== 'background').map(pose => pose.key).join('|');
         if (order !== lastOrder) { let i = 0; for (const pose of frame.sprites) if (pose.key !== 'background') actors.setChildIndex(nodes.get(pose.key)!.node, i++); lastOrder = order; }
         shapes(ambient, frame.ambient); shapes(water, frame.water); shapes(effects, frame.effects);
+        hints?.paint(frame.hints);
         mask.clear(); if (frame.clip) mask.ellipse(frame.clip.x, frame.clip.y, frame.clip.rx, frame.clip.ry).fill(0xffffff);
         paper.clear(); if (frame.paper) paper.rect(0, 0, 800, height).fill({ color: 0xfff8e6, alpha: frame.paper * .26 });
         app.render();
@@ -176,6 +184,7 @@ export async function mountMogan(refs: MoganRefs, host: HTMLElement, cache: Imag
   resize();
   if (globalThis.ResizeObserver) { refs.resize = new ResizeObserver(resize); refs.resize.observe(host); }
   const resources = new Map<Resource, AssetEntry>(), assets = moganAssets(refs.game);
+  const hintAsset = cache?.request(assets.hint, 'high') || null;
   for (const key of ['scene', 'actor', 'front'] as const) {
     const file = assets[key]; if (!file) continue;
     const entry = cache?.request(file, 'high');
@@ -193,7 +202,7 @@ export async function mountMogan(refs: MoganRefs, host: HTMLElement, cache: Imag
     // Starting it in that event's microtask can stall Chromium's input acknowledgement.
     await new Promise<void>(resolve => setTimeout(resolve, 0));
     if (refs.disposed) return;
-    refs.gpu = await renderer(P, host, refs.game, resources, refs.height, refs.displayWidth, () => !!refs.disposed, () => {
+    refs.gpu = await renderer(P, host, refs.game, resources, hintAsset, refs.height, refs.displayWidth, () => !!refs.disposed, () => {
       refs.gpu = null;
       if (!refs.disposed && refs.latest) paintMogan(refs, refs.latest, legacy);
     });

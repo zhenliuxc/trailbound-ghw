@@ -41,9 +41,9 @@ export interface LegacySling {
 }
 export const MOGAN_TITLES: Record<MoganKind, string> = { rain: '听一筒竹林的雨', footsteps: '沿着石阶慢慢走', sling: '给远山送一枚纸叶' };
 export const MOGAN_PROMPTS: Record<MoganKind, string> = {
-  rain: '看叶尖蓄水，左右移动竹筒，把落雨接成一段旋律。',
-  footsteps: '脚印合上时，点亮起的那只脚，走完这段石阶。',
-  sling: '向后拉开纸叶，松手送过竹隙，落在远山纸签上。',
+  rain: '轻点画面开始，移动鼠标或滑动手指，让竹筒接住叶尖的雨滴。',
+  footsteps: '轻点脚印出发，等脚印亮起时再点，慢慢走过石阶。',
+  sling: '按住纸叶向后拉，松手送过竹隙，落在远山纸签上。',
 };
 export const MOGAN_MEMORIES: Record<MoganKind, string> = {
   rain: '叶尖先亮起一颗水珠。我挪过竹筒，接住一声又一声轻响；最后一滴落下，竹林里留下了一小段雨的旋律。',
@@ -84,6 +84,16 @@ export function leafTip(index: number, age: number, reduced: boolean): Point {
   return { x: .14 + index * .143 + (reduced ? 0 : Math.sin(age * 1.1 + index) * .006), y: .205 + (index % 3) * .027 + (reduced ? 0 : Math.sin(age * .8 + index * 1.7) * .003) };
 }
 export function stepFoot(index: number): 'left' | 'right' { return index % 2 ? 'right' : 'left'; }
+export function stonePose(s: StepsState, ordinal: number, height: number) {
+  const moving = s.play.reduced ? 0 : 1 - ease((s.age - s.steps.landedAt) / .48);
+  const relative = ordinal - s.steps.index + moving, q = clamp(1 - relative / 6, 0, 1.24);
+  return { x: 400 + Math.sin(ordinal * .73) * 24 * q, y: height * (.18 + .67 * Math.pow(q, 1.7)), width: 100 + 555 * Math.pow(q, 1.6), q };
+}
+/** The visible shoe/ring and the pointer target share this logical origin. */
+export function stepSpot(s: StepsState, height: number) {
+  const index = Math.min(9, s.steps.index), p = stonePose(s, index, height), foot = stepFoot(index);
+  return { x: p.x + (foot === 'left' ? -1 : 1) * p.width * .135, y: p.y - p.width * .11, rx: p.width * .12, ry: p.width * .17, foot };
+}
 export function stepTiming(s: StepsState) {
   const length = ([1.55, 1.65, 1.95, 1.55, 2.10, 1.65, 1.55, 1.90, 1.60, 2.05][Math.min(9, s.steps.index)]) * (s.steps.slow ? 1.5 : 1);
   const window = s.steps.slow ? .62 : .44;
@@ -92,11 +102,11 @@ export function stepTiming(s: StepsState) {
 export function inputMogan(state: MoganState, p: MiniInput, legacy: LegacySling, mode: 'tap' | 'move' = 'tap'): MoganState {
   if (state.game === 'sling') return legacy.input(state, p, mode);
   if (state.done || state.play.complete) return state;
-  if (state.game === 'footsteps' && (mode === 'move' || p.phase === 'press') && !p.action) return state;
-  const s = clone(state), action = p.action || (p.assist ? 'begin' : '');
+  if (state.game === 'footsteps' && (mode === 'move' || p.phase === 'press' || p.action === 'outside-step')) return state;
+  const s = clone(state), action = p.action || (p.assist ? state.game === 'footsteps' && state.acted ? 'step' : 'begin' : '');
   s.gesture = mode === 'move' ? 'drag' : 'tap';
   if (s.game === 'rain') {
-    if (!s.acted) { s.acted = true; emit(s, 'begin'); s.feedback = '先看叶尖的水珠，竹筒跟着你的指尖走。'; }
+    if (!s.acted) { s.acted = true; emit(s, 'begin'); s.feedback = '竹筒跟着鼠标或指尖走，接住叶尖落下的雨滴。'; }
     if (action === 'left' || action === 'right') s.rain.targetX = clamp(s.rain.targetX + (action === 'left' ? -.09 : .09), .08, .92);
     else if (Number.isFinite(p.x)) s.rain.targetX = clamp(p.x!, .08, .92);
     s.x = s.rain.targetX; s.dragging = mode === 'move';
@@ -107,8 +117,8 @@ export function inputMogan(state: MoganState, p: MiniInput, legacy: LegacySling,
     s.feedback = s.steps.slow ? '把脚步放慢，等脚印轻轻合上。' : '按自己的节奏，继续往上走。';
     return s;
   }
-  if (!s.acted) { s.acted = true; s.steps.clock = 0; emit(s, 'begin'); s.feedback = '先迈左脚。等描边合上，再轻轻落脚。'; return s; }
-  const foot = action === 'left' || action === 'right' ? action : !action && Number.isFinite(p.x) && (p.y ?? 0) >= .45 ? (p.x! < .5 ? 'left' : 'right') : null;
+  if (!s.acted) { s.acted = true; s.steps.clock = 0; emit(s, 'begin'); s.feedback = '等脚印亮起，再轻轻点一下。'; return s; }
+  const foot = action === 'step' ? stepFoot(s.steps.index) : action === 'left' || action === 'right' ? action : null;
   if (!foot || s.steps.recovery > 0) return s;
   if (foot !== stepFoot(s.steps.index)) { s.feedback = '这一级轮到' + (stepFoot(s.steps.index) === 'left' ? '左脚' : '右脚') + '，换另一只脚试试。'; return s; }
   const timing = stepTiming(s);
@@ -118,7 +128,7 @@ export function inputMogan(state: MoganState, p: MiniInput, legacy: LegacySling,
   emit(s, 'step-land', foot === 'left' ? .4 : .6, .77, index);
   s.steps.index++; s.steps.clock = 0; s.steps.landedAt = s.age; s.play.progress = s.steps.index / 10;
   if (s.steps.index === 10) { s.feedback = '十级石阶走过了，竹林里的路还在向前。'; complete(s); }
-  else s.feedback = (stepFoot(s.steps.index) === 'left' ? '左脚' : '右脚') + '接着来，慢慢走就好。';
+  else s.feedback = '跟着下一个脚印，亮起时再轻点。';
   return s;
 }
 function rainTick(s: RainState, dt: number) {
@@ -177,6 +187,6 @@ export function keyMogan(s: MoganState, key: string, phase: 'down' | 'up', legac
   if (phase === 'up') return null;
   if (s.game === 'rain' && ['ArrowLeft', 'ArrowRight', 'a', 'A', 'd', 'D'].includes(key)) return inputMogan(s, { action: ['ArrowLeft', 'a', 'A'].includes(key) ? 'left' : 'right' }, legacy);
   if (s.game === 'footsteps' && ['ArrowLeft', 'ArrowRight', 'a', 'A', 'd', 'D'].includes(key)) return inputMogan(s, { action: ['ArrowLeft', 'a', 'A'].includes(key) ? 'left' : 'right' }, legacy);
-  if (key === 'Enter' || key === ' ') return inputMogan(s, { action: 'begin' }, legacy);
+  if (key === 'Enter' || key === ' ') return inputMogan(s, { action: s.game === 'footsteps' && s.acted ? 'step' : 'begin' }, legacy);
   return null;
 }

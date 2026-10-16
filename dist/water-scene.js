@@ -1,6 +1,6 @@
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailWaterScene=api;}(typeof globalThis!=='undefined'?globalThis:this,function(){
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./hint-art.js'):root.TrailHintArt);if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailWaterScene=api;}(typeof globalThis!=='undefined'?globalThis:this,function(Hint){
  'use strict';
- const assets={creek:{scene:'sprites/creek-water-v1.webp',actor:'sprites/creek-leaf-v1.webp',stone:'sprites/creek-stone-v1.webp'},rain:{scene:'scenes/mogan-v1.webp',actor:'sprites/bamboo-cup-v2.webp'}};
+ const assets={creek:{scene:'sprites/creek-water-v1.webp',actor:'sprites/creek-leaf-v1.webp',stone:'sprites/creek-stone-v1.webp',hint:Hint.HINT_ART.file},rain:{scene:'scenes/mogan-v1.webp',actor:'sprites/bamboo-cup-v2.webp'}};
  // The cleaned sprite's opening is the origin for physics, water and artwork.
  const cup={width:100,anchorY:.184,mouthY:.76,mouthRadius:38,waterRadius:34,waterDepth:14};
  const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n);};
@@ -12,14 +12,14 @@
   return {phase,finish:s.play.complete&&s.play.reduced?1:ease(elapsed/1.65),paper:s.play.complete&&s.play.reduced?1:ease((elapsed-1.5)/.8),pulse:Math.max(0,1-age/.65),count:rain?s.caught:s.gates,total:rain?8:3,
    cue:phase==='invite'?(rain?'轻触开始，左右移动竹筒':'点一下落叶旁的水，送它出发'):phase==='memory'?'正在展开手绘纪念':phase==='settle'?(rain?'雨声留在竹筒里':'让落叶漂向下游'):s.feedback};
  }
- function create(P,app,game,{gates,rocks,rockShapes,drawPixi}){
+ function create(P,app,game,{gates,rocks,rockShapes,drawPixi,hintAsset}){
   const root=new P.Container(),back=new P.Container(),land=new P.Graphics(),currents=new P.Graphics(),targets=new P.Container(),shade=new P.Graphics(),actorLayer=new P.Container(),water=new P.Graphics(),dropsLayer=new P.Container(),canopy=new P.Container(),effects=new P.Graphics(),paper=new P.Graphics();
   root.addChild(back,land,currents,targets,shade,actorLayer,water,dropsLayer,canopy,effects,paper);app.stage.addChild(root);
   const cupWater=game==='rain'?new P.Graphics():null,cupMask=game==='rain'?new P.Graphics():null;if(game==='rain'){cupMask.ellipse(0,0,cup.mouthRadius,17).fill(0xffffff);actorLayer.addChild(cupWater,cupMask);cupWater.mask=cupMask;}
-  const textures=[],gateNodes=[],stoneNodes=[],dropNodes=[],leafNodes=[];let disposed=false,scene=null,actor=null,hasScene=false,hasActor=false,lastHeight=0,original=null;
+  const textures=[],stoneNodes=[],dropNodes=[],leafNodes=[];let disposed=false,scene=null,actor=null,hasScene=false,hasActor=false,lastHeight=0,original=null;
+  const hints=game==='creek'?Hint.createPixiHints(P,targets,hintAsset,()=>{if(!disposed)app.render?.();}):null;
   if(game==='creek'){
    drawPixi(P,land,rockShapes);
-   for(let i=0;i<3;i++){const g=new P.Graphics();g.ellipse(0,0,17,54).stroke({color:0xf7e8a7,width:2,alpha:.8});g.ellipse(0,0,10,43).stroke({color:0xfffae2,width:1,alpha:.7});targets.addChild(g);gateNodes.push(g);}
   }else{
    for(let i=0;i<4;i++){const d=new P.Graphics();d.moveTo(0,-11).bezierCurveTo(-9,0,-7,8,0,9).bezierCurveTo(7,8,9,0,0,-11).fill({color:0xb8dcd0,alpha:.95});d.ellipse(-1,-1,1.6,4).fill({color:0xfff9de,alpha:.85});dropsLayer.addChild(d);dropNodes.push(d);}
    for(let i=0;i<8;i++){const leaf=new P.Graphics();leaf.moveTo(-67,-17).quadraticCurveTo(-25,-41,15,0).quadraticCurveTo(-24,-7,-67,-17).fill({color:i%2?0x668768:0x87a275,alpha:.9});leaf.moveTo(-63,-17).quadraticCurveTo(-22,-19,15,0).stroke({color:0xd4d8a2,width:1,alpha:.65});for(let j=0;j<5;j++)leaf.moveTo(-49+j*10,-16+j*2).lineTo(-47+j*10,-23+j*4).stroke({color:0xc4cf9e,width:.7,alpha:.5});canopy.addChild(leaf);leafNodes.push(leaf);}
@@ -42,7 +42,8 @@
    currents.clear();shade.clear();water.clear();effects.clear();paper.clear();
    if(game==='creek'){
     for(let i=0;i<15;i++){const xx=(i*83+t*17)%860-30,yy=(.22+(i*37%56)/100)*H;currents.moveTo(xx,yy).quadraticCurveTo(xx+18,yy-4,xx+44,yy).stroke({color:0xfffae3,width:1,alpha:.18});}
-    for(let i=0;i<gateNodes.length;i++){const g=gateNodes[i],age=s.events.find(e=>e.type==='goal'&&Math.abs(e.x-gates[i].x)<.08);g.position.set(gates[i].x*800,gates[i].y*H);g.scale.y=H/460;g.alpha=i<s.gates?Math.max(0,1-(s.age-(age?.age||0))/.65):i===s.gates?.62+Math.sin(t*2)*.15:.15;g.visible=!s.play.complete;}
+    hints.paint(Hint.creekHints(s,gates,H));
+    for(const points of Hint.creekHintStrokes(s,gates,H))for(const [color,width,alpha]of [[0x527969,4,.16],[0xf5f5e4,1.7,.7]]){water.moveTo(points[0].x,points[0].y);for(const point of points.slice(1))water.lineTo(point.x,point.y);water.stroke({color,width,alpha,cap:'round',join:'round'});}
     shade.ellipse(x+3,y+7,29,8).fill({color:0x244d44,alpha:.2});
     for(let i=0;i<3;i++){const q=(t*.6+i/3)%1;water.ellipse(x-8-q*27,y+4,17+q*20,4+q*7).stroke({color:0xeff5da,width:1,alpha:(1-q)*.3});}
    }else{
@@ -72,7 +73,7 @@
    }
    if(f.paper){paper.rect(0,0,800,H).fill({color:0xfaf3df,alpha:f.paper*.22});paper.rect(15,15,770,H-30).stroke({color:0xfff7e4,alpha:f.paper*.85,width:12});}
   }
-  function dispose(){if(disposed)return;disposed=true;root.destroy({children:true});for(const t of textures)t.destroy(true);}
+  function dispose(){if(disposed)return;disposed=true;hints?.dispose();root.destroy({children:true});for(const t of textures)t.destroy(true);}
   return {root,install,paint,dispose,get ready(){return hasScene&&hasActor;}};
  }
  return {assets,cup,nextDrop,finishDuration,sample,create};

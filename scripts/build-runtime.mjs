@@ -32,6 +32,18 @@ if (diagnostics.length || emit.emitSkipped) {
   });
   await build({
     absWorkingDir: root,
+    entryPoints: ['.build/typescript/runtime/hint-art.js'],
+    outfile: 'dist/hint-art.js',
+    bundle: true,
+    format: 'iife',
+    globalName: 'TrailHintArt',
+    target: 'es2022',
+    charset: 'utf8',
+    banner: { js: '// Generated from src/runtime/hint-art.ts by npm run build.' },
+    footer: { js: "if (typeof module === 'object' && module.exports) module.exports = TrailHintArt;" },
+  });
+  await build({
+    absWorkingDir: root,
     entryPoints: ['src/app.js'],
     outfile: 'dist/app.js',
     bundle: false,

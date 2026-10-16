@@ -114,7 +114,9 @@ export function createMiniGameController(options: MiniOptions) {
     options.cache?.request(entry.artV5 || entry.artV4 || entry.badge, 'high');
     text('micro-place', entry.place + ' · ' + entry.condition); text('micro-title', entry.name);
     text('micro-instruction', api.instruction(entry));
-    surface.setAttribute('aria-label', (dom.get('micro-instruction').textContent || '') + (current.game === 'puzzle' ? ' 键盘：1–6 选片，方向键选格，Enter 放下。' : current.game === 'clouds' ? ' 键盘：方向键选择云朵，空格或 Enter 吹散。' : ''));
+    const keyHints = { puzzle: '1–6 选片，方向键选格，Enter 放下。', match: '方向键选卡，Enter 选中或交换。', sling: '方向键调整，按住空格蓄力、松开发射。', greet: '方向键取景，＋／－调整远近，空格拍照。', clouds: '方向键选择云朵，空格或 Enter 吹散。' };
+    const keyHint = current.game && current.game in keyHints ? keyHints[current.game as keyof typeof keyHints] : '';
+    surface.setAttribute('aria-label', (dom.get('micro-instruction').textContent || '') + (keyHint ? ' 键盘辅助：' + keyHint : ''));
     updateStatus(); $('micro-panel').hidden = false; options.refresh();
     const assets = api.assets?.(entry) || current.game && (games?.artAssets[current.game] || games?.wugongAssets[current.game] || games?.waterAssets[current.game]);
     const scene = assets && assets.scene || 'scenes/' + entry.route + '-v1.webp';
@@ -123,6 +125,7 @@ export function createMiniGameController(options: MiniOptions) {
     const sceneAsset = options.cache?.request(scene, 'high') || null;
     const actorAsset = actor ? options.cache?.request(actor, 'high') || null : null;
     const frontAsset = front ? options.cache?.request(front, 'high') || null : null;
+    const hintAsset = assets && assets.hint ? options.cache?.request(assets.hint, 'high') || null : null;
     const openingRefs = refs;
     if (openingRefs.waitsForArt && !api.mount) {
       openingRefs.contentState = sceneAsset ? 'loading' : 'error';
@@ -141,7 +144,7 @@ export function createMiniGameController(options: MiniOptions) {
         if (openingRefs.disposed || refs !== openingRefs) return;
         openingRefs.contentState = 'error'; surface.setAttribute('aria-busy', 'false'); paint(); updateStatus();
       });
-    } else games?.mount(openingRefs, options.pixi, surface, sceneAsset, actorAsset, frontAsset);
+    } else games?.mount(openingRefs, options.pixi, surface, sceneAsset, actorAsset, frontAsset, hintAsset);
     surface.focus({ preventScroll: true }); options.ensureLoop();
   }
   function finish(record = true, resume = true) {
@@ -242,7 +245,15 @@ export function createMiniGameController(options: MiniOptions) {
       if (current.game) perform({ ...point(event), ...(refs?.art || refs?.mogan || current.game === 'clouds' ? { phase: 'press' as const } : {}) });
     });
     bindings.listen(surface, 'pointermove', event => {
-      if (!interactive() || !pointer || pointer.id !== event.pointerId || !current) return;
+      if (!interactive() || !current) return;
+      if (!pointer) {
+        if (event.pointerType === 'mouse' && api.hover && inputReady()) {
+          const next = api.hover(current, point(event));
+          if (next !== current) { current = next; options.ensureLoop(); }
+        }
+        return;
+      }
+      if (pointer.id !== event.pointerId) return;
       event.stopPropagation?.();
       if (Math.hypot(event.clientX - pointer.x, event.clientY - pointer.y) > 8) pointer.drag = true;
       if (!pointer.drag) return;
@@ -278,8 +289,6 @@ export function createMiniGameController(options: MiniOptions) {
       const button = (event.target as HTMLElement).closest?.<HTMLButtonElement>('button[data-action]');
       const name = button?.getAttribute('data-action'); if (button && !button.disabled && name) action(name);
     });
-    bindings.listen($('art-angle'), 'input', event => action('angle', Number((event.target as HTMLInputElement).value)));
-    bindings.listen($('art-power'), 'input', event => action('power', Number((event.target as HTMLInputElement).value) / 100));
     for (const id of ['wugong-primary', 'wugong-secondary']) bindings.listen($(id), 'click', () => { const name = $(id).getAttribute('data-action'); if (name) action(name); });
     bindings.listen($('wugong-zoom-in'), 'click', () => action('zoom-in'));
     bindings.listen($('wugong-zoom-out'), 'click', () => action('zoom-out'));

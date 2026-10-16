@@ -150,8 +150,10 @@ export interface MiniApi {
   point?(refs: MiniViewRefs, point: MiniInput): MiniInput;
   present?(state: MiniState, refs: MiniViewRefs): void;
   key?(state: MiniState, key: string, phase: 'down' | 'up'): MiniState | null;
+  /** Optional cursor following, without treating idle hover as an initial action. */
+  hover?(state: MiniState, point: MiniInput): MiniState;
 }
-export interface GameAssets { scene?: string; actor?: string; front?: string; stone?: string }
+export interface GameAssets { scene?: string; actor?: string; front?: string; stone?: string; hint?: string }
 export interface ActionControl { action: string; label: string; disabled?: boolean; primary?: boolean }
 export interface StoryControls { speaker: string; line: string; primary?: ActionControl; secondary?: ActionControl; zoom?: boolean }
 export interface ArtFlow { phase: string; kicker: string; counter: string; title: string; cue: string; controls: ActionControl[] }
@@ -174,6 +176,6 @@ export interface MiniPlatform {
   waterFlow(state: MiniState): WaterFlow;
   artKey(state: MiniState, key: string, phase?: 'up' | 'down'): MiniState;
   point(refs: MiniViewRefs, point: MiniInput): MiniInput;
-  mount(refs: MiniViewRefs, pixi: unknown, host: HTMLElement, scene: AssetEntry | null, actor: AssetEntry | null, front: AssetEntry | null): Promise<boolean>;
+  mount(refs: MiniViewRefs, pixi: unknown, host: HTMLElement, scene: AssetEntry | null, actor: AssetEntry | null, front: AssetEntry | null, hint?: AssetEntry | null): Promise<boolean>;
   dispose(refs: MiniViewRefs): void;
 }

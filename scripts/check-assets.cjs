@@ -59,6 +59,14 @@ assert.ok(moganProps.tip.x>=0&&moganProps.tip.x<=1&&moganProps.tip.y>=0&&moganPr
 assert.deepEqual(Object.keys(runtime.MOGAN_GAMES).sort(),['bamboo-drop','bamboo-leaf','bamboo-step']);
 console.log('PASS: Mogan registered games retain packaged watercolor props, source metadata and free audio reuse without duplicate downloads.');
 
+const hint=require('../dist/hint-art.js'),hintManifest=JSON.parse(fs.readFileSync(path.join(dir,'sprites/hint-brush-v1.json'))),hintBytes=fs.readFileSync(path.join(dir,hintManifest.file));
+assert.equal(hintBytes.length,hintManifest.bytes);assert.equal(crypto.createHash('sha256').update(hintBytes).digest('hex'),hintManifest.sha256);assert.ok(hintBytes.length<30000);
+for(const key of ['file','width','height','tip'])assert.deepEqual(hint.HINT_ART[key],hintManifest[key]);
+assert.ok(hintManifest.tip.x>0&&hintManifest.tip.x<=1&&hintManifest.tip.y>0&&hintManifest.tip.y<1);
+assert.ok(runtime.MOGAN_ROUTE_ASSETS.includes(hintManifest.file));
+for(const file of ['water-scene.js','mini-games.js'])assert.ok(html.indexOf('src="hint-art.js"')>=0&&html.indexOf('src="hint-art.js"')<html.indexOf('src="'+file+'"'));
+console.log('PASS: the lightweight watercolor hint retains its source, alpha-preserving packaging metadata and shared tip anchor.');
+
 const current=JSON.parse(fs.readFileSync(path.join(dir,'badges/landscape-v3.json'),'utf8'));
 assert.equal(current.edition,3);assert.equal(current.entries.length,moments.length);
 for(const e of moments){const art=current.entries.find(a=>a.id===e.id);assert.equal(art.tag,e.tag);assert.equal(art.scene,e.scene);assert.equal(art.play,e.play);assert.equal(art.file,e.badge);const b=fs.readFileSync(path.join(dir,art.file));assert.equal(b.length,art.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),art.sha256);assert.match(b.toString(),/viewBox="0 0 192 192"/);assert.ok(!/<script|<foreignObject|(?:href|src)="https?:|<image/.test(b.toString()));}

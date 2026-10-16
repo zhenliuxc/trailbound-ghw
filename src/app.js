@@ -25,6 +25,7 @@
   const photoCache = new Map();
   /** @type {typeof import('./runtime/index')} */
   const Runtime = window.TrailRuntime;
+  let fullMapView = { x: 0, y: 0, w: 720, h: 600 }, mapResizeTimer = null;
   const dom = Runtime.createDom(document);
   const miniGameKind = (id) => window.TrailArtGames && Runtime.MOGAN_GAMES[id] || window.TrailMiniGames?.kinds[id];
   const scenes = Runtime.createSceneManager({ status: () => state.status, pause: () => {
@@ -357,8 +358,8 @@
   function world(lon, lat) {
     return [lon * rad * R, Math.log(Math.tan(Math.PI / 4 + lat * rad / 2)) * R];
   }
-  function fitProjection(line, w = 720, h = 600, pad = 50) {
-    const coords = line.map((p) => world(p[0], p[1])), xs = coords.map((p) => p[0]), ys = coords.map((p) => p[1]), minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys), scale = Math.min((w - pad * 2) / Math.max(1, maxX - minX), (h - pad * 2) / Math.max(1, maxY - minY)), ox = (w - (maxX - minX) * scale) / 2, oy = (h - (maxY - minY) * scale) / 2;
+  function fitProjection(line, w = 720, h = 600, pad = 50, offsetY = 0) {
+    const coords = line.map((p) => world(p[0], p[1])), xs = coords.map((p) => p[0]), ys = coords.map((p) => p[1]), minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys), scale = Math.min((w - pad * 2) / Math.max(1, maxX - minX), (h - pad * 2) / Math.max(1, maxY - minY)), ox = (w - (maxX - minX) * scale) / 2, oy = offsetY + (h - (maxY - minY) * scale) / 2;
     return { scale, minX, maxY, ox, oy, point(lon, lat) {
       const [x, y] = world(lon, lat);
       return [ox + (x - minX) * scale, oy + (maxY - y) * scale];
@@ -392,9 +393,13 @@
   }
   function drawMap() {
     const r = J.routeOf(state);
-    projection = fitProjection(r.geo.line, 720, 600, 85);
-    view = { x: 0, y: 0, w: 720, h: 600 };
-    $("map").setAttribute("viewBox", "0 0 720 600");
+    const rect = $("map-frame").getBoundingClientRect();
+    fullMapView = Runtime.mapViewport(rect.width, rect.height, (window.innerWidth || 0) >= 1024);
+    const symbolScale = fullMapView.h / 600;
+    projection = fitProjection(r.geo.line, fullMapView.w, fullMapView.h, 85 * symbolScale, fullMapView.y);
+    view = { ...fullMapView };
+    $("journey-stage").style.setProperty?.("--map-symbol-scale", String(symbolScale));
+    $("map").setAttribute("viewBox", `${view.x} ${view.y} ${view.w} ${view.h}`);
     for (const id of ["geo-background", "geo-labels", "geo-markers", "online-tiles", "nature-discoveries", "scene-life", "trail-footprints"]) $(id).replaceChildren();
     const projected = r.geo.line.map((p) => [...projection.point(p[0], p[1]), p[2]]), context = { features: [...r.geo.background.filter((f) => ["water", "cable", "coast"].includes(f.kind)), ...window.TrailLandscapeData?.[r.geoId]?.features || []].map((f) => ({ ...f, line: f.line.map((p) => projection.point(p[0], p[1])) })), peaks: r.geo.labels.map((p) => ({ ...p, x: projection.point(p.lon, p.lat)[0], y: projection.point(p.lon, p.lat)[1] })) };
     scenePlan = window.TrailScenery.build(r, projected, context);
@@ -418,12 +423,12 @@
       } else for (const f of features) svg(f.tag, Object.fromEntries(window.TrailScenery.attributes(f)), group);
     }
     if (!scenePlan.artDetail) {
-      const title = svg("text", { x: 32, y: 38, fill: "#66825d", "font-size": 22, "font-weight": 700 }, $("geo-labels"));
+      const title = svg("text", { x: 32, y: fullMapView.y + 38 * symbolScale, fill: "#66825d", "font-size": 22 * symbolScale, "font-weight": 700 }, $("geo-labels"));
       title.textContent = r.name;
     }
     for (const peak of scenePlan.terrain.peaks) {
       if (!["荞麦梁", "鳌山", "太白梁", "拔仙台", "幺妹峰", "婆缪峰", "莫干岭", "西灣山", "西湾山"].includes(peak.name)) continue;
-      const text = svg("text", { x: Math.max(40, Math.min(660, peak.x)), y: Math.max(60, peak.y - 13), "text-anchor": "middle", fill: "#5b7970", "font-size": 11, "font-weight": 600, "data-peak": peak.osmId }, $("geo-labels"));
+      const text = svg("text", { x: Math.max(40, Math.min(660, peak.x)), y: Math.max(fullMapView.y + 30 * symbolScale, peak.y - 13 * symbolScale), "text-anchor": "middle", fill: "#5b7970", "font-size": 11 * symbolScale, "font-weight": 600, "data-peak": peak.osmId }, $("geo-labels"));
       text.textContent = peak.name;
     }
     lifeActors = L.mount(svg, $("scene-life"), L.build(scenePlan.theme, projected, { water: scenePlan.terrain.water }));
@@ -433,11 +438,11 @@
     $("route-outline").setAttribute("d", cartoonLine(r.geo.line));
     $("route-line").setAttribute("d", cartoonLine(r.geo.line));
     const start = G.position({ routeId: r.id, distance: 0 }), [sx, sy] = projection.point(start.lon, start.lat);
-    svg("circle", { cx: sx, cy: sy, r: 7, fill: "#537c60", stroke: "#fffdf0", "stroke-width": 3 }, $("geo-markers"));
+    svg("circle", { cx: sx, cy: sy, r: 7 * symbolScale, fill: "#537c60", stroke: "#fffdf0", "stroke-width": 3 * symbolScale }, $("geo-markers"));
     const labels = [];
     $("checkpoint-list").replaceChildren();
     for (const [i, cp] of r.checkpoints.entries()) {
-      const pos = G.position({ routeId: r.id, distance: G.metric(r.id).total * cp.fraction }), [x, y] = projection.point(pos.lon, pos.lat), g = svg("g", { id: `marker-${cp.id}`, role: "button", tabindex: 0, class: "checkpoint-marker", transform: `translate(${x.toFixed(2)} ${y.toFixed(2)})`, "aria-label": cp.name, "aria-controls": "photo-panel" }, $("geo-markers"));
+      const pos = G.position({ routeId: r.id, distance: G.metric(r.id).total * cp.fraction }), [x, y] = projection.point(pos.lon, pos.lat), g = svg("g", { id: `marker-${cp.id}`, role: "button", tabindex: 0, class: "checkpoint-marker", transform: `translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${symbolScale})`, "aria-label": cp.name, "aria-controls": "photo-panel" }, $("geo-markers"));
       svg("circle", { r: 35, fill: "transparent", "aria-hidden": "true" }, g);
       svg("circle", { r: 26, fill: "none", stroke: "#537f57", "stroke-width": 3, class: "checkpoint-focus", opacity: 0, "pointer-events": "none", "aria-hidden": "true" }, g);
       svg("circle", { r: 21, fill: "#fffaf0", stroke: "#bf9c65", "stroke-width": 2, class: "checkpoint-badge", "aria-hidden": "true" }, g);
@@ -508,10 +513,10 @@
   function updatePosition(smoothing = 0.14) {
     if (!projection) return;
     const p = position(), [x, y] = projection.point(p.lon, p.lat);
-    const full = overview || state.status === "ready" || motionReduced, w = full ? 720 : 470, h = full ? 600 : Math.min(600, w / (($("map-frame").getBoundingClientRect().width || 720) / ($("map-frame").getBoundingClientRect().height || 600))), target = { x: full ? 0 : Math.max(0, Math.min(720 - w, x - w / 2)), y: full ? 0 : photoId ? Math.max(-80, Math.min(600 - h + 400, y - h * 0.24)) : Math.max(0, Math.min(600 - h, y - h * 0.54)), w, h };
+    const full = overview || state.status === "ready" || motionReduced, w = full ? fullMapView.w : 470, h = full ? fullMapView.h : Math.min(600, w / (($("map-frame").getBoundingClientRect().width || 720) / ($("map-frame").getBoundingClientRect().height || 600))), target = { x: full ? fullMapView.x : Math.max(0, Math.min(720 - w, x - w / 2)), y: full ? fullMapView.y : photoId ? Math.max(-80, Math.min(600 - h + 400, y - h * 0.24)) : Math.max(0, Math.min(600 - h, y - h * 0.54)), w, h };
     for (const k of ["x", "y", "w", "h"]) view[k] = smoothing ? view[k] + (target[k] - view[k]) * smoothing : target[k];
     $("map").setAttribute("viewBox", `${view.x.toFixed(2)} ${view.y.toFixed(2)} ${view.w.toFixed(2)} ${view.h.toFixed(2)}`);
-    const heroScale = (scenePlan?.artDetail ? 1.62 : 1.45) * view.w / 720;
+    const heroScale = (scenePlan?.artDetail ? 1.62 : 1.45) * Math.min(view.w / 720, view.h / 600);
     $("player").setAttribute("transform", `translate(${x.toFixed(2)} ${(y - 17.2 * heroScale).toFixed(2)}) scale(${heroScale})`);
     const next = G.position({ routeId: state.routeId, distance: G.metric(state.routeId).total * Math.min(1, state.progress + 7e-3) }), [nx] = projection.point(next.lon, next.lat);
     if (state.status === "walking" && Math.abs(nx - x) > 0.8) hikerFacing = nx > x ? 1 : -1;
@@ -976,7 +981,10 @@
   journalController.render();
   render();
   updatePosition(0);
-  window.addEventListener("resize", () => updatePosition(0));
+  window.addEventListener("resize", () => {
+    clearTimeout(mapResizeTimer);
+    mapResizeTimer = setTimeout(() => { drawMap(); uiKey = ""; render(); }, 120);
+  });
   if (window.PIXI && window.TrailPixiScene) {
     window.TrailPixiScene.create(window.PIXI, $("map-frame"), { onReady: () => {
       $("map-frame").classList.toggle("gpu-ready", true);

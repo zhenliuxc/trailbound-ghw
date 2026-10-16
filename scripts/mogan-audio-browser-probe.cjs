@@ -21,9 +21,8 @@ async function beforeGame(page,game,label,click){
 }
 async function reward(page,game){
  const r=records.get(page),m=await native.theme(page,themes[game]),s=await native.snapshot(page),files=s.starts.slice(r.offset).filter(x=>!x.loop).map(x=>x.file.split('/').pop());
- // The sling driver fires using the visible button, so expect release/landing
- // samples; it does not perform a draw gesture that would emit the line sample.
- const expected=game==='rain'?['mini-drop-v1.mp3','mini-splash-v1.mp3']:game==='sling'?['wugong-flutter-v1.mp3','wugong-cloth-v1.mp3']:[];
+ // Pointer pulling should emit recorded line, release and landing samples.
+ const expected=game==='rain'?['mini-drop-v1.mp3','mini-splash-v1.mp3']:game==='sling'?['wugong-line-v1.mp3','wugong-flutter-v1.mp3','wugong-cloth-v1.mp3']:[];
  for(const file of expected)assert.ok(files.includes(file),game+' must start recorded '+file+'; got '+files.join(','));
  if(game==='footsteps')assert.ok(files.some(f=>/^wugong-step-[123]-v1\.mp3$/.test(f)),'Timed landings must start recorded steps');
  assert.equal(s.media.filter(m=>m.file===themes[game]).length,1,'Reward reuses the same media element');

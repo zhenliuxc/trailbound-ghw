@@ -327,4 +327,28 @@
 .stage-heading .sound-controls{margin-left:auto;justify-content:flex-end;flex-wrap:wrap;flex-shrink:0}.stage-heading #music-retry{color:#6e7c58;border-style:dashed}
 @media(max-width:480px){.stage-heading:has(#music-retry:not([hidden])){flex-wrap:wrap}.stage-heading:has(#music-retry:not([hidden])) .sound-controls{width:100%;justify-content:flex-end}}
 
+/* Desktop space belongs to the journey; keep a paper margin instead of a narrow fixed page. */
+@media(min-width:1024px){
+ :root{--page-gutter:clamp(24px,3vw,72px)}
+ .site-header,main{width:calc(100% - var(--page-gutter) - var(--page-gutter));max-width:none;padding-inline:0}
+ main{padding-block:28px 16px}
+ main>section,main>details{min-width:0}
+ .route-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+ .route-card{min-width:0}
+ .map-frame{height:clamp(420px,60vh,860px);height:clamp(420px,60dvh,860px);aspect-ratio:auto}
+ #map{min-height:0}
+ .journey-stage #route-outline{stroke-width:calc(13px * var(--map-symbol-scale,1))}
+ .journey-stage #route-line{stroke-width:calc(5.8px * var(--map-symbol-scale,1))}
+ .journey-stage #completed-line{stroke-width:calc(6px * var(--map-symbol-scale,1))}
+ .journey-stage[data-art="picturebook"] #route-outline{stroke-width:calc(9px * var(--map-symbol-scale,1))}
+ .journey-stage[data-art="picturebook"] #route-line{stroke-width:calc(3.8px * var(--map-symbol-scale,1))}
+ .journey-stage[data-art="picturebook"] #completed-line{stroke-width:calc(4.2px * var(--map-symbol-scale,1))}
+ .journal-notebook .journal-list{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:clamp(12px,1.1vw,20px)}
+}
+@media(min-width:1440px){
+ .route-cards{grid-template-columns:repeat(7,minmax(0,1fr))}
+ .route-card{padding:14px 15px}
+ .route-card strong{font-size:clamp(18px,1.4vw,21px);line-height:1.4}
+}
+
 .mini-controls:has(#mini-music-retry:not([hidden])){flex-wrap:wrap}

@@ -1,6 +1,8 @@
-import { CUP, RAIN_PHRASE, clamp, ease, leafTip, stepFoot, stepTiming } from './rules';
+import { CUP, RAIN_PHRASE, clamp, ease, leafTip, stepFoot, stepTiming, stepSpot, stonePose } from './rules';
 import type { LegacySling, MoganKind, MoganState, Point, StepsState } from './rules';
 import { MOGAN_PROPS, SHARED_PROPS } from './assets';
+import { hintPose } from '../hint-art';
+import type { HintPose } from '../hint-art';
 
 export type Resource = 'scene' | 'actor' | 'front';
 export interface SpritePose {
@@ -12,15 +14,10 @@ export type Shape =
   | { type: 'line'; points: Point[]; color: string; alpha: number; stroke: number }
   | { type: 'rect'; x: number; y: number; w: number; h: number; color: string; alpha: number; stroke?: number };
 export interface MoganFrame {
-  sprites: SpritePose[]; ambient: Shape[]; water: Shape[]; effects: Shape[];
+  sprites: SpritePose[]; ambient: Shape[]; water: Shape[]; effects: Shape[]; hints: HintPose[];
   clip: { x: number; y: number; rx: number; ry: number } | null; alpha: number; paper: number;
 }
 export const stageBounds = (height: number) => { const side = Math.min(800, height * .98); return { x: (800 - side) / 2, y: (height - side) / 2, w: side, h: side }; };
-export function stonePose(s: StepsState, ordinal: number, height: number) {
-  const moving = s.play.reduced ? 0 : 1 - ease((s.age - s.steps.landedAt) / .48);
-  const relative = ordinal - s.steps.index + moving, q = clamp(1 - relative / 6, 0, 1.24);
-  return { x: 400 + Math.sin(ordinal * .73) * 24 * q, y: height * (.18 + .67 * Math.pow(q, 1.7)), width: 100 + 555 * Math.pow(q, 1.6), q };
-}
 function ellipse(list: Shape[], x: number, y: number, rx: number, ry: number, color: string, alpha = 1, stroke?: number) { list.push({ type: 'ellipse', x, y, rx, ry, color, alpha, stroke }); }
 function line(list: Shape[], points: Point[], color: string, stroke: number, alpha = 1) { list.push({ type: 'line', points, color, stroke, alpha }); }
 function sprite(frame: MoganFrame, key: string, resource: Resource, at: Point, width: number, options: Partial<Pick<SpritePose, 'frame' | 'anchorX' | 'anchorY' | 'rotation' | 'alpha' | 'flip' | 'bend'>> = {}) {
@@ -38,7 +35,7 @@ function rain(frame: MoganFrame, s: Extract<MoganState, { game: 'rain' }>, heigh
   if (!r.drop && !s.play.complete) {
     ellipse(frame.effects, next.x * 800, next.y * height + 2, 2.3 + growing * 3.3, 3.5 + growing * 5, '#d0e5d8', .92);
     ellipse(frame.effects, next.x * 800 - 1, next.y * height, 1.1, 2, '#fffcee', .95);
-    if (s.acted) ellipse(frame.ambient, next.x * 800, y + 3, 12, 3.4, '#f7edcd', .22);
+    if (s.acted) line(frame.ambient, [{ x: next.x * 800 - 14, y: y + 3 }, { x: next.x * 800 - 2, y: y + 1 }, { x: next.x * 800 + 13, y: y + 3 }], '#e8eee2', 1.5, .35);
   }
   const shadowY = y + CUP.width * 480 / 386 * (1 - CUP.anchorY);
   ellipse(frame.ambient, x + 3, shadowY + 3, 57, 9, '#224b42', .14);
@@ -72,11 +69,12 @@ function footsteps(frame: MoganFrame, s: StepsState, height: number) {
     const landed = ordinal < step.index;
     if (landed || ordinal === target && !s.play.complete) {
       const left = stepFoot(ordinal) === 'left', x = p.x + (left ? -1 : 1) * p.width * .135, y = p.y - p.width * .05;
+      const ready = !s.acted || step.clock >= timing.open;
       sprite(frame, 'shoe-' + ordinal, resource, { x, y }, p.width * .112,
-        { frame: left ? 1 : 2, anchorY: .78, rotation: left ? -.035 : .035, alpha: landed ? .76 : .25 + timing.progress * .52 });
-      if (!landed && s.acted && !step.recovery) {
-        const ready = step.clock >= timing.open, size = p.width * .105 * (s.play.reduced ? 1 : 1.9 - timing.progress * .9);
-        ellipse(frame.effects, x, y - p.width * .06, size, size * 1.5, ready ? '#f4d99a' : '#f2edce', ready ? .82 : .52, ready ? 2.5 : 1.5);
+        { frame: left ? 1 : 2, anchorY: .78, rotation: left ? -.035 : .035, alpha: landed ? .76 : ready ? .98 : .42 + timing.progress * .16 });
+      if (!landed && !step.recovery) {
+        const spot = stepSpot(s, height);
+        frame.hints.push(hintPose('next-footstep', { x: spot.x + (left ? -1 : 1) * spot.rx * .5, y: spot.y }, clamp(p.width * .17, 64, 100), left ? 0 : Math.PI, ready ? .95 : .2));
       }
     }
   }
@@ -86,7 +84,8 @@ function footsteps(frame: MoganFrame, s: StepsState, height: number) {
   const recent = s.events.filter(e => e.type === 'step-land').at(-1), age = recent ? s.age - recent.age : 9;
   if (recent && age < .55 && !s.play.reduced) {
     const p = stonePose(s, recent.index ?? 0, height), x = p.x + ((recent.index ?? 0) % 2 ? 1 : -1) * p.width * .135;
-    ellipse(frame.effects, x, p.y - p.width * .04, 12 + age * 52, 5 + age * 14, '#f7edcd', .52 * (1 - age / .55), 1.2);
+    const y = p.y - p.width * .04;
+    for (const side of [-1, 1]) line(frame.effects, [{ x: x + side * 16, y: y + 9 }, { x: x + side * 25, y: y + 7 }, { x: x + side * 32, y: y + 10 }], '#e5e9d5', 2, .55 * (1 - age / .55));
   }
 }
 function sling(frame: MoganFrame, s: Extract<MoganState, { game: 'sling' }>, height: number, legacy: LegacySling) {
@@ -109,6 +108,10 @@ function sling(frame: MoganFrame, s: Extract<MoganState, { game: 'sling' }>, hei
   line(frame.effects, ends, '#5c634b', 3, .93); line(frame.effects, ends.map(p => ({ x: p.x, y: p.y - 1 })), '#e8dab4', .85, .83);
   const leaf = q.shot || legacy.aimPouch(s), angle = q.shot ? Math.atan2(q.shot.vy, q.shot.vx || .001) * .3 : -.25;
   sprite(frame, 'paper-leaf', 'actor', toWorld(leaf), .057 * b.w, { frame: 5, rotation: angle + (s.play.reduced ? 0 : q.stage === 'flight' ? Math.sin(s.age * 8) * .06 : 0) });
+  if (q.stage === 'ready' && !q.aiming && !s.play.complete) {
+    const handle = toWorld(leaf);
+    frame.hints.push(hintPose('pull-paper-leaf', { x: handle.x - 16, y: handle.y + 10 }, 88, -.55, s.play.reduced ? .9 : .82 + Math.sin(s.age * 1.5) * .08));
+  }
   if (q.stage === 'ready' && !s.play.complete) for (const [i, p] of legacy.preview(s, 18).entries()) {
     const world = toWorld(p); ellipse(frame.effects, world.x, world.y, 2, 2, '#fff9dc', .75 * (1 - i / 23));
   }
@@ -123,7 +126,7 @@ function sling(frame: MoganFrame, s: Extract<MoganState, { game: 'sling' }>, hei
 }
 export function moganFrame(s: MoganState, height: number, legacy: LegacySling): MoganFrame {
   const elapsed = s.play.complete ? s.age - (s.play.completedAt ?? s.age) : 0;
-  const frame: MoganFrame = { sprites: [], ambient: [], water: [], effects: [], clip: null, alpha: s.play.reduced ? 1 : .5 + .5 * ease(s.age / .65), paper: s.play.complete ? (s.play.reduced ? 1 : ease((elapsed - .65) / 1.2)) : 0 };
+  const frame: MoganFrame = { sprites: [], ambient: [], water: [], effects: [], hints: [], clip: null, alpha: s.play.reduced ? 1 : .5 + .5 * ease(s.age / .65), paper: s.play.complete ? (s.play.reduced ? 1 : ease((elapsed - .65) / 1.2)) : 0 };
   sprite(frame, 'background', 'scene', { x: 400, y: height / 2 }, Math.max(800, height * 1280 / 720));
   // Follow the journey's virtual weather; clear scenes keep only leaf-tip water.
   if (s.weather === 'fog') {

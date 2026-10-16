@@ -49,14 +49,6 @@ export function createMiniGameView({ dom, api, platform: games, sound }: ViewOpt
       if (button.textContent !== control.label) button.textContent = control.label;
       button.disabled = waiting || !!control.disabled; button.setAttribute('data-primary', String(!!control.primary));
     }
-    const sling = s.game === 'sling'; $('art-aim').hidden = !sling || s.play.complete;
-    if (sling && s.sling) {
-      const angle = Math.round(s.sling.angle), power = Math.round(s.sling.power * 100);
-      if ($<HTMLInputElement>('art-angle').value !== String(angle)) $<HTMLInputElement>('art-angle').value = String(angle);
-      if ($<HTMLInputElement>('art-power').value !== String(power)) $<HTMLInputElement>('art-power').value = String(power);
-      text('art-angle-value', angle + '°'); text('art-power-value', power + '%');
-      for (const id of ['art-angle', 'art-power']) $<HTMLInputElement>(id).disabled = waiting || s.sling.stage !== 'ready';
-    }
     const hints = { puzzle: '1–6 选片 · 方向键选格 · Enter 放下', match: '方向键选格 · Enter 选中／交换 · R 重试', sling: '方向键调整 · 按住空格蓄力、松开发射 · R 重试' };
     text('art-key-hint', s.game && s.game in hints ? hints[s.game as keyof typeof hints] : '');
     $('micro-surface').setAttribute('aria-busy', String(refs.contentState === 'loading'));

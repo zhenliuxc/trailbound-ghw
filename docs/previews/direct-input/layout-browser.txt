@@ -1,0 +1,425 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "main": {
+        "x": 30.71875,
+        "y": 89,
+        "width": 962.546875,
+        "height": 2797.0625,
+        "right": 993.265625
+      },
+      "header": {
+        "x": 30.71875,
+        "y": 0,
+        "width": 962.546875,
+        "height": 89,
+        "right": 993.265625
+      },
+      "map": {
+        "x": 31.71875,
+        "y": 517.046875,
+        "width": 960.546875,
+        "height": 460.796875,
+        "right": 992.265625
+      },
+      "camera": {
+        "x": 0,
+        "y": 127.30000305175781,
+        "w": 720,
+        "h": 345.3999938964844
+      },
+      "routeBounds": {
+        "x": 245.99000549316406,
+        "y": 176.22999572753906,
+        "w": 228.02000427246094,
+        "h": 247.5399932861328
+      },
+      "routeColumns": 4,
+      "journalColumns": 5,
+      "journalEntries": 18,
+      "routeOverflow": false
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "clientWidth": 1280,
+      "scrollWidth": 1280,
+      "main": {
+        "x": 38.40625,
+        "y": 89,
+        "width": 1203.1875,
+        "height": 2596.234375,
+        "right": 1241.59375
+      },
+      "header": {
+        "x": 38.40625,
+        "y": 0,
+        "width": 1203.1875,
+        "height": 89,
+        "right": 1241.59375
+      },
+      "map": {
+        "x": 39.40625,
+        "y": 517.046875,
+        "width": 1201.1875,
+        "height": 540,
+        "right": 1240.59375
+      },
+      "camera": {
+        "x": 0,
+        "y": 138.16000366210938,
+        "w": 720,
+        "h": 323.67999267578125
+      },
+      "routeBounds": {
+        "x": 253.16000366210938,
+        "y": 184.00999450683594,
+        "w": 213.67999267578125,
+        "h": 231.97999572753906
+      },
+      "routeColumns": 4,
+      "journalColumns": 6,
+      "journalEntries": 18,
+      "routeOverflow": false
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "main": {
+        "x": 43.203125,
+        "y": 89,
+        "width": 1353.59375,
+        "height": 2532.296875,
+        "right": 1396.796875
+      },
+      "header": {
+        "x": 43.203125,
+        "y": 0,
+        "width": 1353.59375,
+        "height": 89,
+        "right": 1396.796875
+      },
+      "map": {
+        "x": 44.203125,
+        "y": 449.609375,
+        "width": 1351.59375,
+        "height": 540,
+        "right": 1395.796875
+      },
+      "camera": {
+        "x": 0,
+        "y": 156.1699981689453,
+        "w": 720,
+        "h": 287.6600036621094
+      },
+      "routeBounds": {
+        "x": 265.04998779296875,
+        "y": 196.9199981689453,
+        "w": 189.9000244140625,
+        "h": 206.1599884033203
+      },
+      "routeColumns": 7,
+      "journalColumns": 7,
+      "journalEntries": 18,
+      "routeOverflow": false
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "clientWidth": 1920,
+      "scrollWidth": 1920,
+      "main": {
+        "x": 57.59375,
+        "y": 89,
+        "width": 1804.796875,
+        "height": 2329.40625,
+        "right": 1862.390625
+      },
+      "header": {
+        "x": 57.59375,
+        "y": 0,
+        "width": 1804.796875,
+        "height": 89,
+        "right": 1862.390625
+      },
+      "map": {
+        "x": 58.59375,
+        "y": 422.5625,
+        "width": 1802.796875,
+        "height": 648,
+        "right": 1861.390625
+      },
+      "camera": {
+        "x": 0,
+        "y": 170.60000610351562,
+        "w": 720,
+        "h": 258.79998779296875
+      },
+      "routeBounds": {
+        "x": 274.5799865722656,
+        "y": 207.25999450683594,
+        "w": 170.84002685546875,
+        "h": 185.47999572753906
+      },
+      "routeColumns": 7,
+      "journalColumns": 9,
+      "journalEntries": 18,
+      "routeOverflow": false
+    },
+    {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "clientWidth": 2560,
+      "scrollWidth": 2560,
+      "main": {
+        "x": 72,
+        "y": 89,
+        "width": 2416,
+        "height": 2541.40625,
+        "right": 2488
+      },
+      "header": {
+        "x": 72,
+        "y": 0,
+        "width": 2416,
+        "height": 89,
+        "right": 2488
+      },
+      "map": {
+        "x": 73,
+        "y": 422.5625,
+        "width": 2414,
+        "height": 860,
+        "right": 2487
+      },
+      "camera": {
+        "x": 0,
+        "y": 171.75,
+        "w": 720,
+        "h": 256.5
+      },
+      "routeBounds": {
+        "x": 275.3399963378906,
+        "y": 208.08999633789062,
+        "w": 169.32000732421875,
+        "h": 183.82000732421875
+      },
+      "routeColumns": 7,
+      "journalColumns": 12,
+      "journalEntries": 18,
+      "routeOverflow": false
+    },
+    {
+      "viewport": {
+        "width": 2964,
+        "height": 1548
+      },
+      "clientWidth": 2964,
+      "scrollWidth": 2964,
+      "main": {
+        "x": 72,
+        "y": 89,
+        "width": 2820,
+        "height": 2541.40625,
+        "right": 2892
+      },
+      "header": {
+        "x": 72,
+        "y": 0,
+        "width": 2820,
+        "height": 89,
+        "right": 2892
+      },
+      "map": {
+        "x": 73,
+        "y": 422.5625,
+        "width": 2818,
+        "height": 860,
+        "right": 2891
+      },
+      "camera": {
+        "x": 0,
+        "y": 190.1300048828125,
+        "w": 720,
+        "h": 219.72999572753906
+      },
+      "routeBounds": {
+        "x": 287.4700012207031,
+        "y": 221.25999450683594,
+        "w": 145.05999755859375,
+        "h": 157.47999572753906
+      },
+      "routeColumns": 7,
+      "journalColumns": 15,
+      "journalEntries": 18,
+      "routeOverflow": false
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 800
+      },
+      "clientWidth": 1920,
+      "scrollWidth": 1920,
+      "main": {
+        "x": 57.59375,
+        "y": 89,
+        "width": 1804.796875,
+        "height": 2161.40625,
+        "right": 1862.390625
+      },
+      "header": {
+        "x": 57.59375,
+        "y": 0,
+        "width": 1804.796875,
+        "height": 89,
+        "right": 1862.390625
+      },
+      "map": {
+        "x": 58.59375,
+        "y": 422.5625,
+        "width": 1802.796875,
+        "height": 480,
+        "right": 1861.390625
+      },
+      "camera": {
+        "x": 0,
+        "y": 204.14999389648438,
+        "w": 720,
+        "h": 191.6999969482422
+      },
+      "routeBounds": {
+        "x": 296.7200012207031,
+        "y": 231.30999755859375,
+        "w": 126.55999755859375,
+        "h": 137.3800048828125
+      },
+      "routeColumns": 7,
+      "journalColumns": 9,
+      "journalEntries": 18,
+      "routeOverflow": false
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "main": {
+        "x": 0,
+        "y": 66.59375,
+        "width": 390,
+        "height": 3976.453125,
+        "right": 390
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 66.59375,
+        "right": 390
+      },
+      "map": {
+        "x": 14,
+        "y": 361.8125,
+        "width": 362,
+        "height": 460,
+        "right": 376
+      },
+      "camera": {
+        "x": 0,
+        "y": 0,
+        "w": 720,
+        "h": 600
+      },
+      "routeBounds": {
+        "x": 161.9600067138672,
+        "y": 85,
+        "w": 396.0799560546875,
+        "h": 430
+      },
+      "routeColumns": 3,
+      "journalColumns": 2,
+      "journalEntries": 18,
+      "routeOverflow": false,
+      "touchEmulated": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "clientWidth": 844,
+      "scrollWidth": 844,
+      "main": {
+        "x": 0,
+        "y": 89,
+        "width": 844,
+        "height": 3174.15625,
+        "right": 844
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 844,
+        "height": 89,
+        "right": 844
+      },
+      "map": {
+        "x": 31,
+        "y": 617.28125,
+        "width": 782,
+        "height": 510.46875,
+        "right": 813
+      },
+      "camera": {
+        "x": 0,
+        "y": 0,
+        "w": 720,
+        "h": 600
+      },
+      "routeBounds": {
+        "x": 161.9600067138672,
+        "y": 85,
+        "w": 396.0799560546875,
+        "h": 430
+      },
+      "routeColumns": 3,
+      "journalColumns": 4,
+      "journalEntries": 18,
+      "routeOverflow": false,
+      "touchEmulated": true
+    }
+  ],
+  "routeOverviews": [
+    "route-wugong",
+    "route-tiger",
+    "route-aotai",
+    "route-maclehose",
+    "route-changping",
+    "route-mogan",
+    "route-westlake"
+  ],
+  "resizePreservesProgress": true,
+  "pageErrors": [],
+  "readerData": "18 local layout fixtures; not earned gameplay",
+  "physicalPhoneNotTested": true
+}

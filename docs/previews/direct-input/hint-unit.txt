@@ -1,0 +1,10 @@
+✔ an unavailable optional watercolor cue retains a pencil marker without allocating per frame (388.983184ms)
+✔ a watercolor asset resolving after exit cannot decode, render or attach to the next scene (0.757378ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 482.572411

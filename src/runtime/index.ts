@@ -1,12 +1,13 @@
 export { createDom } from './dom';
 export { createSceneManager } from './scene-manager';
 export { createFrameLoop } from './frame-loop';
+export { mapViewport } from './map-viewport';
 export { createMiniGameController } from './mini-game-controller';
 export { createRewardController } from './reward-controller';
 export { createJournalController } from './journal-controller';
 export { createMusicLayer, musicLevel, musicTrack, WUGONG_MUSIC, WUGONG_THEMES, MOGAN_MUSIC, MOGAN_THEMES } from './music-layer';
 export { createMoganGames } from './mogan/adapter';
-export { MOGAN_GAMES, MOGAN_MEMORIES, RAIN_PHRASE, createMoganState, inputMogan, tickMogan, releaseMogan, keyMogan, leafTip, stepTiming, stepFoot, CUP } from './mogan/rules';
+export { MOGAN_GAMES, MOGAN_MEMORIES, RAIN_PHRASE, createMoganState, inputMogan, tickMogan, releaseMogan, keyMogan, leafTip, stepTiming, stepFoot, stepSpot, stonePose, CUP } from './mogan/rules';
 export { MOGAN_ROUTE_ASSETS } from './mogan/scene';
 export { moganFrame, stageBounds as moganBounds } from './mogan/scene-model';
 export type * from './contracts';
