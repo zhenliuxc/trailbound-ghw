@@ -7,7 +7,7 @@ class Element{
   getAttribute(name){return this.attributes[name]??null;}removeAttribute(name){if(name==='id')this.doc.ids.delete(this.id);delete this.attributes[name];}
   appendChild(el){el.remove?.();el.parentNode=this;this.children.push(el);return el;}replaceChildren(...els){for(const child of this.children)child.parentNode=null;this.children=els;for(const child of els)child.parentNode=this;}
   replaceWith(el){const parent=this.parentNode,index=parent.children.indexOf(this);parent.children[index]=el;el.parentNode=parent;this.parentNode=null;}
-  matches(selector){const attr=/^\[([\w-]+)(?:="([^"]*)")?\]$/.exec(selector);return attr?this.getAttribute(attr[1])!==null&&(attr[2]===undefined||this.getAttribute(attr[1])===attr[2]):this.tagName.toLowerCase()===selector;}
+  matches(selector){const attr=/^([\w-]+)?\[([\w-]+)(?:="([^"]*)")?\]$/.exec(selector);return attr?(!attr[1]||this.tagName.toLowerCase()===attr[1])&&this.getAttribute(attr[2])!==null&&(attr[3]===undefined||this.getAttribute(attr[2])===attr[3]):this.tagName.toLowerCase()===selector;}
   closest(selector){for(let node=this;node;node=node.parentNode)if(node.matches?.(selector))return node;return null;}
   querySelector(selector){for(const child of this.children){if(child.matches?.(selector))return child;const found=child.querySelector?.(selector);if(found)return found;}return null;}
   addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
@@ -25,9 +25,9 @@ function harness(storage={getItem:()=>null,setItem:()=>{}},options={}){
   const document={ids:new Map(),all:[],listeners:{},hidden:false,activeElement:null,viewport:options.viewport};
   document.createElement=tag=>{const el=new Element(tag,document);document.all.push(el);return el;};document.createElementNS=(_,tag)=>document.createElement(tag);
   const photoRequests=[],photoImages=[];
-  const Image=options.images?class extends Element{
+  const Image=options.images||options.autoImages?class extends Element{
     constructor(){super('img',document);photoImages.push(this);this.complete=false;this.naturalWidth=0;this.decodeCalls=0;}
-    setAttribute(name,value){super.setAttribute(name,value);if(name==='src')photoRequests.push(value);}
+    setAttribute(name,value){super.setAttribute(name,value);if(name==='src'){photoRequests.push(value);if(options.autoImages)queueMicrotask(()=>this.load());}}
     decode(){this.decodeCalls++;return options.decode?options.decode(this):Promise.resolve();}
     load(){this.complete=true;this.naturalWidth=1024;this.onload?.();}
     fail(){this.complete=true;this.naturalWidth=0;this.onerror?.();}
@@ -48,11 +48,13 @@ function harness(storage={getItem:()=>null,setItem:()=>{}},options={}){
   const window={confirm:options.confirm||(()=>false),Blob,URL:{createObjectURL:blob=>{downloads.push(blob);return 'blob:fixture-'+downloads.length;},revokeObjectURL(){}},TrailJournal:require('../dist/journal.js'),location:{protocol:'file:'},TrailRouteMoments:require('../dist/route-moments.js'),TrailGame:require('../dist/game.js'),TrailJourney:require('../dist/journey.js'),TrailScenery:require('../dist/scenery.js'),TrailMotion:require('../dist/motion.js'),TrailLife:require('../dist/life.js'),TrailLandscapeData:require('../dist/landscape-data.js'),TrailDiscoveries:require('../dist/discoveries.js'),TrailMicroMoments:require('../dist/micro-moments.js'),TrailNature:require('../dist/nature.js'),TrailAudio:require('../dist/audio.js'),TrailCheckpoints:require('../dist/checkpoints.js'),AudioContext:options.AudioContext,setTimeout:options.timers?.setTimeout,clearTimeout:options.timers?.clearTimeout,listeners:{},addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);},emit(type,event={}){for(const fn of this.listeners[type]??[])fn({target:document.activeElement,preventDefault(){this.prevented=true;},...event});}};
   if(options.miniGames){window.TrailMiniGames=require('../dist/mini-games.js');window.TrailImageCache=require('../dist/image-cache.js');}
   if(options.discoverySeed!==undefined){const base=window.TrailDiscoveries;window.TrailDiscoveries={...base,create:(route,seed,opts)=>base.create(route,options.discoverySeed,opts)};}
+  if(options.discoveryId){const base=window.TrailDiscoveries;window.TrailDiscoveries={...base,create:(route,seed,opts)=>{const trip=base.create(route,seed,opts);return base.item(options.discoveryId).route===route?{...trip,slots:[{id:options.discoveryId,at:.02,until:.95,side:1}]}:trip;}};}
   window.Image=Image;
   window.navigator=options.navigator;window.fetch=options.fetch;
   let now=0,frameId=0;const pending=new Map();window.requestAnimationFrame=fn=>{const id=++frameId;pending.set(id,fn);return id;};window.cancelAnimationFrame=id=>pending.delete(id);window.matchMedia=()=>({matches:!!options.reducedMotion});
   vm.runInNewContext(fs.readFileSync(require.resolve('../dist/app.js'),'utf8'),{window,document,localStorage:storage,console}, {filename:'app.js'});
   const api={document,window,downloads,photoImages,photoRequests,advance(seconds){const count=Math.ceil(seconds*50);for(let i=0;i<count;i++){now+=20;const callbacks=[...pending.values()];pending.clear();for(const callback of callbacks)callback(now);}},pendingFrames:()=>pending.size,$:id=>document.getElementById(id),click:id=>document.getElementById(id).emit('click'),key:key=>window.emit('keydown',{key})};
+  api.readyArt=async()=>{for(let i=0;i<100;i++)await Promise.resolve();};
   api.finishMoment=(mode='tap')=>{if(api.$('micro-panel').hidden)throw Error('No active micro-moment');if(mode==='tap')for(let i=0;i<3&&!api.$('micro-panel').hidden;i++){api.click('micro-surface');api.advance(.22);}for(let i=0;i<520&&!api.$('micro-panel').hidden;i++)api.advance(.02);if(!api.$('micro-panel').hidden)throw Error('Micro-moment did not finish');if(!api.$('reward-overlay').hidden)api.click('reward-continue');};
   api.collectMoment=(mode='tap')=>{api.click('observe-button');api.finishMoment(mode);};
   // Follow the existing first narrative choice until the next photograph, using UI events.

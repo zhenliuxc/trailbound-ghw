@@ -464,6 +464,7 @@
    if(event==='wind-send'){
     texture(group,{kind:'wind',cutoff:1400,length:2.7,gain:.034,pan:-.3},start);transient('paper',-.25,.19,.76);tone(group,{at:.3,midi:62,length:1.4,gain:.014,instrument:'air',pan:.25,space:.3},start);return true;
    }
+   if(event==='flight-phase'){texture(group,{kind:'wind',cutoff:index===1?1450:760,length:1.2,gain:.026,pan:index===1?-.25:.3},start);transient('paper',pan,.16,index===1?1.18:.82);tone(group,{at:.08,midi:index===1?64:69,length:.65,gain:.011,instrument:'air',pan,space:.16},start);return true;}
    if(event==='wind-turn'){texture(group,{kind:'wind',cutoff:950,length:.75,gain:.018,pan,space:.15},start);return true;}
    if(event==='wind-blocked'){
     texture(group,{kind:'wind',cutoff:350,length:.55,gain:.025},start);tone(group,{at:0,midi:50,length:.4,gain:.012,instrument:'felt',pan,space:.08},start);return true;

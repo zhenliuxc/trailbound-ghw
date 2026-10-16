@@ -319,3 +319,6 @@
 @media(max-height:550px) and (orientation:landscape){.micro-panel:is([data-game="clouds"],[data-game="greet"]){grid-template-columns:minmax(0,1fr) minmax(210px,.58fr);grid-template-areas:"heading heading" "scene tools" "progress tools" "instruction controls";width:min(940px,calc(100vw - 18px));gap:6px 10px}.micro-panel:is([data-game="clouds"],[data-game="greet"]) .micro-surface{width:100%;max-height:calc(100dvh - 130px);aspect-ratio:800/460}.wugong-tools{flex-direction:column;justify-content:center;align-self:stretch;padding:9px}.wugong-actions{max-width:100%;flex-wrap:wrap}.wugong-dialogue p{font-size:12px}.micro-panel:is([data-game="clouds"],[data-game="greet"]) .micro-result{display:none}}
 @media(prefers-reduced-motion:reduce){.wugong-actions button{transition:none}}
 @media(max-width:680px) and (orientation:portrait){.micro-panel:is([data-game="clouds"],[data-game="greet"]) .micro-surface{width:100%;max-height:none;aspect-ratio:1}}
+
+/* Continuous flight uses travel distance, rather than three held-wind stamps. */
+.micro-panel[data-game="wind"] .wind-feathers{display:none}

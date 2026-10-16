@@ -2,15 +2,17 @@
  'use strict';
  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number.isFinite(v)?v:a));
  const kinds={'westlake-floating-leaf':'creek','bamboo-drop':'rain','meadow-bird':'wind',...N.kinds,...A.kinds};
- const prompts={...N.prompts,...A.prompts,creek:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。方向键也能推动；可以随时重试。',rain:'左右拖动竹筒，接住八滴从竹叶落下的雨。接住才会奏响音符；方向键移动，漏接可以继续。',wind:'上下拖动牵线，让纸鸢在流动的风带里稳住。借三阵风，送它飞向云海。也可用方向键操作。'};
- const results={...N.results,...A.results,creek:'我用一圈圈水纹，陪落叶绕过溪石，终于漂进了下游的光里。',rain:'我用竹筒接住竹叶上的雨滴，八个清亮的声音串起了这段竹林记忆。',wind:'我顺着草浪辨认风向，牵着燕子纸鸢借过三阵风，把它送向山脊的云海。'};
+ const K=W.flight;
+ const prompts={...N.prompts,...A.prompts,creek:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。方向键也能推动；可以随时重试。',rain:'左右拖动竹筒，接住八滴从竹叶落下的雨。接住才会奏响音符；方向键移动，漏接可以继续。',wind:K.prompt};
+ const results={...N.results,...A.results,creek:'我用一圈圈水纹，陪落叶绕过溪石，终于漂进了下游的光里。',rain:'我用竹筒接住竹叶上的雨滴，八个清亮的声音串起了这段竹林记忆。',wind:K.result};
  const gates=[{x:.34,y:.36},{x:.59,y:.66},{x:.84,y:.43}];
- const windLevels=[.62,.42,.24],windNames=['草坡来风','越过山脊','云海展翼'];
- function windTarget(s){return windLevels[Math.min(2,s.gates)]+(s.play.reduced?0:Math.sin(s.age*.65)*.025);}
+ const windLevels=[.67,.45,.48],windNames=K.names;
+ function windTarget(s){return K.target(s);}
  const rocks=[{x:.27,y:.64,r:.075},{x:.49,y:.34,r:.08},{x:.72,y:.68,r:.075}];
- function create(entry,options={}){if(A.kinds[entry.id])return A.create(entry,options);if(N.kinds[entry.id])return N.create(entry,options);return {id:entry.id,route:entry.route,kind:entry.interaction,game:kinds[entry.id],age:0,acted:false,gesture:'look',x:.5,y:.5,dragging:false,done:false,play:{type:'minigame',progress:0,complete:false,completedAt:null,reduced:!!options.reduced},actor:{x:kinds[entry.id]==='creek'?.1:kinds[entry.id]==='wind'?.44:.22,y:kinds[entry.id]==='wind'?.72:kinds[entry.id]==='rain'?Q.cup.mouthY:.5,vx:0,vy:0},control:{x:.5,y:kinds[entry.id]==='wind'?.72:.5},windHold:0,windNear:false,lastTug:-10,turnUntil:0,gates:0,caught:0,drops:[],spawn:1.2,dropIndex:0,serial:0,events:[],pulse:null,feedback:'准备好了就轻触画面开始。',cooldown:0};}
+ function create(entry,options={}){if(entry.id==='meadow-bird')return K.create(entry,options);if(A.kinds[entry.id])return A.create(entry,options);if(N.kinds[entry.id])return N.create(entry,options);return {id:entry.id,route:entry.route,kind:entry.interaction,game:kinds[entry.id],age:0,acted:false,gesture:'look',x:.5,y:.5,dragging:false,done:false,play:{type:'minigame',progress:0,complete:false,completedAt:null,reduced:!!options.reduced},actor:{x:kinds[entry.id]==='creek'?.1:kinds[entry.id]==='wind'?.44:.22,y:kinds[entry.id]==='wind'?.72:kinds[entry.id]==='rain'?Q.cup.mouthY:.5,vx:0,vy:0},control:{x:.5,y:kinds[entry.id]==='wind'?.72:.5},windHold:0,windNear:false,lastTug:-10,turnUntil:0,gates:0,caught:0,drops:[],spawn:1.2,dropIndex:0,serial:0,events:[],pulse:null,feedback:'准备好了就轻触画面开始。',cooldown:0};}
  function event(s,type,x,y,extra={}){s.serial++;s.events=[...s.events,{serial:s.serial,type,x,y,age:s.age,...extra}].slice(-8);}
  function input(state,point={},mode='tap'){
+  if(state?.game==='wind')return K.input(state,point,mode);
   if(A.assets[state?.game])return A.input(state,point,mode);
   if(N.assets[state?.game])return N.input(state,point,mode);
   if(!state||state.done||state.play.complete)return state;
@@ -39,21 +41,10 @@
    const oldX=a.x;a.x+=(clamp(s.control.x,.08,.92)-a.x)*(1-Math.exp(-dt*10));a.y=Q.cup.mouthY;s.spawn-=dt;
    if(s.spawn<=0){const n=s.dropIndex++;s.drops.push({x:Q.nextDrop(n),y:.24,speed:.29+(n%3)*.025});s.spawn=2;}
    s.drops=s.drops.filter(d=>{const oldY=d.y;d.y+=dt*d.speed;const crossed=oldY<Q.cup.mouthY&&d.y>=Q.cup.mouthY,at=crossed?(Q.cup.mouthY-oldY)/(d.y-oldY):0,cupX=oldX+(a.x-oldX)*at;if(crossed&&Math.abs(d.x-cupX)<(Q.cup.mouthRadius-3)/800){s.caught++;event(s,'catch',d.x,Q.cup.mouthY,{offsetX:d.x-cupX});s.feedback='接住了 '+s.caught+' / 8 滴，听见竹筒的回声。';return false;}if(d.y>.94){event(s,'miss',d.x,.94);s.feedback='雨滴落回石阶，下一滴还会来。';return false;}return true;});s.play.progress=clamp(s.caught/8);
-  }else{
-   const target=windTarget(s),gust=s.play.reduced?0:Math.sin(s.age*1.7)*.018;
-   a.vy=clamp((a.vy+(s.control.y-a.y)*dt*4+gust*dt)*Math.exp(-dt*3),-.3,.3);a.y=clamp(a.y+a.vy*dt,.12,.84);a.x+=(.44+s.gates*.065-a.x)*(1-Math.exp(-dt*4));
-   if(s.age<s.turnUntil){s.windNear=false;return s;}
-   const near=Math.abs(a.y-target)<.075&&Math.abs(a.vy)<.15;
-   if(!near&&s.windNear&&s.windHold>.4&&!s.cooldown){event(s,'slip',a.x,a.y);s.cooldown=.7;}
-   if(near&&!s.windNear&&!s.cooldown){event(s,'lift',a.x,a.y);s.cooldown=1.4;}s.windNear=near;
-   s.windHold=clamp((s.windHold||0)+(near?dt:-dt*.65),0,2.6);
-   s.feedback=near?'风托住纸鸢了，稳住这阵风。':a.y>target?'草浪向上翻起，轻轻往上牵线。':'纸鸢飞得太高了，松一点线，回到风里。';
-   if(s.windHold>=2.6){s.gates++;s.turnUntil=s.age+(s.play.reduced?.25:.85);s.windHold=0;s.windNear=false;event(s,'goal',a.x,a.y);s.feedback=s.gates<3?'接住这阵风了，下一阵在更高处。':'纸鸢越过山脊，云海在眼前展开。';}
-   s.play.progress=(s.gates+s.windHold/2.6)/3;
   }
   if(s.play.progress>=1){s.play.complete=true;s.play.completedAt=s.age;s.finishFrom={...a};event(s,'complete',a.x,a.y);s.feedback='完成了，正在展开这一刻的手绘纪念。';}return s;
  }
- function tick(state,dt){if(A.assets[state?.game])return A.tick(state,dt);if(N.assets[state?.game])return N.tick(state,dt);if(!Number.isFinite(dt)||dt<=0)return state;let s=state;for(let remaining=Math.min(.25,dt);remaining>1e-8;remaining-=.025)s=step(s,Math.min(.025,remaining));return s;}
+ function tick(state,dt){if(state?.game==='wind')return K.tick(state,dt);if(A.assets[state?.game])return A.tick(state,dt);if(N.assets[state?.game])return N.tick(state,dt);if(!Number.isFinite(dt)||dt<=0)return state;let s=state;for(let remaining=Math.min(.25,dt);remaining>1e-8;remaining-=.025)s=step(s,Math.min(.025,remaining));return s;}
  // One shared vector scene description keeps the GPU view and its non-GPU fallback equivalent.
  const ellipse=(x,y,rx,ry,color,alpha=1)=>({shape:'ellipse',x,y,rx,ry,color,alpha});
  const line=(points,color,width=1,alpha=1)=>({shape:'line',points,color,width,alpha});
@@ -97,7 +88,7 @@
   }else{
    const target=windTarget(s)*460,near=s.windNear;
    // Wind is a moving current in the landscape, not a floating checkpoint ring.
-   for(let j=0;j<5;j++){const path=[];for(let i=0;i<42;i++){const xx=60+i*18,yy=target+(j-2)*10+Math.sin(xx*.011-t*1.4+j*.45)*7;path.push(xx,yy);}out.push(line(path,'#435f61',3,j===2?.12:.06));out.push(line(path,near?'#fff1c2':'#fffbed',j===2?2:1,near?.64:.42));}
+   for(let j=0;j<5;j++){const path=[];for(let i=0;i<42;i++){const xx=60+i*18,yy=K.flowAt(s,xx/800)*460+(j-2)*K.radius(s)*460*.33;path.push(xx,yy);}out.push(line(path,'#435f61',3,j===2?.12:.06));out.push(line(path,near?'#fff1c2':'#fffbed',j===2?2:1,near?.64:.42));}
    for(let i=0;i<16;i++){const xx=760-((t*67+i*53)%700),yy=target+Math.sin(xx*.011-t*1.4)*7+(i%5-2)*10;out.push(ellipse(xx,yy,2.8,1.1,near?'#f3d58a':'#f8efd1',.68));out.push(line([xx,yy,xx+9,yy-4],'#f8efd1',.8,.4));}
    // Loose catenary-like line and separate cloth ribbons respond to the flight motion.
    const cord=[];for(let i=0;i<=32;i++){const q=i/32;cord.push(72+(x-72)*q,445+(y+18-445)*q+Math.sin(q*Math.PI)*(20+a.vy*100));}out.push(line(cord,'#4f6254',2,.28));out.push(line(cord,'#f8e7bd',.9,.9));
@@ -109,7 +100,7 @@
    for(let i=0;i<22;i++){const xx=i*39-15,sway=s.play.reduced?0:Math.sin(t*1.8+i*.4)*8;out.push(line([xx,460,xx+8+sway*.5,437-i%4*4,xx+19+sway,421-i%3*7],'#a7be73',2,.6));out.push(line([xx+8+sway*.5,437-i%4*4,xx-3+sway,431-i%4*4],'#e4d89e',1,.55));}
 
   }
-  for(const e of s.events){const age=s.age-e.age;if(age>1||!['catch','goal','complete','bump','miss'].includes(e.type))continue;const color=e.type==='miss'||e.type==='bump'?'#d9dfc5':'#fff0b0';for(let i=0;i<6;i++){const angle=i*Math.PI/3;out.push(ellipse(e.x*800+Math.cos(angle)*age*40,e.y*460+Math.sin(angle)*age*25-age*15,2,2,color,1-age));}}
+  for(const e of s.events){const age=s.age-e.age;if(age>1||!['catch','goal','flight-phase','complete','bump','miss'].includes(e.type))continue;const color=e.type==='miss'||e.type==='bump'?'#d9dfc5':'#fff0b0';for(let i=0;i<6;i++){const angle=i*Math.PI/3;out.push(ellipse(e.x*800+Math.cos(angle)*age*40,e.y*460+Math.sin(angle)*age*25-age*15,2,2,color,1-age));}}
   return out;
  }
  function drawSvg(svg,parent,shapes){parent.replaceChildren();for(const f of shapes){const common={fill:f.color,opacity:f.alpha??1};if(f.shape==='rect')svg('rect',{...common,x:f.x,y:f.y,width:f.w,height:f.h},parent);else if(f.shape==='ellipse'||f.shape==='ring')svg('ellipse',{...common,cx:f.x,cy:f.y,rx:f.rx,ry:f.ry,...(f.shape==='ring'?{fill:'none',stroke:f.color,'stroke-width':f.width}:{})},parent);else svg(f.shape==='line'?'polyline':'polygon',{...common,points:f.points.join(' '),...(f.shape==='line'?{fill:'none',stroke:f.color,'stroke-width':f.width,'stroke-linecap':'round','stroke-linejoin':'round'}:{})},parent);}}
@@ -170,7 +161,7 @@ app.canvas.setAttribute('data-ready','false');
  function disposeRenderer(refs){const r=refs.renderer;refs.renderer=null;if(r){try{r.art?.dispose();r.wind?.dispose();r.water?.dispose();r.wugong?.dispose();}catch(_){}try{r.app.destroy(true,{children:true});}catch(_){}try{r.texture?.destroy(true);r.kiteTexture?.destroy(true);}catch(_){}} }
  function dispose(refs){if(!refs?.mini)return;refs.disposed=true;refs.resizeObserver?.disconnect();disposeRenderer(refs);}
  function paint(refs,s){if(!refs||refs.disposed||!s)return;refs.latest=s;if(refs.art){if(refs.renderer?.art?.ready){try{refs.renderer.art.paint(s);refs.renderer.app.render();return;}catch(_){disposeRenderer(refs);}}B.paintFallback(refs,s);return;}if(refs.wugong){if(refs.renderer?.wugong?.ready){try{refs.renderer.wugong.paint(s);refs.renderer.app.render();return;}catch(_){disposeRenderer(refs);}}N.paintFallback(refs,s);return;}const tilt=s.play.reduced?0:clamp(s.actor.vy*1.6,-.23,.23)+Math.sin(s.age*2.1)*.025;if(refs.waterActorSvg)refs.actorLayer.setAttribute('transform',`translate(${s.actor.x*800} ${s.actor.y*(refs.height||460)}) rotate(${s.play.reduced||s.game==='rain'?0:tilt*180/Math.PI})`);if(refs.renderer?.water?.ready){try{refs.renderer.water.paint(s);refs.renderer.app.render();return;}catch(_){disposeRenderer(refs);}}if(refs.kiteSvg)refs.actorLayer.setAttribute('transform',`translate(${s.actor.x*800} ${s.actor.y*(refs.height||460)-8}) rotate(${tilt*180/Math.PI})`);if(refs.renderer?.wind?.hasKite){try{refs.renderer.fg.visible=false;refs.renderer.wind.paint(s);refs.renderer.app.render();return;}catch(_){disposeRenderer(refs);}}const shapes=foreground(s,refs.painted);if(refs.renderer?.water&&!refs.renderer.water.ready)drawSvg(refs.svg,refs.fg,shapes);if(refs.renderer){try{drawPixi(refs.renderer.P,refs.renderer.fg,shapes);if(refs.renderer.kite){refs.renderer.kite.position.set(s.actor.x*800,s.actor.y*460-8);refs.renderer.kite.rotation=tilt;refs.renderer.kite.scale.x=174/refs.renderer.kite.texture.width*(s.play.reduced?1:1+Math.sin(s.age*2.1)*.018); }if(refs.renderer.wind){refs.renderer.fg.visible=!refs.renderer.wind.hasKite;refs.renderer.wind.paint(s);}refs.renderer.app.render();}catch(_){disposeRenderer(refs);drawSvg(refs.svg,refs.fg,shapes);}}else drawSvg(refs.svg,refs.fg,shapes);}
- const owner=s=>A.assets[s?.game]?A:N.assets[s?.game]?N:null;
+ const owner=s=>s?.game==='wind'?K:A.assets[s?.game]?A:N.assets[s?.game]?N:null;
  function enhance(base){return {...base,
   create:(e,o)=>A.kinds[e.id]?A.create(e,o):N.kinds[e.id]?N.create(e,o):kinds[e.id]?create(e,o):base.create(e,o),
   act:(s,p)=>owner(s)?owner(s).input(s,p):s.game?input(s,p):base.act(s,p),
@@ -179,9 +170,9 @@ app.canvas.setAttribute('data-ready','false');
   tick:(s,dt)=>owner(s)?owner(s).tick(s,dt):s.game?tick(s,dt):base.tick(s,dt),
   draw:(svg,p,e)=>A.kinds[e.id]?B.draw(svg,p,e):N.kinds[e.id]?N.draw(svg,p,e):kinds[e.id]?draw(svg,p,e):base.draw(svg,p,e),
   paint:(r,s,reduced)=>s.game?paint(r,s):base.paint(r,s,reduced),
-  instruction:e=>A.prompts[kinds[e.id]]||N.prompts[kinds[e.id]]||prompts[kinds[e.id]]||base.instruction(e),
+  instruction:e=>e.id==='meadow-bird'?K.prompt:A.prompts[kinds[e.id]]||N.prompts[kinds[e.id]]||prompts[kinds[e.id]]||base.instruction(e),
   status:s=>s.game?s.feedback:base.status(s),
-  outcome:(s,e)=>s.game?{id:s.id,edition:e.edition,earned:s.play.complete,interaction:s.gesture,memory:e.memory+(s.play.complete?(A.results[s.game]||N.results[s.game]||results[s.game]):'我试着与这里的风雨玩了一会儿，下次再来。'),title:s.play.complete?e.tag:e.name}:base.outcome(s,e)};}
+  outcome:(s,e)=>s.game?{id:s.id,edition:e.edition,earned:s.play.complete,interaction:s.gesture,memory:e.memory+(s.play.complete?((s.game==='wind'?K.result:null)||A.results[s.game]||N.results[s.game]||results[s.game]):'我试着与这里的风雨玩了一会儿，下次再来。'),title:s.play.complete?e.tag:e.name}:base.outcome(s,e)};}
 
  return {artAssets:A.assets,artFlow:A.sample,artKey:A.key,artRouteAssets:route=>Object.entries(A.assets).filter(([game])=>A.routes[game]===route).flatMap(([,group])=>Object.values(group)),wugongAssets:N.assets,wugongFlow:N.sample,point:(refs,p)=>refs?.art?A.point(refs,p):refs?.wugong?N.point(refs,p):p,waterAssets:Q.assets,waterFlow:Q.sample,flow:W.sample,finishDuration:s=>A.assets[s.game]?A.finishDuration(s):N.assets[s.game]?N.finishDuration(s):s.game==='wind'?W.finishDuration(s):Q.finishDuration(s),kinds,prompts,results,gates,windLevels,windNames,windTarget,rocks,create,input,tick,background,foreground,drawPixi,resize,mount,dispose,enhance};
 }));

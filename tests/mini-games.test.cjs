@@ -1,5 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const Mini=require('../dist/mini-games.js'),D=require('../dist/discoveries.js'),X=Mini.enhance(require('../dist/micro-moments.js')),{harness}=require('./dom-harness.cjs'),{fixture}=require('./audio-fixture.cjs'),Audio=require('../dist/audio.js');
+const {openWind,fly}=require('./wugong-ui-helpers.cjs');
 // The original three physics games have a different control model from the Wugong stories.
 const entries=['westlake-floating-leaf','bamboo-drop','meadow-bird'].map(id=>D.item(id));
 function advance(s,seconds){for(let i=0;i<seconds*40;i++)s=X.tick(s,.025);return s;}
@@ -25,12 +26,11 @@ test('reduced motion preserves gameplay while suppressing ambient motion and geo
 test('real PixiJS Graphics accepts every scene primitive',async()=>{
  const P=await import('pixi.js');for(const e of entries){const g=new P.Graphics(),s=X.create(e);Mini.drawPixi(P,g,[...Mini.background(s.game),...Mini.foreground(s)]);assert.ok(g.context.instructions.length>100);g.destroy();}
 });
-test('new app path keeps pause, skip without reward, retry, sound controls and keyboard input',()=>{
- for(const viewport of [{width:320,height:435},{width:990,height:646}]){const h=harness(undefined,{miniGames:true,viewport});h.click('overlay-action');h.advance(10);h.click('observe-button');assert.equal(h.$('mini-controls').hidden,false);h.advance(15);assert.equal(h.$('micro-panel').hidden,false);h.$('micro-surface').emit('keydown',{key:'ArrowUp'});h.window.emit('blur');assert.equal(h.pendingFrames(),0);h.advance(20);assert.equal(h.$('micro-panel').hidden,false);h.window.emit('focus');h.click('mini-retry');assert.equal(h.$('micro-progress').getAttribute('aria-valuenow'),'0');h.click('micro-skip');assert.equal(h.$('reward-overlay').hidden,true);}
+test('new app path keeps pause, skip without reward, retry, sound controls and keyboard input',async()=>{
+ for(const viewport of [{width:320,height:435},{width:990,height:646}]){const h=harness(undefined,{miniGames:true,autoImages:true,viewport});h.click('overlay-action');h.advance(10);h.click('observe-button');await h.readyArt();assert.equal(h.$('mini-controls').hidden,false);h.advance(15);assert.equal(h.$('micro-panel').hidden,false);h.$('micro-surface').emit('keydown',{key:'ArrowUp'});h.window.emit('blur');assert.equal(h.pendingFrames(),0);h.advance(20);assert.equal(h.$('micro-panel').hidden,false);h.window.emit('focus');h.click('mini-retry');assert.equal(h.$('micro-progress').getAttribute('aria-valuenow'),'0');h.click('micro-skip');assert.equal(h.$('reward-overlay').hidden,true);}
 });
-test('new app gameplay completes a wind challenge and saves exactly one earned reward',()=>{
- const records={value:null,getItem(){return this.value;},setItem(k,v){this.value=v;}};const h=harness(records,{miniGames:true});h.click('overlay-action');h.advance(10);h.click('observe-button');
- const surface=h.$('micro-surface');for(const y of Mini.windLevels){surface.emit('pointerdown',{pointerId:1,clientX:350,clientY:y*600,button:0,isPrimary:true});surface.emit('pointerup',{pointerId:1,clientX:350,clientY:y*600});h.advance(6);}h.advance(1.5);
+test('new app gameplay completes a wind challenge and saves exactly one earned reward',async()=>{
+ const records={value:null,getItem(){return this.value;},setItem(k,v){this.value=v;}};const h=harness(records,{miniGames:true,autoImages:true});await openWind(h);fly(h);
  assert.equal(h.$('micro-panel').hidden,true);assert.equal(h.$('reward-overlay').hidden,false);assert.equal(D.loadMoments(records).filter(m=>m.earned).length,1);h.click('reward-continue');h.click('reward-continue');assert.equal(D.loadMoments(records).filter(m=>m.earned).length,1);
 });
 test('event sounds respect mute and background suspension and clean up voices',async()=>{

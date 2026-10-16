@@ -1,17 +1,17 @@
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailWindScene=api;}(typeof globalThis!=='undefined'?globalThis:this,function(){
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./kite-flight.js'):root.TrailKiteFlight);if(typeof module==='object'&&module.exports)module.exports=api;else root.TrailWindScene=api;}(typeof globalThis!=='undefined'?globalThis:this,function(K){
  'use strict';
  const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n);};
  const grassFile='sprites/wugong-meadow-grass-v1.webp';
  const finishDuration=s=>s.play.reduced?.45:3.2;
  // One simulation clock drives scene, cues and sound. Background tabs pause this clock.
  function sample(s){
-  const reduced=s.play.reduced,t=reduced?0:s.play.complete?Math.min(s.age,s.play.completedAt+1.7):s.age,goal=s.events.filter(e=>e.type==='goal').at(-1),since=goal?s.age-goal.age:100;
+  const reduced=s.play.reduced,t=reduced?0:s.play.complete?Math.min(s.age,s.play.completedAt+1.7):s.age,goal=s.events.filter(e=>e.type==='flight-phase').at(-1),since=goal?s.age-goal.age:100;
   const ending=s.play.complete?s.age-s.play.completedAt:0,fly=s.play.complete?(reduced?1:ease(ending/1.7)):0;
   const phase=s.play.complete?(reduced||ending>1.65?'memory':'soar'):since<.85?'caught':!s.acted?'invite':'play';
   return {t,phase,fly,entry:reduced||s.acted?1:ease(s.age/1.1),catchPulse:reduced?0:Math.sin(clamp(since/.85)*Math.PI),paper:s.play.complete?(reduced?1:ease((ending-1.65)/1.1)):0,
-   tension:clamp(.25+Math.abs(s.control.y-s.actor.y)*2+(s.windNear?.4:0)),stage:Math.min(2,s.gates),since,
+   tension:clamp(.25+Math.abs(s.control.y-s.actor.y)*2+(s.windNear?.4:0)),stage:K.stage(s),since,counter:Math.round(s.travel*100)+'% 航程',energy:s.energy||0,
    kiteScale:1-fly*.48,windAlpha:s.play.complete?1-ease(ending/.7):1,
-   cue:phase==='memory'?'把这一阵风，留在手帐里':phase==='soar'?'越过山脊，云海展开':phase==='caught'?['','借到第一阵风','借到第二阵风','借到第三阵风'][s.gates]:!s.acted?'上下拖动牵线 · 顺着草浪找风':s.windNear?'风托住了 · 稳稳牵住':s.actor.y>([.62,.42,.24][Math.min(2,s.gates)])?'轻轻向上牵线 ↑':'松一点，回到风里 ↓'};
+   cue:phase==='memory'?'把这一程风，留在手帐里':phase==='soar'?'越过山脊，云海展开':phase==='caught'?K.names[K.stage(s)]:!s.acted?'上下拖动牵线 · 顺着草浪起飞':s.feedback};
  }
  // Modify the same vertex buffer in place. A folded paper centre stays fixed while its wings flex.
  function deform(vertices,original,width,height,t,force,kind,reduced){
@@ -40,10 +40,10 @@
   }
   function paint(s){
    if(disposed)return;last=s;const v=sample(s),t=v.t,H=app.screen?.height||460,x=s.actor.x*800,y=s.actor.y*H-8;
-   if(scene){const zoom=s.play.reduced?1.045:1.075-v.entry*.025-v.fly*.02;const scale=Math.max(800/scene.texture.width,H/scene.texture.height)*zoom;scene.scale.set(scale);scene.x=(800-scene.width)*.5;scene.y=(H-scene.height)*(.3+s.gates*.08);}
+   if(scene){const zoom=s.play.reduced?1.045:1.075-v.entry*.025-v.fly*.02;const scale=Math.max(800/scene.texture.width,H/scene.texture.height)*zoom;scene.scale.set(scale);scene.x=(800-scene.width)*.5;scene.y=(H-scene.height)*(.3+s.travel*.16);}
    clouds.forEach((g,i)=>{g.x=(i*197+t*(3+i)%1100)-170;g.y=H*(.31+i%3*.095)-v.fly*12;g.alpha=s.play.reduced?.5:.5+v.fly*.6;});
-   currents.clear();const target=([.62,.42,.24][Math.min(2,s.gates)]+(s.play.reduced?0:Math.sin(s.age*.65)*.025))*H;
-   for(let j=0;j<3;j++){for(let k=0;k<=36;k++){const xx=65+k*19,yy=target+(j-1)*13+Math.sin(xx*.009-t*1.3+j*.4)*8;k?currents.lineTo(xx,yy):currents.moveTo(xx,yy);}currents.stroke({color:s.windNear?0xfff0b8:0xfff9e3,width:j===1?2:1,alpha:(s.windNear?.6:.32)*v.windAlpha});}
+   currents.clear();const target=K.target(s)*H,band=K.radius(s)*H;
+   for(let j=0;j<3;j++){for(let k=0;k<=36;k++){const xx=65+k*19,yy=K.flowAt(s,xx/800)*H+(j-1)*band*.65;k?currents.lineTo(xx,yy):currents.moveTo(xx,yy);}currents.stroke({color:s.windNear?0xfff0b8:0xfff9e3,width:j===1?2:1,alpha:(s.windNear?.6:.32)*v.windAlpha});}
    cord.clear();const sag=(1-v.tension)*46,fromX=80,fromY=H+20;
    cord.moveTo(fromX,fromY).quadraticCurveTo(x*.48,fromY*.55+y*.45+sag,x,y+20).stroke({color:0x46614e,width:2,alpha:.22*(1-v.fly)});
    cord.moveTo(fromX,fromY).quadraticCurveTo(x*.48,fromY*.55+y*.45+sag,x,y+20).stroke({color:0xf9e6b7,width:1.1,alpha:.95*(1-v.fly)});
@@ -52,7 +52,7 @@
    if(kite){const scale=190/kite.texture.width*v.kiteScale*(1+v.catchPulse*.065);kite.scale.set(scale);deform(kite.geometry.positions,kite.base,kite.texture.width,kite.texture.height,t,v.tension,'kite',s.play.reduced);kite.geometry.getBuffer('aPosition').update();}
    if(grass){grass.scale.set(880/grass.texture.width);grass.position.set(-40,H-330+v.fly*55);deform(grass.geometry.positions,grass.base,grass.texture.width,grass.texture.height,t,s.windNear?.9:.3,'grass',s.play.reduced);grass.geometry.getBuffer('aPosition').update();}
    seeds.forEach((g,i)=>{const q=((t*(s.windNear?65:38)+i*39)%850)/850;g.position.set(820-q*850,target+Math.sin(q*7+t*.4)*14+(i%5-2)*10);g.rotation=-.35+Math.sin(t+i)*.2;g.alpha=Math.sin(q*Math.PI)*.8*v.windAlpha;});
-   const goal=s.events.filter(e=>e.type==='goal').at(-1),age=goal?s.age-goal.age:100;
+   const goal=s.events.filter(e=>e.type==='flight-phase').at(-1),age=goal?s.age-goal.age:100;
    sparks.forEach((g,i)=>{const q=clamp(age/1.15),angle=i*2.399;g.position.set((goal?.x||0)*800+Math.cos(angle)*q*(35+i*3),(goal?.y||0)*H+Math.sin(angle)*q*30-q*35);g.rotation=angle+t;g.alpha=s.play.reduced?0:(1-q)*.9;g.scale.set(1-q*.5);});
    // The moving scene becomes a paper-framed still before the earned artwork is revealed.
    seal.clear();if(v.paper){seal.rect(0,0,800,H).fill({color:0xfff7e5,alpha:v.paper*.12});seal.rect(12,12,776,H-24).stroke({color:0xfff9e9,width:24*v.paper,alpha:v.paper});}
@@ -60,5 +60,5 @@
   function dispose(){if(disposed)return;disposed=true;root.destroy({children:true});textures.forEach(t=>t.destroy(true));}
   return {install,paint,dispose,root,get hasKite(){return !!kite?.visible;},get hasScene(){return !!scene;}};
  }
- return {grassFile,finishDuration,sample,deform,create};
+ return {flight:K,grassFile,finishDuration,sample,deform,create};
 }));
