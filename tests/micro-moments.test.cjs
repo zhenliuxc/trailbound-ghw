@@ -29,10 +29,25 @@ test('page caching hides the micro-moment clock and restoring the page preserves
 });
 test('Nine Creeks recorded layers change continuously by progress, use local samples once and stop when muted',async()=>{
  const f=fixture(),requests=[];f.AudioContext.prototype.decodeAudioData=async()=>({duration:24});const p=A.create({AudioContext:f.AudioContext,timers:f.timers,fetch:async file=>{requests.push(file);return{ok:true,arrayBuffer:async()=>new ArrayBuffer(4)};}});
- assert.equal(requests.length,0);await p.enable();p.setScene({routeId:'tiger'});await flush();assert.equal(requests.length,0);p.setScene({routeId:'westlake',progress:.1});await flush();assert.equal(requests.length,2);const initial=f.contexts[0].sources.length;p.setScene({routeId:'westlake',progress:.65});await flush();assert.equal(f.contexts[0].sources.length,initial);p.setScene({routeId:'westlake',progress:.96});await flush();assert.equal(requests.length,3);assert.ok(A.westlakeMix(.05).creek>A.westlakeMix(.95).creek);assert.ok(A.westlakeMix(.7).leaves>A.westlakeMix(.1).leaves);assert.ok(A.westlakeMix(.96).drips>A.westlakeMix(.7).drips);assert.ok(p.interact('drip'));const count=f.contexts[0].sources.length;p.disable();assert.equal(p.interact('leaf'),false);f.flushTimers();assert.equal(p.voiceCount,0);assert.equal(f.contexts[0].sources.length,count);p.destroy();
+ assert.equal(requests.length,0);await p.enable();p.setScene({routeId:'tiger'});await flush();
+ // Version 40 also uses licensed recordings outside Nine Creeks; shared files are decoded once.
+ assert.ok(requests.includes(A.SAMPLES.creek));assert.ok(requests.includes(A.SAMPLES.leaves));
+ p.setScene({routeId:'westlake',progress:.1});await flush();const initial=f.contexts[0].sources.length;
+ p.setScene({routeId:'westlake',progress:.11});await flush();assert.equal(f.contexts[0].sources.length,initial,'small progress updates must reuse the current sound group');
+ const creekKey=p.key;p.setScene({routeId:'westlake',progress:.65});await flush();assert.notEqual(p.key,creekKey,'the tea garden is a different region');assert.ok(p.groupCount<=3);
+ p.setScene({routeId:'westlake',progress:.96});await flush();assert.deepEqual(new Set(requests),new Set([A.SAMPLES.creek,A.SAMPLES.leaves,A.SAMPLES.drips]));assert.equal(requests.length,3,'route/region changes reuse decoded recordings');
+ assert.ok(A.westlakeMix(.05).creek>A.westlakeMix(.95).creek);assert.ok(A.westlakeMix(.7).leaves>A.westlakeMix(.1).leaves);assert.ok(A.westlakeMix(.96).drips>A.westlakeMix(.7).drips);assert.ok(p.interact('drip'));
+ const count=f.contexts[0].sources.length;p.disable();assert.equal(p.interact('leaf'),false);f.flushTimers();assert.equal(p.voiceCount,0);assert.equal(f.contexts[0].sources.length,count);p.destroy();
 });
 test('sample fetch failures and late completion after a route change cannot resurrect an old soundscape',async()=>{
- const f=fixture();f.AudioContext.prototype.decodeAudioData=async()=>({duration:24});const pending=[];const p=A.create({AudioContext:f.AudioContext,timers:f.timers,fetch:()=>new Promise(resolve=>pending.push(resolve))});await p.enable();p.setScene({routeId:'westlake'});await flush();p.setScene({routeId:'aotai'});const count=f.contexts[0].sources.length;for(const resolve of pending)resolve({ok:true,arrayBuffer:async()=>new ArrayBuffer(4)});await flush();assert.equal(f.contexts[0].sources.length,count);p.destroy();const q=A.create({AudioContext:f.AudioContext,timers:f.timers,fetch:async()=>{throw Error('offline');}});await q.enable();q.setScene({routeId:'westlake'});await flush();assert.equal(q.playing,true);assert.ok(q.interact('ripple'));q.destroy();
+ const f=fixture();f.AudioContext.prototype.decodeAudioData=async data=>({duration:24,sample:data.sample});const pending=[];
+ const p=A.create({AudioContext:f.AudioContext,timers:f.timers,fetch:file=>new Promise(resolve=>pending.push({file,resolve}))});
+ await p.enable();p.setScene({routeId:'westlake'});await flush();p.setScene({routeId:'aotai'});const count=f.contexts[0].sources.length;
+ for(const {file,resolve}of pending)resolve({ok:true,arrayBuffer:async()=>Object.assign(new ArrayBuffer(4),{sample:file})});await flush();
+ const late=f.contexts[0].sources.slice(count).filter(source=>source.buffer?.sample);
+ assert.deepEqual(late.map(source=>source.buffer.sample),[A.SAMPLES.leaves],'only the recording shared by the current snow scene may start; the old creek must not return');
+ assert.equal(p.key.startsWith('walk:aotai'),true);p.hide();assert.equal(p.voiceCount,0);p.destroy();
+ const q=A.create({AudioContext:f.AudioContext,timers:f.timers,fetch:async()=>{throw Error('offline');}});await q.enable();q.setScene({routeId:'westlake'});await flush();assert.equal(q.playing,true);assert.ok(q.interact('ripple'));q.destroy();
 });
 test('all recorded materials are lightweight, traceable and explicitly licensed',()=>{
  const m=require('../dist/audio/credits.json');assert.equal(m.entries.length,6);let bytes=0;for(const e of m.entries){const b=fs.readFileSync(require.resolve('../dist/'+e.file));bytes+=b.length;assert.equal(b.length,e.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),e.sha256);assert.ok(e.author&&e.source&&e.license&&e.licenseUrl&&e.changes);assert.equal(A.SAMPLES[e.id],e.file);}assert.ok(bytes<600000);
