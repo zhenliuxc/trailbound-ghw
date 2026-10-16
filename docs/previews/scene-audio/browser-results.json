@@ -1,0 +1,98 @@
+[
+  {
+    "viewport": "desktop",
+    "routeLevels": [
+      {
+        "routeId": "wugong",
+        "rms": 0.004148329923933302,
+        "peak": 0.01723308488726616
+      },
+      {
+        "routeId": "tiger",
+        "rms": 0.010144250061536613,
+        "peak": 0.06440353393554688
+      },
+      {
+        "routeId": "aotai",
+        "rms": 0.0016706278366419253,
+        "peak": 0.006522975862026215
+      },
+      {
+        "routeId": "maclehose",
+        "rms": 0.00647634211533249,
+        "peak": 0.06218751519918442
+      },
+      {
+        "routeId": "changping",
+        "rms": 0.005608230395647266,
+        "peak": 0.03564564883708954
+      },
+      {
+        "routeId": "mogan",
+        "rms": 0.003589175160284965,
+        "peak": 0.028488773852586746
+      },
+      {
+        "routeId": "westlake",
+        "rms": 0.013166787197970351,
+        "peak": 0.09405595064163208
+      }
+    ],
+    "artworkScenes": 29,
+    "assetRequests": 6,
+    "pageErrors": [],
+    "failedRequests": [],
+    "backgroundStopsVoices": true,
+    "disabledEventsStaySilent": true,
+    "listeningNotPerformed": true,
+    "physicalPhoneNotTested": true
+  },
+  {
+    "viewport": "phone",
+    "routeLevels": [
+      {
+        "routeId": "wugong",
+        "rms": 0.004137598645500498,
+        "peak": 0.01723308488726616
+      },
+      {
+        "routeId": "tiger",
+        "rms": 0.00824470534625259,
+        "peak": 0.06488964706659317
+      },
+      {
+        "routeId": "aotai",
+        "rms": 0.0016858323374716081,
+        "peak": 0.0060500577092170715
+      },
+      {
+        "routeId": "maclehose",
+        "rms": 0.006885718386709837,
+        "peak": 0.06403899937868118
+      },
+      {
+        "routeId": "changping",
+        "rms": 0.005475067854754502,
+        "peak": 0.03715960308909416
+      },
+      {
+        "routeId": "mogan",
+        "rms": 0.0034693721200081415,
+        "peak": 0.012298304587602615
+      },
+      {
+        "routeId": "westlake",
+        "rms": 0.013368698909903118,
+        "peak": 0.09603963792324066
+      }
+    ],
+    "artworkScenes": 29,
+    "assetRequests": 6,
+    "pageErrors": [],
+    "failedRequests": [],
+    "backgroundStopsVoices": true,
+    "disabledEventsStaySilent": true,
+    "listeningNotPerformed": true,
+    "physicalPhoneNotTested": true
+  }
+]

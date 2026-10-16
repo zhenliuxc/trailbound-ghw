@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "route": "mogan",
+  "cost": {
+    "materialLicenseFee": 0,
+    "newAudioBytes": 0,
+    "paidSubscriptions": false,
+    "paidCommissions": false
+  },
+  "music": [
+    {
+      "file": "audio/wugong-cirrus-loop-v1.mp3",
+      "author": "Scott Buckley",
+      "source": "https://www.scottbuckley.com.au/library/cirrus/",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sha256": "ced1ab56bd7c6fad6cb080227b7c78b483e3fa366989e9cf839d9a3169d9907b",
+      "bytes": 888818,
+      "title": "Cirrus",
+      "scene": "rain",
+      "processing": "Reuses the unchanged packaged recording; scene gain, crossfades and short ducking at runtime."
+    },
+    {
+      "file": "audio/wugong-reverie-v1.mp3",
+      "author": "Scott Buckley",
+      "source": "https://www.scottbuckley.com.au/library/reverie/",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sha256": "6add660bf43ce52bcf11f2f471bdfa0cc8830cd5f8192c59e797f42868603705",
+      "bytes": 2684999,
+      "title": "Reverie",
+      "scene": "footsteps",
+      "processing": "Reuses the unchanged packaged recording; scene gain, crossfades and short ducking at runtime."
+    },
+    {
+      "file": "audio/wugong-childhood-loop-v1.mp3",
+      "author": "Scott Buckley",
+      "source": "https://www.scottbuckley.com.au/library/childhood/",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sha256": "2a2272cf8312cdb87313c27e2a6e31cb43f86180b20559bb7f56fd50f7401ef4",
+      "bytes": 888821,
+      "title": "Childhood",
+      "scene": "sling",
+      "processing": "Reuses the unchanged packaged recording; scene gain, crossfades and short ducking at runtime."
+    },
+    {
+      "file": "audio/wugong-a-kind-of-hope-loop-v1.mp3",
+      "author": "Scott Buckley",
+      "source": "https://www.scottbuckley.com.au/library/a-kind-of-hope/",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sha256": "4828cb7c8b737f929a80e56e6be801ae8236fea1d5f55fc9fcce9d1d372d8213",
+      "bytes": 888826,
+      "title": "A Kind Of Hope",
+      "scene": "walk/photo",
+      "processing": "Reuses the unchanged packaged recording; scene gain, crossfades and short ducking at runtime."
+    }
+  ],
+  "effects": [
+    {
+      "file": "audio/mini-drop-v1.mp3",
+      "author": "<a href=\"//commons.wikimedia.org/wiki/User:ZooFari\" class=\"mw-redirect\" title=\"User:ZooFari\">ZooFari</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:Water_drops_dripping.ogg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "sha256": "87da72c271ad7da65f5f8c5179379039754ec9c8a9d2c1597a4411385bfdd42d",
+      "bytes": 4652,
+      "sample": "drop",
+      "usage": "Caught rain notes and quieter misses; caught notes use authored playback-rate offsets",
+      "changes": "Derived from packaged audio/westlake-drips-v1.mp3, excerpt 2.61–3.09s, high-pass 90Hz, endpoint fades, mono MP3 64kbps. Gameplay sound-design material, not a location recording. Derivative retains CC BY-SA 3.0."
+    },
+    {
+      "file": "audio/mini-splash-v1.mp3",
+      "author": "<a href=\"//commons.wikimedia.org/wiki/User:Ksd5\" class=\"mw-redirect\" title=\"User:Ksd5\">Ksd5</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:Swale.ogg",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "sha256": "63c14ea2c71ccab7f521766327b7f57d5eeb26a16a9cd3f79409103a684a1472",
+      "bytes": 5804,
+      "sample": "splash",
+      "usage": "Small water impact under a caught note",
+      "changes": "Derived from packaged audio/westlake-creek-v1.mp3, excerpt 7.2–7.84s, high-pass 90Hz, endpoint fades, mono MP3 64kbps. Gameplay sound-design material, not a location recording. Derivative retains CC0."
+    },
+    {
+      "file": "audio/westlake-leaves-v1.mp3",
+      "author": "<bdi><a href=\"https://www.wikidata.org/wiki/Q115464159\" class=\"extiw\" title=\"d:Q115464159\"><span title=\"developer analyst and photographer from Venezuela\">Wilfredor</span></a></bdi>",
+      "source": "https://commons.wikimedia.org/wiki/File:Leaves_falling_from_the_trees_during_autumn_in_the_forest.wav",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "sha256": "306ebe089e79337b7875145e0fa237339cdb9a7974012fe44107186e2cc2172f",
+      "bytes": 208845,
+      "sample": "leaves",
+      "usage": "Bamboo leaf ambience",
+      "changes": "Excerpt 32–58s, mono 32kHz MP3 64kbps, filtered/levelled and short endpoint fades; sound-design material, not recorded in Hangzhou."
+    },
+    {
+      "file": "audio/westlake-drips-v1.mp3",
+      "author": "<a href=\"//commons.wikimedia.org/wiki/User:ZooFari\" class=\"mw-redirect\" title=\"User:ZooFari\">ZooFari</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:Water_drops_dripping.ogg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "sha256": "25f76796a9680c5f72a917cbf06d0d0f824ed0927d9c957e934f3bb2ac871dbd",
+      "bytes": 120141,
+      "sample": "drips",
+      "usage": "Distant wet-forest drips",
+      "changes": "Excerpt 1–16s, mono 32kHz MP3 64kbps, filtered/levelled and short endpoint fades; sound-design material, not recorded in Hangzhou."
+    },
+    {
+      "file": "audio/wugong-step-1-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "2752f00b97b5a2ccdcead4cb796d4d3a6e5e7ac79cb804c9a130c21be21407a8",
+      "bytes": 2636,
+      "sample": "wugongStep1",
+      "usage": "Stone step variation 1",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. Generic footstep, not a field recording of Wugong or a claimed grass/stone surface."
+    },
+    {
+      "file": "audio/wugong-step-2-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "4426e3e6967b9f15e2c76787c4735b64220e2346e0364704e03abfc389c7609b",
+      "bytes": 2924,
+      "sample": "wugongStep2",
+      "usage": "Stone step variation 2",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. Generic footstep variant; runtime filtering adapts its distance/material impression."
+    },
+    {
+      "file": "audio/wugong-step-3-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "f40a7ee8c110b2cf7332cca341a2e6e753d828a04b03481e6e9b2962d5eb9810",
+      "bytes": 3212,
+      "sample": "wugongStep3",
+      "usage": "Stone step variation 3",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. Generic footstep variant; not a local trail recording."
+    },
+    {
+      "file": "audio/wugong-paper-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "4164dfb93849c9794b5bbb28b9befaa4344071db4c2920b1874d7d5a741c9690",
+      "bytes": 6956,
+      "sample": "wugongPaper",
+      "usage": "Paper leaf arrives, painting unfolds",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. Book-page turn used for painting reveal and puzzle pickup."
+    },
+    {
+      "file": "audio/wugong-place-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "3f29db49bc28fab2815a8cb09562c8e40a0883b382b4d70611ad8bf0583a9448",
+      "bytes": 2924,
+      "sample": "wugongPlace",
+      "usage": "Quiet collision and collection",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. Book placement used as soft paper-piece contact and collecting foley."
+    },
+    {
+      "file": "audio/wugong-cloth-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "8eeec46a350dc9d825d58f351eb1cc984a592a42883706a04253606d3c944dec",
+      "bytes": 6092,
+      "sample": "wugongCloth",
+      "usage": "Clothing/leaf foley, retry or missed beat",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. Cloth handling used for kite line, clothing and conversational movement foley."
+    },
+    {
+      "file": "audio/wugong-line-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "afb569e741b47fa510663c44bbbd86db1c1d2ae18cab5acb8851a4862f47ce51",
+      "bytes": 2924,
+      "sample": "wugongLine",
+      "usage": "Recorded belt handling as slingshot tension foley",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. Recorded belt handling used as a kite-line tug foley, not a recording of a kite string."
+    },
+    {
+      "file": "audio/wugong-flutter-v1.mp3",
+      "author": "Kenney Vleugels (Kenney.nl)",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "7c9c4aca5fac0e68bfb920efd87976188d43325e3eb31b43871e8b5c0b9da0ff",
+      "bytes": 4076,
+      "sample": "wugongFlutter",
+      "usage": "Recorded cloth as paper leaf release foley",
+      "changes": "Mono 32kHz MP3 64kbps, high/low-pass filtering, peak matching and short endpoint fades. A second cloth sample for the kite opening and lifting; not a wind field recording."
+    }
+  ],
+  "sourceManifests": [
+    "audio/wugong-credits.json",
+    "audio/credits.json"
+  ],
+  "disclosure": "Existing freely licensed recordings reused without duplicating files. Not local field recordings, not an exclusive score. Water-drop derivatives retain CC BY-SA 3.0; Kenney material is CC0. Recorded belt/cloth/footsteps are foley, not an authentic bamboo instrument or location recording."
+}

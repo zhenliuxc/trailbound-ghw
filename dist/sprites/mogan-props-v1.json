@@ -1,0 +1,103 @@
+{
+  "file": "sprites/mogan-props-v1.webp",
+  "width": 1024,
+  "height": 1024,
+  "frames": [
+    {
+      "name": "moss-granite-step",
+      "x": 16,
+      "y": 177,
+      "w": 480,
+      "h": 158
+    },
+    {
+      "name": "left-hiking-shoe",
+      "x": 651,
+      "y": 16,
+      "w": 233,
+      "h": 480
+    },
+    {
+      "name": "right-hiking-shoe",
+      "x": 139,
+      "y": 528,
+      "w": 233,
+      "h": 480
+    },
+    {
+      "name": "bamboo-sprig",
+      "x": 528,
+      "y": 549,
+      "w": 480,
+      "h": 437
+    }
+  ],
+  "tip": {
+    "x": 0.95,
+    "y": 0.9839816933638444
+  },
+  "generator": "OpenAI ImageGen",
+  "source": "/workspace/generated_images/exec-40d790dd-b14c-409e-bbfb-9be9db535281.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "sourceSha256": "12dee2119effc302eb7466931ed7c9512bc6379d352262517b94527947474cdc",
+  "sha256": "3cdc5b1679594138928459f44b6788ab84ce48390c8404d796d9bf4cc1e6529e",
+  "bytes": 266450,
+  "processing": "Extract explicit non-overlapping source regions; crop transparent margins; uniform resize; WebP encoding. Original alpha retained, no repainting.",
+  "sourceFrames": [
+    {
+      "name": "moss-granite-step",
+      "x": 16,
+      "y": 177,
+      "w": 480,
+      "h": 158,
+      "sourceCrop": [
+        26,
+        117,
+        1021,
+        445
+      ]
+    },
+    {
+      "name": "left-hiking-shoe",
+      "x": 651,
+      "y": 16,
+      "w": 233,
+      "h": 480,
+      "sourceCrop": [
+        1080,
+        17,
+        1321,
+        513
+      ]
+    },
+    {
+      "name": "right-hiking-shoe",
+      "x": 139,
+      "y": 528,
+      "w": 233,
+      "h": 480,
+      "sourceCrop": [
+        288,
+        490,
+        534,
+        996
+      ]
+    },
+    {
+      "name": "bamboo-sprig",
+      "x": 528,
+      "y": 549,
+      "w": 480,
+      "h": 437,
+      "sourceCrop": [
+        912,
+        520,
+        1442,
+        1002
+      ]
+    }
+  ]
+}

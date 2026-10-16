@@ -1,0 +1,4 @@
+native: wait for encounter
+native: wait for encounter
+click latency ms 1330
+NATIVE CLOCK READY rain

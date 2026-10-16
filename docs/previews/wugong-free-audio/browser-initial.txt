@@ -1,0 +1,52 @@
+{"phase":"desktop route step 0","journey":"沿着山径慢慢走","progress":"0"}
+desktop play wind
+Browser QA: desktop operate wind
+Browser QA: desktop operate wind
+Browser QA: desktop operate wind
+{"phase":"desktop route step 20","journey":"沿着山径慢慢走","progress":"9"}
+{"phase":"desktop route step 40","journey":"沿着山径慢慢走","progress":"17"}
+{"phase":"desktop route step 60","journey":"沿着山径慢慢走","progress":"24"}
+{"phase":"desktop route step 80","journey":"沿着山径慢慢走","progress":"32"}
+Browser QA: desktop route step 87
+Browser QA: desktop route step 87
+desktop play clouds
+{"phase":"desktop route step 100","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 120","journey":"停下来看看","progress":"34"}
+Browser QA: desktop route step 122
+{"phase":"desktop route step 140","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 160","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 180","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 200","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 220","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 240","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 260","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 280","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 300","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 320","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 340","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 360","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 380","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 400","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 420","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 440","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 460","journey":"停下来看看","progress":"34"}
+{"phase":"desktop route step 480","journey":"停下来看看","progress":"34"}
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ Set(2) {
+- Set(4) {
+    'clouds',
+-   'greet',
+-   'puzzle',
+    'wind'
+  }
+
+    at /workspace/trailbound-ghw/scripts/test-wugong-browser.cjs:78:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Set],
+  expected: [Set],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

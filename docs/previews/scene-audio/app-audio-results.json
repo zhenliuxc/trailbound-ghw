@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "explicitEnable": true,
+  "backgroundSuspension": true,
+  "pausedWalkRemainsSilent": true,
+  "explicitResume": true,
+  "mute": true,
+  "listeningNotPerformed": true
+}

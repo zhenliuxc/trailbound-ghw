@@ -1,0 +1,26 @@
+[
+  {
+    "viewport": "desktop",
+    "games": [
+      "clouds",
+      "puzzle"
+    ],
+    "earned": 2,
+    "pageErrors": [],
+    "failedRequests": [],
+    "renderer": "Chromium WebGL via SwiftShader",
+    "reducedMotion": false
+  },
+  {
+    "viewport": "phone",
+    "games": [
+      "clouds",
+      "puzzle"
+    ],
+    "earned": 2,
+    "pageErrors": [],
+    "failedRequests": [],
+    "renderer": "Chromium WebGL via SwiftShader",
+    "reducedMotion": true
+  }
+]

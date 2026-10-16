@@ -1,0 +1,40 @@
+const test=require('node:test'),assert=require('node:assert/strict'),D=require('../dist/discoveries'),B=require('../dist/journal'),{harness}=require('./dom-harness.cjs');
+const record=(id='meadow-bird',key=id,extra={})=>({edition:3,earned:true,artVersion:D.item(id).artV5?5:4,tag:D.item(id).tag,key,id,route:D.item(id).route,place:D.item(id).place,title:D.item(id).tag,memory:'这段文字就在画旁边。',icon:D.item(id).icon,createdAt:1234,progress:.1,elapsed:9,weather:'clear',legacy:false,...extra});
+const storage=(records,revision=1)=>{const data=new Map([[D.KEY,JSON.stringify({version:2,historyRevision:revision,moments:records})],['other-save','keep']]);let writes=0;return {getItem:k=>data.get(k)??null,setItem:(k,v)=>{writes++;data.set(k,v);},writes:()=>writes};};
+const byClass=(node,name)=>node.classes?.has(name)?node:node.children?.map(c=>byClass(c,name)).find(Boolean);
+test('wall buttons open full picture and memory, with a working close control and returned focus',()=>{
+ const st=storage([record()]),h=harness(st),card=h.$('journal-list').children[0],button=card.querySelector('button');
+ assert.equal(button.querySelector('strong').textContent,'草浪来信');assert.equal(byClass(card,'journal-memory'),undefined);assert.equal(button.getAttribute('aria-haspopup'),'dialog');assert.match(card.querySelector('img').getAttribute('src'),/grass-letter/);
+ button.emit('click');const page=h.$('journal-detail-page');assert.equal(h.$('journal-detail').open,true);assert.equal(byClass(page,'journal-memory').textContent,record().memory);assert.ok(page.querySelector('time'));assert.match(page.querySelector('img').getAttribute('src'),/grass-letter/);assert.equal(h.document.activeElement,h.$('journal-detail-close'));assert.equal(button.getAttribute('aria-expanded'),'true');
+ h.click('journal-detail-close');assert.equal(h.$('journal-detail').open,false);assert.equal(button.getAttribute('aria-expanded'),'false');assert.equal(h.document.activeElement,button);
+ for(const id of ['journal-export','journal-import','collection-list','journal-page','journal-tag-count','journal-reset','journal-reset-notice'])assert.equal(h.$(id),undefined);
+ assert.equal(st.writes(),0);assert.equal(h.downloads.length,0);
+});
+test('route filters and pagination count unique scenes and append without reloading existing art',()=>{
+ const records=D.CATALOG.map((e,i)=>record(e.id,e.id,{createdAt:i}));records.push(record('meadow-bird','duplicate'));
+ for(const viewport of [{width:320,height:435},{width:390,height:460},{width:990,height:646}]){const st=storage(records),h=harness(st,{viewport});assert.equal(h.$('journal-count').textContent,'29个瞬间');assert.equal(h.$('journal-list').children.length,12);const first=h.$('journal-list').children[0];h.click('journal-more');assert.equal(h.$('journal-list').children.length,24);assert.equal(h.$('journal-list').children[0],first);assert.equal(h.document.activeElement,h.$('journal-list').children[12].querySelector('button'));h.click('journal-more');assert.equal(h.$('journal-list').children.length,29);assert.equal(h.$('journal-more').hidden,true);
+ h.$('journal-route').value='tiger';h.$('journal-route').emit('change');assert.equal(h.$('journal-list').children.length,4);assert.ok(h.$('journal-list').children.every(c=>c.getAttribute('data-route')==='tiger'));assert.equal(st.writes(),0);assert.equal(D.loadMoments(st).length,30);}
+});
+test('replays keep first text, date and art; unfinished records never append or downgrade rewards',()=>{
+ const first=record(),again=record('meadow-bird','again',{title:'后来',createdAt:9999}),partial=record('meadow-bird','partial',{earned:false,tag:null});
+ assert.equal(B.remember([first],again).status,'unchanged');assert.equal(B.remember([first],partial).status,'unchanged');assert.equal(B.remember([],partial).status,'unchanged');assert.equal(B.page([first,again,partial]).entries[0],first);
+ const upgraded=B.remember([partial],first);assert.equal(upgraded.status,'upgraded');assert.equal(B.page(upgraded.moments).total,1);assert.equal(B.page(upgraded.moments).entries[0].earned,true);assert.equal(B.remember(upgraded.moments,again).status,'unchanged');assert.equal(B.remember([first],record('gorge-goat')).status,'added');
+});
+test('legacy reads and browsing never delete or write data, and no reset API remains',()=>{
+ const st=storage([record()],0),raw=st.getItem(D.KEY),h=harness(st);assert.equal(D.resetHistory,undefined);assert.equal(D.historyState,undefined);assert.equal(h.$('journal-reset'),undefined);
+ h.$('journal-list').children[0].querySelector('button').emit('click');h.click('journal-detail-close');h.$('journal-route').value='tiger';h.$('journal-route').emit('change');assert.equal(st.getItem(D.KEY),raw);assert.equal(st.getItem('other-save'),'keep');assert.equal(st.writes(),0);
+});
+test('corrupt and unavailable storage remain readable as empty without destructive recovery',()=>{
+ const st=storage([]);st.setItem(D.KEY,'{broken');const writes=st.writes(),h=harness(st);assert.equal(h.$('journal-count').textContent,'0个瞬间');assert.equal(st.getItem(D.KEY),'{broken');assert.equal(st.writes(),writes);
+ const denied=harness({getItem(){throw Error('denied');},setItem(){throw Error('denied');}});assert.equal(denied.$('journal-count').textContent,'0个瞬间');assert.equal(denied.$('journal-reset'),undefined);
+});
+test('reading pauses travel, restores prior walking state and preserves a deliberate background pause',()=>{
+ for(const mode of ['walking','paused','background']){const h=harness(storage([record()]));h.click('overlay-action');h.advance(2);if(mode==='paused')h.click('walk-toggle');const before=h.$('journey-progress').getAttribute('aria-valuenow');const button=h.$('journal-list').children[0].querySelector('button');button.emit('click');h.advance(20);assert.equal(h.pendingFrames(),0);assert.equal(h.$('journey-progress').getAttribute('aria-valuenow'),before);
+ let stopped=false;h.$('journal-detail').emit('keydown',{key:'Escape',stopPropagation(){stopped=true;}});assert.equal(stopped,true);if(mode==='background'){h.window.emit('blur');h.window.emit('focus');assert.equal(h.pendingFrames(),0);}h.$('journal-detail').close();assert.equal(h.pendingFrames(),mode==='walking'?1:0);assert.equal(h.document.activeElement,button);h.window.emit('pagehide',{persisted:false});}
+});
+test('reading freezes an active Pixi game, then resumes it without a time jump or an extra record',()=>{
+ const st=storage([record()]),h=harness(st,{miniGames:true});h.click('route-mogan');h.click('overlay-action');h.advance(10);h.click('observe-button');h.$('micro-surface').emit('pointerdown',{pointerId:1,clientX:200,clientY:200,button:0,isPrimary:true});h.advance(.6);const progress=h.$('micro-progress').getAttribute('aria-valuenow');h.$('journal-list').children[0].querySelector('button').emit('click');h.advance(20);assert.equal(h.pendingFrames(),0);assert.equal(h.$('micro-progress').getAttribute('aria-valuenow'),progress);h.click('journal-detail-close');assert.equal(h.$('micro-panel').hidden,false);assert.equal(h.pendingFrames(),1);h.click('micro-skip');assert.equal(h.$('journal-count').textContent,'1个瞬间');assert.equal(st.writes(),0);
+});
+test('partly played Pixi games leave no record on skip, Escape or route change',()=>{
+ for(const route of ['wugong','westlake','mogan'])for(const exit of ['skip','escape','route']){const st=storage([]),h=harness(st,{miniGames:true,discoverySeed:682});h.click('route-'+route);h.click('overlay-action');h.advance(10);h.click('observe-button');const surface=h.$('micro-surface');surface.emit('pointerdown',{pointerId:1,clientX:200,clientY:200,button:0,isPrimary:true});h.advance(.6);surface.emit('pointerup',{pointerId:1,clientX:200,clientY:200});if(exit==='skip')h.click('micro-skip');else if(exit==='escape')h.key('Escape');else h.click('route-tiger');assert.equal(h.$('micro-panel').hidden,true);assert.equal(h.$('reward-overlay').hidden,true);assert.equal(h.$('journal-count').textContent,'0个瞬间');assert.deepEqual(D.loadMoments(st),[]);assert.equal(st.writes(),0);h.window.emit('pagehide',{persisted:false});}
+});

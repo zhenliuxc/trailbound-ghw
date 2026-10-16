@@ -1,0 +1,25 @@
+{
+  "file": "sprites/hint-brush-v1.webp",
+  "width": 384,
+  "height": 96,
+  "tip": {
+    "x": 0.9921875,
+    "y": 0.4635416666666667
+  },
+  "generator": "OpenAI ImageGen",
+  "source": "/workspace/generated_images/exec-f8b0a96c-57e6-4c94-a911-ac10d131f2a4.png",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "sourceCrop": [
+    204,
+    133,
+    2067,
+    599
+  ],
+  "sourceSha256": "230a2af13466d645ee08e8b575878afac94947387100590859425bb0ba7ad30f",
+  "sha256": "627909746a0136690d826d260b7588d29f0f9c0917fbe30f0fe730840e4cd2fd",
+  "bytes": 12250,
+  "processing": "Trim transparent margins, uniform resize and WebP encoding only; original alpha preserved."
+}

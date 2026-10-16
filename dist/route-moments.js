@@ -37,8 +37,142 @@
   ['westlake-basket','村口茶香','一盏茶等人坐下来','西湖 · 龙井村口','villagetea','brew','drip','tea','轻点茶盏，陪叶子慢慢展开，在村口歇一会儿。','一盏茶在村口冒着轻轻的热气，等叶子展开时，我也不着急赶路了。']
  ];
  const PROFILES=Object.fromEntries(rows.map(([id,tag,name,place,scene,play,interaction,icon,prompt,result,condition])=>[id,{edition:EDITION,tag,name,place,scene,play,interaction,icon,prompt,result,condition:condition||'沿途片刻',hint:prompt,memory:place+'，'+name+'。',badge:'badges/'+id+'-v3.svg'}]));
+ // Keep collectible identities and existing journal text. Fresh Mogan encounters
+ // describe their actual registered games, including the earned reward copy.
+ Object.assign(PROFILES['bamboo-drop'],{name:'叶尖落下的一段小调',hint:'看叶尖蓄水，移动竹筒，把滴雨接成一段旋律。',prompt:'看叶尖蓄水，左右移动竹筒，把落雨接成一段旋律。',result:'叶尖先亮起一颗水珠。我挪过竹筒，接住一声又一声轻响；最后一滴落下，竹林里留下了一小段雨的旋律。'});
+ Object.assign(PROFILES['bamboo-step'],{name:'跟着脚步走一段古道',hint:'脚印合上时，交替迈左脚、右脚，走过十级石阶。',prompt:'脚印合上时，点亮起的那只脚，走完这段石阶。',result:'我跟着石阶的长短，左脚、右脚，慢慢走过雨后的古道。苔色留在石边，十次轻轻的落脚，把山路接成了自己的节奏。'});
+ Object.assign(PROFILES['bamboo-leaf'],{name:'送过竹隙的一枚纸叶',hint:'向后拉开纸叶，松手送到远山窗旁的纸签。',prompt:'向后拉开纸叶，松手送过竹隙，落在远山纸签上。',result:'我把一枚纸叶放上竹弓，试着借一小段风。纸叶穿过竹隙，轻轻停在远山纸签上；林子里的那扇窗，也亮了起来。'});
+ // Explicit scenery matches only; unmatched artwork does not invent new encounters.
+ const ART_V4={"meadow-bird":"wugong-grass-letter","meadow-butterfly":"wugong-cloud-island","meadow-flower":"wugong-stone-altar","gorge-goat":"tiger-river-below","gorge-eagle":"tiger-halfway-rest","gorge-sparkle":"tiger-longdong-waterfall","snow-tracks":"aotai-rock-facets","snow-lichen":"aotai-ridgeline","coast-sand":"maclehose-bay-reveal","coast-shell":"maclehose-tide-drawing","coast-pier":"maclehose-chek-keng","valley-moss":"changping-tree-double","valley-bridge":"changping-red-stone","valley-reflection":"changping-muluozi","bamboo-drop":"mogan-bamboo-reply","bamboo-step":"mogan-old-stone-path","westlake-stones":"westlake-creek-stones","westlake-tea":"westlake-longjing-bud"};
+ for(const [id,art] of Object.entries(ART_V4))PROFILES[id].artV4="badges/"+art+"-v4.webp";
+ const ENCOUNTERS=[
+  {
+    "id": "wugong-wind-hiker",
+    "route": "wugong",
+    "order": 1.5,
+    "at": 0.55,
+    "tag": "吊带追风",
+    "name": "风口遇见的徒步者",
+    "place": "武功山 · 草甸风口",
+    "play": "sweep",
+    "interaction": "breeze",
+    "prompt": "轻轻横划，把草甸上的一阵风送到徒步者身旁。",
+    "result": "风吹起衣角，我们隔着草坡挥了挥手。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "轻轻横划，把草甸上的一阵风送到徒步者身旁。",
+    "memory": "武功山 · 草甸风口，风口遇见的徒步者。",
+    "artV4": "badges/wugong-wind-hiker-v4.webp",
+    "badge": "badges/wugong-wind-hiker-v4.webp"
+  },
+  {
+    "id": "tiger-bell-first",
+    "route": "tiger",
+    "order": 1.5,
+    "at": 0.55,
+    "tag": "铃声先到",
+    "name": "转弯前传来的铃声",
+    "place": "虎跳峡 · 高路转弯处",
+    "play": "listen",
+    "interaction": "breeze",
+    "prompt": "依次轻点画面的左、中、右三处，听铃声沿山路慢慢走近。",
+    "result": "先听见铃声，再望见山路上的旅伴。这段相遇轻轻留在了峡谷里。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "依次轻点画面的左、中、右三处，听铃声沿山路慢慢走近。",
+    "memory": "虎跳峡 · 高路转弯处，转弯前传来的铃声。",
+    "artV4": "badges/tiger-bell-first-v4.webp",
+    "badge": "badges/tiger-bell-first-v4.webp"
+  },
+  {
+    "id": "aotai-takin-first",
+    "route": "aotai",
+    "order": 1.5,
+    "at": 0.55,
+    "tag": "牛牛先请",
+    "name": "把山径留给羚牛",
+    "place": "秦岭 · 虚拟雪地林缘",
+    "play": "yield",
+    "interaction": "trace",
+    "prompt": "轻点画面左侧的退让处，再停住指尖，让羚牛从远处先经过。",
+    "result": "我退在路旁，没有靠近或喂食。羚牛从远处慢慢走过，雪地又安静下来。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "轻点画面左侧的退让处，再停住指尖，让羚牛从远处先经过。",
+    "memory": "秦岭 · 虚拟雪地林缘，把山径留给羚牛。",
+    "artV4": "badges/aotai-takin-first-v4.webp",
+    "badge": "badges/aotai-takin-first-v4.webp"
+  },
+  {
+    "id": "maclehose-sideways-crab",
+    "route": "maclehose",
+    "order": 1.5,
+    "at": 0.73,
+    "tag": "横着也能到",
+    "name": "沙地上的小小横行者",
+    "place": "麦理浩径 · 海湾沙地",
+    "play": "trail",
+    "interaction": "ripple",
+    "prompt": "从左到右点亮沙地上的三个落脚处，远远陪螃蟹横着走回岸边。",
+    "result": "小螃蟹横着走过沙地。我留在原处，没有触碰它，也没有挡住它回家的路。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "从左到右点亮沙地上的三个落脚处，远远陪螃蟹横着走回岸边。",
+    "memory": "麦理浩径 · 海湾沙地，沙地上的小小横行者。",
+    "artV4": "badges/maclehose-sideways-crab-v4.webp",
+    "badge": "badges/maclehose-sideways-crab-v4.webp"
+  },
+  {
+    "id": "westlake-five-more-minutes",
+    "route": "westlake",
+    "order": 2.5,
+    "at": 0.945,
+    "tag": "再坐五分钟",
+    "name": "茶村里多坐一小会儿",
+    "place": "西湖 · 龙井村歇脚处",
+    "play": "brew",
+    "interaction": "drip",
+    "prompt": "轻点茶盏，再陪热气慢慢升起；几秒就好，不必真的等五分钟。",
+    "result": "我在茶村坐下来，等热气慢慢升起。这一小段不赶路的时间，也值得留下。",
+    "edition": 3,
+    "bonus": true,
+    "scene": "encounter-art",
+    "icon": "stones",
+    "condition": "游戏虚构片刻",
+    "hint": "轻点茶盏，再陪热气慢慢升起；几秒就好，不必真的等五分钟。",
+    "memory": "西湖 · 龙井村歇脚处，茶村里多坐一小会儿。",
+    "artV4": "badges/westlake-five-more-minutes-v4.webp",
+    "badge": "badges/westlake-five-more-minutes-v4.webp"
+  }
+];
+ for(const entry of ENCOUNTERS)PROFILES[entry.id]=entry;
+ PROFILES['tiger-bell-first'].icon='bell';
+ for(const id of ['snow-light','bamboo-leaf','westlake-eaves','westlake-floating-leaf','westlake-leaf-shadow','westlake-basket'])PROFILES[id].artV5='badges/'+id+'-v5.webp';
+ // Current play descriptions only; saved journal text and badge editions stay untouched.
+ Object.assign(PROFILES['meadow-bird'],{name:'借一阵草甸的风',prompt:'上下拖动牵线，陪纸鸢从草坡起飞、穿过侧风，再缓缓放线进入云海。跟着风带调整，脱风后可重新找回航线；方向键也能牵线。',result:'我顺着草浪牵起纸鸢，带它穿过山脊的侧风，再缓缓放线。它沿着一整段风路，飞向了云海。'});
+ Object.assign(PROFILES['meadow-butterfly'],{name:'拨开云，看看山',prompt:'点一点或划过云朵，让山脊露出来。',result:'我轻轻拨开山脊前的云。云絮随着风散去，绿色的草脊浮出云海，像一封慢慢打开的信。'});
+ Object.assign(PROFILES['meadow-flower'],{name:'把石拱，拼回纸上',prompt:'把下面的六片画片拖进画框。也可以先点画片，再点对应位置。',result:'我把散开的石坛画片一块块拼好，接回拱线、石缝与苔色。一座石坛，在纸上重新完整了。'});
+ Object.assign(PROFILES['wugong-wind-hiker'],{name:'在草甸的风里，遇见她',prompt:'和草坡旁的姑娘打声招呼，帮她把人物与远山一起拍进照片。拖动取景、按下快门，可以重拍；给她看过照片并告别，才留下这段相遇。',result:'草甸风口遇见一位笑着招手的姑娘。我帮她把身后的山也拍进照片，给她看过后，在风里说了再见。'});
+ for(const id of ['meadow-bird','meadow-butterfly','meadow-flower','wugong-wind-hiker'])PROFILES[id].hint=PROFILES[id].prompt;
+ Object.assign(PROFILES['bamboo-drop'],{name:'竹叶落雨，接成一段声音',prompt:'左右移动竹筒，接住八滴竹叶上的雨。接住才会奏响音符，漏接可以继续。',result:'竹叶上的雨落进竹筒，八个清亮的声音串起了这段竹林记忆。'});
+ Object.assign(PROFILES['westlake-floating-leaf'],{prompt:'轻点落叶旁的水面，用水纹推它绕过溪石，经过三个金色水口。',result:'我用一圈圈水纹，陪落叶终于转过溪石，漂进下游的光里。'});
+ Object.assign(PROFILES['westlake-tea'],{name:'让一芽春信，慢慢透亮',prompt:'交换相邻的茶芽卡，连成三个或更多同类叶形，清开六处露光。可以点选或滑动交换，提示、重排与撤回都可用。',result:'我交换叶形，让相连的春芽一片片舒展。六处露光散开，纸上的茶园重新透亮起来。'});
+ Object.assign(PROFILES['bamboo-leaf'],{name:'给远山，送一枚纸叶',prompt:'拉开纸叶，调整角度与力度，松手让它穿过竹隙，停在远山纸签上。碰到竹干可以重来，也可用调整条与按钮发射。',result:'我把一枚纸叶送进竹林的风里。它穿过竹影，稳稳停在远山窗旁的小纸签上。'});
+ for(const id of ['meadow-flower','westlake-tea','bamboo-leaf'])PROFILES[id].hint=PROFILES[id].prompt;
  function profile(id){return PROFILES[id]||null;}
  const routeOf=id=>({meadow:'wugong',gorge:'tiger',snow:'aotai',coast:'maclehose',valley:'changping',bamboo:'mogan',westlake:'westlake'})[id.split('-')[0]];
- function evidence(id){return SOURCES[routeOf(id)]||null;}
- return {EDITION,PROFILES,SOURCES,profile,evidence};
+ function evidence(id){const e=PROFILES[id];return e?.bonus?{...SOURCES[e.route],fact:'这一段人物或动物相遇是游戏创作，不代表现实路线必遇。'+SOURCES[e.route].fact}:SOURCES[routeOf(id)]||null;}
+ return {EDITION,ENCOUNTERS,PROFILES,SOURCES,profile,evidence};
 }));

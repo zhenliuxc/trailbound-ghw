@@ -1,0 +1,47 @@
+{
+  "entries": [
+    {
+      "file": "scenes/wugong-cloudsea-v1.webp",
+      "generator": "OpenAI ImageGen",
+      "source": "/workspace/generated_images/exec-dc057e61-3ff8-4e66-880f-1ea6ff596c5b.png",
+      "source_sha256": "0d58a49b94b0679f35f158aa1bd255c795bd462837867782d86492ddbf8f0c1f",
+      "sha256": "95e0ddab3a0114a8b78952037a35aa425ef7eb8f30b9d997ec517acb2bd68b60",
+      "width": 1280,
+      "height": 853,
+      "bytes": 341308,
+      "purpose": "Warm-season Wugong cloud-sea observation environment",
+      "processing": "Proportional resize and WebP encoding only; alpha preserved"
+    },
+    {
+      "file": "scenes/wugong-altar-v1.webp",
+      "generator": "OpenAI ImageGen",
+      "source": "/workspace/generated_images/exec-431fb2ef-b06b-4586-9648-d2ec45e2594e.png",
+      "source_sha256": "87ea810acc81cde12da284bdb6b7b6c861362e112bd976513e74fbddf36c7181",
+      "sha256": "d6d1adc69097aa4d78dee315286e2e5c7fdf3192deddb36a969533e1918a1478",
+      "width": 1280,
+      "height": 853,
+      "bytes": 450856,
+      "purpose": "Illustrated stone-altar observation, not an archaeological reconstruction",
+      "processing": "Proportional resize and WebP encoding only; alpha preserved"
+    },
+    {
+      "file": "sprites/wugong-hiker-wave-v1.webp",
+      "generator": "OpenAI ImageGen",
+      "source": "/workspace/generated_images/exec-a57975f8-b569-4f54-ac5e-5c594aebbcce.png",
+      "source_sha256": "7ca675eed1cd1eeefb8dde4762e155738bf3533d562c78663db70c76ce9eb861",
+      "sha256": "a28eefba3f5ce227365000888a49627042fbf8b69d007fe7ee48ace55bcca550",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 252808,
+      "purpose": "Three original full-body waving poses; transparent 3-column sheet",
+      "processing": "Proportional resize and WebP encoding only; alpha preserved",
+      "columns": 3,
+      "rows": 1,
+      "poses": [
+        "rest",
+        "raising",
+        "wave"
+      ]
+    }
+  ]
+}

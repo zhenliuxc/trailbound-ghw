@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "file": "sprites/wugong-meadow-grass-v1.webp",
+      "generator": "OpenAI ImageGen",
+      "source": "/workspace/generated_images/exec-a68aae70-d13d-489a-b8f5-d0304f4e7223.png",
+      "source_sha256": "e079d0d2235e09e979ca1723953adcbc20fca5c9d23b1932d8dee5dceac64dee",
+      "sha256": "773eaa2fe84896e41f1fd3a3520cf3a9d5b211425ef4d67d2067ed88d02ce6ec",
+      "width": 1024,
+      "height": 576,
+      "bytes": 181566,
+      "processing": "Proportional resize and WebP encoding; alpha preserved",
+      "purpose": "Summer alpine meadow foreground, Wugong route only"
+    }
+  ]
+}

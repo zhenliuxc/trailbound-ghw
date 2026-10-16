@@ -1,0 +1,15 @@
+✔ rain is earned only by crossing inside the visible mouth, never by moving under a past drop (2.348929ms)
+✔ the bamboo vessel stays rigid and its clipped water follows its mouth on both viewport shapes (396.579014ms)
+✔ old repeated notes collapse into the completed illustrated memory without rewriting storage (109.102277ms)
+✔ a missing wall image exposes a fallback and the detail memory stays readable (58.423246ms)
+✔ art prefetch limits concurrent requests, decodes and reuses image nodes (28.138551ms)
+✔ route switch cancels obsolete queued art; failures can retry and cache is bounded (2.478844ms)
+✔ failed decode is visible as an error and never marked ready (1.265572ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 716.567732

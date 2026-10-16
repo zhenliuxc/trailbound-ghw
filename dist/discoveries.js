@@ -160,38 +160,42 @@
  for(const entry of CATALOG)if(interactions[entry.id])entry.interaction=interactions[entry.id];
  const LEGACY=Object.fromEntries(CATALOG.map(e=>[e.id,{...e}]));
  for(const entry of CATALOG)Object.assign(entry,R.profile(entry.id));
+ CATALOG.push(...R.ENCOUNTERS.map(e=>({...e})));
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}
- function create(route,seed=Math.random()*4294967296,{recent=[]}={}){let value=Number(seed)>>>0;const random=()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};let pool=CATALOG.filter(x=>x.route===route).sort((a,b)=>a.order-b.order);
+ function create(route,seed=Math.random()*4294967296,{recent=[]}={}){let value=Number(seed)>>>0;const random=()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};let pool=CATALOG.filter(x=>x.route===route&&!x.bonus).sort((a,b)=>a.order-b.order);
   if(route==='westlake'){
    const previous=new Set(recent.slice(-3));pool=[0,1,2].map(order=>{const candidates=pool.filter(x=>x.order===order),weights=candidates.map(x=>previous.has(x.id)?1:3);let roll=random()*weights.reduce((a,b)=>a+b,0),pick=candidates.at(-1);for(let i=0;i<candidates.length;i++){roll-=weights[i];if(roll<0){pick=candidates[i];break;}}return pick;});
    if(pool.every(x=>previous.has(x.id))){const index=Math.floor(random()*3),alternate=CATALOG.find(x=>x.route===route&&x.order===index&&!previous.has(x.id));if(alternate)pool[index]=alternate;}
   }
-  return {route,seed:Number(seed)>>>0,afterRain:route==='westlake',found:[],slots:pool.map((x,i)=>{const at=x.at+random()*(i===2&&route==='aotai'?.01:.025);return {id:x.id,at,until:Math.min(route==='westlake'&&i===0?.135:.97,at+.16),side:random()<.5?-1:1};})};
+  pool.push(...CATALOG.filter(x=>x.route===route&&x.bonus));pool.sort((a,b)=>a.at-b.at);
+  const slots=pool.map((x,i)=>{const at=x.at+random()*(x.bonus?.003:i===2&&route==='aotai'?.01:.025);return {id:x.id,at,until:Math.min(route==='westlake'&&i===0?.135:.97,at+.16),side:random()<.5?-1:1};});
+  for(let i=0;i<slots.length-1;i++)slots[i].until=Math.min(slots[i].until,slots[i+1].at-.005);
+  return {route,seed:Number(seed)>>>0,afterRain:route==='westlake',found:[],slots};
  }
 
  function visible(state,trip){if(!['walking','paused'].includes(state.status))return null;return trip.slots.find(x=>state.progress>=x.at&&state.progress<=x.until&&!trip.found.includes(x.id))||null;}
  function capture(state,trip,id){const active=visible(state,trip);return active?.id===id?{...trip,found:[...trip.found,id]}:trip;}
  function load(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');return data?.version===1?clean(data.found):data?.version===2?clean(cleanMoments(data.moments).map(m=>m.id)):[];}catch(_){return [];}}
  function save(storage,found){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:1,found:clean(found)}));return true;}catch(_){return false;}}
- const MAX_MOMENTS=120,WEATHER=new Set(['clear','wind','fog','rain','snow','blizzard']);
+ const MAX_MOMENTS=10000,WEATHER=new Set(['clear','wind','fog','rain','snow','blizzard']);
  const finite=(value,min,max)=>Number.isFinite(value)?Math.max(min,Math.min(max,value)):null;
  function moment(state,trip,id,{weather=null,now=Date.now(),experience=null}={}){
   const entry=item(id);if(!entry||entry.route!==trip.route||!trip.found.includes(id))return null;
-  return {edition:3,earned:experience?.id===id&&experience.edition===3&&experience.earned===true,tag:experience?.id===id&&experience.edition===3&&experience.earned===true?entry.tag:null,key:`${now}-${trip.seed}-${id}`,id,route:entry.route,place:entry.place,title:experience?.id===id?experience.title:entry.name,memory:experience?.id===id?experience.memory:entry.memory,...(experience?.id===id?{interaction:experience.interaction,...(experience.edition===3?{edition:3,earned:experience.earned===true,tag:experience.earned===true?entry.tag:null}: {})}: {}),icon:entry.icon,progress:finite(state.progress,0,1),elapsed:finite(state.elapsed,0,86400),weather:WEATHER.has(weather)?weather:null,createdAt:finite(now,0,8640000000000000),legacy:false};
+  return {...(entry.artV5?{artVersion:5}:entry.artV4?{artVersion:4}:{}),edition:3,earned:experience?.id===id&&experience.edition===3&&experience.earned===true,tag:experience?.id===id&&experience.edition===3&&experience.earned===true?entry.tag:null,key:`${now}-${trip.seed}-${id}`,id,route:entry.route,place:entry.place,title:experience?.id===id?experience.title:entry.name,memory:experience?.id===id?experience.memory:entry.memory,...(experience?.id===id?{interaction:experience.interaction,...(experience.edition===3?{edition:3,earned:experience.earned===true,tag:experience.earned===true?entry.tag:null}: {})}: {}),icon:entry.icon,progress:finite(state.progress,0,1),elapsed:finite(state.elapsed,0,86400),weather:WEATHER.has(weather)?weather:null,createdAt:finite(now,0,8640000000000000),legacy:false};
  }
  function cleanMoments(values){
   if(!Array.isArray(values))return [];const keys=new Set(),out=[];
   for(const value of values){const entry=item(value?.id);if(!entry||value.route!==entry.route||typeof value.key!=='string'||!value.key||value.key.length>100||keys.has(value.key))continue;keys.add(value.key);
    const text=(name,fallback,max)=>typeof value[name]==='string'&&value[name].trim()?value[name].slice(0,max):fallback;
-   const current=value.edition===3,base=current?entry:LEGACY[entry.id];out.push({...(current?{edition:3,earned:value.earned===true,tag:value.earned===true?entry.tag:null}:{}),key:value.key,id:entry.id,route:entry.route,place:text('place',base.place,80),title:text('title',base.name,80),memory:text('memory',base.memory,400),...(['look','tap','drag'].includes(value.interaction)?{interaction:value.interaction}:{}),icon:current?entry.icon:typeof value.icon==='string'&&value.icon.length<32?value.icon:base.icon,progress:finite(value.progress,0,1),elapsed:finite(value.elapsed,0,86400),weather:WEATHER.has(value.weather)?value.weather:null,createdAt:finite(value.createdAt,0,8640000000000000),legacy:!!value.legacy});
+   const current=value.edition===3||entry.bonus===true,base=current||entry.bonus?entry:LEGACY[entry.id];out.push({...(current&&value.artVersion===5&&entry.artV5?{artVersion:5}:current&&value.artVersion===4&&entry.artV4?{artVersion:4}:{}),...(current?{edition:3,earned:value.earned===true,tag:value.earned===true?entry.tag:null}:{}),key:value.key,id:entry.id,route:entry.route,place:text('place',base.place,80),title:text('title',base.name,80),memory:text('memory',base.memory,400),...(['look','tap','drag'].includes(value.interaction)?{interaction:value.interaction}:{}),icon:current?entry.icon:typeof value.icon==='string'&&value.icon.length<32?value.icon:base.icon,progress:finite(value.progress,0,1),elapsed:finite(value.elapsed,0,86400),weather:WEATHER.has(value.weather)?value.weather:null,createdAt:finite(value.createdAt,0,8640000000000000),legacy:!!value.legacy});
   }return out.slice(-MAX_MOMENTS);
  }
- function loadMoments(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');if(data?.version===2)return cleanMoments(data.moments);if(data?.version===1)return clean(data.found).map(id=>{const entry=LEGACY[id];return {key:'legacy-'+id,id,route:entry.route,place:entry.place.split(' · ')[0],title:'从旧手帐带来的一页',memory:'这是以前在这段路线保存的回忆。新的旅途瞬间会记下当时的风景与心情。',icon:entry.icon,progress:null,elapsed:null,weather:null,createdAt:null,legacy:true};});return [];}catch(_){return [];}}
+ function loadMoments(storage){try{const data=JSON.parse(storage?.getItem(KEY)||'null');if(data?.version===2)return cleanMoments(data.moments);if(data?.version===1)return clean(data.found).map(id=>{const entry=LEGACY[id]||item(id);return {key:'legacy-'+id,id,route:entry.route,place:entry.place.split(' · ')[0],title:'从旧手帐带来的一页',memory:'这是以前在这段路线保存的回忆。新的旅途瞬间会记下当时的风景与心情。',icon:entry.icon,progress:null,elapsed:null,weather:null,createdAt:null,legacy:true};});return [];}catch(_){return [];}}
  function saveMoments(storage,moments){try{if(!storage?.setItem)return false;storage.setItem(KEY,JSON.stringify({version:2,moments:cleanMoments(moments)}));return true;}catch(_){return false;}}
  const hasTag=moment=>moment?.edition===3?moment.earned===true:!!moment;
- const tagArt=moment=>moment?.edition===3&&hasTag(moment)?R.profile(moment.id)?.badge:null;
+ const tagArt=moment=>moment?.edition===3&&hasTag(moment)?(moment.artVersion===5?R.profile(moment.id)?.artV5:moment.artVersion===4?R.profile(moment.id)?.artV4:R.profile(moment.id)?.badge):null;
  return {LEGACY,hasTag,tagArt,KEY,CATALOG,item,clean,create,visible,capture,load,save,MAX_MOMENTS,moment,cleanMoments,loadMoments,saveMoments};
 
 }));

@@ -179,7 +179,7 @@
   }
 ];
  const routes=[
- {id:'wugong',geoId:'wugong',name:'武功山',subtitle:'中庵—金顶步道',region:'江西 · 草甸与云海',hazards:true,theme:'meadow',initialWarmth:100,brief:'沿卡通山径看草甸、云海与金顶远眺。每到打卡点解锁实景，雨雾中注意防护与补给。',notice:'本关是中庵至金顶附近的OSM连通步道选段，不是整个武功山穿越。地图数据不代表实时开放情况。',weather:[{turn:0,type:'clear'},{turn:4,type:'fog'},{turn:10,type:'rain'},{turn:16,type:'wind'},{turn:22,type:'clear'}]},
+ {id:'wugong',geoId:'wugong',name:'武功山',subtitle:'中庵—金顶步道',region:'江西 · 草甸与云海',hazards:true,theme:'meadow',initialWarmth:100,brief:'沿水彩山径看草甸、云海与金顶远眺。牵线飞行、拨云见山、邂逅帮拍与石坛拼图串起沿途四段小事，每到打卡点解锁实景。',notice:'本关是中庵至金顶附近的OSM连通步道选段，不是整个武功山穿越。地图数据不代表实时开放情况。',weather:[{turn:0,type:'clear'},{turn:4,type:'fog'},{turn:10,type:'rain'},{turn:16,type:'wind'},{turn:22,type:'clear'}]},
  {id:'tiger',geoId:'tiger',name:'虎跳峡',subtitle:'高路走向 · 实景打卡',region:'云南 · 峡谷与山径',hazards:true,theme:'gorge',initialWarmth:95,brief:'沿参考高路走向穿过卡通峡谷。解锁山径、峡谷和中途路标的实景照片，留意雨雾与体力。',notice:'由公开往返GPX切出去程。属于历史记录；官方通告限制擅自进入高路等未开发区域，游戏不表示当前可通行。',weather:[{turn:0,type:'clear'},{turn:3,type:'rain'},{turn:9,type:'fog'},{turn:15,type:'rain'},{turn:21,type:'clear'}]},
  {id:'aotai',geoId:'aotai',name:'鳌太线',subtitle:'秦岭走向 · 风雪演练',region:'陕西 · 秦岭',hazards:true,theme:'snow',initialWarmth:72,brief:'沿秦岭历史路线走向展开虚拟风雪演练。解锁鳌山与太白山区域实景，也要及时保温、辨向或撤回。',notice:'真实历史GPX，不是当前可用的穿越许可。鳌太未经批准穿越违法；原文件末点原样保留，不延伸到山峰。卡通地形为插画，打卡站为沿途区域的近似展示。',weather:[{turn:0,type:'snow'},{turn:4,type:'blizzard'},{turn:10,type:'fog'},{turn:14,type:'snow'},{turn:20,type:'wind'},{turn:26,type:'clear'}]}
  ];
@@ -247,7 +247,7 @@
     "region": "浙江 · 竹林与石阶",
     "theme": "bamboo",
     "initialWarmth": 100,
-    "brief": "石阶钻进竹林，山泉和竹叶声陪着轻轻的脚步。",
+    "brief": "接一筒叶尖雨，走出石阶的节奏，再把纸叶送过竹隙。",
     "notice": "采用OSM莫干岭古道西坡至大坑侧的连通选段。照片展示莫干山区域风景，不标记精确摄影机位。",
     "weather": [
       {

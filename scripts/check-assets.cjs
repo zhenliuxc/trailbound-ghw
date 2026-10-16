@@ -16,7 +16,7 @@ const bundled=fs.readFileSync(path.join(dir,'vendor/pixi-8.22.0.min.js')),upstre
 assert.equal(crypto.createHash('sha256').update(bundled).digest('hex'),crypto.createHash('sha256').update(upstream).digest('hex'),'Vendored PixiJS differs from installed upstream distribution');
 assert.ok(fs.existsSync(path.join(dir,'vendor/PIXI-LICENSE.txt')));
 console.log('PASS: pinned PixiJS browser bundle matches the installed upstream package and includes its license.');
-const badges=JSON.parse(fs.readFileSync(path.join(dir,'badges/manifest.json'),'utf8')),moments=require('../dist/discoveries.js').CATALOG;
+const badges=JSON.parse(fs.readFileSync(path.join(dir,'badges/manifest.json'),'utf8')),moments=require('../dist/discoveries.js').CATALOG.filter(e=>!e.bonus);
 assert.equal(badges.version,2);assert.equal(badges.columns,3);assert.equal(badges.rows,3);assert.equal(badges.cell,192);assert.equal(badges.entries.length,moments.length);
 for(const [index,entry] of badges.entries.entries()){
  assert.equal(entry.id,moments[index].id,'Badge art does not match the journal moment');assert.equal(entry.column,index%3);assert.equal(entry.row,Math.floor(index%9/3));assert.equal(entry.atlas,badges.atlases[Math.floor(index/9)].file);
@@ -29,7 +29,79 @@ const audio=require('../dist/audio.js'),recordings=JSON.parse(fs.readFileSync(pa
 for(const entry of recordings.entries){const data=fs.readFileSync(path.join(dir,entry.file));recordedBytes+=data.length;assert.equal(entry.file,audio.SAMPLES[entry.id]);assert.equal(data.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),entry.sha256);assert.ok(entry.author&&entry.source&&entry.license&&entry.licenseUrl&&entry.changes);}
 assert.ok(recordedBytes<600000);console.log('PASS: lightweight recorded sound materials retain verified sources, licenses and hashes.');
 
+const wugongAudio=JSON.parse(fs.readFileSync(path.join(dir,'audio/wugong-credits.json'))),runtime=require('../dist/runtime.js');
+let musicBytes=0,foleyBytes=0;
+const themeFiles=new Set(Object.values(runtime.WUGONG_THEMES).map(track=>track.file));
+assert.deepEqual(new Set(wugongAudio.music.map(track=>track.file)),themeFiles);
+assert.equal(themeFiles.size,4);assert.equal(wugongAudio.music.length,4);assert.equal(wugongAudio.cost.materialLicenseFee,0);assert.equal(wugongAudio.cost.paidSubscriptions,false);assert.equal(wugongAudio.cost.paidCommissions,false);
+for(const entry of [...wugongAudio.music,...wugongAudio.effects]){
+ const data=fs.readFileSync(path.join(dir,entry.file));assert.equal(data.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),entry.sha256);
+ assert.ok(entry.author&&entry.source&&entry.acquiredFrom&&entry.license&&entry.licenseUrl&&entry.changes&&entry.sourceFileSha256);
+ if(wugongAudio.music.includes(entry)){assert.ok(themeFiles.has(entry.file));assert.ok(entry.duration>60&&entry.duration<230);assert.ok(entry.attribution);assert.equal(entry.license,'CC BY 4.0');assert.ok(entry.bytes<wugongAudio.budgets.musicFileBytes);musicBytes+=data.length;}
+ else{assert.equal(entry.file,audio.SAMPLES[entry.id]);foleyBytes+=data.length;}
+}
+assert.ok(musicBytes<wugongAudio.budgets.musicBytes&&wugongAudio.budgets.musicBytes<=6000000);assert.ok(wugongAudio.budgets.musicFileBytes<=3000000);
+assert.ok(foleyBytes<wugongAudio.budgets.effectsBytes&&wugongAudio.budgets.effectsBytes<=100000);
+assert.ok(fs.existsSync(path.join(dir,'audio/KENNEY-RPG-LICENSE.txt')));
+console.log('PASS: four free Wugong themes and short foley retain attribution, provenance, hashes and separate streaming/effects budgets.');
+
+const moganAudio=JSON.parse(fs.readFileSync(path.join(dir,'audio/mogan-credits.json')));
+assert.equal(moganAudio.cost.materialLicenseFee,0);assert.equal(moganAudio.cost.newAudioBytes,0);
+assert.equal(moganAudio.music.length,4);
+for(const entry of [...moganAudio.music,...moganAudio.effects]){
+ const bytes=fs.readFileSync(path.join(dir,entry.file));assert.equal(bytes.length,entry.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),entry.sha256);assert.ok(entry.author&&entry.source&&entry.license&&entry.licenseUrl);
+}
+for(const [game,track]of Object.entries(runtime.MOGAN_THEMES))assert.equal(moganAudio.music.find(row=>row.scene===game).file,track.file);
+const moganProps=JSON.parse(fs.readFileSync(path.join(dir,'sprites/mogan-props-v1.json'))),moganBytes=fs.readFileSync(path.join(dir,moganProps.file));
+assert.equal(moganBytes.length,moganProps.bytes);assert.equal(crypto.createHash('sha256').update(moganBytes).digest('hex'),moganProps.sha256);assert.ok(moganBytes.length<350000);assert.equal(moganProps.frames.length,4);
+for(const frame of moganProps.frames)assert.ok(frame.x>=0&&frame.y>=0&&frame.w>0&&frame.h>0&&frame.x+frame.w<=moganProps.width&&frame.y+frame.h<=moganProps.height);
+assert.ok(moganProps.tip.x>=0&&moganProps.tip.x<=1&&moganProps.tip.y>=0&&moganProps.tip.y<=1);
+assert.deepEqual(Object.keys(runtime.MOGAN_GAMES).sort(),['bamboo-drop','bamboo-leaf','bamboo-step']);
+console.log('PASS: Mogan registered games retain packaged watercolor props, source metadata and free audio reuse without duplicate downloads.');
+
+const hint=require('../dist/hint-art.js'),hintManifest=JSON.parse(fs.readFileSync(path.join(dir,'sprites/hint-brush-v1.json'))),hintBytes=fs.readFileSync(path.join(dir,hintManifest.file));
+assert.equal(hintBytes.length,hintManifest.bytes);assert.equal(crypto.createHash('sha256').update(hintBytes).digest('hex'),hintManifest.sha256);assert.ok(hintBytes.length<30000);
+for(const key of ['file','width','height','tip'])assert.deepEqual(hint.HINT_ART[key],hintManifest[key]);
+assert.ok(hintManifest.tip.x>0&&hintManifest.tip.x<=1&&hintManifest.tip.y>0&&hintManifest.tip.y<1);
+assert.ok(runtime.MOGAN_ROUTE_ASSETS.includes(hintManifest.file));
+for(const file of ['water-scene.js','mini-games.js'])assert.ok(html.indexOf('src="hint-art.js"')>=0&&html.indexOf('src="hint-art.js"')<html.indexOf('src="'+file+'"'));
+console.log('PASS: the lightweight watercolor hint retains its source, alpha-preserving packaging metadata and shared tip anchor.');
+
 const current=JSON.parse(fs.readFileSync(path.join(dir,'badges/landscape-v3.json'),'utf8'));
 assert.equal(current.edition,3);assert.equal(current.entries.length,moments.length);
 for(const e of moments){const art=current.entries.find(a=>a.id===e.id);assert.equal(art.tag,e.tag);assert.equal(art.scene,e.scene);assert.equal(art.play,e.play);assert.equal(art.file,e.badge);const b=fs.readFileSync(path.join(dir,art.file));assert.equal(b.length,art.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),art.sha256);assert.match(b.toString(),/viewBox="0 0 192 192"/);assert.ok(!/<script|<foreignObject|(?:href|src)="https?:|<image/.test(b.toString()));}
 console.log('PASS: all 24 current interaction labels have matching native SVG artwork and hashes; historical atlases remain intact.');
+
+const v4=require("../dist/badges/art-v4.json"),D=require("../dist/discoveries.js");
+assert.equal(v4.runtimeBound,true);assert.equal(v4.runtimeBoundCount,23);
+for(const a of v4.entries){assert.ok(a.runtimeBound&&a.runtimeMomentIds.length);const b=fs.readFileSync(path.join(dir,a.file));assert.equal(crypto.createHash("sha256").update(b).digest("hex"),a.sha256);for(const id of a.runtimeMomentIds){assert.equal(D.item(id).artV4,a.file);assert.equal(D.item(id).route,a.route);}}
+console.log("PASS: all 23 watercolor images are bound to route-correct playable moments.");
+
+const additions=require('../dist/badges/art-v5.json');
+assert.equal(additions.artVersion,5);assert.equal(additions.entries.length,6);
+for(const a of additions.entries){const e=D.item(a.id),bytes=fs.readFileSync(path.join(dir,a.file));assert.equal(e.artV5,a.file);assert.equal(e.route,a.route);assert.equal(a.runtimeBound,true);assert.equal(bytes.toString('ascii',8,12),'WEBP');assert.equal(bytes.length,a.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),a.sha256);}
+assert.ok(D.CATALOG.every(e=>e.artV5||e.artV4));
+console.log('PASS: all 29 collectible types have runtime watercolor artwork; six new revisions preserve their historical SVG files.');
+
+const scenes=require('../dist/scenes/manifest.json');assert.equal(scenes.entries.length,7);
+for(const e of scenes.entries){const data=fs.readFileSync(path.join(dir,e.file));assert.equal(data.toString('ascii',8,12),'WEBP');assert.equal(data.length,e.bytes);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),e.sha256);assert.ok(routes.some(r=>r.id===e.route));assert.equal(e.file,'scenes/'+e.route+'-v1.webp');}
+assert.ok(!html.includes('journal-import'));
+console.log('PASS: seven illustrated scene backgrounds are packaged for their routes; removed journal import is absent.');
+
+const windLayers=require('../dist/sprites/wind-layers.json');
+for(const a of windLayers.entries){const b=fs.readFileSync(path.join(dir,a.file));assert.equal(b.toString('ascii',8,12),'WEBP');assert.equal(b.length,a.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),a.sha256);assert.ok(b.length<220000);assert.ok(fs.readFileSync(path.join(dir,'wind-scene.js'),'utf8').includes(a.file));}
+console.log('PASS: generated Wugong foreground is packaged, hash-verified and used by the scene.');
+
+const waterLayers=require('../dist/sprites/water-layers.json'),water=require('../dist/water-scene.js');
+for(const a of waterLayers.entries){const b=fs.readFileSync(path.join(dir,a.file));assert.equal(b.toString('ascii',8,12),'WEBP');assert.equal(b.length,a.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),a.sha256);assert.ok(b.length<350000);assert.ok(a.supersededBy?waterLayers.entries.some(e=>e.file===a.supersededBy):Object.values(water.assets).some(group=>Object.values(group).includes(a.file)));}
+assert.ok(html.indexOf('src="water-scene.js"')<html.indexOf('src="mini-games.js"'));
+console.log('PASS: water encounter artwork is packaged, hash-verified and loaded before gameplay.');
+
+const artProps=require('../dist/sprites/art-play-props-v1.json'),artAtlas=require('../dist/art-play-atlas.js'),artGames=require('../dist/art-games.js');
+const propBytes=fs.readFileSync(path.join(dir,artProps.file));
+assert.equal(propBytes.length,artProps.bytes);assert.equal(crypto.createHash('sha256').update(propBytes).digest('hex'),artProps.sha256);assert.ok(propBytes.length<350000);
+assert.deepEqual(artAtlas.frames,artProps.frames);assert.equal(artAtlas.frames.length,8);
+for(const frame of artAtlas.frames){assert.ok(frame.w>0&&frame.h>0&&frame.x>=0&&frame.y>=0&&frame.x+frame.w<=artAtlas.width&&frame.y+frame.h<=artAtlas.height);}
+for(const group of Object.values(artGames.assets))for(const file of Object.values(group))assert.ok(fs.existsSync(path.join(dir,file)),file);
+for(const file of ['art-play-atlas.js','art-games.js','art-game-scene.js'])assert.ok(html.indexOf('src="'+file+'"')<html.indexOf('src="mini-games.js"'));
+console.log('PASS: watercolor play atlas, frame bounds and three artwork-game resources are packaged.');

@@ -1,5 +1,9 @@
 # 山径 Trailbound · 七条山径与旅行瞬间手帐
 
+当前源码包含七路线场景音效及已完成的公共流程 TypeScript 迁移：公共场景、小游戏、纪念画和旅行手帐控制器位于 `src/runtime/`，入口位于 `src/app.js`；必要构建生成 `dist/runtime.js` 与 `dist/app.js`。已完成集中验证和 Git 推送，用户随后批准发布整合版试听。源码边界见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)，验证范围见 [验证说明](docs/runtime-refactor-verification.md)，发布准备见 [发布记录](docs/audio-runtime-release.md)；实际线上版本以 Sites 返回为准。下文包含历史版本记录，不能将历史的测试或发布描述当成本轮状态。
+
+修改上述源码后运行 `npm run build` 生成浏览器文件；`dist/` 下其他 JavaScript 模块暂时保留原有源码。测试继续遵循 `AGENTS.md`：完成实现后先询问用户，不在每次修改后自行执行。
+
 另已完成23枚精致手绘标签图稿，包含人物、动物与路线景物，并按地图时节配图；[中文图片预览与素材清单](docs/badges-v4/README.md)。本轮素材先保存为草稿，玩法接入另行处理。
 
 24种沿途互动标签已按路线景物更新，完成互动后收进手帐；普通回忆与历史徽章保留。详见 [标签说明](docs/LANDSCAPE_TAGS.md)。当前候选166项测试通过，尚未部署。

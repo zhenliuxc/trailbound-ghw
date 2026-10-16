@@ -1,0 +1,24 @@
+const test=require('node:test'),assert=require('node:assert/strict'),D=require('../dist/discoveries'),R=require('../dist/route-moments'),X=require('../dist/micro-moments'),A=require('../dist/audio'),{harness}=require('./dom-harness.cjs'),{fixture}=require('./audio-fixture.cjs');
+const storage=()=>{let data=null;return {getItem:()=>data,setItem:(_,v)=>data=v};};
+function reach(h,e){h.click('route-'+e.route);h.click('overlay-action');for(let i=0;i<1400;i++){h.advance(.15);if(!h.$('story-panel').hidden)h.$('story-choices').querySelector('button').emit('click');else if(!h.$('photo-panel').hidden)h.click('photo-continue');else if(h.$('active-discovery')?.getAttribute('data-discovery')===e.id&&!h.$('observe-button').hidden){h.click('observe-button');return;}if(!h.$('ending-panel').hidden)break;}throw Error('Unreachable encounter '+e.id);}
+function tap(h,x,y,v){const surface=h.$('micro-surface');surface.emit('pointerdown',{pointerId:1,clientX:x*v.width,clientY:y*v.height,button:0,isPrimary:true});surface.emit('pointerup',{pointerId:1,clientX:x*v.width,clientY:y*v.height});h.advance(.22);}
+test('five new encounters have nonoverlapping, reachable windows for 100 seeds, without replacing earlier moments',()=>{
+ assert.equal(R.ENCOUNTERS.length,5);for(const e of R.ENCOUNTERS)for(let seed=0;seed<100;seed++){const t=D.create(e.route,seed);assert.equal(t.slots.length,4);assert.equal(t.slots.filter(s=>D.item(s.id).bonus).length,1);for(let i=0;i<t.slots.length;i++){const s=t.slots[i];assert.ok(s.until>s.at);assert.equal(D.visible({status:'walking',progress:s.at},t)?.id,s.id);if(i)assert.ok(t.slots[i-1].until<s.at);}assert.match(R.evidence(e.id).fact,/游戏创作/);}
+});
+test('real pointer event sequences earn all five watercolors at mobile and desktop fixture sizes; reload keeps art and text',()=>{
+ for(const viewport of [{width:320,height:435},{width:390,height:460},{width:990,height:646}])for(const e of R.ENCOUNTERS){const st=storage(),h=harness(st,{viewport});reach(h,e);assert.equal(h.$('micro-art').querySelector('image').getAttribute('href'),'scenes/'+e.route+'-v1.webp');const progress=h.$('journey-progress').getAttribute('aria-valuenow');
+ if(e.play==='sweep'){const surface=h.$('micro-surface');surface.emit('pointerdown',{pointerId:1,clientX:.1*viewport.width,clientY:.55*viewport.height,button:0,isPrimary:true});surface.emit('pointermove',{pointerId:1,clientX:.9*viewport.width,clientY:.55*viewport.height});surface.emit('pointerup',{pointerId:1,clientX:.9*viewport.width,clientY:.55*viewport.height});}
+ else if(e.play==='listen')for(const x of [.1875,.5,.8125])tap(h,x,.6,viewport);
+ else if(e.play==='trail')for(const x of [.25,.5,.75])tap(h,x,.78,viewport);
+ else tap(h,e.play==='yield'?.15:.68,e.play==='yield'?.65:.55,viewport);
+ assert.equal(h.$('journey-progress').getAttribute('aria-valuenow'),progress);h.advance(4);const won=D.loadMoments(st).find(m=>m.id===e.id);assert.ok(won,e.id);assert.equal(won.earned,true,e.id);assert.equal(won.tag,e.tag);assert.equal(D.tagArt(won),e.artV4);const again=harness(st,{viewport});assert.equal(again.$('journal-count').textContent,'1个瞬间');assert.match(again.$('journal-list').children[0].querySelector('img').getAttribute('src'),new RegExp(e.id));h.window.emit('pagehide',{persisted:false});again.window.emit('pagehide',{persisted:false});}
+});
+test('skipping each new encounter saves no memory or watercolor',()=>{
+ for(const e of R.ENCOUNTERS){const st=storage(),h=harness(st);reach(h,e);h.click('micro-skip');h.key('Escape');const records=D.loadMoments(st);assert.equal(records.length,0);assert.equal(h.$('journal-count').textContent,'0个瞬间');h.window.emit('pagehide',{persisted:false});}
+});
+test('takin requires retreat then stillness; looking, wrong-side taps and moving do not grant a label',()=>{
+ const e=D.item('aotai-takin-first'),tick=(s,n)=>{for(let i=0;i<n*20;i++)s=X.tick(s,.05);return s;};assert.equal(tick(X.create(e),3).play.complete,false);assert.equal(tick(X.act(X.create(e),{x:.9,y:.65}),2).play.complete,false);let s=X.act(X.create(e),{x:.15,y:.65});s=tick(s,1);s=X.move(s,{x:.8,y:.4});s=tick(s,1);assert.equal(s.play.complete,false);s=X.release(s);s=X.act(s,{x:.15,y:.65});assert.equal(tick(s,2).play.complete,true);
+});
+test('bell interaction uses synthesized bell partials only after sound is enabled, with no sample fetch',async()=>{
+ const f=fixture(),p=A.create({AudioContext:f.AudioContext,timers:f.timers,fetch:()=>{throw Error('Unexpected audio fetch');}});assert.equal(p.interact('breeze',{icon:'bell',playType:'listen'}),false);await p.enable();p.setScene({routeId:'tiger',mode:'moment'});const c=f.contexts[0],before=c.sources.length;assert.equal(p.interact('breeze',{icon:'bell',playType:'listen',x:.2}),true);assert.equal(c.sources.length-before,3);p.disable();assert.equal(p.interact('breeze',{icon:'bell',playType:'listen'}),false);p.destroy();
+});

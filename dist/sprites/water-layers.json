@@ -1,0 +1,57 @@
+{
+  "generator": "OpenAI ImageGen",
+  "entries": [
+    {
+      "file": "sprites/creek-leaf-v1.webp",
+      "source": "/workspace/generated_images/exec-d0c9f6d5-4feb-4374-b083-0cde6dd3950e.png",
+      "width": 480,
+      "height": 416,
+      "bytes": 53412,
+      "sha256": "2cc338e7a336ae3d88a26594f48f9b7ade81c7218684dc12f94edac906a96011",
+      "processing": "Two equal atlas cells extracted; transparent margins trimmed; proportional resize and WebP encoding; no repainting"
+    },
+    {
+      "file": "sprites/bamboo-cup-v1.webp",
+      "source": "/workspace/generated_images/exec-d0c9f6d5-4feb-4374-b083-0cde6dd3950e.png",
+      "width": 480,
+      "height": 462,
+      "bytes": 75002,
+      "sha256": "19970607eb07e770631053deec20a0804bb029a2b305e8cff4fa28ee0a2039f0",
+      "processing": "Two equal atlas cells extracted; transparent margins trimmed; proportional resize and WebP encoding; no repainting",
+      "supersededBy": "sprites/bamboo-cup-v2.webp"
+    },
+    {
+      "file": "sprites/creek-water-v1.webp",
+      "source": "/workspace/generated_images/exec-ccfa877d-5ee3-4f47-8f3d-bc9e5c2769e8.png",
+      "width": 1280,
+      "height": 720,
+      "bytes": 309392,
+      "sha256": "8199c1dd082e3ba2563edac23366395f77ae599cad7e503b19ebeb04e3cf59cc",
+      "processing": "Proportional resize and WebP encoding"
+    },
+    {
+      "file": "sprites/creek-stone-v1.webp",
+      "source": "/workspace/generated_images/exec-9020e36f-1cb9-4a42-99a9-a576b2226fc5.png",
+      "width": 400,
+      "height": 259,
+      "bytes": 33468,
+      "sha256": "50b6baf5a3e417ad47067c74727b3126332f9f3286c9e5a03e3fa898be435003",
+      "processing": "Transparent margins trimmed, proportional resize and WebP encoding"
+    },
+    {
+      "file": "sprites/bamboo-cup-v2.webp",
+      "source": "/workspace/generated_images/exec-1fb86514-98eb-4ed4-8f76-a386c135b750.png",
+      "width": 386,
+      "height": 480,
+      "bytes": 98730,
+      "sha256": "ee8a51d428f356d3fc29ee71904995b75f23ab1a17670b8b360a94b01f827e5c",
+      "processing": "ImageGen cleanup; crop to visible alpha bounds (>8/255) plus 4px margin; proportional resize and WebP encoding. Original alpha retained inside crop.",
+      "sourceCrop": [
+        192,
+        62,
+        1086,
+        1174
+      ]
+    }
+  ]
+}

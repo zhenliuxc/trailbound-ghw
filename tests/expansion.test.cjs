@@ -4,7 +4,7 @@ const added=['maclehose','changping','mogan'];
 test('all named journeys retain distinct landscapes and local photographs',()=>{
  assert.deepEqual(G.ROUTES.map(r=>r.id),['wugong','tiger','aotai',...added,'westlake']);assert.equal(new Set(G.ROUTES.map(r=>r.theme)).size,G.ROUTES.length);
  const photos=G.ROUTES.flatMap(r=>r.checkpoints.map(cp=>cp.photo.file));assert.equal(photos.length,G.ROUTES.length*3);assert.equal(new Set(photos).size,photos.length);
- for(const id of added){const r=G.getRoute(id);assert.equal(J.storyOf(id).events.length,2);assert.equal(D.create(id,7).slots.length,3);for(const cp of r.checkpoints)assert.ok(fs.statSync(require.resolve('../dist/'+cp.photo.file)).size<110000);}
+ for(const id of added){const r=G.getRoute(id);assert.equal(J.storyOf(id).events.length,2);assert.equal(D.create(id,7).slots.filter(s=>!D.item(s.id).bonus).length,3);for(const cp of r.checkpoints)assert.ok(fs.statSync(require.resolve('../dist/'+cp.photo.file)).size<110000);}
 });
 test('added geography preserves official GPX endpoints and connected OSM node sequences',()=>{
  const evidence=require('../docs/expanded-route-evidence.json'),mac=G.getRoute('maclehose').geo;
@@ -14,19 +14,19 @@ test('added geography preserves official GPX endpoints and connected OSM node se
  for(const id of added){const geo=G.getRoute(id).geo;for(let i=1;i<geo.line.length;i++)assert.ok(G.meters(geo.line[i-1],geo.line[i])<250,'no unrecorded long connector');}
 });
 test('all three new routes offer non-animal, non-cloud travel moments with their own places',()=>{
- const icons=new Set();for(const id of added)for(const entry of D.CATALOG.filter(e=>e.route===id)){assert.ok(entry.place&&entry.memory&&entry.hint);assert.ok(!['bird','cloud','sun','goat','eagle'].includes(entry.icon));icons.add(entry.scene);const trip=D.create(id,1),slot=trip.slots.find(x=>x.id===entry.id),state={status:'walking',progress:slot.at,elapsed:50},captured=D.capture(state,trip,entry.id),moment=D.moment(state,captured,entry.id,{weather:'clear',now:1234});assert.equal(moment.place,entry.place);assert.equal(moment.title,entry.name);assert.equal(moment.route,id);}
+ const icons=new Set();for(const id of added)for(const entry of D.CATALOG.filter(e=>!e.bonus&&e.route===id)){assert.ok(entry.place&&entry.memory&&entry.hint);assert.ok(!['bird','cloud','sun','goat','eagle'].includes(entry.icon));icons.add(entry.scene);const trip=D.create(id,1),slot=trip.slots.find(x=>x.id===entry.id),state={status:'walking',progress:slot.at,elapsed:50},captured=D.capture(state,trip,entry.id),moment=D.moment(state,captured,entry.id,{weather:'clear',now:1234});assert.equal(moment.place,entry.place);assert.equal(moment.title,entry.name);assert.equal(moment.route,id);}
  assert.equal(icons.size,9);
 });
 test('new route moments can all be remembered through the walking UI and persist across routes',()=>{
  let saved=null;const storage={getItem:()=>saved,setItem:(_,value)=>{saved=value;}},h=harness(storage);
- for(const id of added){h.click('route-'+id);h.click('overlay-action');for(let i=0;i<500&&h.$('ending-panel').hidden;i++){h.advance(.6);if(!h.$('story-panel').hidden)h.$('story-choices').querySelector('button').emit('click');else if(!h.$('photo-panel').hidden)h.click('photo-continue');else if(!h.$('observe-button').hidden)h.click('observe-button');}
-  assert.equal(h.$('ending-panel').hidden,false,id);assert.equal(h.$('trip-count').textContent,'本次记下3个瞬间',id);assert.equal(h.$('album-count').textContent,'3 / 3');assert.equal(h.pendingFrames(),0);
+ for(const id of added){h.click('route-'+id);h.click('overlay-action');for(let i=0;i<500&&h.$('ending-panel').hidden;i++){h.advance(.6);if(!h.$('micro-panel').hidden)h.finishMoment();else if(!h.$('reward-overlay').hidden)h.click('reward-continue');else if(!h.$('story-panel').hidden)h.$('story-choices').querySelector('button').emit('click');else if(!h.$('photo-panel').hidden)h.click('photo-continue');else if(!h.$('observe-button').hidden)h.click('observe-button');}
+  assert.equal(h.$('ending-panel').hidden,false,id);assert.equal(h.$('trip-count').textContent,'本次记下'+D.create(id,42).slots.length+'个瞬间',id);assert.equal(h.$('album-count').textContent,'3 / 3');assert.equal(h.pendingFrames(),0);
  }
- assert.equal(D.loadMoments(storage).length,9);assert.equal(h.$('journal-count').textContent,'9个瞬间');assert.equal(harness(storage).$('journal-list').children.length,9);
+ assert.equal(D.loadMoments(storage).length,10);assert.equal(h.$('journal-count').textContent,'10个瞬间');assert.equal(harness(storage).$('journal-list').children.length,10);
 });
-test('old and new journal memories keep their correct atlas cells and expand independently',()=>{
- const moments=D.CATALOG.map((entry,i)=>({key:'saved-'+entry.id,id:entry.id,route:entry.route,createdAt:1234+i,progress:entry.at,elapsed:60,weather:'clear'}));const h=harness({getItem:()=>JSON.stringify({version:2,moments}),setItem(){}});
- assert.equal(h.$('journal-list').children.length,D.CATALOG.length);for(const card of h.$('journal-list').children){const id=card.attributes['data-moment'].slice(6),index=D.CATALOG.findIndex(e=>e.id===id),button=card.querySelector('button'),art=button.querySelector('span');assert.equal(art.style.backgroundImage,`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v2'][Math.floor(index/9)]}.webp')`);assert.equal(art.style.backgroundPosition,`${index%3*50}% ${Math.floor(index%9/3)*50}%`);button.emit('click');assert.equal(h.$('journal-page').querySelector('strong').textContent,D.LEGACY[id].name);}
+test('compatible old memories keep their correct atlas cells and wall titles',()=>{
+ const moments=D.CATALOG.filter(e=>!e.bonus).map((entry,i)=>({key:'saved-'+entry.id,id:entry.id,route:entry.route,createdAt:1234+i,progress:entry.at,elapsed:60,weather:'clear'}));const h=harness({getItem:()=>JSON.stringify({version:2,moments}),setItem(){}});
+ h.click('journal-more');assert.equal(h.$('journal-list').children.length,D.CATALOG.filter(e=>!e.bonus).length);for(const card of h.$('journal-list').children){const id=card.attributes['data-moment'].slice(6),index=D.CATALOG.findIndex(e=>e.id===id),page=card.querySelector('button'),art=page.querySelector('span');assert.equal(art.style.backgroundImage,`url('badges/${['moments-v1','moments-expansion-v1','moments-westlake-v2'][Math.floor(index/9)]}.webp')`);assert.equal(art.style.backgroundPosition,`${index%3*50}% ${Math.floor(index%9/3)*50}%`);assert.equal(page.querySelector('strong').textContent,D.LEGACY[id].name);}
 });
 test('coastal sea closes on the water side and new scenery preserves its input coordinates',()=>{
  const r=G.getRoute('maclehose'),points=[[100,500],[200,300],[300,100]],context={features:[{kind:'coast',line:Array.from({length:12},(_,i)=>[400,550-i*40])}]},before=JSON.stringify(context),plan=S.build(r,points,context);

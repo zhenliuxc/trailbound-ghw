@@ -1,0 +1,81 @@
+Mogan browser: desktop route 15
+Mogan browser: desktop route 21
+Mogan browser: desktop route 42
+Mogan browser: desktop play footsteps
+Mogan browser: desktop route 103
+Mogan browser: desktop route 137
+Mogan browser: desktop route 137
+Mogan browser: desktop route 137
+Mogan browser: phone route 13
+Mogan browser: phone route 45
+Mogan browser: phone route 137
+Mogan browser: phone play sling
+{
+  "passed": true,
+  "results": [
+    {
+      "viewport": "desktop",
+      "played": [
+        "footsteps",
+        "sling"
+      ],
+      "earned": 2,
+      "pageErrors": [],
+      "failedRequests": [],
+      "audioRequests": [
+        "mini-drop-v1.mp3",
+        "mini-splash-v1.mp3",
+        "westlake-leaves-v1.mp3",
+        "westlake-drips-v1.mp3",
+        "wugong-a-kind-of-hope-loop-v1.mp3",
+        "wugong-paper-v1.mp3",
+        "wugong-place-v1.mp3",
+        "wugong-cloth-v1.mp3",
+        "wugong-line-v1.mp3",
+        "wugong-flutter-v1.mp3",
+        "wugong-step-1-v1.mp3",
+        "wugong-step-2-v1.mp3",
+        "wugong-step-3-v1.mp3",
+        "wugong-cirrus-loop-v1.mp3",
+        "wugong-reverie-v1.mp3",
+        "wugong-childhood-loop-v1.mp3"
+      ],
+      "renderer": "Chromium WebGL via SwiftShader",
+      "reducedMotion": false,
+      "physicalPhoneNotTested": true,
+      "listeningNotPerformed": true
+    },
+    {
+      "viewport": "phone",
+      "played": [
+        "footsteps",
+        "sling"
+      ],
+      "earned": 2,
+      "pageErrors": [],
+      "failedRequests": [],
+      "audioRequests": [
+        "mini-drop-v1.mp3",
+        "mini-splash-v1.mp3",
+        "westlake-leaves-v1.mp3",
+        "westlake-drips-v1.mp3",
+        "wugong-a-kind-of-hope-loop-v1.mp3",
+        "wugong-paper-v1.mp3",
+        "wugong-place-v1.mp3",
+        "wugong-cloth-v1.mp3",
+        "wugong-line-v1.mp3",
+        "wugong-flutter-v1.mp3",
+        "wugong-step-1-v1.mp3",
+        "wugong-step-2-v1.mp3",
+        "wugong-step-3-v1.mp3",
+        "wugong-cirrus-loop-v1.mp3",
+        "wugong-reverie-v1.mp3",
+        "wugong-childhood-loop-v1.mp3"
+      ],
+      "renderer": "Chromium WebGL via SwiftShader",
+      "reducedMotion": true,
+      "physicalPhoneNotTested": true,
+      "listeningNotPerformed": true
+    }
+  ]
+}

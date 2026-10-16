@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "result": {
+    "width": 2818,
+    "height": 860,
+    "camera": {
+      "w": 720,
+      "h": 219.72999572753906
+    },
+    "scale": 0.3662171753016324,
+    "startRadius": 2.5635202271114266,
+    "renderer": "pixi"
+  },
+  "pageErrors": [],
+  "physicalDevice": false
+}

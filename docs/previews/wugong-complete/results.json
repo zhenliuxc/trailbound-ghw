@@ -1,0 +1,30 @@
+[
+  {
+    "viewport": "desktop",
+    "games": [
+      "wind",
+      "clouds",
+      "greet",
+      "puzzle"
+    ],
+    "earned": 4,
+    "pageErrors": [],
+    "failedRequests": [],
+    "renderer": "Chromium WebGL via SwiftShader",
+    "reducedMotion": false
+  },
+  {
+    "viewport": "phone",
+    "games": [
+      "wind",
+      "clouds",
+      "greet",
+      "puzzle"
+    ],
+    "earned": 4,
+    "pageErrors": [],
+    "failedRequests": [],
+    "renderer": "Chromium WebGL via SwiftShader",
+    "reducedMotion": true
+  }
+]
