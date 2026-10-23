@@ -1,0 +1,18 @@
+✔ all four Wugong encounters preserve complete-only rewards and can be skipped without a journal entry (309.76ms)
+✔ loaded cloud, photography and jigsaw UI can each finish and collect exactly once on portrait and wide hosts (23.909833ms)
+✔ continuous flight uses the same complete-only collection path after the resource gate (426.955792ms)
+✔ the first camera arrow starts at the visible finder rather than stale encounter coordinates (4.006916ms)
+✔ closing an earned painting without collecting returns no journal entry or collection message (4.460375ms)
+✔ replaying the current art page keeps the first saved artwork, date and memory (7.885292ms)
+✔ a newly collected memory names the place actually visited on this itinerary (3.342375ms)
+✔ wind artwork loading and failure block blind controls, permit retry, and do not leak a reward (377.159ms)
+✔ all Wugong memory paintings keep one journal entry when replayed (0.160875ms)
+✔ cloud loading and failure block clicks, swipes and keyboard blows until artwork is ready (7.744583ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1270.337

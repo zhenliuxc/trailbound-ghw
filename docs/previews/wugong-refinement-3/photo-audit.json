@@ -1,0 +1,114 @@
+{
+  "stops": 7,
+  "uniquePhotos": 7,
+  "photos": [
+    {
+      "file": "photos/wugong-village-v3.jpg",
+      "usedBy": [
+        "start"
+      ]
+    },
+    {
+      "file": "photos/wugong-ascent-v2.jpg",
+      "usedBy": [
+        "slope"
+      ]
+    },
+    {
+      "file": "photos/wugong-meadow.webp",
+      "usedBy": [
+        "meadow"
+      ]
+    },
+    {
+      "file": "photos/wugong-grass-saddle-v3.jpg",
+      "usedBy": [
+        "camp"
+      ]
+    },
+    {
+      "file": "photos/wugong-ridgetrail-v2.jpg",
+      "usedBy": [
+        "horse"
+      ]
+    },
+    {
+      "file": "photos/wugong-jinding-marker-v3.jpg",
+      "usedBy": [
+        "summit"
+      ]
+    },
+    {
+      "file": "photos/wugong-valley-v3.jpg",
+      "usedBy": [
+        "end"
+      ]
+    }
+  ],
+  "regionalOrNonExact": [
+    "start",
+    "slope",
+    "meadow",
+    "camp",
+    "horse",
+    "end"
+  ],
+  "rows": [
+    {
+      "id": "start",
+      "title": "东江村 · 反穿起点",
+      "file": "photos/wugong-village-v3.jpg",
+      "caption": "《Wugongshan, China》· 山脚村落与稻田。作者未标注村名，非已确认的东江村村口。",
+      "source": "https://www.flickr.com/photos/68166820@N08/50770556203",
+      "license": "CC BY 2.0"
+    },
+    {
+      "id": "slope",
+      "title": "绝望坡",
+      "file": "photos/wugong-ascent-v2.jpg",
+      "caption": "武功山陡坡与山路实景。区域照片，非绝望坡定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture15.jpg",
+      "license": "CC0"
+    },
+    {
+      "id": "meadow",
+      "title": "高山草甸",
+      "file": "photos/wugong-meadow.webp",
+      "caption": "武功山草甸实景，摄于 2018 年 6 月。区域照片，非此弯道定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture12.jpg",
+      "license": "CC0"
+    },
+    {
+      "id": "camp",
+      "title": "观音宕 · 星空营地",
+      "file": "photos/wugong-grass-saddle-v3.jpg",
+      "caption": "武功山夏季草甸区域实景，摄于 2018 年 6 月。非已确认的观音宕营地定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture10.jpg",
+      "license": "CC0"
+    },
+    {
+      "id": "horse",
+      "title": "吊马桩",
+      "file": "photos/wugong-ridgetrail-v2.jpg",
+      "caption": "武功山草甸山路实景。区域照片，非吊马桩定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture16.jpg",
+      "license": "CC0"
+    },
+    {
+      "id": "summit",
+      "title": "金顶",
+      "file": "photos/wugong-jinding-marker-v3.jpg",
+      "caption": "《Wugongshan， Jiangxi, China, 武功山金顶，中国》· 金顶石碑实拍，摄于 2017 年 9 月。",
+      "source": "https://www.flickr.com/photos/68166820@N08/50835558058",
+      "license": "CC BY 2.0"
+    },
+    {
+      "id": "end",
+      "title": "景区大门",
+      "file": "photos/wugong-valley-v3.jpg",
+      "caption": "《Wugongshan valley, Jiangxi, China》· 山脚溪水实景，摄于 2017 年 9 月。旅程回望配图，非景区大门照片。",
+      "source": "https://www.flickr.com/photos/68166820@N08/50833400457",
+      "license": "CC BY 2.0"
+    }
+  ]
+}

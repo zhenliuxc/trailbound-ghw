@@ -1,0 +1,15 @@
+Date: 2026-10-17
+Working directory: /Users/liuxucheng/code/trailbound
+Command: ./trailbound-local.command build
+Final exit code: 0
+
+> trailbound-ghw@0.14.0-rc.1 build
+> node scripts/build-runtime.mjs
+
+Built TypeScript runtime and browser entry point. Gameplay/browser/audio tests were not run.
+
+The active mountain walk now mounts the existing browser PixiJS runtime.
+The eight-frame side-view character is sprites/tiger-hiker-side-v1.webp.
+Historical Three.js and authored-GLB preparation files remain in the project.
+No Tripo API calls, dependency installation, Git submission, push or publication.
+Compilation and packaging do not establish visual, touch, performance or audio acceptance.

@@ -1,0 +1,12 @@
+Local Tiger Gorge PixiJS implementation — necessary build only
+Directory: /Users/liuxucheng/Documents/Codex/2026-10-16/task/trailbound
+Command: ../trailbound-local.command build
+Exit code: 0
+
+> trailbound-ghw@0.14.0-rc.1 build
+> node scripts/build-runtime.mjs
+
+Built TypeScript runtime and browser entry point. Gameplay/browser/audio tests were not run.
+
+No gameplay, browser, physical phone, performance or listening acceptance was performed.
+No commit, push or deployment was performed.

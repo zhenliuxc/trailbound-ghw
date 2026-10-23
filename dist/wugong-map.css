@@ -1,0 +1,94 @@
+.wugong-map-hud{position:absolute;inset:0;z-index:3;pointer-events:none;color:#405e49;font-family:var(--sans)}
+.wugong-map-chapter{position:absolute;left:20px;bottom:18px;max-width:min(310px,calc(100% - 215px));padding:12px 15px;background:linear-gradient(110deg,#fffdf0ed,#fffdf0cb 80%,#fffdf000);border-radius:3px 20px 15px 6px}
+.wugong-map-chapter small{display:block;font-size:9px;letter-spacing:1px;color:#7c8b70}
+.wugong-map-chapter strong{display:block;margin-top:3px;font:normal 19px/1.45 var(--serif)}
+.wugong-near-stop{pointer-events:auto;display:block;margin-top:8px;padding:7px 13px;min-height:44px;background:#fffbed;border:1px solid #a6b18b;border-radius:4px 14px 7px 12px;color:#4f6b50;font-size:11px;box-shadow:0 2px 7px #536a4120}
+.wugong-mini-overview{position:absolute;right:18px;bottom:17px;width:176px;margin:0;padding:8px 10px 7px;border:1px solid #c9d1b88c;border-radius:13px 4px 14px 5px;background:#fffdf0d9;box-shadow:0 3px 14px #394c3510}
+.wugong-mini-overview svg{display:block;width:100%;height:auto;overflow:visible}
+.wugong-mini-overview text{fill:#68795d;font-size:8px;font-family:var(--sans)}
+.wugong-mini-overview figcaption{margin-top:4px;text-align:center;font-size:8px;color:#8a937b;letter-spacing:.2px}
+.wugong-mini-overview[data-expanded="true"]{width:min(300px,calc(100% - 36px));background:#fffdf0f2;border-color:#b7c6a3}
+.wugong-map-hud[data-blocked="true"] .wugong-map-chapter{opacity:.6}
+.wugong-stop-overlay{position:absolute;inset:0;z-index:7;display:grid;place-items:center;padding:26px;background:#263b2c40;backdrop-filter:blur(2px);isolation:isolate}
+.wugong-stop-card{position:relative;width:min(410px,100%);box-sizing:border-box;padding:29px 28px 24px;border:1px solid #d9d7bd;border-radius:7px 19px 11px 17px;background:linear-gradient(130deg,#fffff4f7,#f7f5e7fa);color:#50684e;box-shadow:0 13px 44px #1c302426;max-height:100%;overflow:auto;overscroll-behavior:contain}
+.wugong-stop-kicker{display:block;padding-right:35px;font-size:9px;letter-spacing:2px;color:#92997b}
+.wugong-stop-card h2{font:normal 26px/1.4 var(--serif);margin:9px 28px 12px 0;color:#3c5a42}
+.wugong-stop-copy{margin:0 0 19px;font-size:12px;line-height:1.9;color:#77866a}
+.wugong-stop-actions{display:grid;gap:9px}
+.wugong-stop-action{min-height:44px;padding:9px 15px;border:1px solid #c8d0b6;border-radius:5px 13px 7px 12px;background:#f3f6e9;color:#56704e;font-size:12px;line-height:1.5}
+.wugong-stop-action:hover{background:#e8efdb}
+.wugong-stop-action:focus-visible,.wugong-near-stop:focus-visible{outline:3px solid #a99560;outline-offset:3px}
+.wugong-stop-action:disabled{cursor:default;color:#8a967a;background:#f3f4e8}
+.wugong-stop-continue{background:#5f7c58;color:#fffdf0;border-color:#5f7c58}
+.wugong-stop-continue:hover{background:#4c6b48}
+.wugong-stop-close{position:absolute;top:12px;right:11px;width:44px;height:44px;min-height:44px;padding:0;background:transparent;border:0;border-radius:50%;font-size:26px;font-weight:300;color:#7b8b6c}
+.wugong-stop-close:hover{background:#e5ead74f}
+.wugong-vista{display:block;padding:0;background:#e5ead8;backdrop-filter:none;overflow:hidden}
+.wugong-vista-landscape{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#dbe4d6,#e8eedb 50%,#cbd3ad)}
+.wugong-vista-art{position:absolute;width:100%;height:100%;object-fit:cover;object-position:center 46%;filter:saturate(.86)}
+.wugong-vista-haze{position:absolute;left:-24%;width:148%;height:29%;border-radius:48%;pointer-events:none;filter:blur(17px);background:radial-gradient(ellipse at 32% 45%,#fffef1ad,#f0f4e274 36%,#f5f8e400 72%);will-change:transform}
+.wugong-vista-haze-far{top:30%;opacity:.54;animation:wugong-haze-far 14s ease-in-out infinite alternate}
+.wugong-vista-haze-near{top:49%;height:26%;opacity:.65;animation:wugong-haze-near 11s ease-in-out infinite alternate}
+.wugong-vista-grass{position:absolute;left:-3%;bottom:-8%;width:63%;height:43%;object-fit:contain;object-position:left bottom;pointer-events:none;transform-origin:45% 95%;animation:wugong-grass-wind 4.8s ease-in-out infinite alternate;filter:brightness(.9)}
+.wugong-vista-person{position:absolute;left:64%;bottom:22%;width:70px;height:auto;aspect-ratio:404/746;overflow:hidden;filter:drop-shadow(2px 3px 2px #34493525);pointer-events:none}
+.wugong-vista-caption{position:absolute;left:24px;bottom:23px;width:min(380px,calc(100% - 48px));max-height:calc(100% - 46px);padding:20px 23px 19px;background:linear-gradient(125deg,#fffff0f2,#f9f7e8d9);box-shadow:0 8px 22px #2d432317}
+.wugong-vista-caption h2{font-size:23px;margin-bottom:8px}
+.wugong-vista-caption .wugong-stop-copy{font-size:11px;margin-bottom:13px}
+.wugong-vista-caption>.wugong-stop-continue{min-width:126px}
+.wugong-vista-error{position:absolute;left:10%;right:10%;top:19%;margin:0;text-align:center;color:#6c8068;font-size:12px;line-height:1.8}
+.wugong-vista[data-frozen="true"] .wugong-vista-haze,.wugong-vista[data-frozen="true"] .wugong-vista-grass{animation-play-state:paused}
+.wugong-vista[data-reduced="true"] .wugong-vista-haze,.wugong-vista[data-reduced="true"] .wugong-vista-grass{animation:none;will-change:auto}
+.wugong-vista[data-reduced="true"] .wugong-vista-haze-far{transform:translate(4%,-2%)}
+.wugong-vista[data-reduced="true"] .wugong-vista-haze-near{transform:translate(-4%,4%)}
+.wugong-vista[data-vista="summit"] .wugong-vista-art{object-position:center 35%}
+.wugong-vista[data-vista="summit"] .wugong-vista-person{left:66%;bottom:27%}
+.wugong-vista[data-vista="summit"] .wugong-vista-grass{left:38%;width:68%;height:35%;transform:scaleX(-1)}
+@keyframes wugong-haze-far{from{transform:translate(-2%,0)}to{transform:translate(4%,-2%)}}
+@keyframes wugong-haze-near{from{transform:translate(5%,0)}to{transform:translate(-4%,4%)}}
+@keyframes wugong-grass-wind{from{transform:rotate(-1deg)}to{transform:rotate(1.1deg)}}
+@media(max-width:600px){
+  .wugong-map-chapter{left:11px;bottom:12px;max-width:calc(100% - 155px);padding:9px 11px}
+  .wugong-map-chapter small{font-size:8px;letter-spacing:.4px}
+  .wugong-map-chapter strong{font-size:16px}
+  .wugong-near-stop{font-size:10px;padding:7px 8px;margin-top:5px}
+  .wugong-mini-overview{right:10px;bottom:12px;width:132px;padding:7px 7px 5px}
+  .wugong-mini-overview[data-expanded="true"]{width:min(242px,calc(100% - 22px))}
+  .wugong-mini-overview figcaption{font-size:7px;letter-spacing:0}
+  .wugong-stop-overlay{padding:17px}
+  .wugong-stop-card{padding:25px 22px 21px}
+  .wugong-stop-card h2{font-size:23px}
+  .wugong-vista{padding:0}
+  .wugong-vista-caption{left:14px;bottom:14px;width:calc(100% - 28px);padding:16px 19px 16px;max-height:53%}
+  .wugong-vista-caption h2{font-size:21px;margin-top:5px}
+  .wugong-vista-caption .wugong-stop-copy{font-size:10px;line-height:1.7}
+  .wugong-vista-person{left:29%;bottom:49%;width:55px;height:auto}
+  .wugong-vista-grass{bottom:32%;height:28%;width:78%}
+  .wugong-vista[data-vista="summit"] .wugong-vista-person{left:67%;bottom:48%}
+  .wugong-vista[data-vista="summit"] .wugong-vista-grass{bottom:33%}
+}
+@media(prefers-reduced-motion:reduce){.wugong-vista-haze,.wugong-vista-grass{animation:none;will-change:auto}}
+
+/* The main view always follows the local trail; the small overview owns the whole route. */
+.wugong-map-ui{position:absolute;inset:0;z-index:4;pointer-events:none}
+.wugong-map-ui .wugong-stop-overlay{pointer-events:auto}
+.wugong-world .pixi-landscape{visibility:hidden}
+.wugong-world .map-compass{display:none}
+.wugong-world #map-base{fill:#e9ead2}
+.wugong-world #route-outline{stroke:#ece1c5;stroke-width:14;vector-effect:non-scaling-stroke;opacity:.9}
+.wugong-world #route-line{stroke:#c1a87d;stroke-width:8;vector-effect:non-scaling-stroke}
+.wugong-world #completed-line{stroke:#aa8d63;stroke-width:3;opacity:.58;vector-effect:non-scaling-stroke}
+.wugong-world #geo-markers .checkpoint-badge{fill:#fffaf0e6;stroke:#a9936c}
+.wugong-art-status{position:absolute;left:50%;top:58px;transform:translateX(-50%);z-index:3;max-width:80%;font-size:10px;color:#6a7a60;background:#fffbeddf;padding:5px 12px;border-radius:5px;pointer-events:none;text-align:center}
+[data-wugong-prop][role="button"]{cursor:pointer;outline:none}
+[data-wugong-prop][role="button"]:focus-visible{filter:drop-shadow(0 0 3px #f9f1ce)}
+
+.wugong-camp-scene{position:relative;height:135px;margin:-2px 0 15px;overflow:hidden;border-radius:4px 13px 6px 12px;background:url('sprites/wugong-meadow-grass-v1.webp') center bottom/100% auto no-repeat,linear-gradient(#eef1df,#dce6c8)}
+.wugong-camp-person{position:absolute;left:50%;bottom:2px;width:143px;height:auto;aspect-ratio:694/652;overflow:hidden;transform:translateX(-50%)}
+.wugong-sketch-card{width:min(650px,100%);padding:22px 24px}
+.wugong-sketch-card h2{font-size:24px;margin-bottom:8px}
+.wugong-sketch-card .wugong-stop-copy{font-size:11px;line-height:1.7;margin-bottom:12px}
+.wugong-sketch-paper{display:block;width:100%;height:auto;aspect-ratio:8/5;background:#fbf7e9;border:0;border-radius:3px 9px 5px 7px;box-shadow:inset 0 0 0 1px #d8cfb96b,0 2px 10px #5f684216;touch-action:none;cursor:crosshair}
+.wugong-sketch-paper:focus-visible{outline:2px solid #a2af8f;outline-offset:3px}
+.wugong-sketch-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.wugong-sketch-tools .wugong-stop-action{flex:1;white-space:nowrap;font-size:11px;padding:8px 12px}
+@media(max-width:600px){.wugong-camp-scene{height:110px}.wugong-camp-person{width:117px}.wugong-sketch-card{padding:20px 17px}.wugong-sketch-card h2{font-size:21px}.wugong-sketch-tools{gap:6px}.wugong-sketch-tools .wugong-stop-continue{flex-basis:100%}}

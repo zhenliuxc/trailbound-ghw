@@ -1,0 +1,286 @@
+/* Shared sizing comes after each family's artwork and controls.
+   Wide scenes use the available width and height independently; their existing
+   responsive renderers refit the scene and input coordinates to the host. */
+#micro-panel:where([data-game]:not([data-game=""])) {
+  --play-padding: clamp(8px, .65vw, 14px);
+  --play-margin: clamp(6px, .7vw, 12px);
+  --play-margin-x: max(var(--play-margin), env(safe-area-inset-left), env(safe-area-inset-right));
+  --play-margin-y: max(var(--play-margin), env(safe-area-inset-top), env(safe-area-inset-bottom));
+  --play-tools: 0px;
+  --play-column-gap: 0px;
+  --play-extra: 0px;
+  --play-chrome: 122px;
+  /* Heading, progress, a 44px control row and gaps, plus the paper edge. */
+  --play-reserve: calc(var(--play-chrome) + var(--play-padding) * 2 + var(--play-margin-y) * 2 + var(--play-extra));
+  --play-height: max(160px, calc(100dvh - var(--play-reserve)));
+  position: fixed;
+  z-index: 70;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100vw - var(--play-margin-x) * 2);
+  max-width: none;
+  height: calc(100dvh - var(--play-margin-y) * 2);
+  max-height: calc(100dvh - var(--play-margin-y) * 2);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(160px, 1fr) 3px auto;
+  grid-template-areas: "heading heading" "scene scene" "progress progress" "result controls";
+  align-content: start;
+  align-items: start;
+  gap: 8px 14px;
+  padding: var(--play-padding);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #c4ceb4 transparent;
+  border-radius: 18px;
+  background: #faf6e8;
+  box-shadow: 0 22px 80px #17382a55, 0 0 0 100vmax #17382a70;
+}
+
+#micro-panel:where([data-game]:not([data-game=""])) .micro-heading {
+  grid-area: heading;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  background: #faf6e8;
+}
+#micro-panel:where([data-game]:not([data-game=""])) .micro-heading > div { min-width: 0; }
+#micro-panel:where([data-game]:not([data-game=""])) .micro-heading h2 {
+  margin: 2px 0 0;
+  font-size: clamp(18px, 1.45vw, 23px);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+#micro-panel:where([data-game]:not([data-game=""])) .micro-heading small { font-size: 10px; line-height: 1.5; }
+#micro-panel:where([data-game]:not([data-game=""])) .micro-heading button {
+  min-height: 44px;
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border: 0;
+  background: transparent;
+}
+
+#micro-panel:where([data-game]:not([data-game=""])) .micro-surface {
+  grid-area: scene;
+  justify-self: center;
+  align-self: stretch;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+  padding: 0;
+  border-radius: 12px;
+}
+#micro-panel:where([data-game]:not([data-game=""])) #micro-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+}
+#micro-panel:where([data-game]:not([data-game=""])) .micro-progress { grid-area: progress; height: 3px; margin: 0; }
+#micro-panel:where([data-game]:not([data-game=""])) .micro-result {
+  grid-area: result;
+  align-self: center;
+  position: static;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+#micro-panel:where([data-game]:not([data-game=""])) .mini-controls {
+  grid-area: controls;
+  align-self: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin: 0;
+}
+#micro-panel:where([data-game]:not([data-game=""])) .mini-controls button {
+  min-height: 44px;
+  padding: 6px 10px;
+  font-size: 11px;
+  background: transparent;
+  border-color: transparent;
+}
+
+/* The surface keeps its full instruction as its accessible name. A second
+   printed copy does not need another row below the live cue/status. */
+#micro-panel:where([data-game]:not([data-game=""])) .micro-instruction,
+#micro-panel:is([data-art-game="true"], [data-mogan="true"]) .micro-result {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Match/sling keep their square play table, with a modest paper sidebar. */
+#micro-panel[data-art-game="true"] {
+  --play-tools: clamp(208px, 18vw, 280px);
+  --play-column-gap: 14px;
+  width: min(calc(100vw - var(--play-margin-x) * 2), calc(var(--play-height) + var(--play-tools) + var(--play-column-gap) + var(--play-padding) * 2 + 2px));
+  height: auto;
+  grid-template-columns: minmax(0, 1fr) var(--play-tools);
+  grid-template-rows: auto auto 3px auto;
+  grid-template-areas: "heading heading" "scene tools" "progress tools" "controls controls";
+}
+#micro-panel[data-art-game="true"] .micro-surface { align-self: start; height: auto; max-width: var(--play-height); aspect-ratio: 1; }
+#micro-panel[data-art-game="true"] .art-tools {
+  min-width: 0;
+  padding: 14px;
+  gap: 10px;
+}
+#micro-panel[data-art-game="true"] .art-tools h3 { font-size: 20px; line-height: 1.45; }
+#micro-panel[data-art-game="true"] .art-tools p { min-height: 0; font-size: 13px; line-height: 1.7; }
+
+/* A simple puzzle needs only a caption/count alongside the sound and retry. */
+#micro-panel[data-game="puzzle"] {
+  --play-tools: 0px;
+  --play-column-gap: 0px;
+  width: min(calc(100vw - var(--play-margin-x) * 2), calc(var(--play-height) + var(--play-padding) * 2 + 2px));
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "heading heading" "scene scene" "progress progress" "tools controls";
+}
+#micro-panel[data-game="puzzle"] .art-tools {
+  flex-direction: row;
+  align-items: center;
+  align-self: center;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  padding: 0;
+}
+#micro-panel[data-game="puzzle"] .art-tools p { font-size: 12px; }
+
+/* One compact caption row replaces the tall stack under the bamboo painting. */
+#micro-panel[data-mogan="true"] {
+  --play-extra: 24px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "heading heading" "scene scene" "progress progress" "tools controls";
+}
+#micro-panel[data-mogan="true"] .mogan-tools {
+  min-width: 0;
+  align-self: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "caption notes" "cue settings";
+  gap: 3px 12px;
+  padding: 0 2px;
+}
+#micro-panel[data-mogan="true"] .mogan-caption { grid-area: caption; flex-wrap: wrap; gap: 4px 10px; }
+#micro-panel[data-mogan="true"] #mogan-cue { grid-area: cue; min-height: 0; font-size: 12px; line-height: 1.6; }
+#micro-panel[data-mogan="true"] .mogan-notes { grid-area: notes; align-self: center; gap: 7px; padding: 0; }
+#micro-panel[data-mogan="true"] .mogan-settings { grid-area: settings; align-self: center; }
+
+/* Story choices remain outside the painting. On smaller windows they add a
+   compact row; on a wide screen they use the free side of the landscape. */
+#micro-panel:has(> .wugong-tools:not([hidden])) {
+  --play-extra: 64px;
+  grid-template-rows: auto minmax(160px, 1fr) 3px auto auto;
+  grid-template-areas: "heading heading" "scene scene" "progress progress" "tools tools" "result controls";
+}
+#micro-panel .wugong-tools { min-width: 0; gap: 10px; padding: 8px 10px; }
+#micro-panel .wugong-dialogue p { font-size: 13px; line-height: 1.6; }
+
+@media (min-width: 1100px) {
+  #micro-panel:has(> .wugong-tools:not([hidden])) {
+    --play-extra: 0px;
+    --play-tools: clamp(230px, 18vw, 300px);
+    --play-column-gap: 14px;
+    grid-template-columns: minmax(0, 1fr) var(--play-tools);
+    grid-template-rows: auto minmax(160px, 1fr) 3px auto;
+    grid-template-areas: "heading heading" "scene tools" "progress tools" "result controls";
+  }
+  #micro-panel .wugong-tools { flex-direction: column; align-items: stretch; align-self: stretch; justify-content: center; }
+  #micro-panel .wugong-actions { max-width: none; justify-content: flex-start; }
+}
+
+/* Portrait scenes use the remaining height as well as the available width.
+   Square art-game tables retain their proportions. */
+@media (max-width: 900px) and (orientation: portrait) {
+  #micro-panel:where([data-game]:not([data-game=""])),
+  #micro-panel[data-art-game="true"],
+  #micro-panel[data-mogan="true"],
+  #micro-panel[data-game="puzzle"],
+  #micro-panel[data-game="clouds"],
+  #micro-panel:has(> .wugong-tools:not([hidden])) {
+    --play-tools: 0px;
+    --play-column-gap: 0px;
+    --play-extra: 64px;
+    --play-padding: 8px;
+    --play-margin: 6px;
+    width: calc(100vw - var(--play-margin-x) * 2);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(160px, 1fr) 3px auto auto auto;
+    grid-template-areas: "heading" "scene" "progress" "tools" "result" "controls";
+    gap: 6px;
+    border-radius: 14px;
+  }
+  #micro-panel[data-art-game="true"] .micro-surface {
+    height: auto;
+    max-width: var(--play-height);
+    aspect-ratio: 1;
+  }
+  #micro-panel[data-art-game="true"] { grid-template-rows: auto auto 3px auto auto auto; }
+  #micro-panel .micro-heading { gap: 8px; }
+  #micro-panel .micro-heading h2 { font-size: 18px; }
+  #micro-panel .micro-heading small { font-size: 9px; }
+  #micro-panel .mini-controls { justify-content: flex-end; }
+  #micro-panel[data-art-game="true"] .art-tools { gap: 7px; padding: 10px; }
+  #micro-panel[data-game="puzzle"] .art-tools { padding: 0; }
+  #micro-panel[data-mogan="true"] .mogan-tools { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 8px; }
+  #micro-panel .wugong-tools { gap: 7px; padding: 8px 10px; }
+  #micro-panel .wugong-actions { max-width: 100%; }
+}
+
+/* Short landscape windows keep the painting tall enough to operate, while
+   tool-heavy games use a narrow sidebar instead of several footer rows. */
+@media (max-height: 620px) and (orientation: landscape) {
+  #micro-panel:where([data-game]:not([data-game=""])) {
+    --play-chrome: 112px;
+    --play-padding: 8px;
+    --play-margin: 6px;
+    --play-extra: 0px;
+    gap: 6px 12px;
+  }
+  #micro-panel .micro-heading h2 { font-size: 17px; }
+  #micro-panel .micro-heading small { display: none; }
+  #micro-panel .micro-result { font-size: 11px; }
+  #micro-panel[data-art-game="true"] { --play-tools: 208px; --play-column-gap: 12px; }
+  #micro-panel[data-game="puzzle"] { --play-tools: 0px; --play-column-gap: 0px; }
+  #micro-panel[data-mogan="true"],
+  #micro-panel:has(> .wugong-tools:not([hidden])) {
+    --play-extra: 0px;
+    --play-tools: 208px;
+    --play-column-gap: 12px;
+    grid-template-columns: minmax(0, 1fr) var(--play-tools);
+    grid-template-rows: auto minmax(160px, 1fr) 3px auto;
+    grid-template-areas: "heading heading" "scene tools" "progress tools" "result controls";
+  }
+  #micro-panel[data-mogan="true"] .mogan-tools {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "caption" "cue" "notes" "settings";
+    gap: 8px;
+  }
+  #micro-panel .wugong-tools { flex-direction: column; align-items: stretch; align-self: stretch; justify-content: center; }
+  #micro-panel .wugong-actions { max-width: none; justify-content: flex-start; }
+}

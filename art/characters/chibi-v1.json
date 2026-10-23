@@ -1,0 +1,400 @@
+{
+  "image": "/characters/trailbound-chibi-v1.webp",
+  "source": "art/characters/chibi-source-v1.png",
+  "width": 1448,
+  "height": 1086,
+  "columns": 4,
+  "rows": 3,
+  "layout": "Four equal-width columns; generated row baselines are uneven, so sourceRect must be used instead of equal-height slicing.",
+  "alphaThreshold": 12,
+  "recommendedVisibleHeight": {
+    "mapCssPx": 72,
+    "notes": "Use a common apparent height and each frame footAnchor. Keep full sprite aspect ratio; do not stretch. Map sizing needs later game review."
+  },
+  "frames": [
+    {
+      "index": 0,
+      "pose": "front-idle",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 362,
+        "height": 376
+      },
+      "visibleBounds": {
+        "x": 114,
+        "y": 22,
+        "width": 197,
+        "height": 349
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 114,
+        "y": 22,
+        "width": 197,
+        "height": 349
+      },
+      "footAnchor": {
+        "x": 217,
+        "y": 371
+      },
+      "anchor": {
+        "x": 0.5994475138121547,
+        "y": 0.9867021276595744
+      },
+      "visualScaleTo350": 1.002865329512894,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 1,
+      "pose": "right-idle",
+      "sourceRect": {
+        "x": 362,
+        "y": 0,
+        "width": 362,
+        "height": 376
+      },
+      "visibleBounds": {
+        "x": 94,
+        "y": 22,
+        "width": 174,
+        "height": 348
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 94,
+        "y": 22,
+        "width": 174,
+        "height": 348
+      },
+      "footAnchor": {
+        "x": 198,
+        "y": 370
+      },
+      "anchor": {
+        "x": 0.5469613259668509,
+        "y": 0.9840425531914894
+      },
+      "visualScaleTo350": 1.0057471264367817,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 2,
+      "pose": "camera",
+      "sourceRect": {
+        "x": 724,
+        "y": 0,
+        "width": 362,
+        "height": 376
+      },
+      "visibleBounds": {
+        "x": 75,
+        "y": 27,
+        "width": 205,
+        "height": 344
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 75,
+        "y": 27,
+        "width": 205,
+        "height": 344
+      },
+      "footAnchor": {
+        "x": 192,
+        "y": 371
+      },
+      "anchor": {
+        "x": 0.5303867403314917,
+        "y": 0.9867021276595744
+      },
+      "visualScaleTo350": 1.0174418604651163,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 3,
+      "pose": "back-scenic",
+      "sourceRect": {
+        "x": 1086,
+        "y": 0,
+        "width": 362,
+        "height": 376
+      },
+      "visibleBounds": {
+        "x": 62,
+        "y": 23,
+        "width": 187,
+        "height": 347
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 62,
+        "y": 23,
+        "width": 187,
+        "height": 347
+      },
+      "footAnchor": {
+        "x": 184,
+        "y": 370
+      },
+      "anchor": {
+        "x": 0.5082872928176796,
+        "y": 0.9840425531914894
+      },
+      "visualScaleTo350": 1.0086455331412103,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 4,
+      "pose": "walk-left-contact",
+      "sourceRect": {
+        "x": 0,
+        "y": 376,
+        "width": 362,
+        "height": 348
+      },
+      "visibleBounds": {
+        "x": 112,
+        "y": 5,
+        "width": 213,
+        "height": 337
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 112,
+        "y": 5,
+        "width": 213,
+        "height": 337
+      },
+      "footAnchor": {
+        "x": 218,
+        "y": 342
+      },
+      "anchor": {
+        "x": 0.6022099447513812,
+        "y": 0.9827586206896551
+      },
+      "visualScaleTo350": 1.0385756676557865,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 5,
+      "pose": "walk-lower-a",
+      "sourceRect": {
+        "x": 362,
+        "y": 376,
+        "width": 362,
+        "height": 348
+      },
+      "visibleBounds": {
+        "x": 108,
+        "y": 6,
+        "width": 188,
+        "height": 336
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 108,
+        "y": 6,
+        "width": 188,
+        "height": 336
+      },
+      "footAnchor": {
+        "x": 209,
+        "y": 342
+      },
+      "anchor": {
+        "x": 0.5773480662983426,
+        "y": 0.9827586206896551
+      },
+      "visualScaleTo350": 1.0416666666666667,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 6,
+      "pose": "walk-pass-a",
+      "sourceRect": {
+        "x": 724,
+        "y": 376,
+        "width": 362,
+        "height": 348
+      },
+      "visibleBounds": {
+        "x": 83,
+        "y": 7,
+        "width": 215,
+        "height": 335
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 83,
+        "y": 7,
+        "width": 215,
+        "height": 335
+      },
+      "footAnchor": {
+        "x": 200,
+        "y": 342
+      },
+      "anchor": {
+        "x": 0.5524861878453039,
+        "y": 0.9827586206896551
+      },
+      "visualScaleTo350": 1.044776119402985,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 7,
+      "pose": "walk-rise-a",
+      "sourceRect": {
+        "x": 1086,
+        "y": 376,
+        "width": 362,
+        "height": 348
+      },
+      "visibleBounds": {
+        "x": 75,
+        "y": 6,
+        "width": 216,
+        "height": 336
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 75,
+        "y": 6,
+        "width": 216,
+        "height": 336
+      },
+      "footAnchor": {
+        "x": 196,
+        "y": 342
+      },
+      "anchor": {
+        "x": 0.5414364640883977,
+        "y": 0.9827586206896551
+      },
+      "visualScaleTo350": 1.0416666666666667,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 8,
+      "pose": "walk-right-contact",
+      "sourceRect": {
+        "x": 0,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "visibleBounds": {
+        "x": 114,
+        "y": 2,
+        "width": 228,
+        "height": 333
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 114,
+        "y": 2,
+        "width": 228,
+        "height": 333
+      },
+      "footAnchor": {
+        "x": 218,
+        "y": 335
+      },
+      "anchor": {
+        "x": 0.6022099447513812,
+        "y": 0.925414364640884
+      },
+      "visualScaleTo350": 1.0510510510510511,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 9,
+      "pose": "walk-lower-b",
+      "sourceRect": {
+        "x": 362,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "visibleBounds": {
+        "x": 102,
+        "y": 3,
+        "width": 198,
+        "height": 332
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 102,
+        "y": 3,
+        "width": 198,
+        "height": 332
+      },
+      "footAnchor": {
+        "x": 206,
+        "y": 335
+      },
+      "anchor": {
+        "x": 0.569060773480663,
+        "y": 0.925414364640884
+      },
+      "visualScaleTo350": 1.0542168674698795,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 10,
+      "pose": "walk-pass-b",
+      "sourceRect": {
+        "x": 724,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "visibleBounds": {
+        "x": 92,
+        "y": 3,
+        "width": 228,
+        "height": 333
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 92,
+        "y": 3,
+        "width": 228,
+        "height": 333
+      },
+      "footAnchor": {
+        "x": 200,
+        "y": 336
+      },
+      "anchor": {
+        "x": 0.5524861878453039,
+        "y": 0.9281767955801105
+      },
+      "visualScaleTo350": 1.0510510510510511,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    },
+    {
+      "index": 11,
+      "pose": "walk-rise-b",
+      "sourceRect": {
+        "x": 1086,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "visibleBounds": {
+        "x": 89,
+        "y": 3,
+        "width": 220,
+        "height": 335
+      },
+      "alphaBoundsIncludingNoise": {
+        "x": 89,
+        "y": 3,
+        "width": 220,
+        "height": 335
+      },
+      "footAnchor": {
+        "x": 205,
+        "y": 338
+      },
+      "anchor": {
+        "x": 0.5662983425414365,
+        "y": 0.9337016574585635
+      },
+      "visualScaleTo350": 1.044776119402985,
+      "note": "Bounds use alpha > 12 and the largest connected character component. Horizontal foot anchor follows the visually read pelvis axis, not backpack-biased bounds midpoint."
+    }
+  ]
+}

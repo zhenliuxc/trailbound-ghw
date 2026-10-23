@@ -1,0 +1,21 @@
+✔ waiting and tapping blank paper cannot complete any of the four games (3.445042ms)
+✔ drawing the full S precedes walking, river playback and the saved badge (1.361708ms)
+✔ a straight shortcut from the start to the shoulder cannot complete an S (0.454584ms)
+✔ lifting midway preserves the road and drawing can resume at its visible tip (0.869375ms)
+✔ cancelled gestures never start playback, even after the last road point was drawn (0.651334ms)
+✔ keyboard strokes require actual cursor movement and portrait drawing uses the same road geometry (0.744042ms)
+✔ the inn requires two matching pairs; wrong pairs turn back without earning a badge (0.656792ms)
+✔ watercolor requires strokes over both blanks, not elapsed time or a single dab (3.2815ms)
+✔ cancelled brush gestures stop painting and preserve the colors already applied (0.333833ms)
+✔ the default river view cannot earn a picture; a real drag framing boulder and whitewater can (0.217708ms)
+✔ portrait framing is reachable and cancellation never acts as a shutter (0.088125ms)
+✔ failed image capture cannot award the goal, and retry keeps the completed work (0.678375ms)
+✔ new memories have distinct round-badge assets and replay keeps the first journal record (0.183625ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 115.233542

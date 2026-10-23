@@ -1,0 +1,202 @@
+[
+  {
+    "controls": [
+      {
+        "bottom": 299.8828125,
+        "height": 44,
+        "name": "景象",
+        "right": 359,
+        "width": 62.1953125,
+        "x": 296.8046875,
+        "y": 255.8828125
+      },
+      {
+        "bottom": 363.8828125,
+        "height": 44,
+        "name": "ww-time-setting",
+        "right": 189,
+        "width": 116.5546875,
+        "x": 72.4453125,
+        "y": 319.8828125
+      },
+      {
+        "bottom": 363.8828125,
+        "height": 44,
+        "name": "ww-weather-setting",
+        "right": 346,
+        "width": 116.5546875,
+        "x": 229.4453125,
+        "y": 319.8828125
+      }
+    ],
+    "documentWidth": 390,
+    "overlaps": [],
+    "pins": [
+      {
+        "bottom": 724.9609375,
+        "height": 44,
+        "name": "start",
+        "right": 62.0625,
+        "width": 44,
+        "x": 18.0625,
+        "y": 680.9609375
+      },
+      {
+        "bottom": 613.140625,
+        "height": 44,
+        "name": "slope",
+        "right": 64.515625,
+        "width": 44,
+        "x": 20.515625,
+        "y": 569.140625
+      },
+      {
+        "bottom": 556.765625,
+        "height": 44,
+        "name": "meadow",
+        "right": 90,
+        "width": 44,
+        "x": 46,
+        "y": 512.765625
+      },
+      {
+        "bottom": 598.65625,
+        "height": 44,
+        "name": "camp",
+        "right": 143.5,
+        "width": 44,
+        "x": 99.5,
+        "y": 554.65625
+      },
+      {
+        "bottom": 643.9140625,
+        "height": 44,
+        "name": "horse",
+        "right": 200.9921875,
+        "width": 44,
+        "x": 156.9921875,
+        "y": 599.9140625
+      },
+      {
+        "bottom": 561,
+        "height": 44,
+        "name": "summit",
+        "right": 285.2578125,
+        "width": 44,
+        "x": 241.2578125,
+        "y": 517
+      },
+      {
+        "bottom": 688.2421875,
+        "height": 44,
+        "name": "end",
+        "right": 288.1640625,
+        "width": 44,
+        "x": 244.1640625,
+        "y": 644.2421875
+      }
+    ],
+    "width": 390
+  },
+  {
+    "controls": [
+      {
+        "bottom": 295.484375,
+        "height": 44,
+        "name": "景象",
+        "right": 293,
+        "width": 62.1953125,
+        "x": 230.8046875,
+        "y": 251.484375
+      },
+      {
+        "bottom": 359.484375,
+        "height": 44,
+        "name": "ww-time-setting",
+        "right": 280,
+        "width": 211.5546875,
+        "x": 68.4453125,
+        "y": 315.484375
+      },
+      {
+        "bottom": 410.484375,
+        "height": 44,
+        "name": "ww-weather-setting",
+        "right": 280,
+        "width": 211.5546875,
+        "x": 68.4453125,
+        "y": 366.484375
+      }
+    ],
+    "documentWidth": 320,
+    "label": "第二天 11:25 · 晴",
+    "overlaps": [],
+    "pins": [
+      {
+        "bottom": 751.6171875,
+        "height": 44,
+        "name": "start",
+        "right": 58,
+        "width": 44,
+        "x": 14,
+        "y": 707.6171875
+      },
+      {
+        "bottom": 656.4765625,
+        "height": 44,
+        "name": "slope",
+        "right": 58,
+        "width": 44,
+        "x": 14,
+        "y": 612.4765625
+      },
+      {
+        "bottom": 599.3671875,
+        "height": 44,
+        "name": "meadow",
+        "right": 75.53125,
+        "width": 44,
+        "x": 31.53125,
+        "y": 555.3671875
+      },
+      {
+        "bottom": 642.375,
+        "height": 44,
+        "name": "camp",
+        "right": 126,
+        "width": 44,
+        "x": 82,
+        "y": 598.375
+      },
+      {
+        "bottom": 691.7421875,
+        "height": 44,
+        "name": "horse",
+        "right": 167.0859375,
+        "width": 44,
+        "x": 123.0859375,
+        "y": 647.7421875
+      },
+      {
+        "bottom": 609.3515625,
+        "height": 44,
+        "name": "summit",
+        "right": 241.28125,
+        "width": 44,
+        "x": 197.28125,
+        "y": 565.3515625
+      },
+      {
+        "bottom": 714.6875,
+        "height": 44,
+        "name": "end",
+        "right": 237.859375,
+        "width": 44,
+        "x": 193.859375,
+        "y": 670.6875
+      }
+    ],
+    "primary": "继续走 →",
+    "width": 320
+  }
+]

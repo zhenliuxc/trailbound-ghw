@@ -1,0 +1,82 @@
+{
+  "file": "sprites/tiger-props-v2.webp",
+  "width": 1280,
+  "height": 1280,
+  "bytes": 1454002,
+  "sha256": "5d2d8ca23592414e94c887a425e31b67575510536308e9066375ff1a9eff38f3",
+  "source": "exec-7ed150e0-518a-4e08-b9d0-862fcce9673e.png",
+  "sourceSha256": "e532f33e899ffb31871ee709b67e91915915efd247c71843715c3934f797e3e8",
+  "generator": "OpenAI ImageGen",
+  "frames": [
+    {
+      "name": "open-backpack",
+      "x": 28,
+      "y": 22,
+      "w": 449,
+      "h": 431
+    },
+    {
+      "name": "water-bottle",
+      "x": 568,
+      "y": 46,
+      "w": 145,
+      "h": 388
+    },
+    {
+      "name": "rolled-raincoat",
+      "x": 787,
+      "y": 133,
+      "w": 465,
+      "h": 260
+    },
+    {
+      "name": "notebook",
+      "x": 75,
+      "y": 477,
+      "w": 308,
+      "h": 306
+    },
+    {
+      "name": "lunchbox",
+      "x": 448,
+      "y": 521,
+      "w": 378,
+      "h": 246
+    },
+    {
+      "name": "l-scarf",
+      "x": 862,
+      "y": 436,
+      "w": 376,
+      "h": 375
+    },
+    {
+      "name": "mule-guide-walk-a",
+      "x": 40,
+      "y": 788,
+      "w": 443,
+      "h": 449
+    },
+    {
+      "name": "mule-guide-walk-b",
+      "x": 491,
+      "y": 791,
+      "w": 467,
+      "h": 451
+    },
+    {
+      "name": "trail-bell",
+      "x": 1005,
+      "y": 822,
+      "w": 198,
+      "h": 390
+    }
+  ],
+  "processing": "Uniform normalization to 1280 square and lossless WebP encoding. Runtime crops painted bounds; no manual repainting.",
+  "references": [
+    "badges/tiger-halfway-rest-v4.webp",
+    "badges/tiger-bell-first-v4.webp",
+    "scenes/tiger-v1.webp"
+  ],
+  "acceptance": "Not tested; sprite edges, frame crops and anchors await user-authorized visual QA."
+}

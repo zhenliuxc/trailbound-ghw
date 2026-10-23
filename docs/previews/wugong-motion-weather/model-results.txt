@@ -1,0 +1,20 @@
+2026-10-17
+npm run build: completed.
+node --test tests/wugong-walk.test.cjs: 9 tests, 9 pass, 0 fail.
+
+Passed:
+- Full route order and gate after camp, signpost, summit.
+- Every model step from Dongjiang to gate with six arrivals and camp actions.
+- Ridge entry without fabricated visits and closed photo stays paused.
+- Reverse movement preserves backward continuation target.
+- Replay resets selected section and current walk visits only.
+- Support anchors do not slide, terrain projection, at most one swinging foot, grounded photo arrival.
+- Mid-step pause settles on the road without changing route progress.
+- Camp night to day-two dawn; reading photos freezes environment.
+- Manual scenery changes do not alter hike or visits; journey reset.
+
+Model checks only. These results do not cover rendering, real phone hardware, GPU performance, or audio listening.
+
+Follow-up after the browser exposed the date changing before midnight:
+node --test --test-name-pattern='journey time' tests/wugong-walk.test.cjs
+1 selected test passed, 0 failed. The assertion now also checks that the overnight transition retains day one until the simulated clock crosses midnight. The necessary build completed after this display-only correction.

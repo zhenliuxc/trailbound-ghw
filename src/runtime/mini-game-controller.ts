@@ -29,6 +29,8 @@ interface MiniOptions {
   refresh(): void;
   /** Returns true when an earned reward has taken over the scene. */
   onFinished(finished: FinishedMini): boolean;
+  /** Route chapters can advance after an exit, without awarding unfinished scenes. */
+  onClosed?(id: string, earned: boolean, resume: boolean): void;
 }
 
 /** Common lifecycle: enter → input/update/render → completed outcome → leave/destroy. */
@@ -38,6 +40,7 @@ export function createMiniGameController(options: MiniOptions) {
   const registered = new Map<string, MiniApi>();
   let api = options.api;
   let current: MiniState | null = null;
+  let currentEntry: MomentEntry | null = null;
   let refs: MiniViewRefs | null = null;
   let session: SceneSession | null = null;
   let pendingPoint: MiniInput | null = null;
@@ -73,7 +76,7 @@ export function createMiniGameController(options: MiniOptions) {
   }
   function inputReady(input: MiniInput = {}) {
     if (!interactive() || !current || !refs) return false;
-    if (refs.mogan && refs.contentState !== 'ready') return false;
+    if ((refs.mogan || refs.tiger) && refs.contentState !== 'ready') return false;
     if (refs.art && !view.artReady(refs)) return false;
     if ((current.game === 'wind' || current.game === 'clouds') && refs.contentState !== 'ready') return false;
     if (refs.story && refs.contentState !== 'ready' && (input.action === 'shutter' || input.assist && current.game === 'greet' && current.stage === 'camera')) return false;
@@ -96,18 +99,21 @@ export function createMiniGameController(options: MiniOptions) {
     session = scenes.enter('minigame', returnStatus);
     api = registered.get(entry.id) || options.api;
     current = api.create(entry, { reduced: options.reduced, weather: options.weather?.() });
+    currentEntry = entry;
     soundSerial = 0; genericCompletionSound = false; pendingPoint = null; view.reset();
     $<HTMLButtonElement>('mini-retry').disabled = false;
     $('micro-art').replaceChildren(); refs = api.draw(options.svg, $('micro-art'), entry);
-    refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || current.game === 'wind');
+    refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || refs.tiger || current.game === 'wind');
     if (refs.waitsForArt) refs.contentState = 'loading';
     surface.setAttribute('aria-busy', String(refs.waitsForArt)); paint();
     $('wugong-tools').hidden = true; $('art-tools').hidden = true;
     $('mogan-tools').hidden = !refs.mogan;
+    $('tiger-tools').hidden = !refs.tiger;
+    $('micro-panel').setAttribute('data-tiger', String(!!refs.tiger));
     $('micro-panel').setAttribute('data-mogan', String(!!refs.mogan));
     $('micro-panel').setAttribute('data-art-game', String(!!refs.art));
     $('micro-panel').setAttribute('data-game', current.game || '');
-    $('wind-hud').hidden = !current.game || !!refs.art || !!refs.mogan;
+    $('wind-hud').hidden = !current.game || !!refs.art || !!refs.mogan || !!refs.tiger;
     const labels = { wind: '武功山 · 借风', clouds: '武功山 · 拨云见山', altar: '武功山 · 金顶石语', greet: '武功山 · 风口相遇', creek: '九溪 · 推叶', rain: '莫干山 · 接雨' };
     $('mini-place-label').textContent = current.game && current.game in labels ? labels[current.game as keyof typeof labels] : '';
     $('mini-controls').hidden = !current.game;
@@ -148,9 +154,9 @@ export function createMiniGameController(options: MiniOptions) {
     surface.focus({ preventScroll: true }); options.ensureLoop();
   }
   function finish(record = true, resume = true) {
-    if (!current || !refs || !session) return;
-    const finished = current, closingRefs = refs, closing = session, entry = D.item(current.id);
-    pause(); current = null; refs = null; session = null;
+    if (!current || !currentEntry || !refs || !session) return;
+    const finished = current, closingRefs = refs, closing = session, entry = currentEntry;
+    pause(); current = null; currentEntry = null; refs = null; session = null;
     try { if (api.dispose) api.dispose(closingRefs); else games?.dispose(closingRefs); }
     catch { /* Renderer cleanup must not trap the player in an exiting scene. */ }
     closingRefs.disposed = true;
@@ -158,12 +164,13 @@ export function createMiniGameController(options: MiniOptions) {
     let rewardShown = false;
     if (record && finished.play.complete === true) rewardShown = options.onFinished({ state: finished, entry, outcome: api.outcome(finished, entry), returnStatus: closing.returnStatus });
     scenes.leave(closing, resume && !rewardShown);
+    options.onClosed?.(finished.id, finished.play.complete === true, resume);
     options.refresh();
     if (resume && !rewardShown) $('walk-toggle').focus({ preventScroll: true });
   }
   function update(dt: number) {
     if (!interactive() || !current || !refs) return;
-    if (refs.mogan && refs.contentState !== 'ready') { updateStatus(); paint(); return; }
+    if ((refs.mogan || refs.tiger) && refs.contentState !== 'ready') { updateStatus(); paint(); return; }
     if (pendingPoint) { current = api.move(current, pendingPoint); pendingPoint = null; }
     current = api.tick(current, dt);
     if (!current.game && current.play.complete && !genericCompletionSound) { genericCompletionSound = true; options.audio.mini?.('memory', 'complete'); }
@@ -176,8 +183,8 @@ export function createMiniGameController(options: MiniOptions) {
     return refs && api.point ? api.point(refs, p) : refs && games ? games.point(refs, p) : p;
   }
   function retry() {
-    if (!interactive() || !current || current.play.complete || !refs) return;
-    const entry = D.item(current.id); pause();
+    if (!interactive() || !current || !currentEntry || current.play.complete || !refs) return;
+    const entry = currentEntry; pause();
     if (refs.waitsForArt && refs.contentState === 'error') {
       const returnStatus = session?.returnStatus;
       finish(false, false); begin(entry, returnStatus); return;
@@ -187,7 +194,7 @@ export function createMiniGameController(options: MiniOptions) {
   }
   function action(name: string, value?: number) {
     if (!interactive() || !current || !refs) return;
-    if (refs.mogan && refs.contentState !== 'ready') return;
+    if ((refs.mogan || refs.tiger) && refs.contentState !== 'ready') return;
     if (refs.art && !view.artReady(refs)) return;
     pause(); perform({ action: name, value });
   }
@@ -229,7 +236,7 @@ export function createMiniGameController(options: MiniOptions) {
     bindings.listen(surface, 'click', event => { if (event.detail > 0) return; perform({ assist: true }); });
     bindings.listen(surface, 'keydown', keydown);
     bindings.listen(surface, 'keyup', event => {
-      if (interactive() && current && refs?.mogan && api.key && inputReady()) {
+      if (interactive() && current && (refs?.mogan || refs?.tiger) && api.key && inputReady()) {
         const next = api.key(current, event.key, 'up');
         if (next) { event.preventDefault(); current = next; paint(); updateStatus(); options.ensureLoop(); }
         return;
@@ -242,7 +249,7 @@ export function createMiniGameController(options: MiniOptions) {
       if (!inputReady() || pointer || event.isPrimary === false || event.button !== undefined && event.button !== 0 || !current) return;
       event.stopPropagation?.(); pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, drag: false };
       surface.setPointerCapture?.(event.pointerId);
-      if (current.game) perform({ ...point(event), ...(refs?.art || refs?.mogan || current.game === 'clouds' ? { phase: 'press' as const } : {}) });
+      if (current.game) perform({ ...point(event), ...(refs?.art || refs?.mogan || refs?.tiger || current.game === 'clouds' ? { phase: 'press' as const } : {}) });
     });
     bindings.listen(surface, 'pointermove', event => {
       if (!interactive() || !current) return;
@@ -270,9 +277,9 @@ export function createMiniGameController(options: MiniOptions) {
       if (!interactive() || !pointer || pointer.id !== event.pointerId || !current) return;
       event.stopPropagation?.();
       const dragged = pointer.drag, input = { ...point(event), gesture: dragged ? 'drag' as const : 'tap' as const };
-      if (refs?.art || refs?.mogan || current.game === 'clouds') {
+      if (refs?.art || refs?.mogan || refs?.tiger || current.game === 'clouds') {
         pendingPoint = null;
-        if (dragged && refs && (view.artReady(refs) || (refs.mogan || current.game === 'clouds') && refs.contentState === 'ready')) current = api.move(current, input);
+        if (dragged && refs && (view.artReady(refs) || (refs.mogan || refs.tiger || current.game === 'clouds') && refs.contentState === 'ready')) current = api.move(current, input);
         perform({ ...input, phase: 'release', dragged });
       } else if (dragged) { pendingPoint = null; current = api.release(api.move(current, input)); }
       else perform(input);
@@ -282,7 +289,19 @@ export function createMiniGameController(options: MiniOptions) {
     });
     bindings.listen(surface, 'pointercancel', cancelGesture);
     bindings.listen(surface, 'lostpointercapture', event => { if (pointer?.id === event.pointerId) cancelGesture(); });
-    bindings.listen(surface, 'blur', () => { if (current?.sling?.charge) cancelGesture(); });
+    bindings.listen(surface, 'blur', () => {
+      if (current?.sling?.charge) cancelGesture();
+      if (refs?.mountain) { cancelGesture(); return; }
+      // Key-up may land on a toolbar button after Tab/click. Clear movement keys
+      // without cancelling a shutter hold that just started on that button.
+      if (current?.game?.startsWith('tiger-') && api.key) {
+        const heldKeys = current.game === 'tiger-climb' ? ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'Enter'] : ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+        for (const key of heldKeys) {
+          current = api.key(current, key, 'up') || current;
+        }
+        paint(); updateStatus();
+      }
+    });
     bindings.listen($('mini-retry'), 'click', retry);
     bindings.listen($('mini-sound'), 'click', async () => { await options.toggleSound(); updateStatus(); });
     bindings.listen($('art-actions'), 'click', event => {

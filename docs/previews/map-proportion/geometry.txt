@@ -1,0 +1,13 @@
+✔ desktop keeps the whole original illustration and expands the view without stretching (0.407167ms)
+✔ phone and invalid sizes retain the established overview without changing gameplay (0.324333ms)
+✔ desktop follow camera keeps its aspect and bounds with a restrained scale (0.467042ms)
+✔ hiker, discoveries, labels and touch targets retain screen size while the camera zooms (0.229833ms)
+✔ discovery art and caption stay within the actual crop, including a phone slice (0.255417ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 41.08

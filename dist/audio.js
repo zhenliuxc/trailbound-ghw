@@ -357,7 +357,8 @@
  const SAMPLES={creek:'audio/westlake-creek-v1.mp3',leaves:'audio/westlake-leaves-v1.mp3',drips:'audio/westlake-drips-v1.mp3',drop:'audio/mini-drop-v1.mp3',splash:'audio/mini-splash-v1.mp3',paper:'audio/mini-paper-v1.mp3',wugongPaper:'audio/wugong-paper-v1.mp3',wugongPlace:'audio/wugong-place-v1.mp3',wugongCloth:'audio/wugong-cloth-v1.mp3',wugongClick:'audio/wugong-click-v1.mp3',wugongTurn:'audio/wugong-turn-v1.mp3',wugongLine:'audio/wugong-line-v1.mp3',wugongFlutter:'audio/wugong-flutter-v1.mp3',wugongStep1:'audio/wugong-step-1-v1.mp3',wugongStep2:'audio/wugong-step-2-v1.mp3',wugongStep3:'audio/wugong-step-3-v1.mp3'};
  const WUGONG_STEPS=['wugongStep1','wugongStep2','wugongStep3'];
  const MOGAN_FOLEY=['drop','splash','wugongPaper','wugongPlace','wugongCloth','wugongLine','wugongFlutter',...WUGONG_STEPS];
- const MINI_SAMPLES={tiger:['paper','splash'],aotai:['paper'],maclehose:['paper','splash'],changping:['paper','splash'],westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['wugongPaper','wugongPlace','wugongCloth','wugongClick','wugongTurn','wugongLine','wugongFlutter']};
+ const TIGER_FOLEY=['wugongClick',...WUGONG_STEPS,'paper','drop','splash','wugongCloth','wugongPlace','wugongLine','wugongTurn'];
+ const MINI_SAMPLES={tiger:TIGER_FOLEY,aotai:['paper'],maclehose:['paper','splash'],changping:['paper','splash'],westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['wugongPaper','wugongPlace','wugongCloth','wugongClick','wugongTurn','wugongLine','wugongFlutter']};
  const momentMix=Scene.momentMix,westlakeMix=Scene.westlakeMix;
  for(const p of Object.values(PROFILES)){Object.freeze(p.melody);Object.freeze(p.chord);Object.freeze(p.ambience);Object.freeze(p);}Object.freeze(PROFILES);
  const hz=midi=>440*Math.pow(2,(midi-69)/12);
@@ -379,7 +380,7 @@
   if(mode==='silent')return {key:'silent:'+routeId,silent:true};const p=mode==='photo'?profile(checkpointId):null,landscape=Scene.landscape(scene);
   return {key:[mode,routeId,p?checkpointId:'',mode==='moment'||mode==='reward'?momentId||momentGame||'':'',weather,landscape.zone].join(':'),routeId,progress,profile:p,landscape,mix:landscape.mix,ambience:landscape.ambience,events:p&&!['wugong','mogan'].includes(routeId)?score(checkpointId):[]};
  }
- function create({AudioContext=null,navigator=null,fetch=null,timers=globalThis,createMusic=null,onError=()=>{},onStateChange=()=>{}}={}){let context=null,master=null,reverb=null,reverbGain=null,noiseBuffer=null,brightBuffer=null,waterBuffer=null,music=null,sceneRequest=null,enabled=false,currentKey='',group=null,groups=[],suspendTimer=null,disposed=false,lastInteraction=-Infinity;const buffers=new Map(),loads=new Map(),loops=new Map(),automation=new WeakMap(),textureMods=new WeakMap();
+ function create({AudioContext=null,navigator=null,fetch=null,timers=globalThis,createMusic=null,onError=()=>{},onStateChange=()=>{}}={}){let context=null,master=null,reverb=null,reverbGain=null,noiseBuffer=null,brightBuffer=null,waterBuffer=null,music=null,sceneRequest=null,enabled=false,currentKey='',group=null,groups=[],suspendTimer=null,disposed=false,lastInteraction=-Infinity;const buffers=new Map(),loads=new Map(),loops=new Map(),automation=new WeakMap(),textureMods=new WeakMap(),textureFilters=new WeakMap();
   function cancelSuspend(){if(suspendTimer!==null){timers.clearTimeout?.(suspendTimer);suspendTimer=null;}}
   function disconnect(node){try{node.disconnect();}catch(_){}}
   function disposeGroup(g){if(!g||g.disposed)return;g.disposed=true;for(const v of g.voices){v.source.onended=null;try{v.source.stop();}catch(_){}v.chain.forEach(disconnect);}g.voices.clear();disconnect(g.ambienceBus);disconnect(g.effectsBus);disconnect(g.musicBus);disconnect(g.bus);groups=groups.filter(x=>x!==g);}
@@ -419,6 +420,7 @@
    const source=context.createBufferSource(),filter=context.createBiquadFilter(),high=context.createBiquadFilter(),gain=context.createGain(),start=base+(settings.at||0),bright=['surf','rain','snow','spray','sand','stone'].includes(settings.kind),water=['river','stream','bamboo','leaves'].includes(settings.kind);
    source.buffer=bright?brightBuffer:water?waterBuffer:noiseBuffer;source.loop=loop;
    high.type='highpass';high.frequency.value=settings.highpass||60;high.Q.value=.5;filter.type=settings.filter||'lowpass';filter.frequency.value=settings.cutoff||1600;filter.Q.value=settings.q||.55;
+   if(loop)textureFilters.set(gain,{high,filter});
    gain.gain.value=loop?settings.gain:0;
    if(loop&&settings.mod){const sway=context.createOscillator(),depth=context.createGain();sway.type='sine';sway.frequency.value=settings.mod;depth.gain.value=settings.gain*(settings.depth||.2);sway.connect(depth);depth.connect(gain.gain);track(g,sway,[sway,depth]).start(start);textureMods.set(gain,depth);}
    if(!loop){gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(settings.gain,start+Math.min(settings.attack||.035,settings.length*.25));gain.gain.exponentialRampToValueAtTime(.0001,start+settings.length);}
@@ -457,20 +459,21 @@
    if(g.samples.has(id)||g.disposed||g.retired||!(g.mix[id]>0))return;
    const style=g.landscape.recording[id]||{},source=context.createBufferSource(),gain=context.createGain(),high=context.createBiquadFilter(),filter=context.createBiquadFilter(),bed=loopBuffer(id,buffer);
    source.buffer=bed;source.loop=true;if(source.playbackRate)source.playbackRate.value=style.rate||1;high.type='highpass';high.frequency.value=style.highpass||80;filter.type='lowpass';filter.frequency.value=style.cutoff||4000;filter.Q.value=.5;gain.gain.value=0;
-   source.connect(high);high.connect(filter);filter.connect(gain);track(g,source,[source,high,filter,...output(g,gain,style.pan||0,0,'ambience')]).start(context.currentTime,bed.duration?context.currentTime%Math.max(.1,bed.duration-.1):0);
+   const chain=output(g,gain,style.pan||0,0,'ambience'),panner=chain.find(node=>node.pan);
+   source.connect(high);high.connect(filter);filter.connect(gain);track(g,source,[source,high,filter,...chain]).start(context.currentTime,bed.duration?context.currentTime%Math.max(.1,bed.duration-.1):0);
    if(style.mod){const sway=context.createOscillator(),depth=context.createGain();sway.type='sine';sway.frequency.value=style.mod;depth.gain.value=(g.mix[id]||0)*(style.depth||.3);sway.connect(depth);depth.connect(gain.gain);track(g,sway,[sway,depth]).start(context.currentTime);g.modulations.set(id,depth);}
-   g.samples.set(id,{gain,source,high,filter});updateMix(g,g.mix);
+   g.samples.set(id,{gain,source,high,filter,panner});updateMix(g,g.mix);
   }
   function updateMix(g,mix){
    g.mix=mix;
    let wanted=0,ready=0;
    for(const [id,target]of Object.entries(mix)){
     wanted+=target;const item=g.samples.get(id),level=target*(id==='leaves'&&g.windLevel!==undefined?.8+g.windLevel*.45:1);
-    if(item){ready+=target;ramp(item.gain.gain,level,1.15);const style=g.landscape.recording[id]||{};ramp(item.filter.frequency,style.cutoff||4000,1.15);ramp(item.high.frequency,style.highpass||80,1.15);if(item.source.playbackRate)ramp(item.source.playbackRate,style.rate||1,.8);if(g.modulations.has(id))ramp(g.modulations.get(id).gain,level*(style.depth||.3),1.15);}
+    if(item){ready+=target;ramp(item.gain.gain,level,1.15);const style=g.landscape.recording[id]||{};ramp(item.filter.frequency,style.cutoff||4000,1.15);ramp(item.high.frequency,style.highpass||80,1.15);if(item.panner)ramp(item.panner.pan,style.pan||0,1.15);if(item.source.playbackRate)ramp(item.source.playbackRate,style.rate||1,.8);if(g.modulations.has(id))ramp(g.modulations.get(id).gain,level*(style.depth||.3),1.15);}
     if(target>0&&!g.requested.has(id)){g.requested.add(id);loadSample(id).then(buffer=>{if(!buffer||disposed||!enabled||group!==g||g.retired||g.disposed)return;recorded(g,id,buffer);onStateChange();});}
    }
    // Keep a quiet designed wind/wave layer; a leaf download must not silence the whole scene.
-   if(g.fallback){const primary=g.landscape.layers[0],coverage=wanted?ready/wanted:0,level=primary.gain*(1-coverage*(g.routeId==='wugong'?.90:.55))*(g.windLevel===undefined?1:.8+g.windLevel*.55);ramp(g.fallback.gain,level,1.15);if(textureMods.has(g.fallback))ramp(textureMods.get(g.fallback).gain,level*(primary.depth||.2),1.15);}
+   if(g.fallback){const primary=g.landscape.layers[0],coverage=wanted?ready/wanted:0,level=primary.gain*(1-coverage*(g.routeId==='wugong'?.90:.55))*(g.windLevel===undefined?1:.8+g.windLevel*.55);ramp(g.fallback.gain,level,1.15);if(textureMods.has(g.fallback))ramp(textureMods.get(g.fallback).gain,level*(primary.depth||.2),1.15);const filters=textureFilters.get(g.fallback);if(filters){ramp(filters.filter.frequency,primary.cutoff||1600,1.15);ramp(filters.high.frequency,primary.highpass||60,1.15);}}
   }
   function setScene(scene){
    if(!enabled||!context||disposed)return false;sceneRequest=scene;music?.sync(scene);const next=selection(scene);
@@ -482,6 +485,7 @@
    group.lastWind=-1;group.lastTug=-1;group.lastRipple=-1;
    if(scene.routeId==='wugong')preloadFoley(group,[...(scene.mode==='walk'?WUGONG_STEPS:[]),...MINI_SAMPLES.wugong]);
    else if(scene.routeId==='mogan')preloadFoley(group,MOGAN_FOLEY);
+   else if(scene.routeId==='tiger')preloadFoley(group,TIGER_FOLEY);
    else{const preload=scene.mode==='walk'?['paper']:['moment','reward'].includes(scene.mode)?MINI_SAMPLES[scene.routeId]||['paper']:[];for(const id of preload)loadSample(id);}
    updateMix(group,next.mix);const base=context.currentTime+.12;for(const e of next.events)e.kind==='note'?tone(group,{...e,role:'music'},base):effect(group,e,base);return true;
   }
@@ -560,12 +564,40 @@
    if(event==='reveal'||event==='collect'){duck(group,.72,.8);transient(event==='collect'?'wugongPlace':'wugongPaper',0,event==='collect'?.29:.32,1,{space:.02});return true;}
    return false;
   }
+  function tigerMini(event,pan,index,start){
+   // CC0 metal-click foley already credited in wugong-credits.json; no camera or local river recording is claimed.
+   if(event==='shutter'){duck(group,.90,.30);transient('wugongClick',pan,.34,1,{space:0,cutoff:6200});return true;}
+   if(event==='trail-arrive'){transient('wugongCloth',pan,.085,.96,{space:0,cutoff:2300});return true;}
+   // Scene transitions carry the changing water bed. Looking, pausing and choosing a frame stay quiet.
+   if(['frame-ready','trail-stop','river-arrive','pause','frame','focus','inspect','viewport'].includes(event))return true;
+   if(event==='depth-paper'||event==='depth-return'||event==='score-edit'){transient('paper',pan,event==='depth-return'?.08:.15,1,{space:.02});return true;}
+   if(event==='depth-view'){texture(group,{kind:'wind',cutoff:1200,highpass:180,length:.4,gain:.012,pan,space:.14},start);return true;}
+   if(event==='pack-pick'||event==='pack-return'){transient('wugongCloth',pan,event==='pack-return'?.09:.16,1,{space:0,cutoff:3000});return true;}
+   if(event==='pack-turn'){transient('wugongTurn',pan,.15,1,{space:0});return true;}
+   if(event==='pack-place'){transient('wugongPlace',pan,.20,.96,{space:.02,cutoff:3600});return true;}
+   if(event==='pack-close'){transient('wugongLine',pan,.24,.9,{space:.02});transient('wugongCloth',pan,.14,1,{space:0});return true;}
+   if(event==='score-water'){transient('splash',pan,.22,.90,{space:.15,cutoff:3200});texture(group,{kind:'river',cutoff:2300,highpass:140,length:.34,gain:.014,pan,space:.16},start);return true;}
+   if(event==='score-drop'){transient('drop',pan,.30,Math.pow(2,[0,4,7,4,2,5,4,0][Math.max(0,Math.min(7,index))]/12),{space:.20,cutoff:4800});return true;}
+   if(event==='score-wind'){texture(group,{kind:'wind',cutoff:1450,highpass:320,length:.38,gain:.022,pan,space:.14},start);return true;}
+   if(event==='trail-bell'){tone(group,{at:0,midi:78,length:index===0?.65:.95,gain:index===0?.008:index===1?.015:.022,instrument:'bell',pan,space:index===0?.25:.14},start);return true;}
+   // One event arrives at the visible footfall. Never queue a missing sample
+   // or manufacture steps while the player is standing still.
+   if(event==='road-step')return transient(WUGONG_STEPS[Math.max(0,index)%WUGONG_STEPS.length],pan,.10,.96,{space:.025,cutoff:3400});
+   if(event==='trail-step'){
+    const step=Math.max(0,index)%WUGONG_STEPS.length,highRoad=group.landscape.zone==='high-road';
+    return transient(WUGONG_STEPS[step],pan,highRoad?.23:.25,highRoad?[.94,.98,.96][step]:.94,{space:highRoad?.025:.04,cutoff:highRoad?3700:3300});
+   }
+   if(event==='complete'){if(group.completedAudio)return false;group.completedAudio=true;duck(group,.72,.9);transient('paper',0,.20,.96,{space:.08});return true;}
+   if(event==='reveal'||event==='collect'){duck(group,.76,.6);transient(event==='collect'?'wugongPlace':'paper',0,event==='collect'?.25:.22,1,{space:.04});return true;}
+   return false;
+  }
   function mini(game,event,{x=.5,index=0}={}){
    const channel=['piece-pick','card-swap','card-return'].includes(event)?'paper':event,interval=({frame:.22,focus:.24,inspect:.24,tug:.25,ripple:.14,'cloud-clear':.08,'card-clear':.10,miss:.24,catch:.08,goal:.12,reveal:.6,collect:.6})[channel]??.065;
    if(!canCue(channel,interval))return false;
    const pan=(Math.max(0,Math.min(1,Number.isFinite(x)?x:.5))-.5)*.65,start=context.currentTime+.012,motif=group.landscape.motif;
    if(group.routeId==='wugong')return wugongMini(event,pan);
    if(group.routeId==='mogan')return moganMini(event,pan,index);
+   if(group.routeId==='tiger')return tigerMini(event,pan,index,start);
    if(['piece-pick','card-swap','card-return','sling-draw'].includes(event)){
     if(!transient('paper',pan,event==='sling-draw'?.19:.14,event==='card-return'?.88:1.05))texture(group,{kind:'leaves',cutoff:3300,highpass:800,length:.10,gain:.012,pan},start);
     if(event==='sling-draw')texture(group,{kind:'wind',cutoff:900,highpass:200,length:.20,gain:.008,pan},start);return true;

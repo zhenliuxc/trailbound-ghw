@@ -1,0 +1,15 @@
+Browser tab: 27, Title: "虎跳峡 · 手绘与旅行手帐", URL: "http://127.0.0.1:8000/tiger-art.html?entry=tiger-bends-puzzle-v4&scene=road-guide-7".
+1 AXWebArea 虎跳峡 · 手绘与旅行手帐, URL: 127.0.0.1:8000/tiger-art.html?entry=tiger-bends-puzzle-v4&scene=road-guide-7
+	2 container
+		3 text 山径 · 虎跳峡
+		4 heading 山间手绘, Value: 1, ID: art-page-title
+			5 text 山间手绘
+		6 button 返回山路 ×, ID: walk-toggle
+	20 container 山弯初见, ID: reward-dialog
+		21 image Description: 山弯初见 · 手绘水彩徽章, ID: reward-art
+		22 heading 山弯初见, Value: 2, ID: reward-title
+			23 text 山弯初见
+		24 text 已收进手帐
+	19 link Description: 致谢, Value: 127.0.0.1:8000/tiger-credits.html
+
+The focused UI element is 20 container 山弯初见, ID: reward-dialog

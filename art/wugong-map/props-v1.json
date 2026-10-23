@@ -1,0 +1,82 @@
+{
+  "image": "sprites/wugong-map-props-v1.webp",
+  "source": "art/wugong-map/props-source-v1.png",
+  "width": 1254,
+  "height": 1254,
+  "alphaThreshold": 12,
+  "sourceRegions": [
+    {
+      "name": "tree",
+      "x": 0,
+      "y": 0,
+      "width": 657,
+      "height": 770,
+      "footX": 337,
+      "footY": 720
+    },
+    {
+      "name": "grass",
+      "x": 657,
+      "y": 0,
+      "width": 597,
+      "height": 770,
+      "footX": 946,
+      "footY": 693
+    },
+    {
+      "name": "camp",
+      "x": 0,
+      "y": 770,
+      "width": 657,
+      "height": 484,
+      "footX": 326,
+      "footY": 1150
+    },
+    {
+      "name": "rock",
+      "x": 657,
+      "y": 770,
+      "width": 597,
+      "height": 484,
+      "footX": 947,
+      "footY": 1193
+    }
+  ],
+  "props": {
+    "tree": {
+      "x": 29,
+      "y": 39,
+      "width": 628,
+      "height": 703,
+      "footX": 308,
+      "footY": 681
+    },
+    "grass": {
+      "x": 657,
+      "y": 175,
+      "width": 569,
+      "height": 538,
+      "footX": 289,
+      "footY": 518
+    },
+    "camp": {
+      "x": 35,
+      "y": 886,
+      "width": 587,
+      "height": 285,
+      "footX": 291,
+      "footY": 264
+    },
+    "rock": {
+      "x": 670,
+      "y": 797,
+      "width": 555,
+      "height": 417,
+      "footX": 277,
+      "footY": 396
+    }
+  },
+  "bounds": "Eight-connected alpha > 12 components. Union all components at least 0.8% of the largest per explicitly separated region; add six transparent pixels within its region. Pixels stay unchanged.",
+  "anchors": "footX and footY in props are relative to the source rectangle. sourceRegions foot anchors are manually read ground-contact points in the complete source image.",
+  "processing": "Whole-image WebP encoding only; preserve original generated alpha. No repainting, masks, background replacement, resize, or source-pixel edits."
+}

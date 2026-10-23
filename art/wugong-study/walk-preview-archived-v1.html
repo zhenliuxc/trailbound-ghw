@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#e9ead9">
+    <meta name="robots" content="noindex">
+    <title>林缘入草甸 · 武功山行走样段 · 山径</title>
+    <link rel="stylesheet" href="./wugong-study.css">
+    <link rel="preload" as="image" href="./scenes/wugong-study-ground-v1.webp">
+    <link rel="preload" as="image" href="./characters/wugong-study-walk-v1.webp">
+    <script type="module" src="./wugong-study.js"></script>
+  </head>
+  <body>
+    <main class="study-shell">
+      <header class="study-header">
+        <a class="brand-link" href="./index.html" aria-label="返回山径首页">山径<span lang="en">Trailbound</span></a>
+        <span class="sample-note">武功山 · 行走样段</span>
+      </header>
+      <section class="study-stage" id="study-stage" aria-label="武功山林缘通向草甸的手绘山路">
+        <canvas id="study-canvas" tabindex="0" role="img" aria-label="点击浅土色小路，小人会沿路走到那里。也可按方向键或 W A S D 行走，空格暂停，Escape 停下。">
+          这是一段可点击行走的武功山手绘山路。您的浏览器暂时不支持此画面。
+        </canvas>
+        <div class="scene-title" aria-hidden="true"><span>林缘入草甸</span><small>循着小路，慢慢走</small></div>
+        <div class="study-loading" id="study-loading" role="status">
+          <div class="loading-paper">
+            <p id="loading-message">正在铺开林缘的小路…</p>
+            <button id="load-retry" type="button" hidden>重新载入</button>
+            <a href="./index.html">回到山径</a>
+          </div>
+        </div>
+      </section>
+      <footer class="walk-footer">
+        <div class="walk-caption">
+          <p id="walk-status" role="status" aria-live="polite">正在准备小路。</p>
+          <div class="walk-distance"><span>林缘</span><progress id="walk-progress" value="0" max="1" aria-label="林缘至草甸的行走进度"></progress><span>草甸</span></div>
+        </div>
+        <nav class="walk-controls" aria-label="行走控制">
+          <button class="walk-primary" id="walk-action" type="button" disabled>向草甸走</button>
+          <button id="walk-overview" type="button" aria-pressed="false" disabled>看全景</button>
+          <button id="walk-restart" type="button" disabled>回到林缘</button>
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

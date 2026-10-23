@@ -1,0 +1,31 @@
+✔ completed Wugong artwork saves automatically once and closes after the badge flight (92.973541ms)
+✔ unfinished artwork cannot enter automatic collection (16.632166ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (16.612667ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (20.091292ms)
+✔ other routes retain manual reward collection by default (14.316583ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.637792ms)
+✔ a night view, wrong lines and repeated lines do not complete or award the game (0.390458ms)
+✔ the same shape can be joined in either direction, undone and completed exactly once (0.103459ms)
+✔ the camp memory persists the earned watercolor and keeps its first date and words on replay (0.89025ms)
+✔ bad artwork and unavailable storage report failure without replacing the old notebook (0.275ms)
+✔ the short preview walks into camp and night only follows sitting and the camp photo (2.936584ms)
+✔ skipping stars allows a real overnight and dawn departure without an invented collection (1.004958ms)
+✔ collecting the camp event once resumes at the same camp and reset clears the current walk (1.061208ms)
+✔ all four Wugong encounters preserve complete-only rewards and can be skipped without a journal entry (434.558791ms)
+✔ loaded cloud, photography and jigsaw automatically collect exactly once on portrait and wide hosts (29.941709ms)
+✔ continuous flight uses the same complete-only collection path after the resource gate (464.118042ms)
+✔ the first camera arrow starts at the visible finder rather than stale encounter coordinates (4.440708ms)
+✔ a finished painting is already saved when its display closes (4.664ms)
+✔ replaying the current art page keeps the first saved artwork, date and memory (8.970125ms)
+✔ a newly collected memory names the place actually visited on this itinerary (8.45925ms)
+✔ wind artwork loading and failure block blind controls, permit retry, and do not leak a reward (406.71625ms)
+✔ all Wugong memory paintings keep one journal entry when replayed (0.219625ms)
+✔ cloud loading and failure block clicks, swipes and keyboard blows until artwork is ready (9.118792ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1527.883792

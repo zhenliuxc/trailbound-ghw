@@ -22,6 +22,7 @@ interface JournalOptions {
   evidence(id: string): (PlaceSource & { fact: string }) | null;
   observation(id: string): { fact: string; source: string } | null;
   source(id: string): PlaceSource | null;
+  presentArt?(image: HTMLImageElement, moment: Moment): string | null;
 }
 
 /** Owns the tag wall, reader, paging, persistence and per-trip display. Never clears saves. */
@@ -42,7 +43,7 @@ export function createJournalController(options: JournalOptions) {
   let flip: Animation | null = null;
   let swipe: { id: number; x: number; y: number; time: number; scroll: number } | null = null;
 
-  function tagImage(parent: Element, file: string, label: string, reading = false) {
+  function tagImage(parent: Element, file: string, label: string, reading: boolean, moment: Moment) {
     const key = file + '|' + label;
     const cached = reading && pictures.get(key);
     if (cached) { parent.appendChild(cached); return cached; }
@@ -58,7 +59,14 @@ export function createJournalController(options: JournalOptions) {
     image.style.opacity = '0';
     if (reading) pictures.set(key, badge);
     const reveal = () => { status.hidden = true; image.style.opacity = '1'; };
-    image.onload = () => { if (reading && image.decode) image.decode().then(reveal, reveal); else reveal(); };
+    let presented = false;
+    image.onload = () => {
+      if (!presented && options.presentArt) {
+        presented = true; const file = options.presentArt(image, moment);
+        if (file) { image.src = file; return; }
+      }
+      if (reading && image.decode) image.decode().then(reveal, reveal); else reveal();
+    };
     image.onerror = () => {
       status.textContent = '画作暂未加载';
       image.hidden = true;
@@ -80,7 +88,7 @@ export function createJournalController(options: JournalOptions) {
       return note;
     }
     const file = D.tagArt(moment);
-    if (file) return tagImage(parent, file, moment.tag || moment.title, reading);
+    if (file) return tagImage(parent, file, moment.tag || moment.title, reading, moment);
     const entryIndex = Math.max(0, D.CATALOG.findIndex(entry => entry.id === moment.id));
     const i = entryIndex % 9;
     const node = html('span', null, parent, 'journal-badge-art');
@@ -168,7 +176,7 @@ export function createJournalController(options: JournalOptions) {
       const file = D.tagArt(entry); if (!file) continue;
       const label = entry.tag || entry.title, key = file + '|' + label;
       keep.add(key);
-      if (!pictures.has(key)) tagImage(html('div'), file, label, true);
+      if (!pictures.has(key)) tagImage(html('div'), file, label, true, entry);
     }
     for (const key of pictures.keys()) if (!keep.has(key)) pictures.delete(key);
     if (direction && !options.reduced && page.animate) flip = page.animate([{ opacity: .35, transform: `translateX(${direction * 16}px)` }, { opacity: 1, transform: 'translateX(0)' }], { duration: 220, easing: 'ease-out' });
@@ -275,6 +283,7 @@ export function createJournalController(options: JournalOptions) {
     get open() { return session !== null; },
     get records(): readonly Moment[] { return records; },
     render, renderEnding, remember, close,
+    reload() { records = D.loadMoments(options.storage); render(); },
     resetTrip() { tripMoments = []; },
     recent(routeId: RouteId) { return records.filter(moment => moment.route === routeId).slice(-3).map(moment => moment.id); },
     destroy() { close(false); bindings.destroy(); },

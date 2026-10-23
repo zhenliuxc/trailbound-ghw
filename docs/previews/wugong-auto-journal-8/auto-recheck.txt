@@ -1,0 +1,14 @@
+✔ completed Wugong artwork saves automatically once and closes after the badge flight (49.548542ms)
+✔ unfinished artwork cannot enter automatic collection (16.1275ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (15.721792ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (20.277791ms)
+✔ other routes retain manual reward collection by default (13.860959ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.644834ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 204.831167

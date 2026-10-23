@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f5ed">
+  <title>武功山 · 东江村反穿 | 山径</title>
+  <link rel="stylesheet" href="wugong-meadow.css?v=wugong-trees-gait-2">
+</head>
+<body>
+  <header class="meadow-header">
+    <a href="./" class="meadow-brand" aria-label="返回山径">山径<span>TRAILBOUND</span></a>
+    <div class="meadow-heading"><h1>武功山 · 东江村反穿</h1><p>两天一夜 · 观音宕宿营 · 金顶 · 景区下山</p></div>
+    <button id="meadow-journal" class="meadow-journal" type="button" aria-label="翻开旅行手帐">手帐</button>
+    <a class="meadow-return" href="wugong-3d.html?section=ridge" aria-label="从观音宕营地进入第二天">从营地出发 <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section id="meadow-map" aria-label="武功山完整3D山地" data-view="follow">
+      <canvas id="meadow-canvas" aria-label="林带、草甸、山脊与背包徒步者"></canvas>
+      <details class="meadow-weather"><summary><span class="meadow-dot"></span><span id="meadow-weather-label">第一天 08:00 · 晴</span><span aria-hidden="true">⌄</span></summary><div class="meadow-settings"><label>时光<select id="meadow-time" disabled><option value="journey">随旅程变化</option><option value="dawn">清晨</option><option value="day">白天</option><option value="dusk">黄昏</option><option value="night">夜晚</option></select></label><label>天气<select id="meadow-weather" disabled><option value="journey">随旅程变化</option><option value="clear">晴</option><option value="cloud">多云</option><option value="mist">薄雾</option><option value="drizzle">小雨</option></select></label><label>行程速度<select id="meadow-pace" disabled><option value="1">1× · 慢慢走</option><option value="2">2×</option><option value="4">4× · 快速看完整程</option></select></label></div></details>
+      <div id="meadow-markers" aria-label="沿途地点"></div>
+      <nav class="meadow-views" aria-label="地图视角">
+        <button id="meadow-follow" type="button" aria-pressed="true" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H4v4m12-4h4v4M4 17v4h4m12-4v4h-4"/><circle cx="12" cy="10" r="2.5"/><path d="M8 17q4-5 8 0"/></svg>跟随</button>
+        <button id="meadow-overview" type="button" aria-pressed="false" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-2 6 2 6-2v15l-6 2-6-2-6 2Zm6-2v15m6-13v15"/></svg>全图</button>
+      </nav>
+      <div id="meadow-loading" role="status"><span class="meadow-loader" aria-hidden="true"></span><p id="meadow-message">让整座山沿来路展开…</p><button id="meadow-retry" type="button" hidden>重新展开</button></div>
+      <div class="meadow-controls">
+        <p id="meadow-status" role="status">穿过林间，沿山路上行</p>
+        <div class="meadow-actions"><button id="meadow-restart" class="meadow-icon-button" type="button" aria-label="从东江村重新启程" title="从东江村重新启程" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10a7 7 0 1 1 0 6M5 4v6h6"/></svg></button><button id="meadow-walk" class="meadow-primary" type="button" aria-pressed="false" disabled>从东江村启程</button><button id="meadow-wind" type="button" aria-pressed="true" disabled>山风 · 开</button></div>
+      </div>
+      <div class="meadow-progress-track" aria-hidden="true"><span id="meadow-progress"></span></div>
+    </section>
+  </main>
+  <footer class="meadow-footer"><span>东江村 → 观音宕 → 金顶 → 景区大门</span><a href="research/wugong-meadow-credits.txt" target="_blank" rel="noopener">素材与组件来源</a></footer>
+  <dialog id="meadow-visit" aria-labelledby="meadow-visit-title"><button id="meadow-visit-close" type="button" aria-label="关闭景点介绍">×</button><div id="meadow-visit-scroll"><div class="meadow-photo-frame"><img id="meadow-photo" alt="" decoding="async" hidden><p id="meadow-photo-state" role="status">实景照片正在展开…</p><button id="meadow-photo-retry" type="button" hidden>重新加载照片</button></div><div class="meadow-visit-content"><p id="meadow-visit-subtitle"></p><h2 id="meadow-visit-title"></h2><div id="meadow-visit-body"></div><p id="meadow-photo-caption"></p><div class="meadow-photo-credits"><a id="meadow-photo-source" target="_blank" rel="noopener">原始照片</a><a id="meadow-photo-license" target="_blank" rel="noopener">许可</a><a id="meadow-visit-source" target="_blank" rel="noopener">景点资料</a></div><button id="meadow-visit-art" type="button" hidden>手绘互动</button><button id="meadow-visit-proceed" type="button">继续沿山路</button></div></div></dialog>
+  <dialog id="meadow-art" aria-label="武功山手绘与旅行手帐"><button id="meadow-art-close" type="button" aria-label="关闭手绘，回到山路">×</button><p id="meadow-art-state" role="status">手绘正在展开…</p><iframe id="meadow-art-frame" title="武功山手绘互动与旅行手帐" hidden></iframe></dialog>
+  <script src="wugong-meadow.js?v=wugong-trees-gait-2" defer></script>
+</body>
+</html>

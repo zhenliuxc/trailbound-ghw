@@ -1,0 +1,71 @@
+{
+  "image": "characters/wugong-rest-view-v1.webp",
+  "source": "art/wugong-map/hiker-rest-source-v1.png",
+  "width": 1774,
+  "height": 887,
+  "columns": 2,
+  "rows": 1,
+  "alphaThreshold": 12,
+  "frames": [
+    {
+      "name": "sit",
+      "cellRect": {
+        "x": 0,
+        "y": 0,
+        "width": 887,
+        "height": 887
+      },
+      "visibleBounds": {
+        "x": 172,
+        "y": 176,
+        "width": 682,
+        "height": 640
+      },
+      "sourceRect": {
+        "x": 166,
+        "y": 170,
+        "width": 694,
+        "height": 652
+      },
+      "footAnchorSource": {
+        "x": 622,
+        "y": 812
+      },
+      "footAnchor": {
+        "x": 456,
+        "y": 642
+      }
+    },
+    {
+      "name": "view",
+      "cellRect": {
+        "x": 887,
+        "y": 0,
+        "width": 887,
+        "height": 887
+      },
+      "visibleBounds": {
+        "x": 1159,
+        "y": 87,
+        "width": 392,
+        "height": 734
+      },
+      "sourceRect": {
+        "x": 1153,
+        "y": 81,
+        "width": 404,
+        "height": 746
+      },
+      "footAnchorSource": {
+        "x": 1408,
+        "y": 815
+      },
+      "footAnchor": {
+        "x": 255,
+        "y": 734
+      }
+    }
+  ],
+  "bounds": "Largest eight-connected alpha > 12 component per equal-width cell, with six-pixel sourceRect padding within the cell.",
+  "processing": "Whole-image WebP encoding only, original alpha and source pixels preserved; no resize, recolor or repainting."
+}

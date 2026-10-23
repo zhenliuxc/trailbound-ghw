@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "status": "prepared-only-no-models-generated",
+  "scene": "虎跳峡高路：沿坡前行、绕过岩壁、峡谷展开、停下看金沙江；精修 20–30 秒段",
+  "style": "原创精细水彩旅行绘本；米白、草木绿、青灰、克制暖赭。立体造型自然，绘画质感通过纹理与光照表达，避免廉价低多边形、塑料玩具、几何拼装感。",
+  "license_status": "pending-verification-for-each-delivered-model-and-account-plan",
+  "assets": [
+    {
+      "id": "hiker-v1",
+      "label": "背包徒步旅人",
+      "priority": 1,
+      "reference": "art/tripo/references/hiker-reference-v1.png",
+      "image_generation": {
+        "model": "v3.1-20260211",
+        "face_limit": 18000,
+        "texture": true,
+        "pbr": true,
+        "texture_quality": "detailed",
+        "geometry_quality": "standard",
+        "texture_alignment": "original_image",
+        "orientation": "default",
+        "export_uv": true
+      },
+      "generation": {
+        "model": "v3.1-20260211",
+        "prompt": "One original full-body adult hiking traveller, a beautifully crafted stylized 3D character for a refined watercolor travel storybook. Natural adult proportions with a gently expressive face, 1.70 metres tall. Muted moss-green fabric sun hat with a soft curved brim and stitched band, warm ivory long-sleeve hiking shirt with the sleeves neatly rolled below the elbows, subtle collar and cloth seams, grey sage-green outdoor trousers, worn brown hiking boots with laces and sturdy soles. A warm ochre canvas hiking backpack worn correctly on the back, with two shoulder straps, small side pockets, buckles and a rolled sage sleeping mat secured horizontally across the top. Clothes, hat, boots and the complete backpack must be modelled in full 3D from every side; believable thickness and clear separation between limbs and accessories. Delicate hand-painted watercolor pigment texture, soft painted material variation, quiet natural colours, matte fabric, no baked dramatic lighting. Neutral symmetrical A-pose, arms held slightly away from torso, elbows and knees straight, both feet flat and separated, hands open with clean fingers. Suitable topology for later humanoid skinning; no existing skeleton or animation assumed. One isolated complete character only, no pedestal, no ground, no props in the hands, no scenery, no text, no logo.",
+        "negative_prompt": "stick figure, primitive geometric assembly, faceted low-poly toy, plastic, glossy skin, metallic clothes, chibi, giant head, photorealistic pores, exaggerated muscles, fused arms, fused legs, missing fingers, extra limbs, backpack floating away, weapons, trekking poles, pedestal, diorama, background landscape, text, watermark",
+        "face_limit": 18000,
+        "texture": true,
+        "pbr": true,
+        "texture_quality": "detailed",
+        "geometry_quality": "standard",
+        "export_uv": true
+      },
+      "rigging": {
+        "model": "v3.0-20260909",
+        "rig_type": "biped",
+        "spec": "mixamo",
+        "out_format": "glb"
+      },
+      "animation": {
+        "animations": ["preset:walk", "preset:idle"],
+        "out_format": "glb",
+        "export_with_geometry": true,
+        "animate_in_place": true
+      },
+      "blender_refinement": [
+        "检查实际模型完整性、衣物厚度、手指、帽檐、背包与躯干间距；不把提示词当作模型已经满足的证据。",
+        "校正脚底原点、统一身高 1.70 m、Y 向上、正面 +Z；导出后再次记录坐标转换。",
+        "保留真正的骨架与蒙皮，修正肩肘膝踝权重；背包主体、帽檐、鞋底保持刚性，不能随呼吸缩放。",
+        "清理走路和站立循环，去除根节点位移；步幅、脚落地与当前行走速度配合，坡面贴地由运行时补偿。",
+        "精修色彩与粗糙度，减轻光照烘焙；保留衣服、背包、水彩纹理细节，控制材质和贴图数量。"
+      ],
+      "delivery": {
+        "file": "dist/models/tiger-hiker-v1.glb",
+        "required": ["full-volume-clothes-and-backpack", "skin-and-joints", "in-place-walk", "embedded-textures", "source-and-license-record"],
+        "optional": ["idle-if-the-actual-delivered-GLB-has-it"],
+        "target_triangles_after_refinement": "8000–14000",
+        "target_textures": "one or two 2048px atlases; adjust after authorised visual/performance review",
+        "acceptance": "pending-model-generation-blender-refinement-and-authorised-review"
+      }
+    },
+    {
+      "id": "cliff-corner-v1",
+      "label": "绕行山肩的近处岩壁",
+      "priority": 2,
+      "generation": {
+        "model": "v3.1-20260211",
+        "prompt": "One original natural weathered rock outcrop module for a narrow high hiking trail in Tiger Leaping Gorge, Yunnan, China. A tall irregular grey-brown cliff shoulder with layered fracture planes, restrained warm mineral streaks, fine weathering and a few tiny dry grass tufts in cracks. Refined hand-painted watercolor storybook textures, softly varied blue-grey and earth-grey stone, matte mineral surfaces, readable large rock planes with delicate small details. Complete solid 3D rock, viewed from all sides, a believable stable base and asymmetric silhouette. A near-vertical rough face on one side and a more rounded shoulder on the other, useful for the walking camera to pass beside and reveal the canyon beyond. No arch, no cave, no pathway baked into the mesh, no river, no buildings, no trees, no people, no background, no base plate, no text.",
+        "negative_prompt": "round cartoon boulder, low-poly triangles, toy, plastic, shiny wet stone, sandstone desert canyon, red sandstone, yellow river, fantasy crystals, cave entrance, archway, floating island, tropical plants, temple, statues, background landscape, text, watermark",
+        "face_limit": 10000,
+        "texture": true,
+        "pbr": true,
+        "texture_quality": "detailed",
+        "geometry_quality": "standard",
+        "export_uv": true
+      },
+      "blender_refinement": [
+        "按真实虎跳峡照片校正青灰与灰褐岩面和节理方向；本资产是地域风格模块，不冒称实测地形。",
+        "精修转角剪影与底部，清理零碎悬浮面；用受控的构图遮挡峡谷，然后随着人物绕行逐渐露出。",
+        "保留岩面大体积和材质层次，修复 UV、法线和绘画纹理接缝，制作少量可复用变体。"
+      ],
+      "delivery": {
+        "file": "dist/models/tiger-cliff-v1.glb",
+        "target_triangles_after_refinement": "2500–5000",
+        "required": ["solid-3d-rock", "embedded-textures", "source-and-license-record"],
+        "acceptance": "pending-model-generation-blender-refinement-and-authorised-review"
+      }
+    },
+    {
+      "id": "gorge-rock-v1",
+      "label": "山径边的碎裂岩块",
+      "priority": 3,
+      "generation": {
+        "model": "v3.1-20260211",
+        "prompt": "One original asymmetric weathered grey-brown rock boulder for the dry high hiking trail above the Jinsha River in Tiger Leaping Gorge, Yunnan. Solid natural 3D stone with angular split planes softened by erosion, a broad stable underside, subtle blue-grey mineral shading, fine restrained ochre veins and a trace of sparse lichen. Refined hand-painted watercolor travel storybook material, layered pigment, matte stone, natural believable volume, no strong baked shadows. One isolated boulder only, no pedestal, no surrounding terrain, no plants, no water, no text or logo.",
+        "negative_prompt": "sphere, faceted geometric primitive, low-poly toy, plastic, glossy crystal, red sandstone, lava, fantasy rock, moss-covered tropical jungle, pedestal, diorama, background, text, watermark",
+        "face_limit": 6000,
+        "texture": true,
+        "pbr": true,
+        "texture_quality": "standard",
+        "geometry_quality": "standard",
+        "export_uv": true
+      },
+      "blender_refinement": [
+        "保持真实岩体重量感，修平底部并清理碎片；按相机距离生成两三个精修变体即可。",
+        "与近处岩壁统一水彩色调、表面粗糙度和纹理尺度，避免像另一套素材拼进来。"
+      ],
+      "delivery": {
+        "file": "dist/models/tiger-rock-v1.glb",
+        "target_triangles_after_refinement": "800–1800",
+        "required": ["solid-3d-rock", "embedded-textures", "source-and-license-record"],
+        "acceptance": "pending-model-generation-blender-refinement-and-authorised-review"
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "generator": "OpenAI ImageGen",
+  "processing": "WebP quality 91, method 6; original proportions retained.",
+  "references": [
+    "badges/tiger-halfway-rest-v4.webp",
+    "badges/tiger-longdong-waterfall-v4.webp",
+    "scenes/tiger-v1.webp"
+  ],
+  "files": [
+    {
+      "file": "scenes/tiger-rest-v1.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 697260,
+      "sha256": "5263b86e99e11bb34644ffe2b3ced7b56dea5876c6e3d12d4453da3efe05a344",
+      "source": "exec-bc974343-9bd9-42a4-a412-acfda5dbef58.png",
+      "sourceSha256": "e77f078684ed17a93152a935850b6855f9b9d176b0236b5e436fc3c2b9706740"
+    },
+    {
+      "file": "scenes/tiger-waterfall-v1.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 721258,
+      "sha256": "ae8b70b68cce6bc57bb833964db0dedcf4968db8c1952a727724b2112db40d39",
+      "source": "exec-3bfbef52-a260-4e7a-99eb-20fd689e8816.png",
+      "sourceSha256": "30acb1394d231c192d4f32283f8acea1c47968a41c762060e97b5343e5c111ea"
+    }
+  ],
+  "acceptance": "Game rendering and responsive layouts not tested."
+}

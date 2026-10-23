@@ -2,7 +2,7 @@
 export type RouteId = 'wugong' | 'tiger' | 'aotai' | 'maclehose' | 'changping' | 'mogan' | 'westlake';
 export type JourneyStatus = 'ready' | 'walking' | 'paused' | 'encounter' | 'finished' | 'retreated';
 export type SceneName = 'photo' | 'minigame' | 'reward' | 'journal';
-export type GameKind = 'wind' | 'creek' | 'rain' | 'footsteps' | 'clouds' | 'greet' | 'altar' | 'puzzle' | 'match' | 'sling';
+export type GameKind = 'wind' | 'creek' | 'rain' | 'footsteps' | 'clouds' | 'greet' | 'altar' | 'puzzle' | 'match' | 'sling' | 'depth' | 'packing' | 'score' | 'bells' | 'tiger-climb' | 'tiger-river' | 'tiger-rest' | 'tiger-passage';
 export type AssetState = 'queued' | 'loading' | 'ready' | 'error' | 'cancelled';
 
 export interface RouteSummary { id: RouteId; name: string }
@@ -22,6 +22,8 @@ export interface Moment {
   elapsed?: number | null;
   progress?: number | null;
   weather?: string | null;
+  captureArt?: string;
+  artSource?: 'capture';
 }
 export interface MomentEntry {
   id: string;
@@ -87,6 +89,8 @@ export interface MiniInput {
   dy?: number;
   action?: string;
   value?: number;
+  viewWidth?: number;
+  viewHeight?: number;
 }
 export interface GameEvent { serial: number; type: string; x: number; index?: number }
 export interface MiniState {
@@ -118,6 +122,8 @@ export interface MiniViewRefs {
   wugong?: boolean;
   story?: boolean;
   mogan?: boolean;
+  tiger?: boolean;
+  mountain?: boolean;
   waitsForArt?: boolean;
   contentState?: 'loading' | 'ready' | 'error';
   disposed?: boolean;
@@ -129,6 +135,8 @@ export interface MiniOutcome {
   interaction: string;
   memory: string;
   title: string;
+  captureArt?: string;
+  artSource?: 'capture';
 }
 export type SvgFactory = (tag: string, attributes: Record<string, string | number | boolean>, parent?: Element) => SVGElement;
 export interface MiniApi {

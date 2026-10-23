@@ -1,0 +1,30 @@
+Browser tab: 27, Title: "虎跳峡 · 高路与江边 / 山径", URL: "http://127.0.0.1:8000/tiger-walk.html?walk=1&scene=road-draw-6-fix1".
+1 AXWebArea 虎跳峡 · 高路与江边 / 山径, URL: 127.0.0.1:8000/tiger-walk.html?walk=1&scene=road-draw-6-fix1
+	2 container
+		3 link Description: 山径，回到旅程, Value: 127.0.0.1:8000/
+		4 link Description: 回到旅程 ↗, Value: 127.0.0.1:8000/
+	5 container
+		6 text 虎跳峡 · 高路与江边
+		7 heading 江在脚下，山在身旁。, Value: 1
+			8 text 江在脚下，山在身旁。
+		9 text 桥头 → 中途客栈过夜 → 中峡客栈 → 中虎跳往返
+		10 button 旅行手帐, ID: tg-journal
+		11 checkbox 声音 · 关, Value: 0, ID: tg-sound
+		12 text 第一天 14:20 · 峡谷晴风
+		13 text 高路与支线 · 路线示意
+		14 container Description: 虎跳峡高路与中虎跳往返支线二维示意图，默认随行，可切换全图, ID: tg-map
+			15 image Description: 虎跳峡山径，空格暂停或继续，方向键辅助, ID: tg-canvas
+				16 text 请使用支持 Canvas 的浏览器。
+			17 container Description: 打卡地点与名称, ID: tg-markers
+				18 button (disabled) 二十八道拐 · 实景打卡
+				19 text 纳西雅阁 茶马客栈
+			20 container 地图视角
+				21 checkbox 跟随, Value: 1, ID: tg-follow
+				22 checkbox 全图, Value: 0, ID: tg-overview
+			23 text 第一天 / 二十八道拐 · 向上爬升
+		24 text 沿山腰慢慢走，脚下是金沙江，对岸是玉龙雪山。
+		25 button 停下来看看, ID: tg-walk
+		26 text 慢慢走，听见峡谷。
+		27 link Description: 致谢与路线资料, Value: 127.0.0.1:8000/tiger-credits.html
+
+The focused UI element is 1 AXWebArea 虎跳峡 · 高路与江边 / 山径, URL: 127.0.0.1:8000/tiger-walk.html?walk=1&scene=road-draw-6-fix1

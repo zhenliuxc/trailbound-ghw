@@ -1,0 +1,16 @@
+Wugong scenic-map height grid, sampled 2026-10-17.
+
+Dataset: Terrain Tiles, Mapzen, a Linux Foundation project.
+Source: https://registry.opendata.aws/terrain-tiles/
+Terrarium endpoint: https://elevation-tiles-prod.s3.amazonaws.com/terrarium/{z}/{x}/{y}.png
+Attribution and license: https://github.com/tilezen/joerd/blob/master/docs/attribution.md
+
+SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey.
+Original elevation bounds: 114.085–114.22 E, 27.420–27.600 N.
+
+Changes: resampled from the archived numeric elevation source to a 481 × 561
+height grid, scenic northern-face cut, vertically exaggerated projection,
+original program lighting, vegetation and color. The denser display grid does
+not increase the native resolution of the source elevation survey.
+The hiking route and landmark display positions are artistic composition data.
+The distributed file contains elevations, not a painted map background.

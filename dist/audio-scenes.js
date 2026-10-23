@@ -18,10 +18,18 @@
   'meadow-butterfly':{zone:'ridge',cue:'wind',game:'clouds'},
   'meadow-flower':{zone:'summit',cue:'paper',game:'puzzle'},
   'wugong-wind-hiker':{zone:'meadow',cue:'camera',game:'greet'},
-  'gorge-goat':{zone:'gorge',cue:'air'},
-  'gorge-eagle':{zone:'inn',cue:'wood'},
-  'gorge-sparkle':{zone:'waterfall',cue:'water'},
-  'tiger-bell-first':{zone:'trail',cue:'bell'},
+  'gorge-goat':{zone:'gorge',cue:'air',game:'depth'},
+  'gorge-eagle':{zone:'inn',cue:'wood',game:'packing'},
+  'gorge-sparkle':{zone:'waterfall',cue:'water',game:'score'},
+  'tiger-bell-first':{zone:'trail',cue:'bell',game:'bells'},
+  'tiger-28-bends-v1':{zone:'high-road',cue:'stone',game:'tiger-climb'},
+  'tiger-halfway-view-v1':{zone:'inn',cue:'air',game:'tiger-rest'},
+  'tiger-longdong-passage-v1':{zone:'waterfall',cue:'water',game:'tiger-passage'},
+  'tiger-middle-river-frame-v1':{zone:'river-close',cue:'camera',game:'tiger-river'},
+  'tiger-bends-puzzle-v4':{zone:'high-road',cue:'stone',game:'tiger-climb'},
+  'tiger-inn-pairs-v4':{zone:'inn',cue:'paper',game:'tiger-rest'},
+  'tiger-waterfall-paint-v4':{zone:'waterfall',cue:'water',game:'tiger-passage'},
+  'tiger-river-roundframe-v4':{zone:'river-close',cue:'camera',game:'tiger-river'},
   'snow-tracks':{zone:'rocks',cue:'stone'},
   'snow-lichen':{zone:'ridge',cue:'snow'},
   'snow-light':{zone:'peak',cue:'air'},
@@ -44,6 +52,7 @@
   'westlake-basket':{zone:'village',cue:'tea'},
   'westlake-five-more-minutes':{zone:'village',cue:'tea'}
  };
+ const TIGER_GAME_ZONES={'tiger-climb':'high-road','tiger-rest':'inn','tiger-passage':'waterfall','tiger-river':'river-close'};
  const CHECKPOINTS={
   'wugong-meadow':'meadow','wugong-clouds':'ridge','wugong-golden':'summit',
   'tiger-trail':'trail','tiger-gorge':'gorge','tiger-halfway':'inn',
@@ -58,14 +67,15 @@
  function routeMix(route,progress,zone){
   if(route==='westlake')return westlakeMix(zone==='creek'?.2:zone==='tea'?.65:zone==='village'?.98:progress);
   if(route==='wugong')return {leaves:zone==='meadow'?.21:zone==='ridge'?.10:.055};
-  if(route==='tiger')return {creek:zone==='waterfall'?.39:zone==='gorge'?.27:zone==='inn'?.09:.15,leaves:zone==='inn'?.055:.025};
+  if(route==='tiger')return {creek:zone==='river-close'?.46:zone==='waterfall'?.39:zone==='gorge'?.27:zone==='inn'?.09:.15,leaves:zone==='river-close'?.008:zone==='inn'?.055:.025};
   if(route==='aotai')return {leaves:zone==='rocks'?.065:.035};
   if(route==='maclehose')return {creek:zone==='harbour'?.09:zone==='beach'?.17:.12,leaves:zone==='bay'?.065:.025};
   if(route==='changping')return {creek:zone==='creek'?.27:zone==='pools'?.19:.12,leaves:zone==='meadow'?.085:.17};
   return {leaves:zone==='bamboo'?.19:zone==='forest'?.20:.12,drips:zone==='creek'?.14:.07};
  }
- function landscape({routeId='wugong',checkpointId=null,progress=0,momentGame=null,momentId=null,mode='walk',weather='clear'}={}){
-  const base=ROUTES[routeId]||ROUTES.wugong,entry=MOMENTS[momentId],game=momentGame||entry?.game,zone=CHECKPOINTS[checkpointId]||entry?.zone||zoneFor(routeId,clamp(progress));
+ function landscape({routeId='wugong',checkpointId=null,progress=0,momentGame=null,momentId=null,mode='walk',weather='clear',riverApproach=1,gorgeOpenness=0}={}){
+  const base=ROUTES[routeId]||ROUTES.wugong,entry=MOMENTS[momentId],game=momentGame||entry?.game;
+  const zone=(routeId==='tiger'&&TIGER_GAME_ZONES[game])||CHECKPOINTS[checkpointId]||entry?.zone||zoneFor(routeId,clamp(progress));
   const mix=routeMix(routeId,progress,zone),recording={},layers=[{...base,id:'landscape'}];
   if(routeId==='westlake'&&!checkpointId&&!entry)Object.assign(mix,westlakeMix(progress));
   // The same licensed recording can sit at different distances, without fetching duplicate files.
@@ -75,6 +85,24 @@
   if(routeId==='wugong'){layers[0].gain*=(zone==='ridge'?1.15:zone==='summit'?1.30:.80)*.22;layers[0].cutoff=zone==='meadow'?1200:700;}
   if(routeId==='mogan')layers[0].gain*=.30;
   if(routeId==='tiger'&&zone==='waterfall')layers[0]={...layers[0],kind:'spray',cutoff:4200,highpass:550,gain:.027};
+  if(routeId==='tiger'&&zone==='high-road'){
+   // The picture and the sound share one openness value. The rock shoulder
+   // muffles the existing CC0 stream; walking clear reveals its upper detail.
+   // These reused recordings are not field recordings of Tiger Leaping Gorge.
+   const open=clamp(gorgeOpenness);mix.creek=.045+.155*open;mix.leaves=.050-.022*open;
+   recording.creek={...recording.creek,cutoff:430+1220*open,highpass:75,pan:.22-.12*open,mod:.075,depth:.11};
+   recording.leaves={...recording.leaves,cutoff:2400,highpass:500,pan:-.24};
+   layers[0]={...layers[0],kind:'wind',cutoff:780+360*open,highpass:150,gain:.007+.003*open,mod:.10,depth:.24,space:.07};
+  }
+  if(routeId==='tiger'&&zone==='inn')layers[0]={...layers[0],cutoff:650,highpass:100,gain:.011,space:.045};
+  if(routeId==='tiger'&&zone==='river-close'){
+   // The existing CC0 stream recording is sound-design material, not Jinsha field audio.
+   // Opening its spectrum and bringing it to the centre expresses the descent in scale.
+   const approach=clamp(riverApproach);
+   mix.creek=.17+.29*approach;mix.leaves=.025-.017*approach;
+   recording.creek={cutoff:1050+3150*approach,highpass:70,rate:.84+.10*approach,pan:0,mod:.075,depth:.10};
+   layers[0]={...layers[0],cutoff:1100+2100*approach,highpass:65,gain:.019+.013*approach,mod:.075,depth:.12,space:.08};
+  }
   if(routeId==='maclehose'&&zone==='harbour')layers[0]={...layers[0],cutoff:1200,gain:.012,depth:.27,mod:.19};
   if(routeId==='changping'&&zone==='meadow')layers[0]={...layers[0],kind:'wind',gain:.012,cutoff:900};
   if(routeId==='westlake'&&zone!=='creek')layers[0]={...layers[0],kind:'leaves',cutoff:2000,highpass:600,gain:.006};
@@ -95,7 +123,7 @@
   for(const id of Object.keys(mix))mix[id]*=scale;
   for(const layer of layers)layer.gain*=scale;
   let steps=base.steps;if(routeId==='maclehose'&&zone==='harbour')steps='wood';else if(routeId==='maclehose'&&zone==='bay')steps='earth';else if(routeId==='wugong'&&zone==='summit')steps='stone';
-  return {name:base.name,zone,game,cue:entry?.cue||'air',mix,recording,layers,steps,motif:base.motif,ambience:layers[0],weather};
+  return {name:zone==='river-close'?'江边的近水声':base.name,zone,game,cue:entry?.cue||'air',mix,recording,layers,steps,motif:base.motif,ambience:layers[0],weather};
  }
  function momentMix(routeId,game=null){return landscape({routeId,momentGame:game,mode:'moment'}).mix;}
  for(const item of Object.values(ROUTES)){Object.freeze(item.motif);Object.freeze(item);}for(const item of Object.values(MOMENTS))Object.freeze(item);

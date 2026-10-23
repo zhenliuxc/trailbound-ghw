@@ -1,0 +1,76 @@
+✖ both first-choice options on every route give an immediate visible result and meaningful effects while walking continues (54.533375ms)
+✔ effects report actual recovery and never claim warmth or energy rose when already capped (0.437375ms)
+✖ earned watercolor opens a modal, holds the journey still, keeps keyboard focus and resumes only after acknowledgement (14.754625ms)
+✖ paused and backgrounded journeys remain paused after putting away a reward; reduced motion keeps the reward available (18.194625ms)
+✖ skipping or quietly leaving an incomplete scene does not pop an unearned badge (16.041417ms)
+✔ completed Wugong artwork saves automatically once and closes after the badge flight (40.307125ms)
+✔ unfinished artwork cannot enter automatic collection (15.984334ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (15.08825ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (19.718708ms)
+✔ other routes retain manual reward collection by default (13.552667ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.582042ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 7
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 233.081333
+
+✖ failing tests:
+
+test at tests/feedback-rewards.test.cjs:3:1
+✖ both first-choice options on every route give an immediate visible result and meaningful effects while walking continues (54.533375ms)
+  ReferenceError: location is not defined
+      at apply (app.js:1178:7)
+      at app.js:1351:55
+      at Element.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:19:90)
+      at Object.click (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:70:365)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/feedback-rewards.test.cjs:4:110)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests/feedback-rewards.test.cjs:9:1
+✖ earned watercolor opens a modal, holds the journey still, keeps keyboard focus and resumes only after acknowledgement (14.754625ms)
+  ReferenceError: location is not defined
+      at apply (app.js:1178:7)
+      at app.js:1351:55
+      at Element.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:19:90)
+      at Object.click (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:70:365)
+      at completeFirst (/Users/liuxucheng/code/trailbound/tests/feedback-rewards.test.cjs:2:41)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/feedback-rewards.test.cjs:10:134)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at tests/feedback-rewards.test.cjs:12:1
+✖ paused and backgrounded journeys remain paused after putting away a reward; reduced motion keeps the reward available (18.194625ms)
+  ReferenceError: location is not defined
+      at apply (app.js:1178:7)
+      at app.js:1351:55
+      at Element.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:19:90)
+      at Object.click (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:70:365)
+      at completeFirst (/Users/liuxucheng/code/trailbound/tests/feedback-rewards.test.cjs:2:41)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/feedback-rewards.test.cjs:13:115)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at tests/feedback-rewards.test.cjs:15:1
+✖ skipping or quietly leaving an incomplete scene does not pop an unearned badge (16.041417ms)
+  ReferenceError: location is not defined
+      at apply (app.js:1178:7)
+      at app.js:1351:55
+      at Element.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:19:90)
+      at Object.click (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:70:365)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/feedback-rewards.test.cjs:16:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)

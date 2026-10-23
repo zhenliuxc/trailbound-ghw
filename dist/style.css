@@ -113,7 +113,8 @@
 .journey-stage[data-art="picturebook"] #route-outline{stroke:#fcf7df;stroke-width:9}
 .journey-stage[data-art="picturebook"] #route-line{stroke:#a38a60;stroke-width:3.8}
 .journey-stage[data-art="picturebook"] #completed-line{stroke:#587d62;stroke-width:4.2}
-.journey-stage[data-art="picturebook"] .checkpoint-label{stroke:#f8f4df;stroke-width:3;font-family:var(--serif);font-size:13px}
+.journey-stage[data-art="picturebook"] .checkpoint-label{stroke:#f8f4df;stroke-width:3;font-family:var(--serif)}
+#geo-markers .checkpoint-label{vector-effect:non-scaling-stroke}
 .journey-stage[data-art="picturebook"] .weather-badge,.journey-stage[data-art="picturebook"] .map-toggle{background:#fcfaf0ed;border-color:#ced2b7}
 .journey-stage[data-art="picturebook"] .atmosphere{background:linear-gradient(150deg,#fff1c317,transparent 55%)}
 
@@ -328,21 +329,17 @@
 @media(max-width:480px){.stage-heading:has(#music-retry:not([hidden])){flex-wrap:wrap}.stage-heading:has(#music-retry:not([hidden])) .sound-controls{width:100%;justify-content:flex-end}}
 
 /* Desktop space belongs to the journey; keep a paper margin instead of a narrow fixed page. */
+@media(min-width:681px) and (max-width:1023px){.site-header,main{max-width:none;padding-inline:16px}}
 @media(min-width:1024px){
- :root{--page-gutter:clamp(24px,3vw,72px)}
+ :root{--page-gutter:clamp(12px,1.25vw,32px)}
  .site-header,main{width:calc(100% - var(--page-gutter) - var(--page-gutter));max-width:none;padding-inline:0}
- main{padding-block:28px 16px}
+ main{padding-block:24px 16px}
+ .intro{margin-bottom:18px}
  main>section,main>details{min-width:0}
  .route-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
  .route-card{min-width:0}
- .map-frame{height:clamp(420px,60vh,860px);height:clamp(420px,60dvh,860px);aspect-ratio:auto}
+ .map-frame{height:clamp(480px,82vh,1280px);height:clamp(480px,82dvh,1280px);aspect-ratio:auto}
  #map{min-height:0}
- .journey-stage #route-outline{stroke-width:calc(13px * var(--map-symbol-scale,1))}
- .journey-stage #route-line{stroke-width:calc(5.8px * var(--map-symbol-scale,1))}
- .journey-stage #completed-line{stroke-width:calc(6px * var(--map-symbol-scale,1))}
- .journey-stage[data-art="picturebook"] #route-outline{stroke-width:calc(9px * var(--map-symbol-scale,1))}
- .journey-stage[data-art="picturebook"] #route-line{stroke-width:calc(3.8px * var(--map-symbol-scale,1))}
- .journey-stage[data-art="picturebook"] #completed-line{stroke-width:calc(4.2px * var(--map-symbol-scale,1))}
  .journal-notebook .journal-list{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:clamp(12px,1.1vw,20px)}
 }
 @media(min-width:1440px){
@@ -352,3 +349,37 @@
 }
 
 .mini-controls:has(#mini-music-retry:not([hidden])){flex-wrap:wrap}
+
+/* Camera zoom changes the landscape, while the trail and names stay readable. */
+.journey-stage #route-outline{vector-effect:non-scaling-stroke;stroke-width:8px}
+.journey-stage #route-line{vector-effect:non-scaling-stroke;stroke-width:3.4px}
+.journey-stage #completed-line{vector-effect:non-scaling-stroke;stroke-width:3.6px}
+.journey-stage[data-art="picturebook"] #route-outline{stroke-width:8px}
+.journey-stage[data-art="picturebook"] #route-line{stroke-width:3.4px}
+.journey-stage[data-art="picturebook"] #completed-line{stroke-width:3.6px}
+.journey-stage .checkpoint-label{vector-effect:non-scaling-stroke;stroke-width:3px}
+
+/* Wugong keeps one complete map and its own drawn detail treatment. */
+.journey-stage[data-route="wugong"] #route-outline{stroke:#f6edd3;stroke-width:11px;vector-effect:non-scaling-stroke}
+.journey-stage[data-route="wugong"] #route-line{stroke:#bca478;stroke-width:6.2px;vector-effect:non-scaling-stroke}
+.journey-stage[data-route="wugong"] #completed-line{stroke:#6f895f;stroke-width:3.1px;opacity:.8;vector-effect:non-scaling-stroke}
+.journey-stage[data-route="wugong"] .checkpoint-label{fill:#4d6749;stroke:#faf7e7;stroke-width:4px;paint-order:stroke fill;stroke-linejoin:round}
+.journey-stage[data-route="wugong"] #hiker-shadow{fill:#57654a;opacity:.15}
+/* Wugong uses one screen-space tile for every route location. */
+.wugong-waypoint{cursor:pointer;outline:none}
+.wugong-waypoint:focus-visible .wugong-waypoint-tile{stroke:#496c47;stroke-width:3px}
+.wugong-waypoint:hover .wugong-waypoint-tile{fill:#edf1de;stroke:#879971}
+.wugong-waypoint[data-visited="true"] .wugong-waypoint-tile{fill:#eef2df;stroke:#8c9e75}
+.wugong-waypoint[data-active="true"] .wugong-waypoint-tile{stroke:#8f7449;stroke-width:2px}
+
+
+.wugong-walk-preview{display:inline-flex;align-items:center;min-height:44px;padding:7px 11px;color:#637c60;text-decoration:none;font-size:12px;white-space:nowrap}.wugong-walk-preview:hover{text-decoration:underline;text-underline-offset:4px}.walk-bar-actions:has(.wugong-walk-preview:not([hidden])){flex-wrap:wrap;justify-content:flex-end}
+
+/* The Wugong entry introduces the 2D journey without showing the retained old route. */
+.wugong-entry > #map{visibility:hidden}
+.wugong-entry > .weather-badge,.wugong-entry > #weather-fx-html{visibility:hidden}
+.overlay.wugong-entry-cover{background:#dce6d0 url('scenes/wugong-v1.webp') center/cover no-repeat;place-items:end center;padding:clamp(18px,3vw,40px)}
+.wugong-entry-cover .overlay-card{max-width:540px;padding:24px 30px;background:#fffdf2ee;box-shadow:0 6px 32px #29422b1f}
+.wugong-entry-cover .overlay-card h2{font-size:25px}
+.wugong-entry-cover .overlay-card>p:not(.eyebrow){margin-bottom:16px}
+@media(max-width:680px){.wugong-entry-cover .overlay-card{padding:23px 20px}.wugong-entry-cover .overlay-card h2{font-size:23px}.wugong-entry-cover .overlay-hint{font-size:9px}}

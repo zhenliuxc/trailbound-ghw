@@ -1,0 +1,66 @@
+/* The transparent sheet has two equal cells: conversation, then looking at scenery. */
+.scene-character {
+  --scene-character-ratio: .64;
+  display: block;
+  position: relative;
+  flex: 0 0 auto;
+  aspect-ratio: var(--scene-character-ratio);
+  overflow: hidden;
+  align-self: center;
+  pointer-events: none;
+  user-select: none;
+}
+.scene-character-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  background-position: left center;
+}
+.scene-character-view .scene-character-art { background-position: right center; }
+.scene-character-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 5px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.65;
+  text-align: center;
+}
+.scene-character[data-asset="failed"] { width: 82px; height: auto; min-height: 34px; aspect-ratio: auto; }
+.scene-character[data-asset="failed"] .scene-character-status { position: static; }
+.story-panel.has-scene-character .scene-character-story {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 17px;
+  margin: 0 0 17px;
+}
+.scene-character-dialogue { height: 156px; }
+.scene-character-story #story-copy {
+  color: #7e8c73;
+  font-size: 12px;
+  line-height: 1.85;
+  margin: 0 0 19px;
+}
+.story-panel.has-scene-character .scene-character-story #story-copy { margin: 0; }
+.photo-panel.has-scene-character .photo-top { gap: 12px; }
+.photo-panel.has-scene-character .photo-top h2 { flex: 1; min-width: 0; }
+.photo-top .scene-character-view { height: 64px; }
+.photo-top .scene-character[data-asset="failed"] { height: auto; max-width: 64px; }
+
+@media (max-width: 680px) {
+  .story-panel.has-scene-character .scene-character-story { gap: 11px; margin-bottom: 13px; }
+  .scene-character-dialogue { height: 108px; }
+  .scene-character-story #story-copy { font-size: 11px; margin-bottom: 15px; }
+  .photo-top .scene-character-view { height: 52px; }
+  .photo-panel.has-scene-character .photo-top { gap: 8px; }
+}
+@media (max-height: 560px) {
+  .scene-character-dialogue { height: 88px; }
+  .photo-top .scene-character-view { height: 40px; }
+  .story-panel.has-scene-character .scene-character-story { margin-bottom: 10px; }
+}

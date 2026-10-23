@@ -1,0 +1,18 @@
+✔ nested journal returns to its minigame without resuming walking, and completion transfers to a reward (0.418917ms)
+✔ backgrounding invalidates every nested return-to-walking state and stale handles cannot close a new route scene (0.09025ms)
+✔ one frame clock ignores a late cancelled callback and resets time after a pause (0.369083ms)
+✔ completed Wugong artwork saves automatically once and closes after the memory fades (89.495875ms)
+✔ unfinished artwork cannot enter automatic collection (15.350792ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (14.690833ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (18.017917ms)
+✔ other routes retain manual reward collection by default (14.089709ms)
+✔ reduced motion still shows the automatically earned memory before a short fade (13.565959ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.589708ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 309.967792

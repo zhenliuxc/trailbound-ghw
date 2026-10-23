@@ -1,3 +1,7 @@
+> 本机工程现在位于 `~/code/trailbound`。启动、Blender 与 Tripo 配置请看 [本机开发说明](docs/LOCAL_DEVELOPMENT.md)。
+
+> 产品主线与设计美学已确认：**2D + 精细手绘水彩 + 旅途手帐收集**。后续开发的共同判断标准见 [游戏理念与设计美学约定](docs/game-design-charter.md)。3D 武功山页面保留为归档实验，不接入主流程。
+
 # 山径 Trailbound · 七条山径与旅行瞬间手帐
 
 当前源码包含七路线场景音效及已完成的公共流程 TypeScript 迁移：公共场景、小游戏、纪念画和旅行手帐控制器位于 `src/runtime/`，入口位于 `src/app.js`；必要构建生成 `dist/runtime.js` 与 `dist/app.js`。已完成集中验证和 Git 推送，用户随后批准发布整合版试听。源码边界见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)，验证范围见 [验证说明](docs/runtime-refactor-verification.md)，发布准备见 [发布记录](docs/audio-runtime-release.md)；实际线上版本以 Sites 返回为准。下文包含历史版本记录，不能将历史的测试或发布描述当成本轮状态。

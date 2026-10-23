@@ -1,0 +1,34 @@
+{
+  "generator": "built-in imagegen",
+  "processing": "Whole-image WebP encoding; original aspect, pixels and alpha preserved.",
+  "promptRecord": "art/wugong-map/README.md",
+  "entries": [
+    {
+      "file": "scenes/wugong-terrain-v1.webp",
+      "source": "art/wugong-map/terrain-source-v1.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 817536,
+      "sha256": "1be68ffa090c9d1d036da68b75c71bfb134c619f58181b213887c9f35acf5347",
+      "sourceSha256": "f401b12c390b35796f099fb32b0675211b49f36bbe6fcb44c041dec2fb236cf2"
+    },
+    {
+      "file": "sprites/wugong-map-props-v1.webp",
+      "source": "art/wugong-map/props-source-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 706286,
+      "sha256": "90b0555ca0bc7527671abb17e5fbb7a35519edf4898b530f3c7dd4559bd6f008",
+      "sourceSha256": "478b70d1110741dc2f60c950b8693d863121739049d1c1faffe2f25e3ad13879"
+    },
+    {
+      "file": "characters/wugong-rest-view-v1.webp",
+      "source": "art/wugong-map/hiker-rest-source-v1.png",
+      "width": 1774,
+      "height": 887,
+      "bytes": 228478,
+      "sha256": "d1202a209b16e42d9513c5b847e52292e59814f18f8e3c442993c17b5fe5d101",
+      "sourceSha256": "ffce51fb3c4c2a1618c281588e25a14af6f1889d8b6cd9529017d242534509cb"
+    }
+  ]
+}

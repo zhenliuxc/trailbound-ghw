@@ -1,0 +1,85 @@
+{
+  "stops": 6,
+  "uniquePhotos": 3,
+  "photos": [
+    {
+      "file": "photos/wugong-ridge.webp",
+      "usedBy": [
+        "slope",
+        "summit",
+        "end"
+      ]
+    },
+    {
+      "file": "photos/wugong-meadow.webp",
+      "usedBy": [
+        "meadow",
+        "horse"
+      ]
+    },
+    {
+      "file": "photos/wugong-clouds.webp",
+      "usedBy": [
+        "camp"
+      ]
+    }
+  ],
+  "regionalOrNonExact": [
+    "slope",
+    "meadow",
+    "camp",
+    "horse",
+    "summit",
+    "end"
+  ],
+  "rows": [
+    {
+      "id": "slope",
+      "title": "绝望坡",
+      "file": "photos/wugong-ridge.webp",
+      "caption": "武功山山脊实景。区域照片，非绝望坡定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugongshan_8350.jpg",
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "id": "meadow",
+      "title": "高山草甸",
+      "file": "photos/wugong-meadow.webp",
+      "caption": "武功山草甸实景，摄于 2018 年 6 月。区域照片，非此弯道定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture12.jpg",
+      "license": "CC0"
+    },
+    {
+      "id": "camp",
+      "title": "观音宕 · 星空营地",
+      "file": "photos/wugong-clouds.webp",
+      "caption": "武功山云海实景，摄于 2024 年 1 月。展示区域景观，非观音宕营地现场照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%AD%A6%E5%8A%9F%E5%B1%B1%E7%9A%84%E4%BA%91%E6%B5%B7.jpg",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": "horse",
+      "title": "吊马桩",
+      "file": "photos/wugong-meadow.webp",
+      "caption": "武功山草甸实景。区域照片，非吊马桩定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture12.jpg",
+      "license": "CC0"
+    },
+    {
+      "id": "summit",
+      "title": "金顶",
+      "file": "photos/wugong-ridge.webp",
+      "caption": "武功山山脊实景，原图说明远处最高峰为金顶。非山顶站位照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugongshan_8350.jpg",
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "id": "end",
+      "title": "景区大门",
+      "file": "photos/wugong-ridge.webp",
+      "caption": "武功山区域实景，用作旅程回望，非景区大门定点照片。",
+      "source": "https://commons.wikimedia.org/wiki/File:Wugongshan_8350.jpg",
+      "license": "CC BY-SA 3.0"
+    }
+  ]
+}

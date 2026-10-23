@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-18",
+  "tool": "built-in image_gen",
+  "route": "武功山 · 林间上坡 → 草甸转弯 → 观音宕营地",
+  "sources": {
+    "terrain": "exec-917e8c86-669d-481a-80c0-b41cd87c9bf6.png",
+    "distance": "exec-0ca797b0-bd7b-44c0-b632-d815c81fb341.png",
+    "actions": "exec-59bfa994-dcb7-4061-a183-12c5da3d90ed.png",
+    "props": "exec-ff02a397-d11d-4c2c-9689-b83ecac1e6cc.png"
+  },
+  "preparation": "Preserved generated PNG originals and alpha; cropped six prop regions; encoded WebP with sharp. No third-party art was substituted.",
+  "style": "精细水彩纸纹，草木绿、青灰、稻草金；人物使用用户提供的大眼睛 Q 版原形象。",
+  "walking": {
+    "source": "art/characters/walk-source-v2.png",
+    "file": "characters/trailbound-walk-v2.webp",
+    "registration": "src/runtime/map-walk-art.ts",
+    "status": "Existing exact character selected by user, not a newly generated substitute."
+  },
+  "prompts": {
+    "terrain": "Very wide transparent watercolor Wugong mountainside; temperate forest left, alpine meadow middle, camp saddle right. Continuous earth path embedded in the hillside. No sky, people, tents or labels.",
+    "distance": "Watercolor Wugong receding mountain panorama matching terrain, pale sky, five blue-gray ridge layers and low valley mist; no foreground or path.",
+    "props": "Transparent 3 by 2 atlas matching terrain: two irregular broadleaf trees, two soft meadow patches, ochre canvas tent, mossy rocks. No labels.",
+    "actions": "Transparent 2 by 2 atlas, exact user-selected large-eyed Q hiker and outfit from walk-source-v2 and hiker-rest-source-v1 references. Standing, unloading, seated on rock, seated drinking. Retain original face, big eyes and proportions."
+  },
+  "runtimeStatus": {
+    "date": "2026-10-18",
+    "background": "Archived after user requested procedural 2D schematic backgrounds. Terrain, distance and prop images are no longer loaded by the Wugong map.",
+    "character": "Existing user-selected Q walk atlas and generated matching camp actions remain active.",
+    "implementation": "src/wugong-walk/scroll/schematic.ts"
+  }
+}

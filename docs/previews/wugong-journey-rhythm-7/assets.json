@@ -1,0 +1,50 @@
+[
+  {
+    "file": "wugong-walk.html",
+    "status": 200,
+    "mime": "text/html",
+    "bytes": 10802
+  },
+  {
+    "file": "wugong-walk.js",
+    "status": 200,
+    "mime": "text/javascript",
+    "bytes": 620572
+  },
+  {
+    "file": "wugong-keepsakes.css",
+    "status": 200,
+    "mime": "text/css",
+    "bytes": 4248
+  },
+  {
+    "file": "scenes/wugong-forest-leaves-v1/forest-v1.webp",
+    "status": 200,
+    "mime": "image/webp",
+    "bytes": 541048
+  },
+  {
+    "file": "photos/wugong-goldendome-v2.jpg",
+    "status": 200,
+    "mime": "image/jpeg",
+    "bytes": 164674
+  },
+  {
+    "file": "audio/wugong-woodland-v1.m4a",
+    "status": 200,
+    "mime": "audio/mp4a-latm",
+    "bytes": 262317
+  },
+  {
+    "file": "audio/wugong-wind-v1.m4a",
+    "status": 200,
+    "mime": "audio/mp4a-latm",
+    "bytes": 131563
+  },
+  {
+    "file": "audio/wugong-rain-v1.m4a",
+    "status": 200,
+    "mime": "audio/mp4a-latm",
+    "bytes": 269074
+  }
+]

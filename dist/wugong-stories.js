@@ -89,7 +89,7 @@
    const quality=judgePhoto(s);s.capture={...s.camera,...quality,pose:poseAt(s),clock:s.age,actorX:s.actor.x};s.shots++;stage(s,'review');s.feedback=quality.reason;event(s,'shutter',s.actor.x,.22);
   }else if(action==='advance'&&mode!=='move'){
    if(s.stage==='meet'){stage(s,'request');s.feedback='“能帮我把身后的山也拍进去吗？这里的风太舒服了。”';event(s,'hello',s.actor.x);}
-   else if(s.stage==='request'){stage(s,'camera');s.feedback='把她和远山一起放进取景框，选一个你喜欢的瞬间。';event(s,'offer',s.actor.x);}
+   else if(s.stage==='request'){stage(s,'camera');moveCamera(s,{});s.feedback='把她和远山一起放进取景框，选一个你喜欢的瞬间。';event(s,'offer',s.actor.x);}
    else if(s.stage==='review'&&s.capture?.ok){stage(s,'reply');s.feedback='“拍得真好！连刚才那阵风，好像也留下来了。”';event(s,'show-photo',s.actor.x);}
    else if(s.stage==='reply'){stage(s,'farewell');s.feedback='“那就下次山里见。”她挥挥手，山风又从草坡上吹过。';event(s,'goodbye',s.actor.x);}
   }else if(s.stage==='camera'&&!action){moveCamera(s,p);if(s.age-(s.lastFrame??-10)>.3){event(s,'frame',s.camera.x);s.lastFrame=s.age;}}

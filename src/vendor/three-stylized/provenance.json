@@ -1,0 +1,95 @@
+{
+  "repository": "Steve245270533/three-stylized",
+  "revision": "8eb0dde5a8e7eae985d69f923b627b0cf253bed5",
+  "license": "MIT",
+  "upstreamAttribution": "Inspired by and adapted from cortiz2894/stylized-components",
+  "files": [
+    {
+      "path": "LICENSE",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/LICENSE",
+      "sha256": "01ef0bcab022efe917e17430f24f7ef6325d6214c4ad6552d02834377e83628c"
+    },
+    {
+      "path": "grass/Grass.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/Grass.ts",
+      "sha256": "91949006a4aa9f5410811cc5866c4d428424b5ec22989d1ff8ffdc2011e6db00"
+    },
+    {
+      "path": "grass/GrassLayer.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/GrassLayer.ts",
+      "sha256": "16509acf399cfc57b674ec53027c9030e80f1ffb9257ce0a9305f017a9fbd917"
+    },
+    {
+      "path": "grass/Terrain.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/Terrain.ts",
+      "sha256": "2cfe87c099eb993baf72a888cc8001081120b24dd7dc1b72ce6b7e00f1b70dce"
+    },
+    {
+      "path": "grass/Wildflowers.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/Wildflowers.ts",
+      "sha256": "5f1be83d0334c21a1232ce27a7e122d4444b8ceb6dc2982d4ca4e8c01972970f"
+    },
+    {
+      "path": "grass/bladeWidth.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/bladeWidth.ts",
+      "sha256": "730765872a93f50bb53d16604ac6a357f3d0a7a0432b32622aa5082d39623423"
+    },
+    {
+      "path": "grass/coverage.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/coverage.ts",
+      "sha256": "e51228e5441d7d5bbc99b62f4d79c9dff4c253e8ec704ca612b257ff3d5e16f1"
+    },
+    {
+      "path": "grass/defaults.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/defaults.ts",
+      "sha256": "75b4d8eb21b98cc62ed36bdafb7e4f4fe86a0e365e77944fc8e6b2b1dbbf5fab"
+    },
+    {
+      "path": "grass/density.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/density.ts",
+      "sha256": "432ca7c262c8494ae9f6740d19db00b143c824dcb24b79baf10a97c908cb6251"
+    },
+    {
+      "path": "grass/flowerShapes.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/flowerShapes.ts",
+      "sha256": "d9c774a40a30b6ca566479dbb573453c14de6be6c77b8b64aae44a157966c002"
+    },
+    {
+      "path": "grass/index.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/index.ts",
+      "sha256": "899bb27f0b6c26fa117a70e04e2f3a479e31aff39c17a4b974b668b44a9e9625"
+    },
+    {
+      "path": "grass/seedStreams.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/seedStreams.ts",
+      "sha256": "a78c220036fc27f2b9bcb36370a769dae9a76c652f75d4709715d9a78da707bb"
+    },
+    {
+      "path": "grass/shaders.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/shaders.ts",
+      "sha256": "05edd253a1b78433f4f3130d474a1e0320b53dec57c18826481082659d69c502"
+    },
+    {
+      "path": "grass/surfaceSampler.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/surfaceSampler.ts",
+      "sha256": "05aa075051938af2cfda57123951203b0c56002f47cc6067200e2c848e74dab8"
+    },
+    {
+      "path": "grass/types.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/types.ts",
+      "sha256": "c85125aff69385396ff7b7b130dfb9bcdc01d9c619946f41d0ca8a7646592ce4"
+    },
+    {
+      "path": "grass/utils.ts",
+      "source": "https://raw.githubusercontent.com/Steve245270533/three-stylized/8eb0dde5a8e7eae985d69f923b627b0cf253bed5/src/grass/utils.ts",
+      "sha256": "e18a0e01b81b1ec1a5ae2d3717d49adcfd4c25826636b7a9e51ae91cd7acac77"
+    },
+    {
+      "path": "UPSTREAM-LICENSE",
+      "source": "https://raw.githubusercontent.com/cortiz2894/stylized-components/1cece0a296b29299d1380c34feb5c158b2f04500/LICENSE",
+      "sha256": "c01dd513a12133adbe704df25f0f4686a8ddeaf2f0b1a02a62ee5cbf056aabbc"
+    }
+  ],
+  "upstreamRepository": "cortiz2894/stylized-components",
+  "upstreamRevision": "1cece0a296b29299d1380c34feb5c158b2f04500"
+}

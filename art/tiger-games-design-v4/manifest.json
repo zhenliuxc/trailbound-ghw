@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-18",
+  "status": "Design proposal only; not wired to gameplay; not approved or tested",
+  "generator": "Built-in image_gen; not Google Imagen or fallback CLI",
+  "processing": "Original PNG preserved; WebP encoding only, unchanged pixel dimensions, alpha retained where present; no cropping or restyling",
+  "referenceAssets": [
+    "dist/badges/tiger-bell-first-v4.webp",
+    "dist/badges/tiger-river-below-v4.webp",
+    "dist/scenes/tiger-climb-walk-v3.webp"
+  ],
+  "items": [
+    {
+      "name": "landscapes",
+      "source": "art/tiger-games-design-v4/landscapes-source.png",
+      "preview": "dist/designs/tiger-games-v4/landscapes.webp",
+      "width": 1448,
+      "height": 1086,
+      "hasAlpha": false,
+      "prompt": "art/tiger-games-design-v4/landscapes-prompt.txt"
+    },
+    {
+      "name": "badges",
+      "source": "art/tiger-games-design-v4/badges-source.png",
+      "preview": "dist/designs/tiger-games-v4/badges.webp",
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": true,
+      "prompt": "art/tiger-games-design-v4/badges-prompt.txt"
+    }
+  ]
+}

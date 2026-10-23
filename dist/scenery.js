@@ -19,6 +19,9 @@
   path('land',`M${z(-.65,.33)}Q${z(-.47,-.09)} ${z(-.24,-.31)}Q${z(-.10,-.71)} ${z(.08,-.59)}Q${z(.27,-.44)} ${z(.58,.18)}L${z(.7,.45)}Q${z(.2,.73)} ${z(-.65,.33)}Z`,p.mid);
   path('land',`M${z(.08,-.59)}Q${z(.27,-.44)} ${z(.58,.18)}L${z(.7,.45)}Q${z(.36,.47)} ${z(.04,.59)}Q${z(.18,.08)} ${z(.08,-.59)}Z`,p.shade);
   path('land',`M${z(-.5,.15)}Q${z(-.32,-.07)} ${z(-.24,-.31)}Q${z(-.1,-.68)} ${z(.08,-.59)}Q${z(-.08,-.34)} ${z(-.11,-.07)}Q${z(-.27,.15)} ${z(-.5,.15)}Z`,p.light);
+  path('land',`M${z(-.38,.06)}Q${z(-.27,-.02)} ${z(-.19,-.17)}M${z(-.28,.24)}Q${z(-.08,.08)} ${z(-.04,-.21)}M${z(.22,.04)}Q${z(.25,.24)} ${z(.41,.35)}`,'none',{stroke:p.light,'stroke-width':1.1,opacity:.43,'stroke-linecap':'round'});
+  path('land',`M${z(-.4,.27)}Q${z(-.23,.19)} ${z(-.15,.01)}M${z(.13,.20)}Q${z(.24,.34)} ${z(.43,.41)}`,'none',{stroke:p.shade,'stroke-width':.8,opacity:.23,'stroke-linecap':'round'});
+  for(let i=0;i<5;i++){const xx=-.31+i*.12,yy=.22+Math.sin(i*1.9)*.045;path('land',`M${z(xx,yy)}l${fmt(w*.008)} ${fmt(-h*.035)}m${fmt(w*.012)} ${fmt(h*.037)}l${fmt(w*.013)} ${fmt(-h*.045)}`,'none',{stroke:p.grass,'stroke-width':.75,opacity:.45,'stroke-linecap':'round'});}
  }
  function rock(x,y,w,h,withSnow=false,layer='land'){
   const z=(a,b)=>pt(x+a*w,y+b*h);
@@ -28,6 +31,8 @@
   path(layer,`M${z(-.46,.1)}L${z(-.32,.02)} ${z(-.25,-.19)} ${z(-.10,-.15)} ${z(.02,-.52)}L${z(-.10,-.07)} ${z(-.27,.13)} ${z(-.5,.38)}Z`,p.light);
   if(withSnow)path(layer,`M${z(-.10,-.16)}L${z(.02,-.52)} ${z(.14,-.39)} ${z(.18,-.22)} ${z(.10,-.25)} ${z(.07,-.16)} ${z(-.01,-.22)} ${z(-.07,-.09)}Z`,'#f4f5e9');
   path(layer,`M${z(.19,.12)}L${z(.28,.28)} ${z(.36,.32)}M${z(-.24,.27)}L${z(-.18,.39)}`,'none',{stroke:p.shade,'stroke-width':1.2,opacity:.40});
+  path(layer,`M${z(-.19,-.04)}L${z(-.25,.18)} ${z(-.34,.36)}M${z(.09,-.20)}L${z(.15,.05)} ${z(.11,.23)}M${z(.32,-.09)}L${z(.38,.14)} ${z(.49,.36)}`,'none',{stroke:p.light,'stroke-width':.85,opacity:.45});
+  path(layer,`M${z(-.38,.31)}l${fmt(w*.07)} ${fmt(-h*.02)}m${fmt(w*.35)} ${fmt(h*.1)}l${fmt(w*.09)} ${fmt(h*.025)}`,'none',{stroke:p.light,'stroke-width':1.4,opacity:.35,'stroke-linecap':'round'});
  }
  function cliff(x,y,w,h,side){
   const z=(a,b)=>pt(x+a*w,y+b*h);
@@ -37,6 +42,8 @@
   path('land',`M${z(-.52,-.09)}L${z(-.39,-.2)} ${z(-.28,-.53)} ${z(-.25,-.15)} ${z(-.37,.16)} ${z(-.40,.38)}Z`,'#d1c9ae');
   path('land',`M${z(-.52,-.09)}L${z(-.39,-.2)} ${z(-.28,-.53)} ${z(-.10,-.42)} ${z(.02,-.56)} ${z(.08,-.43)} ${z(-.1,-.32)} ${z(-.23,-.38)} ${z(-.34,-.12)}Z`,'#879867');
   for(const [a,b]of [[-.25,-.14],[.2,-.12]])path('land',`M${z(a,b)}l${fmt(w*.03*side)} ${fmt(h*.2)} ${fmt(w*.07)} ${fmt(h*.16)}`,'none',{stroke:'#405d63','stroke-width':1.3,opacity:.28});
+  path('land',`M${z(-.38,-.1)}Q${z(-.4,.13)} ${z(-.42,.32)}M${z(-.13,-.28)}L${z(-.07,-.03)} ${z(-.02,.30)}M${z(.12,-.28)}L${z(.21,-.02)} ${z(.25,.33)}M${z(.35,-.1)}Q${z(.45,.19)} ${z(.48,.39)}`,'none',{stroke:'#d5cdb2','stroke-width':.85,opacity:.4});
+  for(let i=0;i<4;i++){const yy=-.03+i*.11;path('land',`M${z(-.3,yy)}Q${z(-.22,yy-.03)} ${z(-.15,yy+.015)}M${z(.1,yy+.12)}L${z(.17,yy+.14)} ${z(.25,yy+.12)}`,'none',{stroke:'#3f6267','stroke-width':.7,opacity:.2});}
  }
  if(theme==='meadow'){
   path('ground','M-180 240Q-35 141 130 183T420 136T900 181V1000H-180Z','#bacdb5');
@@ -108,7 +115,12 @@
  const path=(layer,d,fill,extra={})=>add(layer,'path',{d,fill,...extra});
  const ellipse=(layer,cx,cy,rx,ry,fill,opacity=1)=>add(layer,'ellipse',{cx:fmt(cx),cy:fmt(cy),rx:fmt(rx),ry:fmt(ry),fill,opacity});
  const circle=(layer,cx,cy,r,fill,opacity=1)=>add(layer,'circle',{cx:fmt(cx),cy:fmt(cy),r:fmt(r),fill,opacity});
+ const bounds=context.bounds||{x:0,y:0,w:720,h:600},density=Math.min(3,bounds.w*bounds.h/(720*600));
  const terrain=T.build(route,points,context),distance=(x,y)=>T.nearest(points,x,y).distance;
+ if(route.id==='wugong'){
+  const artDetail=I.wugong(layers,terrain,points,bounds);
+  return {theme,palette:p,layers,terrain,artDetail,bounds,localStyle:'wugong-overview-v4'};
+ }
  add('ground','rect',{x:-400,y:-400,width:1600,height:1400,fill:p.sky});
  path('ground','M-180 100Q160 12 390 72T900 38V1000H-180Z',p.ground);
  const spine=terrain.spine,waters=terrain.features.filter(f=>f.kind==='water'),length=f=>f.line.reduce((n,p,i)=>n+(i?Math.hypot(p[0]-f.line[i-1][0],p[1]-f.line[i-1][1]):0),0),visibleWater=new Set([...waters].sort((a,b)=>length(b)-length(a)).slice(0,theme==='snow'||theme==='bamboo'?2:theme==='gorge'?waters.length:3)),waterDistance=(x,y)=>Math.min(Infinity,...[...visibleWater].map(f=>T.nearest(f.line,x,y).distance));
@@ -117,15 +129,14 @@
  for(const feature of terrain.features){const d=T.line(feature.line);if(feature.kind==='water'){if(!visibleWater.has(feature))continue;
   const main=theme==='gorge',width=main?15:2.2;
   if(main)path('ground',d,'none',{stroke:'#d6c6a5','stroke-width':58,'stroke-linecap':'round','stroke-linejoin':'round'});
-  path('hydro',d,'none',{stroke:main?'#aec7ba':'#c5dbce','stroke-width':width+5,'stroke-linecap':'round','stroke-linejoin':'round'});
-  path('hydro',d,'none',{stroke:p.water,'stroke-width':width,'stroke-linecap':'round','stroke-linejoin':'round'});
+  I.watercourse(layers,feature,points,p,width*.5,theme);
  }else if(feature.kind==='cable')path('details',d,'none',{stroke:'#97a58b','stroke-width':1.2,opacity:.48});}
  // Sparse grass, flowers and stones add texture without cartographic linework.
- for(let i=0;i<100;i++){const x=18+random()*684,y=135+random()*415;if(inSea(x,y)||distance(x,y)<24||waterDistance(x,y)<(theme==='gorge'?13:4))continue;if(theme==='snow'){const size=2+random()*4;path('details',`M${fmt(x-size)} ${fmt(y+2)}l${fmt(size*.6)} ${fmt(-size)} ${fmt(size)} ${fmt(-size*.25)} ${fmt(size*.8)} ${fmt(size*.8)}-1 ${fmt(size*.7)}Z`,i%4===0?'#f6faed':'#adc2b6',{opacity:.65});}else if(i%7===0){ellipse('details',x,y,3.5,2.3,'#b9b58e',.65);}else{path('details',`M${fmt(x-3)} ${fmt(y+3)}q1-4-1-7m4 7q-1-6 3-9m-1 10 5-5`,'none',{stroke:p.grass,'stroke-width':1.1,opacity:.55});if(i%11===0)circle('details',x+2,y-4,2.2,'#f0cc80');}}
+ for(let i=0;i<Math.round(100*density);i++){const x=bounds.x+18+random()*(bounds.w-36),y=bounds.y+135+random()*(bounds.h-185);if(inSea(x,y)||distance(x,y)<24||waterDistance(x,y)<(theme==='gorge'?13:4))continue;if(theme==='snow'){const size=2+random()*4;path('details',`M${fmt(x-size)} ${fmt(y+2)}l${fmt(size*.6)} ${fmt(-size)} ${fmt(size)} ${fmt(-size*.25)} ${fmt(size*.8)} ${fmt(size*.8)}-1 ${fmt(size*.7)}Z`,i%4===0?'#f6faed':'#adc2b6',{opacity:.65});}else if(i%7===0){ellipse('details',x,y,3.5,2.3,'#b9b58e',.65);}else{path('details',`M${fmt(x-3)} ${fmt(y+3)}q1-4-1-7m4 7q-1-6 3-9m-1 10 5-5`,'none',{stroke:p.grass,'stroke-width':1.1,opacity:.55});if(i%11===0)circle('details',x+2,y-4,2.2,'#f0cc80');}}
  function tree(x,y,s){I.tree(layers,x,y,s,theme,p);}
- for(let i=0;i<90;i++){const x=25+random()*675,y=85+random()*485,near=T.nearest(points,x,y),station=spine[Math.max(0,Math.min(spine.length-1,Math.round((near.index+near.t)/Math.max(1,points.length-1)*(spine.length-1))))],a=points[near.index],b=points[Math.min(points.length-1,near.index+1)],ele=Number.isFinite(a?.[2])&&Number.isFinite(b?.[2])?a[2]+(b[2]-a[2])*near.t:null,high=Number.isFinite(ele)?ele>3000:station?.progress>.25;if(inSea(x,y)||near.distance<30||waterDistance(x,y)<(theme==='gorge'?42:12)||(theme==='snow'&&high)||(theme==='meadow'&&near.distance<120&&high)||random()>(theme==='bamboo'?.82:theme==='forest'?.72:.52)||(theme==='coast'&&near.distance>140)||(theme==='forest'&&station?.progress>.74&&near.distance<105)||(theme==='tea'&&station?.progress>.44&&near.distance<200))continue;tree(x,y,(theme==='bamboo'?.9:theme==='forest'?.72:theme==='snow'?.42:.52)+random()*.3);}
- for(const [i,pt]of terrain.water.entries())path('water',`M${fmt(pt.x-5)} ${fmt(pt.y)}q4-2 9-1`,'none',{stroke:'#e0efdc','stroke-width':1.4,opacity:.48,flow:true});
- const artDetail=route.id==='westlake'?I.westlake(layers,terrain,points):I.regional(layers,terrain,points,theme,p);
+ for(let i=0;i<Math.round(90*density);i++){const x=bounds.x+25+random()*(bounds.w-45),y=bounds.y+85+random()*(bounds.h-115),near=T.nearest(points,x,y),station=spine[Math.max(0,Math.min(spine.length-1,Math.round((near.index+near.t)/Math.max(1,points.length-1)*(spine.length-1))))],a=points[near.index],b=points[Math.min(points.length-1,near.index+1)],ele=Number.isFinite(a?.[2])&&Number.isFinite(b?.[2])?a[2]+(b[2]-a[2])*near.t:null,high=Number.isFinite(ele)?ele>3000:station?.progress>.25,s=(theme==='bamboo'?.9:theme==='forest'?.72:theme==='snow'?.42:.52)+random()*.3;if(inSea(x,y)||near.distance<30||distance(x,y-34*s)<34*s+22||waterDistance(x,y)<(theme==='gorge'?42:12)||(theme==='snow'&&high)||(theme==='meadow'&&near.distance<120&&high)||random()>(theme==='bamboo'?.82:theme==='forest'?.72:.52)||(theme==='coast'&&near.distance>140)||(theme==='forest'&&station?.progress>.74&&near.distance<105)||(theme==='tea'&&station?.progress>.44&&near.distance<200))continue;tree(x,y,s);}
+ for(const q of terrain.water.slice(1,-1)){const tx=q.ny,ty=-q.nx,at=(along,across)=>`${fmt(q.x+tx*along+q.nx*across)} ${fmt(q.y+ty*along+q.ny*across)}`;path('water',`M${at(-4,0)}Q${at(0,1)} ${at(5,0)}`,'none',{stroke:'#e0efdc','stroke-width':1,opacity:.45,flow:true});}
+ const artDetail=route.id==='westlake'?I.westlake(layers,terrain,points,bounds):I.regional(layers,terrain,points,theme,p,bounds);
  // Soft irregular cloud silhouettes have a lit rim and a quieter underside.
  const cloudLayout=theme==='meadow'?[[0,144,462,1.7],[1,519,360,1.4],[2,356,65,.9]]:theme==='gorge'?[[0,150,46,.78],[1,552,75,.88],[2,398,185,.46]]:[[0,151,66,.9],[1,532,85,1.0],[2,316,249,.6]];
  for(const [i,x,y,s]of cloudLayout){
@@ -140,7 +151,18 @@
  path('mist',`M-100 ${y+23}Q88 ${y-1} 263 ${y+15}T573 ${y+11}T840 ${y+27}Q624 ${y+45} 421 ${y+36}T-100 ${y+43}Z`,'#fbfcf0',{opacity:.32,mist:`mist-${i}`});
  }
  // Everything above is scenic illustration; the reference route and named checkpoints stay in the existing coordinate overlay.
- return {theme,palette:p,layers,terrain,artDetail,localStyle:({meadow:'wugong-grass-ridges',gorge:'tiger-deep-gorge',snow:'qinling-rock-and-forest',coast:'saikung-bays-and-headlands',forest:'changping-conifers-and-meadow',bamboo:'mogan-bamboo-and-stone',tea:'westlake-creeks-and-tea-terraces'})[theme]};
+ extendLandscape(layers,bounds);
+ return {theme,palette:p,layers,terrain,artDetail,bounds,localStyle:({meadow:'wugong-grass-ridges',gorge:'tiger-deep-gorge',snow:'qinling-rock-and-forest',coast:'saikung-bays-and-headlands',forest:'changping-conifers-and-meadow',bamboo:'mogan-bamboo-and-stone',tea:'westlake-creeks-and-tea-terraces'})[theme]};
+ }
+ function extendLandscape(layers,bounds){
+  // Extend only the outer edges of existing washes. Interior ridges, route
+  // coordinates and geographic water features keep their original proportions.
+  const left=Math.min(-180,Math.floor(bounds.x-140)),right=Math.max(900,Math.ceil(bounds.x+bounds.w+140)),bottom=Math.max(1000,Math.ceil(bounds.y+bounds.h+400));
+  for(const f of layers.ground){
+   if(f.tag==='rect'){const x=Math.min(f.x,left-120),y=Math.min(f.y,bounds.y-200),r=Math.max(f.x+f.width,right+120),b=Math.max(f.y+f.height,bottom);f.x=x;f.y=y;f.width=r-x;f.height=b-y;}
+   else if(f.tag==='path'&&f.d.startsWith('M-180 '))f.d=f.d.replaceAll('-180',String(left)).replaceAll('900',String(right)).replaceAll('1000',String(bottom));
+  }
+  for(const f of layers.mist||[])f.d=f.d.replaceAll('-100',String(left)).replaceAll('840',String(right));
  }
  function attributes(f){const skip=new Set(['tag','cloud','origin','flow','mist']);return Object.entries(f).filter(([k])=>!skip.has(k));}
  function svg(plan){let s='<svg xmlns="http://www.w3.org/2000/svg" width="720" height="600" viewBox="0 0 720 600">';for(const [name,features]of Object.entries(plan.layers)){if(name==='mist')continue;for(const f of features)s+=`<${f.tag} ${attributes(f).map(([k,v])=>`${k}="${v}"`).join(' ')}/>`;}return s+'</svg>';}

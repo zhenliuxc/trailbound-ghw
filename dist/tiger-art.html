@@ -1,0 +1,65 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>虎跳峡 · 手绘与旅行手帐</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="art-games.css"><link rel="stylesheet" href="game-layout.css"><link rel="stylesheet" href="wugong-art.css?v=tiger-schematic-1"><link rel="stylesheet" href="tiger-trail.css"><link rel="stylesheet" href="tiger-art.css?v=climb-stroll-3"><link rel="stylesheet" href="tiger-memories.css?v=road-guide-7">
+<script defer src="vendor/pixi-8.22.0.min.js"></script>
+<script defer src="route-moments.js"></script>
+<script defer src="route-scenes.js"></script>
+<script defer src="discoveries.js?v=road-guide-7"></script>
+<script defer src="journal.js"></script>
+<script defer src="moment-scenes.js"></script>
+<script defer src="moment-play.js"></script>
+<script defer src="micro-moments.js"></script>
+<script defer src="image-cache.js"></script>
+<script defer src="hint-art.js"></script>
+<script defer src="water-scene.js"></script>
+<script defer src="kite-flight.js"></script>
+<script defer src="wind-scene.js"></script>
+<script defer src="wugong-stories.js?v=camera-origin-3"></script>
+<script defer src="wugong-games.js"></script>
+<script defer src="art-play-atlas.js"></script>
+<script defer src="art-games.js"></script>
+<script defer src="art-game-scene.js"></script>
+<script defer src="mini-games.js"></script>
+<script defer src="audio-scenes.js?v=road-guide-7"></script>
+<script defer src="audio.js?v=road-guide-7"></script>
+<script defer src="wugong-art.js?v=road-guide-7"></script></head><body class="wugong-art-page tiger-art-page" data-route="tiger">
+<header class="art-page-header"><div><small>山径 · 虎跳峡</small><h1 id="art-page-title">山间手绘</h1></div><button id="walk-toggle" type="button">返回山路 ×</button></header>
+<main id="app-main"><section id="journey-stage"><section id="micro-panel" class="micro-panel" hidden aria-labelledby="micro-title">
+<div class="micro-heading"><div><small id="micro-place"></small><h2 id="micro-title"></h2></div><button id="micro-skip" type="button">继续走 →</button></div>
+<div id="mini-controls" class="mini-controls" hidden><button id="mini-music-retry" type="button" hidden aria-label="配乐未能播放，重试加载配乐">重试配乐</button><button id="mini-sound" type="button" aria-pressed="false">声音 · 点击开启</button><button id="mini-retry" type="button">重新试一次</button></div><button id="micro-surface" class="micro-surface" type="button" aria-label="轻触景物"><span id="wind-hud" class="wind-hud" hidden aria-hidden="true"><span class="wind-hud-top"><span><small id="mini-place-label">武功山 · 借风</small><strong id="wind-stage-name">草坡来风</strong></span><span class="wind-goals"><span class="wind-feathers" aria-hidden="true"><i id="wind-feather-0">一</i><i id="wind-feather-1">二</i><i id="wind-feather-2">三</i></span><span id="wind-count">0 / 3 阵风</span></span></span><span id="wind-chapter" class="wind-chapter"><small id="wind-chapter-kicker">山野小事 · 01</small><strong id="wind-chapter-title">借一阵草甸的风</strong><span id="wind-chapter-copy">让草浪告诉你，风往哪里去。</span></span><span class="wind-hud-bottom"><span id="wind-cue">向上牵线，找到流动的风</span><span class="wind-steady"><span id="wind-steady-fill"></span></span></span></span><svg id="micro-art" viewBox="0 0 400 230" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg></button>
+<section id="wugong-tools" class="wugong-tools" hidden aria-label="互动操作"><div class="wugong-dialogue"><small id="wugong-speaker"></small><p id="wugong-line"></p></div><div class="wugong-actions"><div id="wugong-zoom" class="wugong-zoom" hidden><button id="wugong-zoom-out" type="button" aria-label="退远一点">−</button><span>远近</span><button id="wugong-zoom-in" type="button" aria-label="靠近一点">＋</button></div><button id="wugong-secondary" type="button" hidden></button><button id="wugong-primary" class="wugong-primary" type="button"></button></div></section>
+<section id="art-tools" class="art-tools" hidden aria-label="画作互动操作"><div class="art-tool-top"><small id="art-kicker"></small><output id="art-count"></output></div><h3 id="art-title"></h3><p id="art-cue"></p><div id="art-actions" class="art-actions"></div><p id="art-key-hint" class="art-key-hint"></p></section>
+<section id="mogan-tools" class="mogan-tools" hidden aria-label="竹林互动提示">
+  <div class="mogan-caption"><small id="mogan-kicker"></small><output id="mogan-count"></output></div>
+  <p id="mogan-cue"></p>
+  <div id="mogan-notes" class="mogan-notes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div id="mogan-settings" class="mogan-settings" hidden><button id="mogan-slow" type="button" aria-pressed="false">慢一点</button></div>
+</section>
+<section id="tiger-tools" class="tiger-tools" hidden aria-label="虎跳峡互动操作">
+  <div class="tiger-caption"><output id="tiger-count"></output><details class="tiger-keys"><summary>键盘辅助</summary><p id="tiger-key-hint"></p></details></div>
+  <div id="tiger-actions" class="tiger-actions"></div>
+  <label id="tiger-trail-lens" class="tiger-trail-lens" hidden><span>远近</span><input id="tiger-trail-zoom" type="range" min="1" max="1.8" step="0.02" value="1.25" aria-label="江景取景远近"></label>
+  <div id="tiger-frame-strip" class="tiger-frame-strip" role="group" aria-label="选一帧喜欢的江景" hidden></div>
+</section>
+<div class="micro-progress" role="progressbar" id="micro-progress" aria-label="这一刻的互动进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="micro-progress-fill"></span></div><p id="micro-instruction" class="micro-instruction"></p><p id="micro-result" class="micro-result" role="status" aria-live="polite"></p>
+</section>
+</section><section id="art-journal-wall"><section class="field-journal journal-notebook" aria-labelledby="journal-title">
+  <header class="journal-heading"><div><p class="eyebrow">FIELD NOTES / 把山野留在纸上</p><h2 id="journal-title">旅行手帐</h2></div><span id="journal-count">0个瞬间</span></header>
+  <p class="journal-intro">把走过的山野，一枚一枚收好。点开手绘，慢慢翻看。</p>
+  <p id="discovery-status" role="status" aria-live="polite"></p>
+  <div class="journal-toolbar"><div class="journal-route-picker"><label for="journal-route">按路线翻看</label><select id="journal-route"><option value="all">全部路线</option></select></div><span id="trip-count">本次记下0个瞬间</span></div>
+  <p id="journal-filter-count" class="journal-note" role="status" aria-live="polite"></p>
+  <ol id="journal-list" class="journal-list"></ol>
+  <button id="journal-more" type="button" class="journal-more" hidden>继续翻阅 ↓</button>
+  <p id="journal-storage" class="journal-note journal-storage">回忆自动保存在这个浏览器，相同的片刻只留一页。</p>
+</section>
+</section><div id="ending-journal" hidden><div id="ending-badges"></div><p id="ending-detail"></p></div></main>
+<dialog id="journal-detail" class="journal-detail" aria-labelledby="journal-detail-title">
+  <header class="journal-detail-bar"><div><span class="eyebrow">旅行手帐</span><strong id="journal-detail-route"></strong></div><button id="journal-detail-close" type="button" aria-label="关闭回忆，回到标签墙" title="关闭回忆 · Esc">×</button></header>
+  <article id="journal-detail-page" class="journal-spread" tabindex="0" aria-label="回忆画作与文字"></article>
+  <footer class="journal-detail-nav" aria-label="翻看回忆">
+    <button id="journal-detail-prev" type="button" aria-controls="journal-detail-page"><span aria-hidden="true">←</span> 上一枚</button>
+    <div><span id="journal-detail-position"></span><small id="journal-detail-hint">左右翻看沿途回忆</small></div>
+    <button id="journal-detail-next" type="button" aria-controls="journal-detail-page">下一枚 <span aria-hidden="true">→</span></button>
+  </footer>
+  <p id="journal-detail-announcement" class="journal-announcement" role="status" aria-live="polite" aria-atomic="true"></p>
+</dialog><div id="reward-overlay" class="reward-overlay" hidden><section id="reward-dialog" class="reward-dialog" role="dialog" aria-modal="true" aria-labelledby="reward-title" aria-describedby="reward-copy"><p class="eyebrow">A MOMENT TO KEEP · 山野赠礼</p><div class="reward-art-wrap"><span class="reward-glow" aria-hidden="true"></span><img id="reward-art" class="reward-art" alt=""><span class="reward-spark reward-spark-one" aria-hidden="true">✧</span><span class="reward-spark reward-spark-two" aria-hidden="true">✧</span></div><p id="reward-loading" role="status" hidden>正在展开手绘纪念…</p><small id="reward-place"></small><h2 id="reward-title"></h2><p id="reward-copy"></p><p class="reward-note">这枚手绘徽章，和这一刻一起收进手帐。</p><button id="reward-continue" class="primary-button" type="button">收好徽章 →</button></section></div><div id="wind-keepsake" class="wind-keepsake" hidden aria-hidden="true"><span>✧</span><small>山径手帐</small></div><footer class="art-page-credits"><a href="tiger-credits.html" target="_blank" rel="noopener">致谢</a></footer></body></html>

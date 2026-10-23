@@ -1,0 +1,43 @@
+{
+  "result": "passed",
+  "routeSceneLength": 751.3443188378376,
+  "events": [
+    {
+      "id": "start",
+      "distance": 0,
+      "day": 1
+    },
+    {
+      "id": "slope",
+      "distance": 238.6491180328454,
+      "day": 1
+    },
+    {
+      "id": "meadow",
+      "distance": 262.0425844060829,
+      "day": 1
+    },
+    {
+      "id": "camp",
+      "distance": 289.6654018924344,
+      "day": 1
+    },
+    {
+      "id": "horse",
+      "distance": 386.02294103419473,
+      "day": 2
+    },
+    {
+      "id": "summit",
+      "distance": 451.5727111854958,
+      "day": 2
+    },
+    {
+      "id": "end",
+      "distance": 751.3443188378376,
+      "day": 2
+    }
+  ],
+  "frames": 50925,
+  "scope": "Actual journey state machine and shared weather clock. No browser, DOM, GPU or phone emulation."
+}

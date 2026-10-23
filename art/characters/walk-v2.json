@@ -1,0 +1,268 @@
+{
+  "image": "/characters/trailbound-walk-v2.webp",
+  "source": "art/characters/walk-source-v2.png",
+  "width": 1774,
+  "height": 887,
+  "columns": 4,
+  "rows": 2,
+  "columnEdges": [
+    0,
+    443,
+    887,
+    1330,
+    1774
+  ],
+  "rowEdges": [
+    0,
+    447,
+    887
+  ],
+  "alphaThreshold": 12,
+  "medianVisibleHeight": 429,
+  "mapVisibleHeight": 54,
+  "mapScale": 0.1258741258741259,
+  "coordinates": "cellRect, visibleBounds, sourceRect and footAnchorSource use source-image coordinates. footAnchor is relative to sourceRect.",
+  "bounds": "Largest eight-connected alpha > 12 component per cell. sourceRect adds one pixel within the cell. No source pixels are changed.",
+  "frames": [
+    {
+      "index": 0,
+      "pose": "left-contact",
+      "cellRect": {
+        "x": 0,
+        "y": 0,
+        "width": 443,
+        "height": 447
+      },
+      "visibleBounds": {
+        "x": 113,
+        "y": 10,
+        "width": 273,
+        "height": 433
+      },
+      "sourceRect": {
+        "x": 112,
+        "y": 9,
+        "width": 275,
+        "height": 435
+      },
+      "footAnchorSource": {
+        "x": 265,
+        "y": 443
+      },
+      "footAnchor": {
+        "x": 153,
+        "y": 434
+      }
+    },
+    {
+      "index": 1,
+      "pose": "left-weight",
+      "cellRect": {
+        "x": 443,
+        "y": 0,
+        "width": 444,
+        "height": 447
+      },
+      "visibleBounds": {
+        "x": 543,
+        "y": 12,
+        "width": 256,
+        "height": 431
+      },
+      "sourceRect": {
+        "x": 542,
+        "y": 11,
+        "width": 258,
+        "height": 433
+      },
+      "footAnchorSource": {
+        "x": 690,
+        "y": 443
+      },
+      "footAnchor": {
+        "x": 148,
+        "y": 432
+      }
+    },
+    {
+      "index": 2,
+      "pose": "right-pass",
+      "cellRect": {
+        "x": 887,
+        "y": 0,
+        "width": 443,
+        "height": 447
+      },
+      "visibleBounds": {
+        "x": 979,
+        "y": 12,
+        "width": 253,
+        "height": 435
+      },
+      "sourceRect": {
+        "x": 978,
+        "y": 11,
+        "width": 255,
+        "height": 436
+      },
+      "footAnchorSource": {
+        "x": 1120,
+        "y": 447
+      },
+      "footAnchor": {
+        "x": 142,
+        "y": 436
+      }
+    },
+    {
+      "index": 3,
+      "pose": "right-rise",
+      "cellRect": {
+        "x": 1330,
+        "y": 0,
+        "width": 444,
+        "height": 447
+      },
+      "visibleBounds": {
+        "x": 1400,
+        "y": 12,
+        "width": 262,
+        "height": 433
+      },
+      "sourceRect": {
+        "x": 1399,
+        "y": 11,
+        "width": 264,
+        "height": 435
+      },
+      "footAnchorSource": {
+        "x": 1550,
+        "y": 445
+      },
+      "footAnchor": {
+        "x": 151,
+        "y": 434
+      }
+    },
+    {
+      "index": 4,
+      "pose": "right-contact",
+      "cellRect": {
+        "x": 0,
+        "y": 447,
+        "width": 443,
+        "height": 440
+      },
+      "visibleBounds": {
+        "x": 125,
+        "y": 449,
+        "width": 284,
+        "height": 423
+      },
+      "sourceRect": {
+        "x": 124,
+        "y": 448,
+        "width": 286,
+        "height": 425
+      },
+      "footAnchorSource": {
+        "x": 285,
+        "y": 872
+      },
+      "footAnchor": {
+        "x": 161,
+        "y": 424
+      }
+    },
+    {
+      "index": 5,
+      "pose": "right-weight",
+      "cellRect": {
+        "x": 443,
+        "y": 447,
+        "width": 444,
+        "height": 440
+      },
+      "visibleBounds": {
+        "x": 547,
+        "y": 452,
+        "width": 258,
+        "height": 420
+      },
+      "sourceRect": {
+        "x": 546,
+        "y": 451,
+        "width": 260,
+        "height": 422
+      },
+      "footAnchorSource": {
+        "x": 705,
+        "y": 872
+      },
+      "footAnchor": {
+        "x": 159,
+        "y": 421
+      }
+    },
+    {
+      "index": 6,
+      "pose": "left-pass",
+      "cellRect": {
+        "x": 887,
+        "y": 447,
+        "width": 443,
+        "height": 440
+      },
+      "visibleBounds": {
+        "x": 985,
+        "y": 447,
+        "width": 241,
+        "height": 427
+      },
+      "sourceRect": {
+        "x": 984,
+        "y": 447,
+        "width": 243,
+        "height": 428
+      },
+      "footAnchorSource": {
+        "x": 1120,
+        "y": 874
+      },
+      "footAnchor": {
+        "x": 136,
+        "y": 427
+      }
+    },
+    {
+      "index": 7,
+      "pose": "left-rise",
+      "cellRect": {
+        "x": 1330,
+        "y": 447,
+        "width": 444,
+        "height": 440
+      },
+      "visibleBounds": {
+        "x": 1396,
+        "y": 450,
+        "width": 276,
+        "height": 424
+      },
+      "sourceRect": {
+        "x": 1395,
+        "y": 449,
+        "width": 278,
+        "height": 426
+      },
+      "footAnchorSource": {
+        "x": 1550,
+        "y": 874
+      },
+      "footAnchor": {
+        "x": 155,
+        "y": 425
+      }
+    }
+  ]
+}

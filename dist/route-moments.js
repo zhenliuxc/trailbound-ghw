@@ -50,7 +50,7 @@
     "id": "wugong-wind-hiker",
     "route": "wugong",
     "order": 1.5,
-    "at": 0.55,
+    "at": 0.67,
     "tag": "吊带追风",
     "name": "风口遇见的徒步者",
     "place": "武功山 · 草甸风口",
@@ -159,6 +159,12 @@
 ];
  for(const entry of ENCOUNTERS)PROFILES[entry.id]=entry;
  PROFILES['tiger-bell-first'].icon='bell';
+ // Tiger's four registered games keep the original collectible IDs and art.
+ // These descriptions affect new encounters; existing journal entries are retained.
+ Object.assign(PROFILES['gorge-goat'],{name:'换个站位，看懂江谷',hint:'比较左右视角，把四张景物画片按从近到远排列。',prompt:'点左右观景处比较远近，再拖动近崖、石径、江水与雪峰画片，按从近到远排列。',result:'我在高路边换了两个站位。近崖移得快，远峰几乎不动；石径、金沙江和雪山，终于在四张画片里排出了峡谷的深浅。'});
+ Object.assign(PROFILES['gorge-eagle'],{name:'雪山前，收一收背包',hint:'把五件随身物品放进内袋，留出袋口，再合上背包。',prompt:'把水壶、雨衣、手帐、饭盒和围巾拖进背包。可以旋转、取出重摆，不重叠、不越界，收好后合包。',result:'客栈的椅子朝着雪山。我把水壶、雨衣、手帐、饭盒和围巾慢慢收进背包，留出袋口，带着这段歇脚继续走。'});
+ Object.assign(PROFILES['gorge-sparkle'],{name:'给水帘，编一段声音',hint:'用水帘、落滴与谷风编八拍，留一拍空白，试听后留下。',prompt:'点格子开关水帘、落滴和谷风；至少用两种声音，并留一整拍空白。完整试听后，主动留下这段瀑声。',result:'水帘、落滴与谷风，被我编进了八拍小曲。留白的一拍里，江谷仍在回应；这一段瀑声留在了手帐里。'});
+ Object.assign(PROFILES['tiger-bell-first'],{name:'沿着铃声，找到旅伴',play:'bells',hint:'看铃纹、听方向，经过两个转弯，遇见山路上的驮队。',prompt:'铃纹与铃声指向同一边，点山路岔口寻找驮队。走错路可返回；遇见后让他们先过。',result:'铃声先从山路转角传来。我在两个岔口辨清方向，终于看见赶路人与驮骡；我侧身让路，等他们慢慢经过。'});
  for(const id of ['snow-light','bamboo-leaf','westlake-eaves','westlake-floating-leaf','westlake-leaf-shadow','westlake-basket'])PROFILES[id].artV5='badges/'+id+'-v5.webp';
  // Current play descriptions only; saved journal text and badge editions stay untouched.
  Object.assign(PROFILES['meadow-bird'],{name:'借一阵草甸的风',prompt:'上下拖动牵线，陪纸鸢从草坡起飞、穿过侧风，再缓缓放线进入云海。跟着风带调整，脱风后可重新找回航线；方向键也能牵线。',result:'我顺着草浪牵起纸鸢，带它穿过山脊的侧风，再缓缓放线。它沿着一整段风路，飞向了云海。'});

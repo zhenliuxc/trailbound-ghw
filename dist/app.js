@@ -3,7 +3,9 @@
 (function() {
   "use strict";
   const G = window.TrailGame, J = window.TrailJourney, M = window.TrailMotion, D = window.TrailDiscoveries, L = window.TrailLife, K = window.TrailNature, X = window.TrailMiniGames ? window.TrailMiniGames.enhance(window.TrailMicroMoments) : window.TrailMicroMoments, $ = (id) => document.getElementById(id), NS = "http://www.w3.org/2000/svg", R = 6378137, rad = Math.PI / 180;
-  let state = J.create("wugong"), projection = null, view = { x: 0, y: 0, w: 720, h: 600 }, overview = false, photoId = null, photoFromAlbum = false, photoSession = null, uiKey = "", echoUntil = 0, echo = "", sound = false, soundBusy = false, audioBackground = false, soundError = "", lastStrike = -1, scenePlan = null, sceneRenderer = null, cloudNodes = [], mistNodes = [], gaitClock = 0, hikerFacing = 1, lastWeather = null;
+  const tigerRoute = window.TrailTigerRoute;
+  if (tigerRoute) J.STORIES.tiger.events = [];
+  let state = J.create("wugong"), projection = null, view = { x: 0, y: 0, w: 720, h: 600 }, overview = false, photoId = null, photoFromAlbum = false, photoSession = null, uiKey = "", echoUntil = 0, echo = "", sound = false, soundBusy = false, audioBackground = false, soundError = "", scenePlan = null, sceneRenderer = null, cloudNodes = [], mistNodes = [], gaitClock = 0, hikerFacing = 1, lastWeather = null;
   const motionReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || false;
   const audioPlayer = window.TrailAudio.create({ AudioContext: window.AudioContext || window.webkitAudioContext, navigator: window.navigator, fetch: window.fetch?.bind(window), timers: window, createMusic: window.TrailRuntime.createMusicLayer, onStateChange: () => {
     uiKey = "";
@@ -22,12 +24,20 @@
     storage = localStorage;
   } catch (_) {
   }
-  let trip = D.create(state.routeId), natureId = null, natureNode = null, naturePoint = null, natureArt = null, lifeActors = [], footprints = [], actionStarted = -Infinity;
+  let trip = D.create(state.routeId), natureId = null, natureNode = null, naturePoint = null, natureArt = null, natureLabel = null, lifeActors = [], footprints = [], actionStarted = -Infinity;
   const photoCache = /* @__PURE__ */ new Map();
   const Runtime = window.TrailRuntime;
+  const mapHeading = Runtime.createMapHeading();
+  const mapGait = Runtime.createMapGait();
+  let visualRoute = null, visualRouteId = null;
   let fullMapView = { x: 0, y: 0, w: 720, h: 600 }, mapResizeTimer = null;
+  let mapScreen = { width: 720, height: 600, desktop: false }, mapSizing = Runtime.mapSymbols(720, 600, view, true), mapMarkers = [], endpointMarkers = [], mapObserver = null;
+  let mapLabelPositions = /* @__PURE__ */ new Map(), mapControlBoxes = [];
+  let tigerJourney = null, tigerPanelKey = "", lastRiverApproach = -1, lastMountainSoundStage = "", lastGorgeOpenness = -1;
   const dom = Runtime.createDom(document);
-  const miniGameKind = (id) => window.TrailArtGames && Runtime.MOGAN_GAMES[id] || window.TrailMiniGames?.kinds[id];
+  const mapCharacter = Runtime.createProceduralMapCharacter(document);
+  const sceneCharacter = Runtime.createSceneCharacter(document);
+  const miniGameKind = (id) => Runtime.TRAIL_GAMES?.[id] || Runtime.TIGER_GAMES[id] || window.TrailArtGames && Runtime.MOGAN_GAMES[id] || window.TrailMiniGames?.kinds[id];
   const scenes = Runtime.createSceneManager({ status: () => state.status, pause: () => {
     state = J.pause(state);
   }, resume: () => {
@@ -35,6 +45,7 @@
   }, hidden: () => document.hidden });
   const rewardController = Runtime.createRewardController({ dom, scenes, catalog: D, cache: artCache, audio: audioPlayer, reduced: motionReduced, gameKind: miniGameKind, refresh: refreshRuntime, stopLoop: cancelLoop });
   const journalController = Runtime.createJournalController({
+    presentArt: Runtime.roundJournalArt,
     dom,
     scenes,
     catalog: D,
@@ -78,22 +89,214 @@
     ensureLoop,
     refresh: refreshRuntime,
     onFinished: (finished) => {
-      const next = D.capture(state, trip, finished.state.id);
+      const next = D.item(finished.state.id)?.manualOnly ? D.captureManual(trip, finished.state.id) : D.capture(state, trip, finished.state.id);
       if (next === trip) return false;
+      const moment = D.moment(state, next, finished.state.id, { weather: J.weather(state), experience: finished.outcome });
+      if (!moment || !D.hasTag(moment)) {
+        $("discovery-status").textContent = "这次取景还没保存下来，可以重新打开江景再拍一张。";
+        return false;
+      }
       trip = next;
-      const moment = D.moment(state, trip, finished.state.id, { weather: J.weather(state), experience: finished.outcome });
       journalController.remember(moment);
       return rewardController.show(moment, finished.returnStatus);
-    }
+    },
+    onClosed: (id, earned, resume) => closeTigerStage(id, earned, resume)
   });
   const moganGames = window.TrailMiniGames && window.TrailArtGames ? Runtime.createMoganGames({ dom, legacy: window.TrailArtGames, onAction: (name, value) => miniController.action(name, value) }) : null;
   if (moganGames) miniController.registerGame(Object.keys(Runtime.MOGAN_GAMES), moganGames.adapter);
+  const tigerGames = Runtime.createTigerGames({ dom, onAction: (name, value) => miniController.action(name, value) });
+  miniController.registerGame(Object.keys(Runtime.TIGER_GAMES), tigerGames.adapter);
+  const tigerTrailGames = Runtime.createTigerTrailGames?.({ dom, onAction: (name, value) => miniController.action(name, value) });
+  if (tigerTrailGames) miniController.registerGame(Object.keys(Runtime.TRAIL_GAMES), tigerTrailGames.adapter);
   const loop = Runtime.createFrameLoop({ request: (callback) => window.requestAnimationFrame(callback), cancel: (id) => window.cancelAnimationFrame(id), active: () => scenes.canAnimate(miniController.active), update: frame });
   function refreshRuntime() {
     uiKey = "";
     render();
     updatePosition(0);
     ensureLoop();
+  }
+  function resetTigerJourney() {
+    tigerPanelKey = "";
+    tigerJourney = state.routeId === "tiger" && tigerRoute ? {
+      phase: "high",
+      handled: /* @__PURE__ */ new Set(),
+      activeStage: null,
+      nextStage: null,
+      anchors: tigerRoute.anchors(J.routeOf(state).geo.line),
+      stops: tigerRoute.highStops(J.routeOf(state).geo.line).filter((stop) => stop.anchor && stop.gameId && stop.gameId !== "tiger-28-bends-v1"),
+      returnClock: 0,
+      branchTaken: false,
+      focusPanel: false
+    } : null;
+  }
+  function beginTigerStage(id, returnStatus = "walking") {
+    const entry = D.item(id);
+    if (!tigerJourney || !entry || !tigerTrailGames || miniController.active || rewardController.open) return false;
+    tigerJourney.activeStage = id;
+    tigerJourney.handled.add(id);
+    tigerJourney.nextStage = null;
+    if (id === "tiger-middle-river-frame-v1") tigerJourney.phase = "river";
+    miniController.begin(entry, returnStatus);
+    return true;
+  }
+  function closeTigerStage(id, earned, resume) {
+    if (!tigerJourney || !Runtime.TRAIL_GAMES?.[id] || !resume) return;
+    const active = tigerJourney.activeStage === id;
+    tigerJourney.activeStage = null;
+    if (id === "tiger-middle-river-frame-v1") {
+      tigerJourney.phase = "riverside";
+      tigerJourney.focusPanel = true;
+      state = { ...state, status: "paused", pending: null };
+    } else if (active && id === "tiger-halfway-view-v1") {
+      tigerJourney.nextStage = "tiger-longdong-passage-v1";
+    }
+    tigerPanelKey = "";
+  }
+  function finishTigerJourney() {
+    if (!tigerJourney) return;
+    tigerJourney.phase = "complete";
+    tigerJourney.nextStage = null;
+    const memory = tigerJourney.branchTaken ? "从中虎跳江边沿张老师小路原路返回，回到中峡客栈一带，今天的旅程在这里结束。" : "从桥头沿高路走到中峡客栈一带，今天的旅程在高路终点收束。";
+    apply({ ...state, status: "finished", progress: 1, pending: null, memories: [...state.memories, memory] });
+    $("replay").focus({ preventScroll: true });
+  }
+  function tigerRoutePanel() {
+    let panel = $("tiger-route-panel");
+    if (panel) return panel;
+    panel = html("section", null, $("journey-stage"), "tiger-route-panel");
+    panel.id = "tiger-route-panel";
+    panel.hidden = true;
+    panel.setAttribute("aria-labelledby", "tiger-route-title");
+    const card = html("div", null, panel, "tiger-route-card");
+    for (const [tag, suffix, className] of [["p", "kicker", "eyebrow"], ["h2", "title", ""], ["p", "copy", ""], ["ol", "diagram", "tiger-route-diagram"], ["div", "actions", "tiger-route-actions"]]) {
+      const node = html(tag, null, card, className);
+      node.id = "tiger-route-" + suffix;
+    }
+    return panel;
+  }
+  function renderTigerRoute() {
+    const flow = tigerJourney, phase = flow?.phase;
+    const panelVisible = !!flow && ["junction", "connector", "riverside", "returning"].includes(phase) && !miniController.active && !rewardController.open && !photoId && !photoFromAlbum;
+    const panel = flow ? tigerRoutePanel() : $("tiger-route-panel");
+    if (panel) panel.hidden = !panelVisible;
+    $("map-frame").hidden = panelVisible;
+    $("map-frame").setAttribute("data-tiger-leg", flow && ["river", "riverside", "returning"].includes(phase) ? "river" : "high");
+    $("checkpoint-list").closest(".album").hidden = state.routeId === "wugong" && state.status === "ready";
+    if (!panelVisible) {
+      tigerPanelKey = "";
+      return;
+    }
+    panel.setAttribute("data-phase", phase);
+    const returnStep = Math.min(3, Math.floor(flow.returnClock / (motionReduced ? 0.5 : 1.8)));
+    const key = [phase, returnStep, state.status, trip.found.includes("tiger-middle-river-frame-v1")].join("|");
+    if (key === tigerPanelKey) return;
+    tigerPanelKey = key;
+    const content = {
+      junction: ["高路终点 · 中峡客栈一带", "高路走完了，江还在下面", "可以在这里结束今天的高路，也可以接入张老师小路，去中虎跳江边看一看。江边支线会沿原小路返回这里。"],
+      connector: ["江边支线 · 路线顺序示意", "从高路，走向金沙江边", "先从中峡客栈一带前往张老师客栈，再沿张老师小路下行。这张图表达经过顺序，线条不表示实际距离。"],
+      riverside: ["支线目的地 · 中虎跳江边", "江流到了眼前，回程也在原路上", trip.found.includes("tiger-middle-river-frame-v1") ? "这次亲手留下的取景已经交给手帐。沿张老师小路原路返回，再回到中峡客栈一带结束旅程。" : "可以再看一会儿江景，也可以沿张老师小路原路返回。观看与经过不会自动增加收藏。"],
+      returning: ["原路返回 · 路线顺序示意", state.status === "paused" ? "在回程的小路上歇一会儿" : "沿着来时的小路，回到高路终点", "从江边沿张老师小路返回，经张老师客栈，再回到中峡客栈一带。原路往返，没有接入另一条下山线。"]
+    }[phase];
+    $("tiger-route-kicker").textContent = content[0];
+    $("tiger-route-title").textContent = content[1];
+    $("tiger-route-copy").textContent = content[2];
+    const steps = phase === "junction" ? ["起点 · 桥头一带", "二十八道拐与高路", "终点 · 中峡客栈一带"] : phase === "returning" ? ["支线目的地 · 中虎跳江边", "沿张老师小路原路上行", "经过张老师客栈", "终点 · 回到中峡客栈一带"] : ["主线终点 · 中峡客栈一带", "支线入口 · 张老师小路", "支线目的地 · 中虎跳江边", "原路返回 · 中峡客栈一带"];
+    const current = phase === "junction" ? 2 : phase === "riverside" ? 2 : phase === "returning" ? returnStep : 0;
+    $("tiger-route-diagram").replaceChildren();
+    for (const [index, label] of steps.entries()) {
+      const step = html("li", label, $("tiger-route-diagram"), "tiger-route-step");
+      step.setAttribute("data-passed", String(index < current));
+      if (index === current) step.setAttribute("aria-current", "step");
+    }
+    $("tiger-route-actions").replaceChildren();
+    const action = (label, run, primary = true) => {
+      const button = html("button", label, $("tiger-route-actions"), primary ? "primary-button" : "text-button");
+      button.type = "button";
+      button.addEventListener("click", () => {
+        if (tigerJourney !== flow || flow.phase !== phase) return;
+        run();
+        if (!panel.hidden && !miniController.active && !rewardController.open) ($("tiger-route-actions").querySelector("button") || $("walk-toggle")).focus({ preventScroll: true });
+      });
+    };
+    if (phase === "junction") {
+      action("去中虎跳江边 →", () => {
+        flow.phase = "connector";
+        flow.branchTaken = true;
+        refreshRuntime();
+      });
+      action("在高路终点结束", finishTigerJourney, false);
+    } else if (phase === "connector") {
+      action("沿张老师小路下行 →", () => beginTigerStage("tiger-middle-river-frame-v1", "paused"));
+      action("留在高路终点", () => {
+        flow.phase = "junction";
+        flow.branchTaken = false;
+        refreshRuntime();
+      }, false);
+    } else if (phase === "riverside") {
+      action("沿原小路返回 →", () => {
+        flow.phase = "returning";
+        flow.returnClock = 0;
+        apply({ ...state, status: "walking" });
+      });
+      action("再看看江景", () => beginTigerStage("tiger-middle-river-frame-v1", "paused"), false);
+    } else {
+      const note = html("p", state.status === "paused" ? "点下方“继续返回”，接着走完来时的路。" : "回程正在继续，可以随时停一会儿。", $("tiger-route-actions"));
+      note.setAttribute("role", "status");
+    }
+    if (flow.focusPanel) {
+      flow.focusPanel = false;
+      $("tiger-route-actions").querySelector("button")?.focus({ preventScroll: true });
+    }
+  }
+  function tickTigerFlow(dt) {
+    const flow = tigerJourney;
+    if (!flow) return false;
+    if (flow.phase === "high" && flow.nextStage && state.status === "walking") {
+      if (beginTigerStage(flow.nextStage)) return true;
+    }
+    if (flow.phase === "returning") {
+      if (state.status === "walking") {
+        const step = Math.max(0, Math.min(0.25, dt));
+        flow.returnClock += step;
+        state = { ...state, elapsed: state.elapsed + step };
+        if (flow.returnClock >= (motionReduced ? 2 : 7.2)) {
+          finishTigerJourney();
+          return true;
+        }
+      }
+      render();
+      return true;
+    }
+    if (flow.phase !== "high") {
+      state = J.pause(state);
+      render();
+      return true;
+    }
+    return false;
+  }
+  function interceptTigerStop(previous, next) {
+    const flow = tigerJourney;
+    if (!flow || flow.phase !== "high" || previous.status !== "walking") return false;
+    if (next.pending?.kind === "photo") return false;
+    const stop = flow.stops.find((candidate) => !flow.handled.has(candidate.gameId) && candidate.fraction <= next.progress + 1e-9);
+    if (stop) {
+      state = { ...next, progress: Math.max(previous.progress, stop.fraction), status: "walking", pending: null };
+      updatePosition(0);
+      if (!beginTigerStage(stop.gameId)) {
+        flow.handled.add(stop.gameId);
+        render();
+      }
+      return true;
+    }
+    if (next.progress >= 1) {
+      state = { ...next, progress: 1, status: "paused", pending: null };
+      flow.phase = "junction";
+      render();
+      updatePosition(0);
+      $("tiger-route-actions").querySelector("button")?.focus({ preventScroll: true });
+      return true;
+    }
+    return false;
   }
   function preparePhoto(cp, priority = "low") {
     const file = cp.photo.file;
@@ -136,9 +339,9 @@
       photoCache.delete(file);
     }
     cps.forEach((cp, i) => preparePhoto(cp, i === 0 ? "high" : "low"));
-    const gameArt = state.routeId === "westlake" ? Object.values(window.TrailMiniGames?.waterAssets?.creek || {}) : state.routeId === "mogan" ? Runtime.MOGAN_ROUTE_ASSETS : state.routeId === "wugong" ? Object.values(window.TrailMiniGames?.wugongAssets || {}).flatMap(Object.values) : [];
-    const art = D.CATALOG.filter((e) => e.route === state.routeId).map((e) => e.artV5 || e.artV4 || e.badge).filter(Boolean);
-    artCache?.prefetch([.../* @__PURE__ */ new Set([...gameArt, ...window.TrailMiniGames?.artRouteAssets(state.routeId) || [], "scenes/" + state.routeId + "-v1.webp", ...state.routeId === "wugong" ? ["sprites/wugong-swallow-kite-v1.webp", "sprites/wugong-meadow-grass-v1.webp"] : [], ...art])]);
+    const gameArt = state.routeId === "westlake" ? Object.values(window.TrailMiniGames?.waterAssets?.creek || {}) : state.routeId === "tiger" ? Runtime.TIGER_TRAIL_ROUTE_ASSETS || Runtime.TIGER_ROUTE_ASSETS : state.routeId === "mogan" ? Runtime.MOGAN_ROUTE_ASSETS : state.routeId === "wugong" ? Object.values(window.TrailMiniGames?.wugongAssets || {}).flatMap(Object.values) : [];
+    const art = D.CATALOG.filter((e) => e.route === state.routeId && !e.legacyOnly).map((e) => e.artV5 || e.artV4 || e.badge).filter(Boolean);
+    artCache?.prefetch([.../* @__PURE__ */ new Set([...gameArt, ...window.TrailMiniGames?.artRouteAssets(state.routeId) || [], "scenes/" + state.routeId + "-v1.webp", ...art])]);
   }
   function showPhotoImage(cp) {
     const entry = preparePhoto(cp, "high"), previous = $("checkpoint-photo"), image = entry?.image || previous;
@@ -304,11 +507,12 @@
     natureNode = null;
     naturePoint = null;
     natureArt = null;
+    natureLabel = null;
     $("nature-discoveries").replaceChildren();
     if (!active) return;
     const entry = D.item(active.id);
-    const point = G.position({ routeId: state.routeId, distance: G.metric(state.routeId).total * (active.at + 0.045) }), [x, y] = projection.point(point.lon, point.lat), g = svg("g", { id: "active-discovery", role: "button", tabindex: 0, class: "nature-marker", "aria-label": `记住${D.item(active.id).name}`, "data-discovery": active.id }, $("nature-discoveries"));
-    naturePoint = [Math.max(48, Math.min(672, x + active.side * 42)), Math.max(55, Math.min(530, y - 42))];
+    const { x, y } = visualRoute.sample(active.at + 0.045), g = svg("g", { id: "active-discovery", role: "button", tabindex: 0, class: "nature-marker", "aria-label": `记住${D.item(active.id).name}`, "data-discovery": active.id }, $("nature-discoveries"));
+    naturePoint = state.routeId === "wugong" ? [x + active.side * 42 / mapSizing.scale, y - 42 / mapSizing.scale] : [Math.max(48, Math.min(672, x + active.side * 42)), Math.max(55, Math.min(530, y - 42))];
     natureNode = g;
     svg("circle", { r: 42, fill: "transparent" }, g);
     svg("circle", { r: D.item(active.id).icon === "butterfly" ? 14 : 22, fill: entry.interaction ? "transparent" : "#fffaf0", stroke: entry.interaction ? "none" : "#dac691", "stroke-width": 1.5 }, g);
@@ -316,6 +520,7 @@
     if (entry.edition === 3) svg("image", { href: entry.artV5 || entry.artV4 || entry.badge, x: -24, y: -24, width: 48, height: 48, "aria-hidden": "true" }, natureArt);
     else natureIcon(natureArt, D.item(active.id).icon);
     const label = svg("text", { y: D.item(active.id).icon === "butterfly" ? 28 : 37, "text-anchor": "middle", fill: "#557350", "font-size": 11, "font-weight": 600 }, g);
+    natureLabel = label;
     label.textContent = entry.interaction ? "看看这里" : "记住这一刻";
     const collect = (e) => {
       e.stopPropagation?.();
@@ -332,7 +537,11 @@
   function animateDiscovery() {
     if (!natureNode) return;
     const icon = D.item(natureId).icon, p = D.item(natureId).edition === 3 ? { angle: 0, wing: 1 } : L.creature(icon, state.elapsed, motionReduced);
-    natureNode.setAttribute("transform", `translate(${naturePoint[0].toFixed(2)} ${(naturePoint[1] + (motionReduced ? 0 : Math.sin(state.elapsed * 2.2) * 1.5)).toFixed(2)})`);
+    const full = state.routeId === "wugong" || overview || state.status === "ready" || motionReduced;
+    const anchor = Runtime.mapMarkerAnchor({ x: naturePoint[0], y: naturePoint[1] + (motionReduced ? 0 : Math.sin(state.elapsed * 2.2) * 1.5 / mapSizing.scale) }, mapScreen.width, mapScreen.height, view, full);
+    const discoveryScale = state.routeId === "wugong" ? Runtime.WUGONG_WAYPOINT_SIZE / (48 * mapSizing.scale) : mapSizing.discovery;
+    natureNode.setAttribute("transform", `translate(${anchor.x.toFixed(2)} ${anchor.y.toFixed(2)}) scale(${discoveryScale.toFixed(4)})`);
+    natureLabel?.setAttribute("font-size", String(mapSizing.font / discoveryScale));
     natureArt.setAttribute("transform", `rotate(${p.angle.toFixed(2)})`);
     for (const wing of natureArt.motionWings || []) wing.setAttribute("transform", `scale(${p.wing.toFixed(3)} 1)`);
   }
@@ -368,40 +577,72 @@
       return [wx / R / rad, (2 * Math.atan(Math.exp(wy / R)) - Math.PI / 2) / rad];
     } };
   }
-  function lineD(line, p = projection) {
-    return line.map((c, i) => {
-      const [x, y] = p.point(c[0], c[1]);
-      return `${i ? "L" : "M"}${x.toFixed(2)},${y.toFixed(2)}`;
-    }).join(" ");
+  function routeDrawing(route, mapProjection, bounds) {
+    if (route.id === "wugong") return Runtime.createWugongOverviewRoute(bounds);
+    const metric = G.metric(route.id);
+    const anchors = route.checkpoints.map((cp) => cp.fraction);
+    if (route.id === "tiger" && tigerRoute) for (const anchor of Object.values(tigerRoute.anchors(route.geo.line))) anchors.push(anchor.fraction);
+    return Runtime.createVisualRoute({
+      points: route.geo.line.map((point) => [...mapProjection.point(point[0], point[1]), point[2]]),
+      progress: metric.cumulative.map((distance) => metric.total ? distance / metric.total : 0),
+      anchors,
+      tolerance: 8,
+      cornerRadius: 12
+    });
   }
-  function cartoonLine(line, p = projection) {
-    const points = line.map((c) => p.point(c[0], c[1]));
-    function reduce(pts) {
-      if (pts.length < 3) return pts;
-      const a = pts[0], b = pts.at(-1), dx = b[0] - a[0], dy = b[1] - a[1];
-      let max = 0, index = 0;
-      for (let i = 1; i < pts.length - 1; i++) {
-        const t = Math.max(0, Math.min(1, ((pts[i][0] - a[0]) * dx + (pts[i][1] - a[1]) * dy) / (dx * dx + dy * dy || 1))), d = Math.hypot(pts[i][0] - a[0] - t * dx, pts[i][1] - a[1] - t * dy);
-        if (d > max) {
-          max = d;
-          index = i;
-        }
-      }
-      return max > 2.5 ? [...reduce(pts.slice(0, index + 1)).slice(0, -1), ...reduce(pts.slice(index))] : [a, b];
+  function activateWugongEndpoint(kind) {
+    if (state.routeId !== "wugong" || miniController.active || rewardController.open || journalController.open || photoFromAlbum) return;
+    if (kind === "start" && state.status === "ready") {
+      apply(J.start(state));
+      return;
     }
-    return reduce(points).map((pt, i) => `${i ? "L" : "M"}${pt[0].toFixed(2)},${pt[1].toFixed(2)}`).join(" ");
+    if (state.pending?.kind === "choice" && state.pending.id === `wugong-${kind}`) {
+      $("story-choices").querySelector("button")?.focus({ preventScroll: true });
+      return;
+    }
+    if (kind === "end" && state.pending?.kind === "photo" && state.progress === 1) {
+      $("photo-continue").focus({ preventScroll: true });
+      return;
+    }
+    if (kind === "end" && state.status === "finished") {
+      $("ending-panel").focus({ preventScroll: true });
+      return;
+    }
+    echo = kind === "start" ? "中庵是这一程的起点。背包已收拾好，沿着石阶慢慢往前走。" : "前方是金顶。沿山路抵达后，会停下看终点的风景。";
+    echoUntil = state.elapsed + 8;
+    uiKey = "";
+    render();
   }
   function drawMap() {
     const r = J.routeOf(state);
+    const isWugong = r.id === "wugong";
+    $("map-toggle").hidden = isWugong;
+    $("journey-stage").setAttribute("data-route", r.id);
+    $("map-frame").setAttribute("data-route", r.id);
     const rect = $("map-frame").getBoundingClientRect();
-    fullMapView = Runtime.mapViewport(rect.width, rect.height, (window.innerWidth || 0) >= 1024);
-    const symbolScale = fullMapView.h / 600;
-    projection = fitProjection(r.geo.line, fullMapView.w, fullMapView.h, 85 * symbolScale, fullMapView.y);
+    if (rect.width && rect.height) mapScreen = { width: rect.width, height: rect.height, desktop: (window.innerWidth || 0) >= 1024 };
+    mapControlBoxes = [...$("map-frame").querySelectorAll(".weather-badge, .map-toggle")].filter((node) => !node.hidden).map((node) => {
+      const control = node.getBoundingClientRect();
+      return { x: control.left - rect.left, y: control.top - rect.top, width: control.width, height: control.height };
+    });
+    fullMapView = Runtime.mapViewport(mapScreen.width, mapScreen.height, mapScreen.desktop);
+    const overviewSizing = Runtime.mapSymbols(mapScreen.width, mapScreen.height, fullMapView, true), symbolScale = overviewSizing.marker;
+    $("map").querySelector(".map-compass").setAttribute("transform", isWugong ? `translate(${(mapScreen.width - 28 - overviewSizing.offsetX) / overviewSizing.scale} ${(46 - overviewSizing.offsetY) / overviewSizing.scale}) scale(${1 / overviewSizing.scale})` : "translate(681 40)");
+    projection = fitProjection(r.geo.line, 720, 600, 85);
+    visualRoute = routeDrawing(r, projection, fullMapView);
+    if (visualRouteId !== r.id) {
+      visualRouteId = r.id;
+      hikerFacing = mapHeading.reset(visualRoute.heading(0));
+    }
     view = { ...fullMapView };
-    $("journey-stage").style.setProperty?.("--map-symbol-scale", String(symbolScale));
     $("map").setAttribute("viewBox", `${view.x} ${view.y} ${view.w} ${view.h}`);
     for (const id of ["geo-background", "geo-labels", "geo-markers", "online-tiles", "nature-discoveries", "scene-life", "trail-footprints"]) $(id).replaceChildren();
-    const projected = r.geo.line.map((p) => [...projection.point(p[0], p[1]), p[2]]), context = { features: [...r.geo.background.filter((f) => ["water", "cable", "coast"].includes(f.kind)), ...window.TrailLandscapeData?.[r.geoId]?.features || []].map((f) => ({ ...f, line: f.line.map((p) => projection.point(p[0], p[1])) })), peaks: r.geo.labels.map((p) => ({ ...p, x: projection.point(p.lon, p.lat)[0], y: projection.point(p.lon, p.lat)[1] })) };
+    natureId = null;
+    natureNode = null;
+    naturePoint = null;
+    natureArt = null;
+    natureLabel = null;
+    const projected = visualRoute.points, context = { bounds: fullMapView, features: [...r.geo.background.filter((f) => ["water", "cable", "coast"].includes(f.kind)), ...window.TrailLandscapeData?.[r.geoId]?.features || []].map((f) => ({ ...f, line: f.line.map((p) => projection.point(p[0], p[1])) })), peaks: r.geo.labels.map((p) => ({ ...p, x: projection.point(p.lon, p.lat)[0], y: projection.point(p.lon, p.lat)[1] })) };
     scenePlan = window.TrailScenery.build(r, projected, context);
     $("journey-stage").setAttribute("data-art", scenePlan.artDetail ? "picturebook" : "classic");
     for (const [name, features] of Object.entries(scenePlan.layers)) {
@@ -435,35 +676,91 @@
     footprints = [];
     if (r.theme === "snow") for (let i = 0; i < 8; i++) footprints.push(svg("ellipse", { rx: 1.8, ry: 3.6, fill: "#72918a", opacity: 0 }, $("trail-footprints")));
     if (sceneRenderer?.alive) sceneRenderer.setPlan(scenePlan);
-    $("route-outline").setAttribute("d", cartoonLine(r.geo.line));
-    $("route-line").setAttribute("d", cartoonLine(r.geo.line));
-    const start = G.position({ routeId: r.id, distance: 0 }), [sx, sy] = projection.point(start.lon, start.lat);
-    svg("circle", { cx: sx, cy: sy, r: 7 * symbolScale, fill: "#537c60", stroke: "#fffdf0", "stroke-width": 3 * symbolScale }, $("geo-markers"));
-    const labels = [];
+    $("route-outline").setAttribute("d", visualRoute.path);
+    $("route-line").setAttribute("d", visualRoute.path);
+    if (isWugong) {
+      const steps = svg("g", { class: "wugong-stone-steps", "aria-hidden": "true", "pointer-events": "none" }, $("trail-footprints"));
+      for (let index = 1; index <= 7; index++) {
+        const fraction = index * 0.015, point = visualRoute.sample(fraction), angle = visualRoute.heading(fraction, 4);
+        const nx = -Math.sin(angle) * 2.8, ny = Math.cos(angle) * 2.8;
+        svg("path", { d: `M${(point.x - nx).toFixed(2)} ${(point.y - ny).toFixed(2)}L${(point.x + nx).toFixed(2)} ${(point.y + ny).toFixed(2)}`, stroke: "#efe7cb", "stroke-width": 0.85, "stroke-linecap": "round", "vector-effect": "non-scaling-stroke" }, steps);
+      }
+    }
+    endpointMarkers = [];
+    mapLabelPositions.clear();
+    if (isWugong) {
+      for (const waypoint of Runtime.WUGONG_WAYPOINTS) {
+        const { kind, fraction, name, stateId, checkpointId } = waypoint;
+        const { x, y } = visualRoute.sample(fraction);
+        const g = svg("g", { class: "wugong-waypoint", "data-wugong-waypoint": kind, ...kind === "start" || kind === "end" ? { "data-route-endpoint": kind } : {}, ...checkpointId ? { id: `marker-${checkpointId}` } : {}, role: "button", tabindex: 0, "aria-label": `武功山 · ${name}`, "aria-controls": kind === "start" || kind === "end" ? "story-panel" : "photo-panel" }, $("geo-markers"));
+        const line = svg("path", { fill: "none", stroke: "#879976", "stroke-width": 1, "stroke-linecap": "round", opacity: 0.7, "pointer-events": "none" }, g);
+        svg("circle", { r: 3.5, fill: "#7b9365", stroke: "#fffdf1", "stroke-width": 1.8, "pointer-events": "none" }, g);
+        const { sign, label } = Runtime.createWugongWaypoint({ document, parent: g, kind, label: name });
+        endpointMarkers.push({ id: `waypoint-${kind}`, kind, name, stateId, checkpointId, fraction, x, y, width: Runtime.WUGONG_WAYPOINT_LABEL_WIDTH, height: Runtime.WUGONG_WAYPOINT_HEIGHT, g, sign, line, label });
+        const activate = (event) => {
+          event.stopPropagation?.();
+          if (kind === "start" || kind === "end") {
+            activateWugongEndpoint(kind);
+            return;
+          }
+          if (miniController.active || rewardController.open || journalController.open || state.status === "encounter" || photoFromAlbum) return;
+          if (state.visited.includes(checkpointId)) {
+            openMemory(checkpointId);
+            return;
+          }
+          echo = kind === "meadow" ? "山脊草甸在林缘上方。沿着浅土色山路走，抵达时会停下看一看。" : "这里是云海观景处。走到这段山脊，再一起看山谷里的云。";
+          echoUntil = state.elapsed + 8;
+          uiKey = "";
+          render();
+        };
+        g.addEventListener("click", activate);
+        g.addEventListener("pointerdown", (event) => event.stopPropagation?.());
+        g.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            activate(event);
+          }
+        });
+      }
+    } else for (const [kind, fraction] of [["start", 0], ["end", 1]]) {
+      const { x, y } = visualRoute.sample(fraction);
+      const name = kind === "start" ? r.id === "tiger" ? "起点 · 桥头" : "起点" : r.id === "tiger" ? "终点 · 中峡客栈" : "终点";
+      const g = svg("g", { "data-route-endpoint": kind, role: "img", "aria-label": r.name + " · " + name, "pointer-events": "none" }, $("geo-markers"));
+      const line = svg("path", { fill: "none", stroke: kind === "start" ? "#66856b" : "#aa8553", "stroke-width": 1.3, "stroke-linecap": "round" }, g);
+      svg("circle", { r: 4.5, fill: kind === "start" ? "#537c60" : "#b08a53", stroke: "#fffdf0", "stroke-width": 2 }, g);
+      const sign = svg("g", {}, g), width = r.id === "tiger" ? 106 : 64;
+      svg("rect", { x: -width / 2, y: -16, width, height: 32, rx: 10, fill: "#fffaf0", stroke: "#c9b68a", "stroke-width": 1.2 }, sign);
+      const label = svg("text", { x: 0, y: 4, "text-anchor": "middle", fill: kind === "start" ? "#4b6d54" : "#886937", "font-size": 12, "font-weight": 700 }, sign);
+      label.textContent = name;
+      endpointMarkers.push({ id: `endpoint-${kind}`, kind, x, y, width, height: 32, g, sign, line, label: null });
+    }
+    mapMarkers = [];
     $("checkpoint-list").replaceChildren();
     for (const [i, cp] of r.checkpoints.entries()) {
-      const pos = G.position({ routeId: r.id, distance: G.metric(r.id).total * cp.fraction }), [x, y] = projection.point(pos.lon, pos.lat), g = svg("g", { id: `marker-${cp.id}`, role: "button", tabindex: 0, class: "checkpoint-marker", transform: `translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${symbolScale})`, "aria-label": cp.name, "aria-controls": "photo-panel" }, $("geo-markers"));
-      svg("circle", { r: 35, fill: "transparent", "aria-hidden": "true" }, g);
-      svg("circle", { r: 26, fill: "none", stroke: "#537f57", "stroke-width": 3, class: "checkpoint-focus", opacity: 0, "pointer-events": "none", "aria-hidden": "true" }, g);
-      svg("circle", { r: 21, fill: "#fffaf0", stroke: "#bf9c65", "stroke-width": 2, class: "checkpoint-badge", "aria-hidden": "true" }, g);
-      window.TrailCheckpoints.draw(svg, g, cp.id);
-      let lx = Math.max(80, Math.min(640, x)), ly = y + (y > 450 ? -37 : 39);
-      if (labels.some((p) => Math.abs(p[0] - lx) < 155 && Math.abs(p[1] - ly) < 28)) ly += 32;
-      labels.push([lx, ly]);
-      const label = svg("text", { x: lx - x, y: ly - y, "text-anchor": "middle", fill: "#4f694c", "font-size": 12, "font-weight": 600, class: "checkpoint-label", "pointer-events": "none" }, g);
-      label.textContent = cp.name;
-      const open = (e) => {
-        e.stopPropagation?.();
-        openMemory(cp.id);
-      };
-      g.addEventListener("click", open);
-      g.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          open(e);
-        }
-      });
-      g.addEventListener("pointerdown", (e) => e.stopPropagation?.());
+      if (!isWugong) {
+        const { x, y } = visualRoute.sample(cp.fraction), g = svg("g", { id: `marker-${cp.id}`, role: "button", tabindex: 0, class: "checkpoint-marker", transform: `translate(${x.toFixed(2)} ${y.toFixed(2)})`, "aria-label": cp.name, "aria-controls": "photo-panel" }, $("geo-markers"));
+        const leader = svg("path", { fill: "none", stroke: "#7f8c72", "stroke-width": 0.8, "stroke-dasharray": "2 3", "vector-effect": "non-scaling-stroke", "pointer-events": "none", opacity: 0.55 }, g);
+        const symbol = svg("g", { class: "checkpoint-symbol", transform: `scale(${symbolScale})` }, g);
+        svg("circle", { r: 35, fill: "transparent", "aria-hidden": "true" }, symbol);
+        svg("circle", { r: 26, fill: "none", stroke: "#537f57", "stroke-width": 3, class: "checkpoint-focus", opacity: 0, "pointer-events": "none", "aria-hidden": "true" }, symbol);
+        svg("circle", { r: 21, fill: "#fffaf0", stroke: "#bf9c65", "stroke-width": 2, class: "checkpoint-badge", "aria-hidden": "true" }, symbol);
+        window.TrailCheckpoints.draw(svg, symbol, cp.id);
+        const label = svg("text", { x: 0, y: 35 * symbolScale, "text-anchor": "middle", fill: "#4f694c", "font-size": 12, "font-weight": 600, class: "checkpoint-label", "pointer-events": "none" }, g);
+        label.textContent = cp.name;
+        mapMarkers.push({ id: `checkpoint-${cp.id}`, x, y, symbol, label, leader, g, fraction: cp.fraction, name: cp.name, priority: 40 });
+        const open = (e) => {
+          e.stopPropagation?.();
+          openMemory(cp.id);
+        };
+        g.addEventListener("click", open);
+        g.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            open(e);
+          }
+        });
+        g.addEventListener("pointerdown", (e) => e.stopPropagation?.());
+      }
       const li = html("li", null, $("checkpoint-list")), button = html("button", null, li, "checkpoint-button");
       button.id = `checkpoint-${cp.id}`;
       button.setAttribute("type", "button");
@@ -475,23 +772,40 @@
       hint.id = `checkpoint-hint-${cp.id}`;
       button.addEventListener("click", () => openMemory(cp.id));
     }
-    updatePosition(0);
+    if (r.id === "tiger" && tigerJourney) {
+      for (const id of ["naxi", "bends", "tea-horse", "halfway"]) {
+        const anchor = tigerJourney.anchors[id];
+        if (!anchor) continue;
+        const { x, y } = visualRoute.sample(anchor.fraction), name = anchor.label;
+        const g = svg("g", { transform: `translate(${x} ${y})`, role: "img", "aria-label": name, "data-tiger-landmark": id }, $("geo-markers"));
+        const leader = svg("path", { fill: "none", stroke: "#7f8c72", "stroke-width": 0.8, "stroke-dasharray": "2 3", "vector-effect": "non-scaling-stroke", "pointer-events": "none", opacity: 0.55 }, g);
+        const symbol = svg("g", {}, g);
+        svg("circle", { r: 14, fill: "#fffaf0", stroke: "#af9873", "stroke-width": 1.4 }, symbol);
+        svg("path", { d: id === "bends" ? "M-8 7L-2 2L-6-2L3-7L8-4" : "M-8 3L0-5L8 3M-6 1V8H6V1", fill: "none", stroke: "#647c60", "stroke-width": 1.8, "stroke-linecap": "round", "stroke-linejoin": "round" }, symbol);
+        const label = svg("text", { "text-anchor": "middle", fill: "#4f694c", "font-weight": 600, class: "checkpoint-label" }, g);
+        label.textContent = name;
+        mapMarkers.push({ id: `landmark-${id}`, x, y, symbol, label, leader, name, priority: 60 });
+      }
+    }
+    updatePosition(0, true);
   }
   function describeRoute() {
     const r = J.routeOf(state);
     $("stage-location").textContent = r.name;
-    $("route-title").textContent = r.name;
-    $("route-context").textContent = "跟着山径走一走，收下沿途照片，也把喜欢的瞬间留在手帐。";
-    $("route-notice").textContent = r.notice;
+    $("route-title").textContent = r.id === "wugong" ? "武功山 · 东江村经典反穿" : r.name;
+    $("route-context").textContent = r.id === "wugong" ? "东江村出发，在观音宕／星空营地过夜，第二天经过吊马桩和金顶，从景区下山至大门。" : r.id === "tiger" ? "桥头出发，沿高路走到中峡客栈；再决定是否沿张老师小路往返中虎跳江边。" : "跟着山径走一走，收下沿途照片，也把喜欢的瞬间留在手帐。";
+    $("route-notice").textContent = r.id === "wugong" ? "手绘路线为艺术化示意，保留真实地点顺序，不作为实地导航。" : r.notice;
     $("route-sources").replaceChildren();
     const a = html("a", "查看参考路线来源 ↗", $("route-sources"));
-    a.setAttribute("href", r.geo.source.url);
+    a.setAttribute("href", r.id === "wugong" ? "wugong-walk.html" : r.geo.source.url);
+    if (r.id === "wugong") a.textContent = "完整路线与素材来源 ↗";
     a.setAttribute("target", "_blank");
     a.setAttribute("rel", "noopener noreferrer");
     const credit = html("a", "地图来源：© OpenStreetMap contributors ↗", $("route-sources"));
     credit.setAttribute("href", "https://www.openstreetmap.org/copyright");
     credit.setAttribute("target", "_blank");
     credit.setAttribute("rel", "noopener noreferrer");
+    credit.hidden = r.id === "wugong";
     for (const r2 of G.ROUTES) $(`route-${r2.id}`).setAttribute("aria-pressed", r2.id === state.routeId);
   }
   function drawPicker() {
@@ -501,33 +815,117 @@
       b.setAttribute("type", "button");
       b.setAttribute("aria-pressed", r.id === state.routeId);
       html("strong", r.name, b);
-      html("small", r.id === "westlake" ? "溪水、茶叶与小遇见" : { snow: "风雪与山脊", gorge: "江声与山径", meadow: "草甸与云海", coast: "海湾与潮声", forest: "森林与溪谷", bamboo: "竹林与石阶", tea: "溪谷与茶园" }[r.theme], b);
-      const art = svg("svg", { viewBox: "0 0 120 100", class: "route-mini", "aria-hidden": "true" }, b), p = fitProjection(r.geo.line, 120, 100, 12);
-      svg("path", { d: lineD(r.geo.line, p), fill: "none", stroke: "#52764f", "stroke-width": 3 }, art);
+      html("small", r.id === "wugong" ? "东江村反穿 · 草甸与手帐" : r.id === "westlake" ? "溪水、茶叶与小遇见" : { snow: "风雪与山脊", gorge: "江声与山径", meadow: "草甸与云海", coast: "海湾与潮声", forest: "森林与溪谷", bamboo: "竹林与石阶", tea: "溪谷与茶园" }[r.theme], b);
+      const art = svg("svg", { viewBox: "0 0 720 600", class: "route-mini", "aria-hidden": "true" }, b), p = fitProjection(r.geo.line, 720, 600, 85);
+      svg("path", { d: routeDrawing(r, p).path, fill: "none", stroke: "#52764f", "stroke-width": 18, "stroke-linecap": "round", "stroke-linejoin": "round" }, art);
       b.addEventListener("click", () => selectRoute(r.id));
     }
   }
   function position() {
-    return G.position({ routeId: state.routeId, distance: G.metric(state.routeId).total * state.progress });
+    return visualRoute.sample(state.progress);
   }
-  function updatePosition(smoothing = 0.14) {
-    if (!projection) return;
-    const p = position(), [x, y] = projection.point(p.lon, p.lat);
-    const full = overview || state.status === "ready" || motionReduced, w = full ? fullMapView.w : 470, h = full ? fullMapView.h : Math.min(600, w / (($("map-frame").getBoundingClientRect().width || 720) / ($("map-frame").getBoundingClientRect().height || 600))), target = { x: full ? fullMapView.x : Math.max(0, Math.min(720 - w, x - w / 2)), y: full ? fullMapView.y : photoId ? Math.max(-80, Math.min(600 - h + 400, y - h * 0.24)) : Math.max(0, Math.min(600 - h, y - h * 0.54)), w, h };
-    for (const k of ["x", "y", "w", "h"]) view[k] = smoothing ? view[k] + (target[k] - view[k]) * smoothing : target[k];
+  function updatePosition(dt = 0, snap = false) {
+    if (!projection || !visualRoute) return;
+    const isWugong = state.routeId === "wugong", phase = isWugong ? Runtime.wugongPhase(state.progress) : null;
+    const walking = state.status === "walking" && !audioBackground && !document.hidden && !miniController.active && !rewardController.open && !journalController.open && !photoId && (!tigerJourney || tigerJourney.phase === "high");
+    const gait = mapGait.update(dt, walking, state.pace * (phase ? 1 - phase.slope * 0.08 : 1));
+    gaitClock = gait.clock;
+    if (gait.contact && sound) footstep();
+    const { x, y } = position();
+    const full = isWugong || overview || state.status === "ready" || motionReduced;
+    const target = full ? fullMapView : Runtime.mapFollowViewport(mapScreen.width, mapScreen.height, fullMapView, { x, y }, mapScreen.desktop, !!photoId);
+    const smoothing = dt > 0 ? 1 - Math.exp(-Math.min(0.1, dt) * 3.2) : 0;
+    const deadzone = 1.2 / Math.max(0.1, mapSizing.scale);
+    for (const k of ["x", "y", "w", "h"]) {
+      if (snap || motionReduced) view[k] = target[k];
+      else {
+        const delta = target[k] - view[k];
+        const threshold = k === "x" || k === "y" ? deadzone : 0;
+        if (Math.abs(delta) > threshold) view[k] += (delta - Math.sign(delta) * threshold) * smoothing;
+      }
+    }
     $("map").setAttribute("viewBox", `${view.x.toFixed(2)} ${view.y.toFixed(2)} ${view.w.toFixed(2)} ${view.h.toFixed(2)}`);
-    const heroScale = (scenePlan?.artDetail ? 1.62 : 1.45) * Math.min(view.w / 720, view.h / 600);
+    mapSizing = Runtime.mapSymbols(mapScreen.width, mapScreen.height, view, full);
+    const heroScale = mapSizing.hiker;
     $("player").setAttribute("transform", `translate(${x.toFixed(2)} ${(y - 17.2 * heroScale).toFixed(2)}) scale(${heroScale})`);
-    const next = G.position({ routeId: state.routeId, distance: G.metric(state.routeId).total * Math.min(1, state.progress + 7e-3) }), [nx] = projection.point(next.lon, next.lat);
-    if (state.status === "walking" && Math.abs(nx - x) > 0.8) hikerFacing = nx > x ? 1 : -1;
-    updateFigure();
+    $("completed-line").setAttribute("d", visualRoute.pathUntil(state.progress));
+    const heroX = x * mapSizing.scale + mapSizing.offsetX, heroY = y * mapSizing.scale + mapSizing.offsetY;
+    const labelBoxes = [...mapControlBoxes, { x: heroX - mapSizing.hikerPixels * 0.42, y: heroY - mapSizing.hikerPixels * 1.15, width: mapSizing.hikerPixels * 0.84, height: mapSizing.hikerPixels * 1.2 }];
+    const labelRequests = [];
+    for (const marker of endpointMarkers) {
+      const anchor = marker;
+      const px = anchor.x * mapSizing.scale + mapSizing.offsetX, py = anchor.y * mapSizing.scale + mapSizing.offsetY;
+      const visible = isWugong ? px >= 14 && px <= mapScreen.width - 14 && py >= 14 && py <= mapScreen.height - 14 : px >= -8 && px <= mapScreen.width + 8 && py >= -8 && py <= mapScreen.height + 8;
+      marker.g.setAttribute("display", visible ? "" : "none");
+      marker.screen = { x: px, y: py, visible };
+      if (isWugong) {
+        marker.g.setAttribute("tabindex", visible ? "0" : "-1");
+        const visited = marker.kind === "start" || marker.kind === "end" ? state.resolved.includes(marker.stateId) : state.visited.includes(marker.checkpointId);
+        marker.g.setAttribute("data-visited", String(visited));
+        marker.g.setAttribute("data-active", String(state.pending?.id === marker.stateId || state.pending?.id === marker.checkpointId));
+        const label = visited && marker.kind === "start" ? "中庵 · 已出发" : visited && marker.kind === "end" ? "金顶 · 已抵达" : marker.name;
+        if (marker.label.textContent !== label) marker.label.textContent = label;
+      }
+      if (!visible) continue;
+      marker.g.setAttribute("transform", `translate(${anchor.x} ${anchor.y}) scale(${1 / mapSizing.scale})`);
+      labelRequests.push({ id: marker.id, anchor: marker.screen, width: marker.width, height: marker.height, clearance: isWugong ? 7 : 12, preferredSide: marker.kind === "start" ? "bottom" : "top", priority: 100, required: true });
+      labelBoxes.push({ x: px - 5, y: py - 5, width: 10, height: 10 });
+    }
+    for (const marker of mapMarkers) {
+      marker.symbol.setAttribute("transform", `scale(${mapSizing.marker.toFixed(4)})`);
+      const anchor = marker;
+      const px = anchor.x * mapSizing.scale + mapSizing.offsetX, py = anchor.y * mapSizing.scale + mapSizing.offsetY;
+      const visible = px > -24 && px < mapScreen.width + 24 && py > -24 && py < mapScreen.height + 24;
+      if (marker.g) marker.g.setAttribute("display", visible ? "" : "none");
+      marker.screen = { x: px, y: py, visible };
+      marker.label.setAttribute("display", "none");
+      marker.leader.setAttribute("display", "none");
+      if (!visible) continue;
+      const width = [...marker.label.textContent].reduce((sum, char) => sum + (/[ -~]/.test(char) ? 7 : 12), 8);
+      labelRequests.push({ id: marker.id, anchor: marker.screen, width, height: 18, clearance: mapSizing.markerPixels / 2, preferredSide: "bottom", priority: marker.priority });
+      labelBoxes.push({ x: px - mapSizing.markerPixels / 2, y: py - mapSizing.markerPixels / 2, width: mapSizing.markerPixels, height: mapSizing.markerPixels });
+    }
+    mapLabelPositions = Runtime.layoutMapLabels({ width: mapScreen.width, height: mapScreen.height, boxes: labelBoxes, labels: labelRequests, previous: mapLabelPositions });
+    for (const marker of endpointMarkers) {
+      if (!marker.screen.visible) continue;
+      const placement = mapLabelPositions.get(marker.id);
+      marker.sign.setAttribute("display", placement?.visible ? "" : "none");
+      marker.line.setAttribute("display", placement?.visible ? "" : "none");
+      if (!placement?.visible) continue;
+      const dx = placement.x - marker.screen.x, dy = placement.y - marker.screen.y;
+      marker.sign.setAttribute("transform", `translate(${dx.toFixed(2)} ${dy.toFixed(2)})`);
+      marker.line.setAttribute("d", `M0 0L${dx.toFixed(2)} ${dy.toFixed(2)}`);
+    }
+    for (const marker of mapMarkers) {
+      const placement = mapLabelPositions.get(marker.id);
+      if (!marker.screen.visible || !placement?.visible) continue;
+      const dx = (placement.x - marker.screen.x) / mapSizing.scale, dy = (placement.y - marker.screen.y) / mapSizing.scale;
+      marker.label.setAttribute("display", "");
+      marker.label.setAttribute("x", String(dx));
+      marker.label.setAttribute("y", String(dy + mapSizing.font * 0.35));
+      marker.label.setAttribute("font-size", String(mapSizing.font));
+      if (Math.abs(placement.x - marker.screen.x) > 14 || placement.y < marker.screen.y) {
+        const length = Math.hypot(dx, dy), start = mapSizing.markerPixels / (2 * mapSizing.scale), end = Math.max(start, length - 10 / mapSizing.scale);
+        marker.leader.setAttribute("display", "");
+        marker.leader.setAttribute("d", `M${(dx / length * start).toFixed(2)} ${(dy / length * start).toFixed(2)}L${(dx / length * end).toFixed(2)} ${(dy / length * end).toFixed(2)}`);
+      }
+    }
+    hikerFacing = mapHeading.update(visualRoute.heading(state.progress), dt, walking);
+    updateFigure(walking);
     updateAir();
     animateDiscovery();
     updateLife();
     $("weather-window").setAttribute("cx", x);
     $("weather-window").setAttribute("cy", y);
     $("weather-window").setAttribute("r", J.weather(state) === "blizzard" ? 120 : 215);
-    $("map").setAttribute("aria-label", `${J.routeOf(state).name}卡通路线。背包小人自动沿参考路线走向行进，已走${Math.round(state.progress * 100)}%。`);
+    const fogMask = $("fog-hole");
+    for (const node of [$("fog-cover"), fogMask, fogMask.querySelector("rect")]) {
+      node.setAttribute("x", String(view.x));
+      node.setAttribute("y", String(view.y));
+      node.setAttribute("width", String(view.w));
+      node.setAttribute("height", String(view.h));
+    }
+    $("map").setAttribute("aria-label", `${J.routeOf(state).name}艺术化路线示意。背包小人沿平滑山径行进，已走${Math.round(state.progress * 100)}%。`);
     if (sceneRenderer?.alive) sceneRenderer.draw({ view, overview: full, progress: state.progress, elapsed: state.elapsed, weather: J.weather(state), reducedMotion: motionReduced });
   }
   function figureAction() {
@@ -539,16 +937,13 @@
     if (state.status === "walking" && state.elapsed - actionStarted < 1.2) return "discover";
     return "walk";
   }
-  function updateFigure() {
-    const action = figureAction(), pose = M.pose(gaitClock, state.status === "walking", motionReduced, { action, age: state.elapsed - actionStarted, weather: J.weather(state) });
+  function updateFigure(walking) {
+    const action = state.status === "ready" ? "ready" : figureAction();
     $("player").setAttribute("data-action", action);
-    $("hiker-facing").setAttribute("transform", `scale(${hikerFacing} 1)`);
-    $("hiker-torso").setAttribute("transform", pose.torso);
-    $("hiker-pack").setAttribute("transform", pose.pack);
-    $("hiker-scarf").setAttribute("transform", pose.scarf);
-    $("hiker-camera").setAttribute("opacity", action === "photo" ? 1 : 0);
-    $("hiker-pole").setAttribute("opacity", ["photo", "shelter", "look", "finish"].includes(action) ? 0 : 1);
-    for (const [id, path] of [["leg-front", pose.front.path], ["shoe-front", pose.front.shoe], ["leg-back", pose.back.path], ["shoe-back", pose.back.shoe], ["arm-front", pose.armFront], ["arm-back", pose.armBack], ["hiker-pole", pose.pole]]) $(id).setAttribute("d", path);
+    const mountain = state.routeId === "wugong" ? Runtime.wugongPhase(state.progress) : null;
+    const lean = mountain && walking ? mountain.leanDegrees : 0;
+    $("hiker-facing").setAttribute("transform", `scale(${hikerFacing} 1) rotate(${lean.toFixed(2)} 0 17.2)`);
+    mapCharacter.paint({ clock: gaitClock, walking, reduced: motionReduced, action, kitMotion: !!mountain, detailed: state.routeId === "wugong" });
     const cold = J.routeOf(state).theme === "snow" && state.status !== "ready", breath = motionReduced ? 0 : (Math.sin(state.elapsed * 2.4) + 1) / 2;
     $("hiker-breath").setAttribute("opacity", cold ? (0.08 + breath * 0.25).toFixed(3) : 0);
     $("hiker-breath").setAttribute("transform", `translate(${(breath * 3 * hikerFacing).toFixed(2)} ${(-breath * 2).toFixed(2)}) scale(${hikerFacing} 1)`);
@@ -561,7 +956,7 @@
         node.setAttribute("opacity", 0);
         continue;
       }
-      const p = G.position({ routeId: state.routeId, distance: G.metric(state.routeId).total * fraction }), [x, y] = projection.point(p.lon, p.lat), next = G.position({ routeId: state.routeId, distance: G.metric(state.routeId).total * Math.min(1, fraction + 2e-3) }), [nx, ny] = projection.point(next.lon, next.lat), angle = Math.atan2(ny - y, nx - x) * 180 / Math.PI;
+      const { x, y } = visualRoute.sample(fraction), angle = visualRoute.heading(fraction, 10) * 180 / Math.PI;
       node.setAttribute("transform", `translate(${(x + (i % 2 ? 2 : -2)).toFixed(2)} ${y.toFixed(2)}) rotate(${(angle - 90).toFixed(2)})`);
       node.setAttribute("opacity", (0.28 * (1 - i / 9)).toFixed(3));
     }
@@ -606,6 +1001,7 @@
     showPhotoImage(cp);
     $("photo-credit").replaceChildren();
     html("span", `摄影：${cp.photo.author}`, $("photo-credit"));
+    if (cp.locationNote) html("span", cp.locationNote, $("photo-credit"));
     for (const [text, url] of [["来源 ↗", cp.photo.source], [cp.photo.license, cp.photo.licenseUrl]]) {
       const a = html("a", text, $("photo-credit"));
       a.setAttribute("href", url);
@@ -620,7 +1016,7 @@
     if (miniController.active) miniController.finish();
     if (rewardController.open) return;
     const cp = J.routeOf(state).checkpoints.find((c) => c.id === id);
-    if (!cp || !state.visited.includes(id) || state.status === "encounter" || photoFromAlbum) return;
+    if (!cp || !cp.browseAvailable && !state.visited.includes(id) || state.status === "encounter" || photoFromAlbum) return;
     photoFromAlbum = true;
     cancelLoop();
     photoContent(cp);
@@ -651,36 +1047,50 @@
     }
   }
   function render() {
-    const key = [!!rewardController.current, choiceResult?.until > state.elapsed, state.status, state.pending?.id, state.visited.join(","), Math.round(state.progress * 100), photoId, overview, discovery()?.id, trip.found.length, miniController.state?.id, miniController.state?.acted].join("|");
+    const key = [!!rewardController.current, choiceResult?.until > state.elapsed, state.status, state.pending?.id, state.visited.join(","), Math.round(state.progress * 100), photoId, overview, discovery()?.id, trip.found.length, miniController.state?.id, miniController.state?.acted, tigerJourney?.phase, tigerJourney?.nextStage, Math.floor((tigerJourney?.returnClock || 0) / (motionReduced ? 0.5 : 1.8))].join("|");
     if (key === uiKey) return;
     uiKey = key;
-    $("map").setAttribute("preserveAspectRatio", overview || motionReduced || state.status === "ready" ? "xMidYMid meet" : "xMidYMid slice");
+    $("map").setAttribute("preserveAspectRatio", state.routeId === "wugong" || overview || motionReduced || state.status === "ready" ? "xMidYMid meet" : "xMidYMid slice");
     renderDiscovery();
     const r = J.routeOf(state), walking = state.status === "walking";
     $("journey-stage").classList.toggle("walking", walking);
     $("map-frame").classList.toggle("active", walking);
     $("journey-state").textContent = { ready: "约2–3分钟", walking: "沿着山径慢慢走", paused: "停下来看看", encounter: "在路上停一停", finished: "今天的旅程", retreated: "平安结束" }[state.status];
+    if (r.id === "wugong" && state.status === "ready") $("journey-state").textContent = "东江村反穿 · 2天1夜";
+    if (tigerJourney) $("journey-state").textContent = state.status === "ready" ? "高路 · 江边往返" : { high: "沿高路行进", junction: "已到高路终点", connector: "准备进入江边支线", river: "中虎跳江边", riverside: "江边目的地 · 待返回", returning: state.status === "paused" ? "回程歇脚" : "沿原小路返回", complete: "旅程结束" }[tigerJourney.phase];
+    $("journey-progress").setAttribute("aria-label", tigerJourney ? "高路进度" : "旅程进度");
     $("journey-progress").setAttribute("aria-valuenow", Math.round(state.progress * 100));
+    $("journey-progress").hidden = r.id === "wugong" && state.status === "ready";
     $("journey-progress-fill").style.width = `${state.progress * 100}%`;
     $("thought").textContent = echo && state.elapsed < echoUntil ? echo : state.status === "paused" && !photoFromAlbum ? K.moment(state.routeId, state.progress)?.look || J.thought(state) : J.thought(state);
+    if (r.id === "wugong" && state.status === "ready") $("thought").textContent = "穿过林间和草甸，在观音宕歇一夜，把沿途的手绘收进手帐。";
     $("feeling").textContent = J.feeling(state);
-    $("walk-toggle").disabled = !["walking", "paused"].includes(state.status) || !!photoFromAlbum || !!miniController.state || !!rewardController.current;
-    $("walk-toggle").textContent = state.status === "paused" ? "继续走 →" : "停下来看看";
+    $("walk-toggle").disabled = !(["walking", "paused"].includes(state.status) || ["wugong", "tiger"].includes(r.id) && state.status === "ready") || !!photoFromAlbum || !!miniController.state || !!rewardController.current;
+    $("walk-toggle").textContent = state.status === "ready" && r.id === "tiger" ? "从桥头出发 →" : r.id === "wugong" && state.status === "ready" ? "从东江村出发 →" : state.status === "paused" ? "继续走 →" : "停下来看看";
+    const wugongWalkPreview = $("wugong-walk-preview");
+    if (wugongWalkPreview) wugongWalkPreview.hidden = r.id !== "wugong";
+    const tigerWalkPreview = $("tiger-walk-preview");
+    if (tigerWalkPreview) tigerWalkPreview.hidden = r.id !== "tiger";
+    if (tigerJourney && !["high", "returning"].includes(tigerJourney.phase)) $("walk-toggle").disabled = true;
+    if (tigerJourney?.phase === "returning") $("walk-toggle").textContent = state.status === "paused" ? "继续返回 →" : "在回程歇一会儿";
+    if (tigerJourney && tigerJourney.phase !== "high") {
+      $("thought").textContent = { junction: "高路在中峡客栈一带结束。江边支线去过以后，仍会回到这里。", connector: "先经过张老师客栈，再沿张老师小路下到江边。", river: "远处的金沙江，已经来到眼前。", riverside: "这里是支线目的地。沿来时的小路返回，旅程才收束。", returning: "沿张老师小路原路上行，再回到中峡客栈一带。", complete: tigerJourney.branchTaken ? "从高路看江，再到江边取景，最后沿原路回来。" : "从桥头走到中峡客栈，高路的起点和终点都留下了记忆。" }[tigerJourney.phase];
+      $("feeling").textContent = tigerJourney.phase === "complete" ? "今天的山径，留在手帐里" : "主线与支线 · 原路往返";
+    }
     $("map-toggle").textContent = overview ? "跟着小人走 ↗" : "看完整路线 ↗";
+    $("map-toggle").hidden = state.routeId === "wugong";
     $("map-toggle").setAttribute("aria-pressed", overview);
-    $("album-count").textContent = `${state.visited.length} / ${r.checkpoints.length}`;
-    const p = position(), completed = r.geo.line.slice(0, p.index);
-    completed.push([p.lon, p.lat, p.ele]);
-    $("completed-line").setAttribute("d", cartoonLine(completed));
+    $("checkpoint-list").closest(".album").querySelector("h2").textContent = tigerJourney ? "沿途实景照片" : "路上，收进来的风景";
+    $("album-count").textContent = tigerJourney ? `${r.checkpoints.length} 张 · 随时查看` : `${state.visited.length} / ${r.checkpoints.length}`;
     for (const cp of r.checkpoints) {
-      const unlocked = state.visited.includes(cp.id), b = $(`checkpoint-${cp.id}`);
+      const visited = state.visited.includes(cp.id), unlocked = cp.browseAvailable || visited, b = $(`checkpoint-${cp.id}`);
       b.disabled = !unlocked;
       b.classList.toggle("collected", unlocked);
       b.setAttribute("aria-expanded", photoId === cp.id);
       b.setAttribute("aria-controls", "photo-panel");
-      $(`checkpoint-hint-${cp.id}`).textContent = unlocked ? "已收集 · 再看一眼" : "沿途慢慢发现";
+      $(`checkpoint-hint-${cp.id}`).textContent = cp.browseAvailable ? visited ? "实景照片 · 再看一眼" : "实景照片 · 点击查看" : unlocked ? "已收集 · 再看一眼" : "沿途慢慢发现";
       $(`marker-${cp.id}`).classList.toggle("unlocked", unlocked);
-      $(`marker-${cp.id}`).setAttribute("aria-disabled", !unlocked);
+      $(`marker-${cp.id}`).setAttribute("aria-disabled", r.id === "wugong" ? false : !unlocked);
     }
     const weather = J.weather(state), w = G.WEATHER[weather];
     $("weather-name").textContent = w.name;
@@ -699,12 +1109,17 @@
         flake.style.animationDuration = `${weather === "rain" ? 1.2 : 2.5 + i % 3}s`;
       }
     }
-    $("overlay").hidden = state.status !== "ready";
+    const wugongEntry = r.id === "wugong" && state.status === "ready";
+    $("map-frame").classList.toggle("wugong-entry", wugongEntry);
+    $("overlay").classList.toggle("wugong-entry-cover", wugongEntry);
+    $("overlay").hidden = state.status !== "ready" || miniController.active || rewardController.open || !!photoId;
     if (state.status === "ready") {
       const story = J.storyOf(state);
-      $("overlay-title").textContent = story.openingTitle;
-      $("overlay-copy").textContent = story.opening;
-      $("overlay-hint").textContent = r.id === "westlake" ? "约2–3分钟 · 路边的小动静，值得停一下" : "约2–3分钟 · 自动行走 · 随时停下";
+      $("overlay-kicker").textContent = r.id === "wugong" ? "东江村经典反穿 · 两天一夜" : "THE TRAIL IS WAITING";
+      $("overlay-title").textContent = r.id === "wugong" ? "沿着草甸，把山野收进手帐。" : story.openingTitle;
+      $("overlay-copy").textContent = r.id === "wugong" ? "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。" : story.opening;
+      $("overlay-action").textContent = r.id === "wugong" ? "从东江村出发 →" : "出发，走一走 →";
+      $("overlay-hint").textContent = r.id === "wugong" ? "跟随山路 · 沿途实景 · 手绘互动与旅行手帐" : r.id === "tiger" ? "桥头 → 中峡客栈 · 江边支线可选 · 随时停下" : r.id === "westlake" ? "约2–3分钟 · 路边的小动静，值得停一下" : "约2–3分钟 · 自动行走 · 随时停下";
     }
     $("story-panel").hidden = state.pending?.kind !== "choice";
     if (state.pending?.kind === "choice") {
@@ -746,21 +1161,34 @@
     $("ending-panel").hidden = !ended || !!photoFromAlbum;
     if (ended) {
       const end = J.ending(state);
-      $("ending-title").textContent = end.title;
-      $("ending-copy").textContent = end.copy;
+      $("ending-title").textContent = r.id === "wugong" && state.status === "finished" ? "从中庵，走到了金顶。" : tigerJourney ? tigerJourney.branchTaken ? "回到中峡客栈，这一程收好了。" : "走到中峡客栈，今天的高路走完了。" : end.title;
+      $("ending-copy").textContent = r.id === "wugong" && state.status === "finished" ? "林缘的石阶、开阔的草甸和一路的停留，连成了从中庵到金顶的这一程。" : tigerJourney ? tigerJourney.branchTaken ? `高路上的俯瞰、${trip.found.includes("tiger-middle-river-frame-v1") ? "江边亲手留下的取景" : "江边近处的水声"}，以及沿张老师小路原路返回的脚步，组成了今天的峡谷旅程。` : "从桥头沿高路走到中峡客栈一带。今天先在这里停下，江边支线留给下一次。" : end.copy;
       $("ending-memories").replaceChildren();
       for (const m of state.memories) html("li", m, $("ending-memories"));
       journalController.renderEnding();
-      html("li", `带回了${state.visited.length}张真实山野照片。`, $("ending-memories"));
+      if (!tigerJourney) html("li", `带回了${state.visited.length}张真实山野照片。`, $("ending-memories"));
     }
+    renderTigerRoute();
+    sceneCharacter.render({
+      dialogue: !$("story-panel").hidden && !miniController.active && !rewardController.open && !["wugong-start", "wugong-end"].includes(state.pending?.id),
+      photo: !$("photo-panel").hidden && !!photoId && !miniController.active && !rewardController.open
+    });
     syncAudio();
   }
   function apply(next) {
+    if (state.routeId === "tiger" && state.status === "ready" && next.status !== "ready") {
+      location.assign($("tiger-walk-preview").href);
+      return;
+    }
+    if (state.routeId === "wugong" && state.status === "ready" && next.status !== "ready") {
+      location.assign($("wugong-walk-preview").href);
+      return;
+    }
     const previous = state;
     state = next;
     uiKey = "";
     render();
-    updatePosition(state.status === "walking" ? 0.1 : 0);
+    updatePosition(0);
     if (state.status === "encounter" && previous.pending?.id !== state.pending?.id) {
       const button = state.pending.kind === "photo" ? $("photo-continue") : $("story-choices").querySelector("button");
       button?.focus({ preventScroll: true });
@@ -777,22 +1205,33 @@
   function frame(dt) {
     if (miniController.active) {
       miniController.update(dt);
+      const approach = riverApproach();
+      const mountainStage = miniController.state?.cameraStage || "";
+      const openness = Math.round(gorgeOpenness() * 100);
+      if (approach !== lastRiverApproach || mountainStage !== lastMountainSoundStage || openness !== lastGorgeOpenness) {
+        lastRiverApproach = approach;
+        lastMountainSoundStage = mountainStage;
+        lastGorgeOpenness = openness;
+        syncAudio();
+      }
       return;
     }
+    if (tickTigerFlow(dt)) return;
     const previous = state;
-    if (state.status === "walking") gaitClock += dt * state.pace;
-    state = J.tick(state, dt);
+    let next = J.tick(state, dt * (state.routeId === "wugong" ? Runtime.wugongPhase(state.progress).strideScale : 1));
+    if (tigerJourney && next.pending?.kind === "photo" && next.progress < previous.progress) next = { ...next, progress: previous.progress };
+    if (interceptTigerStop(previous, next)) return;
+    state = next;
     if (state.status === "encounter" && previous.status === "walking") {
       render();
-      updatePosition(0);
+      updatePosition(dt);
       const button = state.pending.kind === "photo" ? $("photo-continue") : $("story-choices").querySelector("button");
       button?.focus({ preventScroll: true });
     } else {
       render();
-      updatePosition(dt > 0 ? 1 - Math.exp(-dt * 6) : 0.1);
+      updatePosition(dt);
     }
-    if (state.status === "walking") footstep();
-    else if (["finished", "retreated"].includes(state.status)) $("replay").focus({ preventScroll: true });
+    if (["finished", "retreated"].includes(state.status)) $("replay").focus({ preventScroll: true });
   }
   function selectRoute(id) {
     journalController.close(false);
@@ -805,6 +1244,10 @@
     journalController.resetTrip();
     cancelLoop();
     state = J.create(id);
+    resetTigerJourney();
+    lastRiverApproach = -1;
+    lastMountainSoundStage = "";
+    lastGorgeOpenness = -1;
     prepareRoutePhotos();
     trip = D.create(id, void 0, { recent: journalController.recent(id) });
     natureId = null;
@@ -820,8 +1263,9 @@
     overview = false;
     echo = "";
     gaitClock = 0;
+    mapGait.reset();
     hikerFacing = 1;
-    lastStrike = -1;
+    visualRouteId = null;
     lastWeather = null;
     uiKey = "";
     view = { x: 0, y: 0, w: 720, h: 600 };
@@ -837,7 +1281,16 @@
   }
   function audioScene() {
     const mode = rewardController.current ? "reward" : miniController.state ? "moment" : photoId ? "photo" : state.status === "walking" ? "walk" : state.status === "encounter" ? "choice" : "silent";
-    return { routeId: state.routeId, checkpointId: photoId, weather: J.weather(state), progress: state.progress, mode, momentId: miniController.state?.id || rewardController.current?.id || null, momentGame: miniController.state?.game || miniGameKind(rewardController.current?.id) || null };
+    return { routeId: state.routeId, checkpointId: photoId, weather: J.weather(state), progress: state.progress, mode, momentId: miniController.state?.id || rewardController.current?.id || null, momentGame: miniController.state?.game || miniGameKind(rewardController.current?.id) || null, riverApproach: riverApproach(), gorgeOpenness: gorgeOpenness() };
+  }
+  function gorgeOpenness() {
+    const mini = miniController.state;
+    return Number.isFinite(mini?.gorgeOpenness) ? Math.max(0, Math.min(1, mini.gorgeOpenness)) : { slope: 0, shoulder: 0.25, gorge: 0.7, view: 1 }[mini?.cameraStage] || 0;
+  }
+  function riverApproach() {
+    const mini = miniController.state;
+    const progress = mini?.game === "tiger-river" && mini.river?.phase === "descent" ? mini.river.descentProgress : 1;
+    return progress < 0.3 ? 0 : progress < 0.6 ? 0.3 : progress < 1 ? 0.6 : 1;
   }
   function syncAudio() {
     const requested = !journalController.open && sound && !audioBackground && !document.hidden;
@@ -862,9 +1315,6 @@
     }
   }
   function footstep() {
-    const strike = Math.floor(gaitClock / 0.54);
-    if (!sound || strike === lastStrike) return;
-    lastStrike = strike;
     audioPlayer.step(state.routeId);
   }
   async function toggleSound() {
@@ -905,7 +1355,7 @@
     render();
   });
   $("overlay-action").addEventListener("click", () => apply(J.start(state)));
-  $("walk-toggle").addEventListener("click", () => apply(state.status === "paused" ? J.resume(state) : J.pause(state)));
+  $("walk-toggle").addEventListener("click", () => apply(["wugong", "tiger"].includes(state.routeId) && state.status === "ready" ? J.start(state) : state.status === "paused" ? J.resume(state) : J.pause(state)));
   $("photo-continue").addEventListener("click", closePhoto);
   $("photo-close").addEventListener("click", closePhoto);
   $("replay").addEventListener("click", () => {
@@ -917,7 +1367,7 @@
     overview = !overview;
     uiKey = "";
     render();
-    updatePosition(0);
+    updatePosition(0, true);
   });
   $("sound-toggle").addEventListener("click", toggleSound);
   $("observe-button").addEventListener("click", () => {
@@ -933,7 +1383,7 @@
     } else if (event.key === "Escape" && photoId) {
       event.preventDefault();
       closePhoto();
-    } else if (["p", "P", "Escape"].includes(event.key) && ["walking", "paused"].includes(state.status) && !photoFromAlbum && !miniController.active) {
+    } else if (["p", "P", "Escape"].includes(event.key) && ["walking", "paused"].includes(state.status) && !photoFromAlbum && !miniController.active && (!tigerJourney || ["high", "returning"].includes(tigerJourney.phase))) {
       event.preventDefault();
       apply(state.status === "paused" ? J.resume(state) : J.pause(state));
     }
@@ -946,6 +1396,7 @@
     audioPlayer.hide();
     uiKey = "";
     render();
+    updatePosition(0);
   };
   const foreground = () => {
     audioBackground = false;
@@ -965,6 +1416,12 @@
     if (!event.persisted) {
       miniController.destroy();
       moganGames?.destroy();
+      tigerGames.destroy();
+      tigerTrailGames?.destroy();
+      mapCharacter.destroy();
+      sceneCharacter.destroy();
+      mapObserver?.disconnect();
+      clearTimeout(mapResizeTimer);
       journalController.destroy();
       rewardController.destroy();
       scenes.reset();
@@ -989,6 +1446,20 @@
       render();
     }, 120);
   });
+  if (window.ResizeObserver) {
+    mapObserver = new window.ResizeObserver(() => {
+      const rect = $("map-frame").getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      if (Math.abs(rect.width - mapScreen.width) < 0.5 && Math.abs(rect.height - mapScreen.height) < 0.5) return;
+      clearTimeout(mapResizeTimer);
+      mapResizeTimer = setTimeout(() => {
+        drawMap();
+        uiKey = "";
+        render();
+      }, 120);
+    });
+    mapObserver.observe($("map-frame"));
+  }
   if (window.PIXI && window.TrailPixiScene) {
     window.TrailPixiScene.create(window.PIXI, $("map-frame"), { onReady: () => {
       $("map-frame").classList.toggle("gpu-ready", true);

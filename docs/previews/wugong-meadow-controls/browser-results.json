@@ -1,0 +1,333 @@
+{
+  "checks": [
+    {
+      "step": "reload after selecting overview",
+      "result": {
+        "follow": "true",
+        "note": "顺着草坡下到鞍部，放慢脚步，下一段山脊就在前面。",
+        "overview": "false",
+        "view": "follow"
+      }
+    },
+    {
+      "step": "desktop manual overview",
+      "result": {
+        "buttons": [
+          {
+            "height": 44,
+            "label": "跟随",
+            "pressed": "false"
+          },
+          {
+            "height": 44,
+            "label": "全图",
+            "pressed": "true"
+          }
+        ],
+        "documentWidth": 1440,
+        "markers": [
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "东江村 · 起点",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "绝望坡",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "高山草甸",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "观音宕 · 营地",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "吊马桩",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "金顶",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "景区大门 · 终点",
+            "width": 44
+          }
+        ],
+        "note": "停一会儿，看看山坡和远处的沟谷。",
+        "right": 14,
+        "switchHeight": 52,
+        "switchInsideMap": true,
+        "switchWidth": 162,
+        "top": 14,
+        "view": "overview",
+        "width": 1440
+      }
+    },
+    {
+      "step": "phone follow",
+      "result": {
+        "buttons": [
+          {
+            "height": 44,
+            "label": "跟随",
+            "pressed": "true"
+          },
+          {
+            "height": 44,
+            "label": "全图",
+            "pressed": "false"
+          }
+        ],
+        "documentWidth": 390,
+        "markers": [
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "高山草甸",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "观音宕 · 营地",
+            "width": 44
+          }
+        ],
+        "note": "停一会儿，看看山坡和远处的沟谷。",
+        "right": 10,
+        "switchHeight": 52,
+        "switchInsideMap": true,
+        "switchWidth": 150,
+        "top": 10,
+        "view": "follow",
+        "width": 390
+      }
+    },
+    {
+      "step": "phone manual overview",
+      "result": {
+        "buttons": [
+          {
+            "height": 44,
+            "label": "跟随",
+            "pressed": "false"
+          },
+          {
+            "height": 44,
+            "label": "全图",
+            "pressed": "true"
+          }
+        ],
+        "documentWidth": 390,
+        "markers": [
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "东江村 · 起点",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "绝望坡",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "高山草甸",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "观音宕 · 营地",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "吊马桩",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "金顶",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "景区大门 · 终点",
+            "width": 44
+          }
+        ],
+        "note": "停一会儿，看看山坡和远处的沟谷。",
+        "right": 10,
+        "switchHeight": 52,
+        "switchInsideMap": true,
+        "switchWidth": 150,
+        "top": 10,
+        "view": "overview",
+        "width": 390
+      }
+    },
+    {
+      "step": "narrow manual overview",
+      "result": {
+        "buttons": [
+          {
+            "height": 44,
+            "label": "跟随",
+            "pressed": "false"
+          },
+          {
+            "height": 44,
+            "label": "全图",
+            "pressed": "true"
+          }
+        ],
+        "documentWidth": 320,
+        "markers": [
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "东江村 · 起点",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "绝望坡",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "高山草甸",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "观音宕 · 营地",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "吊马桩",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "金顶",
+            "width": 44
+          },
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "景区大门 · 终点",
+            "width": 44
+          }
+        ],
+        "note": "停一会儿，看看山坡和远处的沟谷。",
+        "right": 10,
+        "switchHeight": 52,
+        "switchInsideMap": true,
+        "switchWidth": 150,
+        "top": 10,
+        "view": "overview",
+        "width": 320
+      }
+    },
+    {
+      "step": "native viewport walking follow",
+      "result": {
+        "buttons": [
+          {
+            "height": 44,
+            "label": "跟随",
+            "pressed": "true"
+          },
+          {
+            "height": 44,
+            "label": "全图",
+            "pressed": "false"
+          }
+        ],
+        "documentWidth": 664,
+        "markers": [
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "观音宕 · 营地",
+            "width": 44
+          }
+        ],
+        "note": "沿山肩往上走，步子放小，山谷慢慢落到身后。",
+        "right": 10,
+        "switchHeight": 52,
+        "switchInsideMap": true,
+        "switchWidth": 150,
+        "top": 10,
+        "view": "follow",
+        "width": 664
+      }
+    },
+    {
+      "step": "follow remains selected while walking",
+      "result": {
+        "buttons": [
+          {
+            "height": 44,
+            "label": "跟随",
+            "pressed": "true"
+          },
+          {
+            "height": 44,
+            "label": "全图",
+            "pressed": "false"
+          }
+        ],
+        "documentWidth": 664,
+        "markers": [
+          {
+            "coveredBySwitch": false,
+            "height": 44,
+            "name": "吊马桩",
+            "width": 44
+          }
+        ],
+        "note": "顺着草坡下到鞍部，放慢脚步，下一段山脊就在前面。",
+        "right": 10,
+        "switchHeight": 52,
+        "switchInsideMap": true,
+        "switchWidth": 150,
+        "top": 10,
+        "view": "follow",
+        "width": 664
+      }
+    }
+  ],
+  "errors": [],
+  "scope": "Camera placement, default follow, manual overview, paused-state preservation and meadow rendering only; full journey tests were not repeated."
+}

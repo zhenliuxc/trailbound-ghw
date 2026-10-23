@@ -93,7 +93,7 @@ export function createMiniGameView({ dom, api, platform: games, sound }: ViewOpt
     text('wind-chapter-copy', flow.phase === 'invite' ? (rain ? '看叶尖蓄水，让竹筒等在雨滴下面。' : '水纹有方向，轻轻拨水，绕过青石。') : flow.phase === 'memory' ? '正在展开你的手绘纪念' : rain ? '雨滴在竹筒里，留下最后一圈涟漪。' : '落叶慢慢漂远，溪水还在轻轻流。');
   }
   function update(s: MiniState, refs: MiniViewRefs) {
-    if (refs.mogan) { /* The registered adapter owns its three distinct play controls. */ }
+    if (refs.mogan || refs.tiger) { /* Registered adapters own their play controls. */ }
     else if (s.game && games?.artAssets[s.game]) artTools(s, refs);
     else if (s.game && games?.wugongAssets[s.game]) wugong(s, refs);
     else if (s.game === 'wind') wind(s, refs);

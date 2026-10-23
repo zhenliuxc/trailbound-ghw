@@ -1,0 +1,28 @@
+Browser tab: 27, Title: "虎跳峡 · 高路与江边 / 山径", URL: "http://127.0.0.1:8000/tiger-walk.html?walk=1&scene=road-draw-6-fix1".
+1 AXWebArea 虎跳峡 · 高路与江边 / 山径, URL: 127.0.0.1:8000/tiger-walk.html?walk=1&scene=road-draw-6-fix1
+	2 text 请使用支持 Canvas 的浏览器。
+	3 container Description: 虎跳峡手绘互动与旅行手帐, ID: tg-art
+		4 button Description: 关闭手绘，回到山路, ID: tg-art-close
+		5 container Description: 虎跳峡手绘互动与旅行手帐, ID: tg-art-frame
+			6 AXWebArea 虎跳峡 · 手绘与旅行手帐, URL: 127.0.0.1:8000/tiger-art.html?v=road-draw-6-fix1
+				7 container 山弯初见, ID: journal-detail
+					8 container
+						9 text 旅行手帐
+						10 text 虎跳峡
+						11 button Description: 关闭回忆，回到标签墙, Help: 关闭回忆 · Esc, ID: journal-detail-close
+					12 container Description: 回忆画作与文字, ID: journal-detail-page
+						13 image 山弯初见 · 手绘收藏标签
+						14 text 一幅手绘，留住这一刻
+						15 text 虎跳峡 · 二十八道拐
+						16 heading 山弯初见, Value: 3, ID: journal-detail-title
+							17 text 山弯初见
+						18 text 我沿着山坡画下一道 S 弯，小人循着山路走上山肩。山弯转过，金沙江的白浪在峡谷里奔流，江声慢慢涌了上来。
+						19 text 2026年10月19日 09:04
+					20 container 翻看回忆
+						21 button (disabled) Description: 已是第一枚, ID: journal-detail-prev
+						22 text 1 / 9
+						23 text 从这一枚，慢慢翻看
+						24 button Description: 下一枚：二十八道拐, ID: journal-detail-next
+					25 text 第1段，共9段：山弯初见
+
+The focused UI element is 11 button Description: 关闭回忆，回到标签墙, Help: 关闭回忆 · Esc, ID: journal-detail-close
