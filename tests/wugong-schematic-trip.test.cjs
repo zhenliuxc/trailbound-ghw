@@ -10,10 +10,11 @@ function load(name) {
   vm.runInThisContext(`(function(module,exports){${result.outputFiles[0].text}\n})`)(module, module.exports);
   return module.exports;
 }
-const { ScrollTrail, SCROLL } = load('scroll/route.ts');
+const { ScrollTrail, SCROLL, PLACE_MARKERS } = load('scroll/route.ts');
 const { ScrollJourney } = load('scroll/journey.ts');
 const { SceneEnvironment } = load('environment.ts');
-const { overviewMarkers } = load('scroll/markers.ts');
+const { layoutLandmarkLabels } = load('../journey/landmark-label.ts');
+const { LANDMARK_SIZE } = load('../journey/landmark-symbol.ts');
 const { ScrollCamera } = load('scroll/camera.ts');
 
 function advance(model, until, limit = 50000) {
@@ -131,17 +132,25 @@ test('only visited game events count, and collecting the same event twice counts
   assert.equal(model.day, 1); assert.equal(model.travel, 0);
 });
 
-test('a phone overview separates the seven named photo targets and leaves space for captions', () => {
+test('overview names remain readable next to their fixed terrain anchors', () => {
   const trail = new ScrollTrail();
   for (const width of [298, 368, 642, 1214]) {
     const height = 370, scale = Math.min(width / SCROLL.width, height / SCROLL.height);
     const top = (height - SCROLL.height * scale) / 2;
-    const markers = overviewMarkers(trail.stops.map(stop => ({ id: stop.id, at: { x: stop.point.x * scale, y: top + stop.point.y * scale } })), width, height);
-    assert.equal(markers.length, 7);
-    for (const [i, marker] of markers.entries()) {
-      assert.ok(marker.x >= 44 && marker.x <= width - 44); assert.ok(marker.y >= 96 && marker.y <= height - 64);
-      if (width < 520) assert.ok(marker.y <= height - 76, 'phone pins must leave the bottom chapter caption clear');
-      for (const other of markers.slice(0, i)) assert.ok(Math.abs(other.x - marker.x) >= 88 || Math.abs(other.y - marker.y) >= 74, `${width}px: ${other.id} overlaps ${marker.id}`);
+    const labels = trail.stops.map(stop => ({ id: stop.id, x: stop.point.x * scale, y: top + stop.point.y * scale,
+      width: PLACE_MARKERS[stop.id].name.length * 11, height: PLACE_MARKERS[stop.id].caption ? 30 : 18, side: 'below' }));
+    const anchors = structuredClone(labels);
+    const positions = layoutLandmarkLabels(labels, width, height, (width < 460 ? LANDMARK_SIZE.compact : LANDMARK_SIZE.overview) / 2);
+    assert.deepEqual(labels, anchors, 'label layout cannot relocate a place on the mountain');
+    assert.equal(positions.size, 7, `${width}px overview must name all seven places`);
+    const placed = [...positions.entries()];
+    for (const [i, [id, position]] of placed.entries()) {
+      const { rect } = position;
+      assert.ok(rect.x >= 8 && rect.x + rect.width <= width - 8);
+      assert.ok(rect.y >= 8 && rect.y + rect.height <= height - 8);
+      assert.ok(Math.abs(position.dx) <= 36 && Math.abs(position.dy) <= 36, `${id} must stay near its symbol`);
+      for (const [otherId, other] of placed.slice(0, i)) assert.ok(rect.x >= other.rect.x + other.rect.width || rect.x + rect.width <= other.rect.x || rect.y >= other.rect.y + other.rect.height || rect.y + rect.height <= other.rect.y,
+        `${width}px: ${otherId} overlaps ${id}`);
     }
   }
 });

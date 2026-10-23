@@ -1,0 +1,11 @@
+.journey-map {
+  height: clamp(420px, 66svh, 780px);
+}
+
+@media (max-width: 700px) {
+  .journey-map { height: clamp(420px, 64svh, 700px); }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .journey-map { height: clamp(260px, 72svh, 420px); }
+}

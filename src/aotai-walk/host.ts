@@ -1,96 +1,86 @@
-import { ArtOverlay } from '../wugong-walk/art-overlay';
-import { DiscoveryTransition } from '../wugong-walk/scroll/discovery-transition';
-import { enterDialog, type CancelMotion } from '../wugong-walk/visible-motion';
+import { LandmarkLayer, type MapLandmark } from '../journey/landmark-layer';
+import { LandmarkNameLayer } from '../journey/landmark-name-layer';
+import { observeMapSize } from '../journey/viewport';
+import { ArtOverlay } from '../journey/art-overlay';
+import { DiscoveryTransition } from '../journey/discovery-transition';
+import { createPhotoDialog } from '../journey/photo-dialog';
+import { createFrameLoop } from '../runtime/frame-loop';
 import { createCharacterPicker } from '../characters/picker';
 import type { AotaiGameId } from '../runtime/aotai-games/model';
 import { AotaiAudio } from './audio';
 import { AotaiJourney, CHECKPOINTS, CHECKPOINT_IDS, CUES, path, type CheckpointId } from './chapter';
 import { PHOTOS } from './photos';
 import { CAMP_IDS, MAIN_ORDER, PLACES, type PlaceId } from './geography';
-import { layoutMapLabels, type LabelCandidate } from './labels';
 import { AotaiScene, type AotaiView, type Projection } from './scene';
 
 export function mountAotaiChapter() {
   const node = (id: string): HTMLElement => { const n = document.getElementById(id); if (!n) throw new Error(`鳌太线界面缺少 ${id}`); return n; };
   const button = (id: string): HTMLButtonElement => { const n = node(id); if (!(n instanceof HTMLButtonElement)) throw new Error(`鳌太线按钮无法读取 ${id}`); return n; };
-  const canvasNode = node('ao-canvas'), photoNode = node('ao-photo'), photoImage = node('ao-photo-image');
-  if (!(canvasNode instanceof HTMLCanvasElement) || !(photoNode instanceof HTMLDialogElement) || !(photoImage instanceof HTMLImageElement)) throw new Error('山路入口无法读取');
-  const canvas = canvasNode, photo = photoNode, image = photoImage, map = node('ao-map'), walk = button('ao-walk');
+  const canvas = node('ao-canvas');
+  if (!(canvas instanceof HTMLCanvasElement)) throw new Error('山路入口无法读取');
+  const map = node('ao-map'), walk = button('ao-walk');
   const lifecycle = new AbortController(), { signal } = lifecycle, reducedQuery = matchMedia('(prefers-reduced-motion: reduce)');
   const journey = new AotaiJourney(), scene = new AotaiScene(canvas), audio = new AotaiAudio(), discovery = new DiscoveryTransition(map, signal, CUES);
-  let ready = false, disposed = false, animation = 0, lastTime = 0, reduced = reducedQuery.matches, sound = false, soundToken = 0;
+  let ready = false, disposed = false, reduced = reducedQuery.matches, sound = false, soundToken = 0;
   let overlay: { kind: 'journal' } | { kind: 'game'; id: AotaiGameId } | null = null;
-  let phaseKey = '', uiKey = '', environmentKey = '', photoTicket = 0, photoMotion: CancelMotion = () => {};
-  let autostart = new URLSearchParams(location.search).get('walk') === '1', resizeTimer = 0;
+  let phaseKey = '', uiKey = '', environmentKey = '';
+  let autostart = new URLSearchParams(location.search).get('walk') === '1';
+  const photo = createPhotoDialog({ prefix: 'ao', signal, reduced: () => reduced, onClose(continueWalk) { journey.closePhoto(continueWalk); sync(); stop(); loop(); resumeAudio(); } });
   const art = new ArtOverlay(signal, result => {
     const closing = overlay; overlay = null;
     if (closing?.kind === 'game') journey.closeGame(closing.id, result.collected > 0);
-    sync(); lastTime = 0; loop(); resumeAudio();
-  }, 'ao', { soft: true, page: 'aotai-art.html', version: 'painterly-6' });
+    sync(); stop(); loop(); resumeAudio();
+  }, 'ao', { soft: true, chapter: 'aotai', version: 'painterly-6' });
   const characters = createCharacterPicker({ trigger: button('ao-character'), signal,
     current: () => scene.character,
     beforeOpen() { if (!ready || disposed || art.open || photo.open || discovery.pending || journey.phase.kind === 'game') return false; journey.pause(); stop(); audio.pause(); sync(); return true; },
     apply: (id, selectionSignal) => scene.setCharacter(id, selectionSignal),
-    afterClose() { if (disposed) return; lastTime = 0; resize(); sync(); loop(); resumeAudio(); },
+    afterClose() { if (disposed) return; stop(); resize(); sync(); loop(); resumeAudio(); },
   });
-  const icons = {
-    house: '<path d="m4 15 12-10 12 10M7 13v14h18V13M13 27V17h6v10"/>',
-    ridge: '<path d="m3 26 9-15 7 9 6-15 5 21H3Z"/>',
-    flag: '<path d="M8 28V5l18 4-18 8M4 28h13"/>',
-    tent: '<path d="m3 27 13-21 13 21ZM10 27l6-12 6 12M13 6h6"/>',
-  };
-  const markers = CHECKPOINT_IDS.map(id => {
-    const p = CHECKPOINTS[id], element = document.createElement('button'); element.type = 'button'; element.className = 'ao-marker'; element.dataset.place = p.place;
-    element.setAttribute('aria-label', `${p.name} · ${PHOTOS[id].locality === 'regional' ? '区域实景参考' : '实景打卡'}`);
-    element.innerHTML = `<svg viewBox="0 0 32 32" aria-hidden="true">${icons[p.icon]}</svg><span>${p.name}</span>`;
-    element.addEventListener('click', () => { if (!blocked()) { journey.openPhoto(id); sync(); } }, { signal });
-    node('ao-markers').append(element);
-    return { id, key: p.place, element, at: PLACES[p.place], rank: p.place === 'baxian' ? 1 : 3, icon: true, labelWidth: p.name.length * 11 + 12 };
+  const restPlaces: PlaceId[] = ['tangkou', ...CAMP_IDS, 'tangyu'];
+  const photoAt = (id: PlaceId): CheckpointId | undefined => CHECKPOINT_IDS.find(key => CHECKPOINTS[key].place === id);
+  const landmarkPlaces: MapLandmark<PlaceId>[] = [
+    ...CHECKPOINT_IDS.map(id => {
+      const p = CHECKPOINTS[id];
+      return { id:p.place, name:p.name, point:PLACES[p.place], symbol:p.symbol,
+        ariaLabel:`${p.name} · ${PHOTOS[id].locality === 'regional' ? '区域实景参考' : '实景打卡'}` };
+    }),
+    ...restPlaces.map((id): MapLandmark<PlaceId> => ({
+      id,name:PLACES[id].name,point:PLACES[id],symbol:CAMP_IDS.some(key=>key===id)?'camp':'village',
+      importance:CAMP_IDS.some(key=>key===id)?'secondary':'primary',
+      caption:id==='tangkou'?'起点':id==='tangyu'?'接驳出山':`第${CAMP_IDS.findIndex(key=>key===id)+1}夜`,
+    })),
+  ];
+  const markers=new LandmarkLayer({container:node('ao-markers'),className:'ao-marker',signal,places:landmarkPlaces,
+    onSelect(id){const checkpoint=photoAt(id);if(checkpoint&&!blocked()){journey.openPhoto(checkpoint);sync();}},
   });
   const placeIds: PlaceId[] = [...MAIN_ORDER, 'baxian'];
-  const geography = placeIds.filter(id => !CHECKPOINT_IDS.some(key => CHECKPOINTS[key].place === id)).map(id => {
-    const p = PLACES[id], element = document.createElement('span'), endpoint = id === 'tangkou' || id === 'tangyu', camp = CAMP_IDS.some(key => key === id);
-    const label = id === 'tangkou' ? '塘口村 · 起点' : p.name;
-    element.className = endpoint || camp ? 'ao-marker ao-landmark-icon' : 'ao-landmark'; element.dataset.place = id;
-    element.innerHTML = endpoint || camp ? `<svg viewBox="0 0 32 32" aria-hidden="true">${icons[camp ? 'tent' : 'flag']}</svg><span>${label}</span>` : label;
-    if (camp) { const note = document.createElement('small'); note.textContent = `第${CAMP_IDS.findIndex(key => key === id) + 1}夜`; element.querySelector('span')?.append(note); }
-    node('ao-markers').append(element);
-    return { key: id, element, at: p, rank: endpoint || camp ? 0 : id === 'aoshan' || id === 'pyramid' ? 1 : p.rank + 3, icon: endpoint || camp, labelWidth: label.length * 11 + 12 };
+  const labelRank = (id: PlaceId): number => id === 'aoshan' || id === 'pyramid' ? 1 : PLACES[id].rank + 3;
+  const geography = new LandmarkNameLayer({ container: node('ao-markers'),
+    places: placeIds.filter(id => !landmarkPlaces.some(p => p.id === id)).sort((a, b) => labelRank(a) - labelRank(b))
+      .map(id => ({ id, name: PLACES[id].name, point: PLACES[id] })),
   });
   function blocked(): boolean { return !ready || disposed || art.open || photo.open || characters.open || discovery.pending || journey.phase.kind === 'game'; }
-  function stop(): void { cancelAnimationFrame(animation); animation = 0; lastTime = 0; }
-  function loop(): void { if (ready && !disposed && !document.hidden && !art.open && !photo.open && !characters.open && !animation) animation = requestAnimationFrame(frame); }
+  const clock = createFrameLoop({ request: callback => requestAnimationFrame(callback), cancel: id => cancelAnimationFrame(id), maxDelta: .05, active: () => ready && !disposed && !document.hidden && !art.open && !photo.open && !characters.open, update: frame });
+  function stop(): void { clock.stop(); }
+  function loop(): void { clock.ensure(); }
   function resumeAudio(): void { if (sound && !document.hidden && !blocked()) audio.resume(); }
   function openJournal(): void { if (blocked()) return; overlay = { kind: 'journal' }; stop(); audio.pause(); art.show(undefined, undefined, scene.character); }
   function position(projection: Projection): void {
     discovery.position(projection.toScreen(journey.point), projection.width, projection.height);
-    const candidates: LabelCandidate[] = [], all = [...markers, ...geography];
-    for (const label of all) {
-      const p = projection.toScreen(label.at), near = Math.hypot(label.at.x - journey.point.x, label.at.y - journey.point.y) < 950;
-      if (scene.mode === 'follow' && !near || p.x < 0 || p.x > projection.width || p.y < 15 || p.y > projection.height - 20) continue;
-      const width = Math.max(label.icon ? 48 : 0, label.labelWidth);
-      candidates.push({ id: label.key, x: Math.max(width / 2 + 9, Math.min(projection.width - width / 2 - 9, p.x)), y: p.y + (label.icon ? scene.mode === 'follow' ? -105 : -35 : 22), width, height: label.icon ? 65 : 22, rank: label.rank });
-    }
-    const positions = layoutMapLabels(candidates, projection.width, projection.height);
-    for (const label of all) {
-      const p = positions.get(label.key); label.element.hidden = !p;
-      if (p) { label.element.style.left = `${p.x}px`; label.element.style.top = `${p.y}px`; }
-    }
-    for (const marker of markers) { marker.element.disabled = !journey.visited.has(marker.id); marker.element.dataset.visited = String(journey.visited.has(marker.id)); marker.element.dataset.label = 'below'; }
+    const occupied=markers.update(projection,scene.mode,place=>{
+      const checkpoint=photoAt(place.id);
+      return{
+        visible:scene.mode==='overview'||Math.hypot(place.point.x-journey.point.x,place.point.y-journey.point.y)<950,
+        enabled:checkpoint!==undefined&&journey.visited.has(checkpoint),
+        visited:checkpoint!==undefined?journey.visited.has(checkpoint):journey.at>=path.at(place.id),
+      };
+    });
+    geography.update(projection, scene.mode, place => scene.mode === 'overview'
+      || Math.hypot(place.point.x - journey.point.x, place.point.y - journey.point.y) < 950, occupied);
   }
-  function loadPhoto(id: CheckpointId): void {
-    const metadata = PHOTOS[id], ticket = ++photoTicket;
-    node('ao-photo-title').textContent = CHECKPOINTS[id].name; node('ao-photo-caption').textContent = metadata.caption;
-    for (const [target, text, url] of [['ao-photo-source', metadata.author, metadata.source], ['ao-photo-license', metadata.license, metadata.licenseUrl]]) { const link = node(target); link.textContent = text; link.setAttribute('href', url); }
-    node('ao-photo-source').title = metadata.title; image.hidden = true; image.alt = metadata.alt; node('ao-photo-state').hidden = false; node('ao-photo-message').textContent = '实景照片正在展开…'; button('ao-photo-retry').hidden = true;
-    image.onload = () => { if (disposed || ticket !== photoTicket || !photo.open) return; image.hidden = false; node('ao-photo-state').hidden = true; };
-    image.onerror = () => { if (disposed || ticket !== photoTicket || !photo.open) return; node('ao-photo-message').textContent = '照片暂未加载，可以重试或继续山路。'; button('ao-photo-retry').hidden = false; };
-    image.src = metadata.file;
-  }
-  function showPhoto(id: CheckpointId): void { stop(); audio.pause(); photo.showModal(); photoMotion = enterDialog(photo, reduced); loadPhoto(id); }
-  function closePhoto(continueWalk: boolean): void {
-    if (!photo.open) return; photoTicket++; photoMotion(); image.onload = image.onerror = null; photo.close(); journey.closePhoto(continueWalk); sync(); lastTime = 0; loop(); resumeAudio();
-  }
+
+  function showPhoto(id: CheckpointId): void { stop(); audio.pause(); photo.show({ name: CHECKPOINTS[id].name, photo: PHOTOS[id], checkpoint: id }); }
   function chapter(): string {
     if (journey.phase.kind === 'finished') return '汤峪方向 · 这程山路已走完';
     if (journey.phase.kind === 'transfer') return '下板寺 → 汤峪方向 · 接驳出山';
@@ -123,18 +113,13 @@ export function mountAotaiChapter() {
       });
     }
   }
-  function frame(now: number): void {
-    animation = 0; if (disposed || !ready || document.hidden || art.open || photo.open || characters.open) return;
-    const dt = lastTime ? Math.min(.05, Math.max(0, (now - lastTime) / 1000)) : 0; lastTime = now;
-    journey.tick(dt); audio.update(journey, dt); position(scene.paint(journey, dt, reduced)); sync(); loop();
+  function frame(dt: number): void {
+    journey.tick(dt); audio.update(journey, dt); position(scene.paint(journey, dt, reduced)); sync();
   }
   function resize(): void { const r = map.getBoundingClientRect(); scene.resize(r.width, r.height); if (ready) position(scene.paint(journey, 0, reduced)); }
   walk.addEventListener('click', () => { if (journey.phase.kind === 'finished') openJournal(); else journey.toggle(); sync(); loop(); resumeAudio(); }, { signal });
   button('ao-journal').addEventListener('click', openJournal, { signal });
   for (const [id, view] of [['ao-follow', 'follow'], ['ao-overview', 'overview']] satisfies [string, AotaiView][]) button(id).addEventListener('click', () => { scene.mode = view; sync(); loop(); }, { signal });
-  button('ao-photo-continue').addEventListener('click', () => closePhoto(true), { signal }); button('ao-photo-close').addEventListener('click', () => closePhoto(false), { signal });
-  photo.addEventListener('cancel', event => { event.preventDefault(); closePhoto(false); }, { signal });
-  button('ao-photo-retry').addEventListener('click', () => { if (journey.phase.kind === 'photo') loadPhoto(journey.phase.id); }, { signal });
   button('ao-sound').addEventListener('click', () => {
     const token = ++soundToken, control = button('ao-sound');
     if (sound) { sound = false; audio.disable(); control.textContent = '声音 · 关'; control.setAttribute('aria-pressed', 'false'); return; }
@@ -158,11 +143,11 @@ export function mountAotaiChapter() {
     journey.toggle(); sync(); loop();
   }, { signal });
   reducedQuery.addEventListener('change', () => { reduced = reducedQuery.matches; }, { signal });
-  const observer = new ResizeObserver(() => { clearTimeout(resizeTimer); resizeTimer = window.setTimeout(resize, 80); });
-  void scene.load(signal).then(() => { if (disposed || signal.aborted) return; ready = true; node('ao-loading').hidden = true; resize(); observer.observe(map); characters.refresh(); if (autostart && !document.hidden) { autostart = false; journey.toggle(); } sync(); loop(); }, error => { if (disposed || signal.aborted) return; scene.destroy(); node('ao-loading-copy').textContent = error instanceof Error ? error.message : '山路暂未展开。'; button('ao-retry').hidden = false; });
+
+  void scene.load(signal).then(() => { if (disposed || signal.aborted) return; ready = true; node('ao-loading').hidden = true; resize(); observeMapSize(map, signal, resize); characters.refresh(); if (autostart && !document.hidden) { autostart = false; journey.toggle(); } sync(); loop(); }, error => { if (disposed || signal.aborted) return; scene.destroy(); node('ao-loading-copy').textContent = error instanceof Error ? error.message : '山路暂未展开。'; button('ao-retry').hidden = false; });
   return {
     background() { stop(); audio.pause(); journey.pause(); sync(); },
-    foreground() { if (disposed) return; lastTime = 0; if (autostart && ready && journey.phase.kind === 'ready') { autostart = false; journey.toggle(); } sync(); loop(); resumeAudio(); },
-    dispose() { if (disposed) return; disposed = true; soundToken++; stop(); lifecycle.abort(); observer.disconnect(); clearTimeout(resizeTimer); discovery.cancel(); photoMotion(); art.dispose(); photo.close(); image.onload = image.onerror = null; scene.destroy(); audio.destroy(); },
+    foreground() { if (disposed) return; stop(); if (autostart && ready && journey.phase.kind === 'ready') { autostart = false; journey.toggle(); } sync(); loop(); resumeAudio(); },
+    dispose() { if (disposed) return; disposed = true; soundToken++; stop(); lifecycle.abort();  discovery.cancel(); art.dispose(); photo.dispose(); scene.destroy(); audio.destroy(); },
   };
 }

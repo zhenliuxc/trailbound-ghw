@@ -1,0 +1,22 @@
+✔ one daylight journey reaches Pak Tam Au after the three photographs and four separate discoveries (5.907791ms)
+✔ skipping discoveries still reaches the finish without inventing collected badges (2.2735ms)
+✔ a stale close cannot consume a different discovery or award it later (0.785708ms)
+✔ browsing an arrived photograph preserves pause, walking and finished states (1.963ms)
+✔ waiting without input never exits or earns any of the four coastal games (0.467541ms)
+✔ players can still complete each direct interaction after taking time to read (0.599791ms)
+✔ all four completed memories use circular badge assets and retain the first journal entry on replay (0.593ms)
+✔ completed Wugong artwork saves automatically once and closes after the memory fades (54.97225ms)
+✔ unfinished artwork cannot enter automatic collection (15.406417ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (14.881917ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (19.785083ms)
+✔ other routes retain manual reward collection by default (14.005ms)
+✔ reduced motion still shows the automatically earned memory before a short fade (12.912875ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.58025ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 241.182542

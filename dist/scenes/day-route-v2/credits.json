@@ -1,0 +1,13 @@
+{
+  "project": "山径 Trailbound",
+  "created": "2026-10-21",
+  "tool": "OpenAI image generation",
+  "use": "三条日间路线的封面和互动背景；插画不是实拍或精确地形",
+  "files": [
+    {"file":"changping.webp","source":"art/day-route-redesign-v2/changping.png","subject":"长坪沟溪谷、枯树、红石与远处雪峰，细腻水彩"},
+    {"file":"mogan.webp","source":"art/day-route-redesign-v2/mogan.png","subject":"雨后莫干山竹林石阶与远山，细腻水彩"},
+    {"file":"westlake.webp","source":"art/day-route-redesign-v2/westlake.png","subject":"九溪浅溪、溪石、茶园与村落，春日水彩"},
+    {"file":"teacup.webp","source":"art/day-route-redesign-v2/teacup.png","subject":"透明玻璃茶盏与碟，独立透明背景"}
+  ],
+  "processing": "原图保留，转换为 WebP；背景保留 1536×1024 原始分辨率，茶盏保留 1280×1280。渲染按容器裁切，不拉伸。"
+}

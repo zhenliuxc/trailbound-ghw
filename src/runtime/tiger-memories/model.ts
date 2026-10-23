@@ -1,4 +1,5 @@
 import type { GameEvent, GameKind, MiniState } from '../contracts';
+import { TIGER_BADGE_ART } from '../../content/tiger-badges';
 
 export type MemoryKind = 'bends' | 'inn' | 'waterfall' | 'river';
 export interface Point { x: number; y: number }
@@ -13,7 +14,7 @@ export type MemoryId = keyof typeof MEMORY_SPECS;
 export const memoryId = (id: string): id is MemoryId => Object.hasOwn(MEMORY_SPECS, id);
 export const MEMORY_IDS = Object.keys(MEMORY_SPECS).filter(memoryId);
 export const sceneFile = (kind: MemoryKind) => `scenes/tiger-memories-v4/${kind}.webp`;
-export const badgeFile = (kind: MemoryKind) => `badges/tiger-memories-v4/${kind}.webp`;
+export const badgeFile = (kind: MemoryKind) => TIGER_BADGE_ART[kind].file;
 export const clamp = (value: number, low: number, high: number) => Math.max(low, Math.min(high, value));
 export const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
 export const inside = (p: Point, r: Rect) => p.x >= r.x && p.y >= r.y && p.x <= r.x + r.width && p.y <= r.y + r.height;

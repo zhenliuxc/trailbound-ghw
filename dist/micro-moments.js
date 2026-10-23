@@ -7,7 +7,14 @@
   const updated=P.input(s,point,gesture==='drag'?'move':'tap');if(updated===s)return s;
   return {...updated,acted:true,reaction:s.acted?s.reaction:0,gesture:s.gesture==='drag'?'drag':gesture,trail:s.trail.length?s.trail:[{x:updated.x,y:updated.y}]};
  }
- function tick(s,dt){if(!s||s.done||!Number.isFinite(dt)||dt<=0)return s;dt=Math.min(.25,dt);const age=s.age+dt,reaction=s.acted?s.reaction+dt:0,next=P.tick({...s,age,reaction},dt),limit=s.route==='westlake'||next.play.complete?3.4:6;return {...next,done:age>=10||(s.acted?!s.dragging&&reaction>=limit&&(!next.play.complete||age-next.play.completedAt>=.7):age>=6)};}
+ function tick(s,dt){
+  if(!s||s.done||!Number.isFinite(dt)||dt<=0)return s;
+  dt=Math.min(.25,dt);const age=s.age+dt,reaction=s.acted?s.reaction+dt:0,coast=s.route==='maclehose';
+  const next=coast&&!s.acted?{...s,age,reaction}:P.tick({...s,age,reaction},dt);
+  if(coast)return {...next,done:next.play.complete&&!next.dragging&&age-next.play.completedAt>=.7};
+  const limit=s.route==='westlake'||next.play.complete?3.4:6;
+  return {...next,done:age>=10||(s.acted?!s.dragging&&reaction>=limit&&(!next.play.complete||age-next.play.completedAt>=.7):age>=6)};
+ }
  function move(s,{x,y}={}){if(!s||s.done)return s;const p={x:clamp(x),y:clamp(y)},next=s.acted?s:act(s,{...p,gesture:'drag'}),last=next.trail.at(-1)||p,delta=Math.hypot(p.x-last.x,p.y-last.y);if(delta<.003)return {...next,dragging:true};let trail=[...next.trail,p];if(trail.length>24)trail=trail.filter((_,i)=>i%2===0||i===trail.length-1);return {...P.input(next,p,'move'),gesture:'drag',dragging:true,distance:Math.min(3,next.distance+delta),trail};}
  function release(s){return s?.dragging?{...s,dragging:false}:s;}
  function drawScene(svg,parent,entry){

@@ -1,0 +1,26 @@
+{
+  "desktop": {
+    "bundle": "http://127.0.0.1:8000/maclehose-walk.js?v=coast-detail-4",
+    "environment": "11:05 · 日间晴风",
+    "follow": "true",
+    "height": 1023,
+    "overflow": false,
+    "phase": "paused",
+    "view": "follow",
+    "width": 1454
+  },
+  "narrowDefault": {
+    "bundle": "http://127.0.0.1:8000/maclehose-walk.js?v=coast-detail-4",
+    "follow": "true",
+    "height": 959,
+    "overflow": false,
+    "view": "follow",
+    "width": 443
+  },
+  "console": [],
+  "notes": [
+    "通过界面按钮开始行走、停步和切换全图",
+    "未修改浏览器中的路线进度或手帐存储",
+    "本轮复查地图显示；完整四关实走见上一轮记录"
+  ]
+}

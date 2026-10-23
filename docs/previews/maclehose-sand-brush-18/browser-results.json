@@ -1,0 +1,86 @@
+{
+  "matrix": [
+    {
+      "size": "desktop",
+      "footer": 0,
+      "phase": "pause",
+      "points": "9",
+      "rect": {
+        "bottom": 827.5479431152344,
+        "height": 680.1935424804688,
+        "left": 30.921520233154297,
+        "right": 1423.6239128112793,
+        "top": 147.35440063476562,
+        "width": 1392.702392578125,
+        "x": 30.921520233154297,
+        "y": 147.35440063476562
+      },
+      "strokes": "1",
+      "viewport": {
+        "height": 909,
+        "width": 1454
+      }
+    },
+    {
+      "size": "desktop",
+      "retryStrokes": "0"
+    },
+    {
+      "size": "phone",
+      "footer": 0,
+      "phase": "pause",
+      "points": "9",
+      "rect": {
+        "bottom": 860.9641265869141,
+        "height": 727.3082275390625,
+        "left": 14.559659004211426,
+        "right": 428.6221590042114,
+        "top": 133.65589904785156,
+        "width": 414.0625,
+        "x": 14.559659004211426,
+        "y": 133.65589904785156
+      },
+      "strokes": "1",
+      "viewport": {
+        "height": 959,
+        "width": 443
+      }
+    },
+    {
+      "size": "phone",
+      "retryStrokes": "0"
+    },
+    {
+      "size": "landscape",
+      "footer": 0,
+      "phase": "pause",
+      "points": "9",
+      "rect": {
+        "bottom": 420.6409912109375,
+        "height": 316.5305480957031,
+        "left": 14.559659004211426,
+        "right": 794.5401277542114,
+        "top": 104.11044311523438,
+        "width": 779.98046875,
+        "x": 14.559659004211426,
+        "y": 104.11044311523438
+      },
+      "strokes": "1",
+      "viewport": {
+        "height": 443,
+        "width": 959
+      }
+    },
+    {
+      "size": "landscape",
+      "retryStrokes": "0"
+    }
+  ],
+  "keyboard": {
+    "phase": "pause",
+    "points": "8",
+    "strokes": "1"
+  },
+  "completed": "five strokes visible, incoming wave and automatic circular reward observed",
+  "viewportOverride": "reset"
+}

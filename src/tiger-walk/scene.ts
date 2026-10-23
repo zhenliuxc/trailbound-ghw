@@ -1,13 +1,14 @@
+import { MapCamera, mapCharacterScale, type MapProjection, type MapView } from '../journey/map-camera';
 import { Application, Container, Graphics } from 'pixi.js';
 import { DEFAULT_CHARACTER, type CharacterId } from '../characters/catalog';
 import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../characters/pixi';
-import { clamp, mix, type Point } from '../wugong-walk/model';
+import { clamp, mix } from '../wugong-walk/model';
 import type { TigerJourney } from './journey';
 import { riverCourse, TIGER_WORLD } from './route';
 import { drawTigerLandscape, INN_LIGHTS, noise, WATERFALL } from './terrain';
 
-export type View = 'follow' | 'overview';
-export interface Projection { readonly width: number; readonly height: number; readonly scale: number; toScreen(point: Point): Point; fromScreen(point: Point): Point }
+export type View = MapView;
+export type Projection = MapProjection;
 
 export class TigerScene {
   private readonly app = new Application();
@@ -26,15 +27,13 @@ export class TigerScene {
   private selectedCharacter: CharacterId = DEFAULT_CHARACTER;
   private width = 1200;
   private height = 620;
-  private center = { x: 400, y: 1100 };
-  private zoom = 1;
-  private fresh = true;
+  private readonly camera = new MapCamera();
   private facing = 1;
   private turnWait = 0;
   private lastFrame = 0;
   private initialized = false;
   private disposed = false;
-  mode: View = 'follow';
+  get mode(): View { return this.camera.mode; }
   constructor(private readonly canvas: HTMLCanvasElement) {}
   get character(): CharacterId { return this.selectedCharacter; }
   private useCharacter(pack: Awaited<ReturnType<CharacterLibrary['load']>>): void {
@@ -60,23 +59,20 @@ export class TigerScene {
     this.walker.addChild(this.shadow, this.figure); this.world.addChild(this.walker);
   }
   resize(width: number, height: number): void {
-    this.width = width; this.height = height; this.fresh = true;
+    this.width = width; this.height = height; this.camera.resize(width, height);
     if (this.initialized) { this.app.renderer.resolution = Math.min(2, devicePixelRatio || 1, Math.sqrt((width < 760 ? 1500000 : 4000000) / (width * height))); this.app.renderer.resize(width, height); }
   }
-  setView(view: View): void { this.mode = view; }
-  snap(): void { this.fresh = true; }
+  setView(view: View): void { this.camera.mode = view; }
+  snap(): void { this.camera.snap(); }
   paint(journey: TigerJourney, dt: number, reduced: boolean): Projection {
     const at = journey.point, fit = Math.min((this.width - 100) / TIGER_WORLD.width, (this.height - 100) / TIGER_WORLD.height);
     const below = riverCourse.reduce((a, b) => Math.abs(a.x - at.x) < Math.abs(b.x - at.x) ? a : b);
     const clearance = Math.max(380, below.y - at.y);
     const intendedZoom = this.mode === 'overview' ? fit : clamp(this.height * .64 / clearance, .28, this.width < 760 ? .9 : 1.1);
-    const instant = this.fresh || reduced, smooth = instant ? 1 : 1 - Math.exp(-dt * 3);
-    this.zoom = mix(this.zoom, intendedZoom, smooth);
     const ahead = journey.path.sample(journey.at + (journey.leg === 'return' ? -65 : 65));
-    const target = this.mode === 'overview' ? { x: TIGER_WORLD.width / 2, y: TIGER_WORLD.height / 2 } : { x: at.x + (ahead.x - at.x) * .4 + this.width * .12 / this.zoom, y: at.y + this.height * .22 / this.zoom };
-    this.center = { x: mix(this.center.x, target.x, smooth), y: mix(this.center.y, target.y, smooth) }; this.fresh = false;
-    const x = this.width / 2 - this.center.x * this.zoom, y = this.height / 2 - this.center.y * this.zoom, z = this.zoom;
-    this.world.scale.set(z); this.world.position.set(x, y);
+    const target = this.mode === 'overview' ? { x: TIGER_WORLD.width / 2, y: TIGER_WORLD.height / 2 } : { x: at.x + (ahead.x - at.x) * .4 + this.width * .12 / intendedZoom, y: at.y + this.height * .22 / intendedZoom };
+    const projection = this.camera.project({ center: target, scaleX: intendedZoom, scaleY: intendedZoom }, dt, reduced);
+    this.world.scale.set(projection.scaleX, projection.scaleY); this.world.position.set(projection.x, projection.y);
     this.river.clear();
     for (let i = 0; i < 80; i++) {
       const progress = ((i * .0125 - (reduced ? 0 : journey.clock * .009)) % 1 + 1) % 1;
@@ -99,8 +95,8 @@ export class TigerScene {
     this.figure.show(figure, dt, rest, reduced);
     const side = Math.cos(journey.heading);
     if (journey.moving && Math.abs(side) > .42 && Math.sign(side) !== this.facing) { this.turnWait += dt; if (this.turnWait > .22) { this.facing = Math.sign(side); this.turnWait = 0; } } else this.turnWait = 0;
-    const figureZoom = this.mode === 'follow' ? Math.max(1, .65 / z) : 1;
-    this.walker.position.set(at.x, at.y); this.walker.scale.set(this.facing * figureZoom, figureZoom); this.figure.rotation = journey.moving ? clamp(Math.sin(journey.heading) * -.09 * this.facing, -.08, .09) : 0;
+    const size = mapCharacterScale(projection);
+    this.walker.position.set(at.x, at.y); this.walker.scale.set(this.facing * size.x, size.y); this.figure.rotation = journey.moving ? clamp(Math.sin(journey.heading) * -.09 * this.facing, -.08, .09) : 0;
     const hour = journey.minute / 60, night = journey.mode.kind === 'sleeping' ? mix(.5, 1, clamp(journey.mode.elapsed / 1.4)) : journey.mode.kind === 'waking' ? mix(1, 0, clamp(journey.mode.elapsed / 3.5)) : hour >= 17 ? clamp((hour - 17) / 2) : 0;
     this.lamps.clear();
     if (night > .05) for (const p of INN_LIGHTS) this.lamps.rect(p.x - 3, p.y - 4, 6, 8).fill({ color: '#e7bd78', alpha: night * .9 });
@@ -117,7 +113,7 @@ export class TigerScene {
     }
     if (night > .2) for (let i = 0; i < 30; i++) this.weather.circle(noise(i + 70) * this.width, noise(i + 90) * this.height * .4, i % 4 ? .7 : 1.1).fill({ color: '#f4edd3', alpha: night * .65 });
     this.app.render();
-    return { width: this.width, height: this.height, scale: z, toScreen: p => ({ x: x + p.x * z, y: y + p.y * z }), fromScreen: p => ({ x: (p.x - x) / z, y: (p.y - y) / z }) };
+    return projection;
   }
   destroy(): void {
     if (this.disposed) return; this.disposed = true;

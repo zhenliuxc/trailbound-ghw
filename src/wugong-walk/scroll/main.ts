@@ -1,11 +1,13 @@
+import { observeMapSize } from '../../journey/viewport';
+import { createFrameLoop } from '../../runtime/frame-loop';
 import { clamp, distance } from '../model';
-import { ArtOverlay } from '../art-overlay';
+import { ArtOverlay } from '../../journey/art-overlay';
 import { VisitView } from '../visits';
 import { parseTimeSetting, parseWeatherSetting, SceneEnvironment } from '../environment';
 import { ScrollJourney } from './journey';
 import { ScrollScene } from './scene';
-import { STAGES, ScrollTrail, type ScrollStopId } from './route';
-import { overviewMarkers } from './markers';
+import { STAGES, PLACE_MARKERS, ScrollTrail, type ScrollStopId } from './route';
+import { LandmarkLayer } from '../../journey/landmark-layer';
 import type { ScrollProjection, ScrollView } from './camera';
 import type { TrailEventId } from './events';
 import { CampNight } from './camp-night';
@@ -13,7 +15,8 @@ import { rememberCampStars, rememberKeepsake } from './camp-journal';
 import { FOREST_LEAVES_ID, HOMEWARD_PAGES_ID } from './keepsake-games';
 import { TrailKeepsakes } from './trail-keepsakes';
 import { TrailSoundscape } from './soundscape';
-import { DISCOVERY_SCENES, DiscoveryTransition } from './discovery-transition';
+import { DISCOVERY_SCENES } from './discovery-transition';
+import { DiscoveryTransition } from '../../journey/discovery-transition';
 import { createCharacterPicker } from '../../characters/picker';
 
 function node(id: string): HTMLElement {
@@ -36,8 +39,8 @@ const campPreview = new URLSearchParams(location.search).get('section') === 'cam
 const trail = new ScrollTrail(), journey = new ScrollJourney(trail, campPreview ? 'camp-night' : 'full'), environment = new SceneEnvironment(journey);
 const scene = new ScrollScene(canvas, trail);
 const reducedQuery = matchMedia('(prefers-reduced-motion: reduce)');
-let reduced = reducedQuery.matches, disposed = false, ready = false, animation = 0, lastTime = 0;
-let projection: ScrollProjection | null = null, uiKey = '', weatherKey = '', resizeTimer = 0;
+let reduced = reducedQuery.matches, disposed = false, ready = false;
+let projection: ScrollProjection | null = null, uiKey = '', weatherKey = '';
 let autostart = new URLSearchParams(location.search).get('walk') === '1';
 let sound = false, audioToken = 0, dialogKey = '';
 const soundscape = new TrailSoundscape();
@@ -47,14 +50,15 @@ let activeEvent: TrailEventId | null = null;
 
 function pauseAudio(): void { soundscape.pause(); }
 function resumeAudio(): void { if (sound && !document.hidden && !art.open && !camp.open && !keepsakes.open && !characterPicker.open && journey.mode.kind !== 'visiting' && journey.mode.kind !== 'encounter') soundscape.resume(); }
-function ensureLoop(): void { if (ready && !disposed && !document.hidden && !art.open && !camp.open && !keepsakes.open && !characterPicker.open && !animation) animation = requestAnimationFrame(tick); }
+function ensureLoop(): void { clock.ensure(); }
+function stopLoop(): void { clock.stop(); }
 const keepsakes = new TrailKeepsakes({ signal,
   onClose(result) {
     if (journey.mode.kind === 'encounter' && (journey.mode.id === 'leaves' || journey.mode.id === 'return')) {
       if (result.collected) journey.collectEvent(journey.mode.id);
       journey.closeEncounter(result.continueWalk);
     }
-    uiKey = ''; updateUI(); updateVisit(); lastTime = 0; ensureLoop(); resumeAudio();
+    uiKey = ''; updateUI(); updateVisit(); stopLoop(); ensureLoop(); resumeAudio();
   },
   onCollect(id, capture) {
     let storage: Storage | null = null; try { storage = localStorage; } catch { /* Saving reports failure while retaining existing memories. */ }
@@ -68,7 +72,7 @@ const camp = new CampNight({ signal,
       if (result.collected) journey.collectEvent('stars');
       journey.closeEncounter(false); if (result.sleep) journey.sleep();
     }
-    uiKey = ''; updateUI(); updateVisit(); lastTime = 0; ensureLoop(); resumeAudio();
+    uiKey = ''; updateUI(); updateVisit(); stopLoop(); ensureLoop(); resumeAudio();
   },
   onCollect(capture) {
     let storage: Storage | null = null; try { storage = localStorage; } catch { /* Save reports the unavailable storage without losing old records. */ }
@@ -82,21 +86,22 @@ const art = new ArtOverlay(signal, result => {
     if (result.collected > 0) journey.collectEvent(event);
     journey.closeEncounter(result.collected > 0);
   }
-  uiKey = ''; updateUI(); updateVisit(); lastTime = 0; ensureLoop(); resumeAudio();
+  uiKey = ''; updateUI(); updateVisit(); stopLoop(); ensureLoop(); resumeAudio();
 }, 'ww', { soft: true });
 const characterPicker = createCharacterPicker({ trigger: button('ww-character'), signal,
   current: () => scene.character,
   beforeOpen() {
     if (!ready || disposed || art.open || camp.open || keepsakes.open || discovery.pending || journey.mode.kind === 'visiting' || journey.mode.kind === 'encounter') return false;
-    journey.pause(); cancelAnimationFrame(animation); animation = 0; lastTime = 0; pauseAudio(); updateUI(); return true;
+    journey.pause(); stopLoop(); pauseAudio(); updateUI(); return true;
   },
   apply: (id, selectionSignal) => scene.setCharacter(id, selectionSignal),
-  afterClose() { if (disposed) return; lastTime = 0; resize(); uiKey = ''; updateUI(); ensureLoop(); resumeAudio(); },
+  afterClose() { if (disposed) return; stopLoop(); resize(); uiKey = ''; updateUI(); ensureLoop(); resumeAudio(); },
 });
+const clock = createFrameLoop({ request: callback => requestAnimationFrame(callback), cancel: id => cancelAnimationFrame(id), maxDelta: .05, active: () => ready && !disposed && !document.hidden && !art.open && !camp.open && !keepsakes.open && !characterPicker.open, update: tick });
 function openArt(entry?: string, place?: string, event: TrailEventId | null = null): void {
   if (!ready || disposed || discovery.pending || art.open || camp.open || keepsakes.open) return;
   activeEvent = event;
-  cancelAnimationFrame(animation); animation = 0; lastTime = 0; pauseAudio(); art.show(entry, place);
+  stopLoop(); pauseAudio(); art.show(entry, place);
 }
 const visits = new VisitView(continueWalk => {
   if (journey.mode.kind !== 'visiting') return;
@@ -104,46 +109,22 @@ const visits = new VisitView(continueWalk => {
 }, signal);
 button('ww-journal').addEventListener('click', () => openArt(), { signal });
 
-const icons = {
-  start: '<path d="M7 26V14L16 7l9 7v12M5 15l11-9 11 9M13 26v-7h6v7M5 27h22"/>',
-  meadow: '<path d="M5 26q8-5 22 0M10 23Q11 14 7 10M16 24Q15 13 21 8M21 23q1-7 6-9M16 17q-5-6-8-4"/><circle class="ww-icon-gold" cx="25" cy="7" r="2"/>',
-  camp: '<path d="m5 26 11-18 11 18H5Zm7 0 4-10 4 10M4 28h24"/><path class="ww-icon-gold" d="M25 4a4 4 0 0 0 3 6 5 5 0 1 1-3-6Z"/>',
-  slope: '<path d="m4 25 9-15 6 8 5-10 5 17M8 27h6v-5h6v-5h5"/>',
-  horse: '<path d="M16 7v21M6 8h17l4 4-4 4H6V8ZM7 21h17M10 25h14"/>',
-  summit: '<path d="m4 27 8-12 5 7 5-10 7 15H4ZM22 12V4l7 3-7 2M10 19l2 2 2-2"/>',
-  end: '<path d="M7 27V12m18 15V12M4 12q12-8 24 0M7 14h18M11 19h10M10 27h12"/><path class="ww-icon-gold" d="m13 23 2 2 4-5"/>',
-};
-const markerLayer = node('ww-markers');
-const leaders = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); leaders.classList.add('ww-marker-leaders'); leaders.setAttribute('aria-hidden', 'true'); markerLayer.append(leaders);
-const pinNames: Record<ScrollStopId, string> = { start: '东江村', slope: '绝望坡', meadow: '高山草甸', camp: '观音宕营地', horse: '吊马桩', summit: '金顶', end: '景区大门' };
-const markers = trail.stops.map(stop => {
-  const marker = document.createElement('button'); marker.type = 'button'; marker.className = 'ww-marker'; marker.dataset.stop = stop.id;
-  marker.dataset.kind = 'photo';
-  marker.setAttribute('aria-label', `实景打卡 · ${stop.name}`);
-  marker.innerHTML = `<span class="ww-pin"><svg viewBox="0 0 32 32" aria-hidden="true">${icons[stop.id]}</svg></span><span class="ww-marker-name">${pinNames[stop.id]}</span>`;
-  const leader = document.createElementNS('http://www.w3.org/2000/svg', 'path'); leaders.append(leader);
-  marker.addEventListener('click', () => {
-    if (!ready || discovery.pending) return;
-    if (journey.hasVisited(stop.id)) journey.openVisit(stop.id);
-    else journey.walkTo(stop.travel);
+const markers = new LandmarkLayer({
+  container:node('ww-markers'),className:'ww-marker',signal,
+  places:trail.stops.map(stop=>({id:stop.id,point:stop.point,...PLACE_MARKERS[stop.id],ariaLabel:`实景打卡 · ${stop.name}`})),
+  onSelect(id) {
+    if (!ready || discovery.pending || art.open || camp.open || keepsakes.open || characterPicker.open) return;
+    if (journey.hasVisited(id)) journey.openVisit(id);
+    else journey.walkTo(trail.sites[id].travel);
     uiKey = ''; updateUI(); updateVisit();
-  }, { signal });
-  markerLayer.append(marker); return { ...stop, element: marker, leader };
+  },
 });
 function positionMarkers(p: ScrollProjection): void {
   discovery.position(p.toScreen(journey.point), p.width, p.height);
-  const layout = overviewMarkers(markers.map(marker => ({ id: marker.id, at: p.toScreen(marker.point) })), p.width, p.height);
-  for (const marker of markers) {
-    const at = p.toScreen(marker.point), close = Math.abs(marker.travel - journey.travel) < 210;
-    const place = layout.find(item => item.id === marker.id);
-    const x = scene.mode === 'overview' && place ? place.x : clamp(at.x - 30, 48, p.width - 48), y = scene.mode === 'overview' && place ? place.y : at.y - Math.max(140, 54 * p.scale + 64);
-    marker.element.hidden = scene.mode === 'follow' && (!close || x < 25 || x > p.width - 25 || y < 75 || y > p.height - 30);
-    marker.element.style.left = `${x}px`; marker.element.style.top = `${y}px`;
-    marker.element.classList.toggle('is-reached', journey.hasVisited(marker.id));
-    marker.leader.style.display = marker.element.hidden ? 'none' : '';
-    const endY = y + (y < at.y ? 16 : -16);
-    marker.leader.setAttribute('d', `M${at.x},${at.y}Q${x},${at.y} ${x},${endY}`);
-  }
+  markers.update(p,scene.mode,marker=>({
+    visible:scene.mode==='overview'||Math.abs(trail.sites[marker.id].travel-journey.travel)<210,
+    enabled:true,visited:journey.hasVisited(marker.id),
+  }));
 }
 function updateUI(): void {
   const pose = journey.pose, key = `${journey.day}:${journey.mode.kind}:${journey.stage}:${scene.mode}:${ready}:${journey.collections}`;
@@ -192,9 +173,9 @@ function updateVisit(): void {
   discovery.show(event.id, reduced, () => {
     if (disposed || journey.mode.kind !== 'encounter' || journey.mode.id !== event.id) return;
     if (event.id === 'stars') {
-      cancelAnimationFrame(animation); animation = 0; camp.show(environment.frame.weather, reduced, sound);
+      stopLoop(); camp.show(environment.frame.weather, reduced, sound);
     } else if (event.id === 'leaves' || event.id === 'return') {
-      cancelAnimationFrame(animation); animation = 0;
+      stopLoop();
       keepsakes.show(event.id === 'leaves' ? FOREST_LEAVES_ID : HOMEWARD_PAGES_ID);
     } else openArt(event.entry, event.place, event.id);
   });
@@ -217,16 +198,13 @@ async function toggleSound(): Promise<void> {
   } catch { sound = false; soundscape.disable(); soundButton.textContent = '声音 · 重试'; }
   finally { if (!disposed) soundButton.disabled = false; }
 }
-function tick(now: number): void {
-  animation = 0;
-  if (disposed || document.hidden || art.open || camp.open || keepsakes.open || characterPicker.open || !ready) return;
-  const dt = lastTime ? Math.min(.05, Math.max(0, (now - lastTime) / 1000)) : 0; lastTime = now;
+function tick(dt: number): void {
   const day = journey.day;
   journey.tick(dt); if (journey.day !== day) environment.reset(journey);
   environment.advance(dt, journey);
   soundscape.update(journey, environment.frame, dt, journey.mode.kind !== 'visiting' && journey.mode.kind !== 'encounter');
   projection = scene.paint(journey, environment.frame, dt, reduced); positionMarkers(projection);
-  updateUI(); updateVisit(); updateEnvironment(); ensureLoop();
+  updateUI(); updateVisit(); updateEnvironment();
 }
 function resize(): void {
   const box = map.getBoundingClientRect(); if (box.width < 1 || box.height < 1) return;
@@ -250,9 +228,9 @@ weather.addEventListener('change', () => environment.setWeather(parseWeatherSett
 canvas.addEventListener('pointerup', event => {
   if (!ready || !projection || art.open || journey.mode.kind === 'visiting' || journey.mode.kind === 'encounter' || event.button > 0) return;
   const box = canvas.getBoundingClientRect(), p = projection;
-  const at = p.fromScreen({ x: (event.clientX - box.left) * p.width / box.width, y: (event.clientY - box.top) * p.height / box.height });
-  if (distance(at, journey.point) < 30 / p.scale) journey.pause();
-  else { const near = trail.nearest(at); if (near.gap < 32 / p.scale && near.travel > journey.travel) journey.walkTo(near.travel > trail.length - 28 ? trail.length : near.travel); }
+  const at = p.toWorld({ x: (event.clientX - box.left) * p.width / box.width, y: (event.clientY - box.top) * p.height / box.height });
+  if (distance(at, journey.point) < 30 / p.scaleX) journey.pause();
+  else { const near = trail.nearest(at); if (near.gap < 32 / p.scaleX && near.travel > journey.travel) journey.walkTo(near.travel > trail.length - 28 ? trail.length : near.travel); }
   updateUI();
 }, { signal });
 document.addEventListener('keydown', event => {
@@ -268,22 +246,22 @@ document.addEventListener('keydown', event => {
 }, { signal });
 reducedQuery.addEventListener('change', () => { reduced = reducedQuery.matches; }, { signal });
 document.addEventListener('visibilitychange', () => {
-  lastTime = 0;
-  if (document.hidden) { cancelAnimationFrame(animation); animation = 0; pauseAudio(); camp.pauseAudio(); journey.pause(); updateUI(); }
+  stopLoop();
+  if (document.hidden) { pauseAudio(); camp.pauseAudio(); journey.pause(); updateUI(); }
   else { if (autostart && ready && journey.mode.kind === 'ready') { autostart = false; journey.walkTo(); } ensureLoop(); resumeAudio(); }
 }, { signal });
-const observer = new ResizeObserver(() => { clearTimeout(resizeTimer); resizeTimer = window.setTimeout(resize, 80); });
+
 window.addEventListener('pagehide', event => {
-  lastTime = 0; cancelAnimationFrame(animation); animation = 0; pauseAudio(); journey.pause();
+  stopLoop(); pauseAudio(); journey.pause();
   if (event.persisted) return;
-  disposed = true; audioToken++; lifecycle.abort(); clearTimeout(resizeTimer); observer.disconnect(); visits.destroy(); art.dispose(); camp.destroy(); keepsakes.destroy(); soundscape.destroy(); scene.destroy();
+  disposed = true; audioToken++; lifecycle.abort();  visits.destroy(); art.dispose(); camp.destroy(); keepsakes.destroy(); soundscape.destroy(); scene.destroy();
 }, { signal });
-window.addEventListener('pageshow', event => { if (event.persisted) { lastTime = 0; ensureLoop(); updateUI(); } }, { signal });
+window.addEventListener('pageshow', event => { if (event.persisted) { stopLoop(); ensureLoop(); updateUI(); } }, { signal });
 async function start(): Promise<void> {
   await scene.load(signal); if (signal.aborted || disposed) return;
   ready = true; resize(); loading.hidden = true; node('ww-detail-hint').hidden = true; characterPicker.refresh();
   if (autostart && !document.hidden) { journey.walkTo(); autostart = false; }
-  updateUI(); updateEnvironment(); observer.observe(map); ensureLoop();
+  updateUI(); updateEnvironment(); observeMapSize(map, signal, resize); ensureLoop();
 }
 void start().catch(error => {
   if (signal.aborted || disposed) return;

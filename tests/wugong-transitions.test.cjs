@@ -26,7 +26,7 @@ function setup() {
     const module = { exports: {} }; vm.runInNewContext(`(function(module,exports){${code}\n})`, context)(module, module.exports); return module.exports;
   };
   const visibility = hidden => { doc.hidden = hidden; doc.dispatchEvent(new Event('visibilitychange')); };
-  return { ...load('src/wugong-walk/visible-motion.ts'), ...load('src/wugong-walk/scroll/discovery-transition.ts'), animations, timers, visibility, element, advance: ms => { now += ms; } };
+  return { ...load('src/journey/visible-motion.ts'), ...load('src/journey/discovery-transition.ts'), ...load('src/wugong-walk/scroll/discovery-transition.ts'), animations, timers, visibility, element, advance: ms => { now += ms; } };
 }
 
 test('all six journey games have a distinct discovery before opening, without an extra button', async () => {

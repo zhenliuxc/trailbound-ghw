@@ -1,0 +1,50 @@
+{
+  "created": "2026-10-20",
+  "stage": "composition-review-only",
+  "tool": "built-in image_gen",
+  "title": "麦理浩径 · 西湾山 · 山肩最后几步",
+  "final": {
+    "file": "concept-master-v2.png",
+    "width": 1672,
+    "height": 941,
+    "format": "png",
+    "sha256": "e71d7e671d9b6942b7a4bae9151516ce683295497d75a342b63eafb51ebf324c"
+  },
+  "prompts": [
+    "concept-prompt.txt",
+    "proportion-edit-prompt.txt"
+  ],
+  "generated": {
+    "initial": "/Users/liuxucheng/.codex/generated_images/01a14aaf-d3f3-7650-af38-8fa8f63e55b9/exec-5752017d-7e9d-4d61-83bd-9c4a51c02c1b.png",
+    "final": "/Users/liuxucheng/.codex/generated_images/01a14aaf-d3f3-7650-af38-8fa8f63e55b9/exec-ff094d84-4eff-40e5-904c-786b4940d3d6.png",
+    "revision": "Reduce the oversized hiker and adjust its uphill placement; preserve the landscape composition."
+  },
+  "references": [
+    {
+      "role": "geographic reference",
+      "file": "dist/photos/maclehose-saiwan-shan-place-v8.webp",
+      "title": "大浪湾 - Tai Long Wan - 2015.01 - panoramio.jpg",
+      "author": "rheins",
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E6%B5%AA%E6%B9%BE_-_Tai_Long_Wan_-_2015.01_-_panoramio.jpg",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "use": "Geographic visual reference for image generation; no information sign is reproduced."
+    },
+    {
+      "role": "character identity reference",
+      "file": "dist/characters/blue-hiker-preview-v1.webp",
+      "record": "dist/characters/traveler-choices-v1-credits.json"
+    },
+    {
+      "role": "watercolor style reference",
+      "file": "dist/scenes/maclehose-v1.webp",
+      "record": "dist/scenes/manifest.json"
+    }
+  ],
+  "limitations": [
+    "Art-directed concept, not an exact viewpoint reconstruction or a running-game screenshot.",
+    "Native output is the recorded size, not native 4K.",
+    "No independent scene layers or new character animation atlases have been made.",
+    "No game code, route, trigger, journal record or published site changed."
+  ]
+}

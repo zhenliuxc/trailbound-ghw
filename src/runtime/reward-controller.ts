@@ -1,4 +1,4 @@
-import type { AssetEntry, GameKind, ImageCache, JourneyStatus, Moment, MomentCatalog, SoundPlayer } from './contracts';
+import type { AssetEntry, GameKind, ImageCache, JournalArtPresentation, JourneyStatus, Moment, MomentCatalog, SoundPlayer } from './contracts';
 import type { GameDom } from './dom';
 import { EventBindings } from './dom';
 import type { SceneManager, SceneSession } from './scene-manager';
@@ -14,7 +14,7 @@ interface RewardOptions {
   refresh(): void;
   stopLoop(): void;
   autoCollect?: boolean;
-  presentArt?(image: HTMLImageElement, moment: Moment): string | null;
+  presentArt?(image: HTMLImageElement, moment: Moment): JournalArtPresentation | null;
   onCollected?(moment: Moment): boolean | void;
 }
 
@@ -63,7 +63,7 @@ export function createRewardController(options: RewardOptions) {
       let image = $<HTMLImageElement>('reward-art');
       if (options.presentArt && current) {
         const framed = cached?.state === 'ready' ? options.presentArt(cached.image, current) : null;
-        const source = framed || file;
+        const source = framed?.src || file;
         if (source && image.getAttribute('src') !== source) image.setAttribute('src', source);
       } else if (cached?.state === 'ready' && cached.image !== image) {
         image.removeAttribute('id'); cached.image.id = 'reward-art';

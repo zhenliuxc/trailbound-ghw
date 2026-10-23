@@ -1,0 +1,19 @@
+<section id="micro-panel" class="micro-panel" hidden aria-labelledby="micro-title">
+<div class="micro-heading"><div><small id="micro-place"></small><h2 id="micro-title"></h2></div><button id="micro-skip" type="button">继续走 →</button></div>
+<div id="mini-controls" class="mini-controls" hidden><button id="mini-music-retry" type="button" hidden aria-label="配乐未能播放，重试加载配乐">重试配乐</button><button id="mini-sound" type="button" aria-pressed="false">声音 · 点击开启</button><button id="mini-retry" type="button">重新试一次</button></div><button id="micro-surface" class="micro-surface" type="button" aria-label="轻触景物"><span id="wind-hud" class="wind-hud" hidden aria-hidden="true"><span class="wind-hud-top"><span><small id="mini-place-label">武功山 · 借风</small><strong id="wind-stage-name">草坡来风</strong></span><span class="wind-goals"><span class="wind-feathers" aria-hidden="true"><i id="wind-feather-0">一</i><i id="wind-feather-1">二</i><i id="wind-feather-2">三</i></span><span id="wind-count">0 / 3 阵风</span></span></span><span id="wind-chapter" class="wind-chapter"><small id="wind-chapter-kicker">山野小事 · 01</small><strong id="wind-chapter-title">借一阵草甸的风</strong><span id="wind-chapter-copy">让草浪告诉你，风往哪里去。</span></span><span class="wind-hud-bottom"><span id="wind-cue">向上牵线，找到流动的风</span><span class="wind-steady"><span id="wind-steady-fill"></span></span></span></span><svg id="micro-art" viewBox="0 0 400 230" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg></button>
+<section id="wugong-tools" class="wugong-tools" hidden aria-label="互动操作"><div class="wugong-dialogue"><small id="wugong-speaker"></small><p id="wugong-line"></p></div><div class="wugong-actions"><div id="wugong-zoom" class="wugong-zoom" hidden><button id="wugong-zoom-out" type="button" aria-label="退远一点">−</button><span>远近</span><button id="wugong-zoom-in" type="button" aria-label="靠近一点">＋</button></div><button id="wugong-secondary" type="button" hidden></button><button id="wugong-primary" class="wugong-primary" type="button"></button></div></section>
+<section id="art-tools" class="art-tools" hidden aria-label="画作互动操作"><div class="art-tool-top"><small id="art-kicker"></small><output id="art-count"></output></div><h3 id="art-title"></h3><p id="art-cue"></p><div id="art-actions" class="art-actions"></div><p id="art-key-hint" class="art-key-hint"></p></section>
+<section id="mogan-tools" class="mogan-tools" hidden aria-label="竹林互动提示">
+  <div class="mogan-caption"><small id="mogan-kicker"></small><output id="mogan-count"></output></div>
+  <p id="mogan-cue"></p>
+  <div id="mogan-notes" class="mogan-notes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div id="mogan-settings" class="mogan-settings" hidden><button id="mogan-slow" type="button" aria-pressed="false">慢一点</button></div>
+</section>
+<section id="tiger-tools" class="tiger-tools" hidden aria-label="虎跳峡互动操作">
+  <div class="tiger-caption"><output id="tiger-count"></output><details class="tiger-keys"><summary>键盘辅助</summary><p id="tiger-key-hint"></p></details></div>
+  <div id="tiger-actions" class="tiger-actions"></div>
+  <label id="tiger-trail-lens" class="tiger-trail-lens" hidden><span>远近</span><input id="tiger-trail-zoom" type="range" min="1" max="1.8" step="0.02" value="1.25" aria-label="江景取景远近"></label>
+  <div id="tiger-frame-strip" class="tiger-frame-strip" role="group" aria-label="选一帧喜欢的江景" hidden></div>
+</section>
+<div class="micro-progress" role="progressbar" id="micro-progress" aria-label="这一刻的互动进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="micro-progress-fill"></span></div><p id="micro-instruction" class="micro-instruction"></p><p id="micro-result" class="micro-result" role="status" aria-live="polite"></p>
+</section>

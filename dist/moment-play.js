@@ -101,6 +101,14 @@
   const v={type:type(entry),refs,custom:!!refs.custom};
   if(['follow','align','inspect','guide','place','trail','outline','spray','yield'].includes(v.type)){v.goal=add('ellipse',{cx:270,cy:126,rx:v.type==='inspect'?28:20,ry:v.type==='inspect'?25:14,fill:'none',stroke:'#f9f0bb','stroke-width':2,'stroke-dasharray':'3 4'});}
   if(['trail','guide','echo','outline','listen'].includes(v.type))v.cursor=add('circle',{cx:200,cy:130,r:7,fill:'#f9f1c1',opacity:0});
+  if(entry.id==='maclehose-sideways-crab'){
+   v.goal.setAttribute('visibility','hidden');
+   v.coastSteps=points({id:entry.id}).map(p=>{
+    const g=add('g',{transform:`translate(${p.x*400} ${p.y*230})`,'pointer-events':'none'});
+    path('M-10 3q3-9 9-4l3 7q-8 5-12-3ZM3-5q4-7 9-1l1 7q-7 3-10-6Z','#f9edcb','#66775c',1.2,g);
+    path('M-14-1l-4-3m7-2-2-4m24-1 2-4m2 7 4-2','none','#66775c',1.1,g);return g;
+   });
+  }
   if(v.type==='follow'||v.type==='inspect'){v.lens=add('g');add('circle',{r:v.type==='inspect'?36:33,fill:v.type==='inspect'?'#eef1c7':'none','fill-opacity':.25,stroke:'#e8dbab','stroke-width':2},v.lens);path('M24 25L44 45','none','#a5916d',4,v.lens);}
   if(v.type==='inspect'){const defs=add('defs'),clip=add('clipPath',{id:'play-lens-clip',clipPathUnits:'userSpaceOnUse'},defs);add('circle',{r:33},clip);v.zoom=add('g',{'clip-path':'url(#play-lens-clip)'},v.lens);v.zoomPoints=[];const samples=refs.samples||Array.from({length:32},(_,i)=>({x:79+(i*47)%240,y:114+(i*19)%52,d:'M0 9V-4m0 8l-5-5m5 6l6-6',fill:'none',color:i%2?'#6f985a':'#c0d59b'}));for(const a of samples){const g=add('g',{},v.zoom);path(a.d,a.fill,a.color,.9,g);v.zoomPoints.push({g,x:a.x,y:a.y});}}
   if(v.type==='inspect'&&refs.heroFile){v.zoomArt=add('image',{href:refs.heroFile,...refs.heroBox},v.zoom);}
@@ -131,6 +139,7 @@
   }
   if(v.type==='trail'&&s.acted){v.goal.setAttribute('stroke',p.step?'#f9f0bb':'#d2c59f');}
   if(v.type==='trail')refs.steps?.forEach((g,i)=>g.setAttribute('opacity',i<p.step?1:i===p.step?.5:.08));
+  v.coastSteps?.forEach((g,i)=>{g.setAttribute('opacity',i<p.step?.35:i===p.step?1:.3);g.setAttribute('data-next',String(i===p.step&&!p.complete));});
   if(v.type==='sand'){
    const trail=p.assisted?[{x:.25,y:.65},{x:.4,y:.55},{x:.6,y:.72},{x:.73,y:.52}]:s.trail;v.ink.setAttribute('d',trail.length?trail.map((a,i)=>`${i?'L':'M'}${a.x*400} ${90+a.y*130}`).join(' '):'M0 0');
    const wash=s.acted&&!s.dragging?clamp((s.age-p.lastInput-.4)/1.6):0;v.foam.setAttribute('transform',`translate(0 ${reduced?0:wash*212})`);v.foam.setAttribute('opacity',wash>0?.9:0);v.ink.setAttribute('opacity',1-wash);

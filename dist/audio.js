@@ -358,7 +358,7 @@
  const WUGONG_STEPS=['wugongStep1','wugongStep2','wugongStep3'];
  const MOGAN_FOLEY=['drop','splash','wugongPaper','wugongPlace','wugongCloth','wugongLine','wugongFlutter',...WUGONG_STEPS];
  const TIGER_FOLEY=['wugongClick',...WUGONG_STEPS,'paper','drop','splash','wugongCloth','wugongPlace','wugongLine','wugongTurn'];
- const MINI_SAMPLES={tiger:TIGER_FOLEY,aotai:['paper','wugongPlace','wugongCloth','wugongStep1','wugongStep2','wugongStep3'],maclehose:['paper','splash'],changping:['paper','splash'],westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['wugongPaper','wugongPlace','wugongCloth','wugongClick','wugongTurn','wugongLine','wugongFlutter']};
+ const MINI_SAMPLES={tiger:TIGER_FOLEY,aotai:['paper','wugongPlace','wugongCloth','wugongStep1','wugongStep2','wugongStep3'],maclehose:['paper','splash','wugongCloth','wugongPlace','wugongLine',...WUGONG_STEPS],changping:['paper','splash'],westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['wugongPaper','wugongPlace','wugongCloth','wugongClick','wugongTurn','wugongLine','wugongFlutter']};
  const momentMix=Scene.momentMix,westlakeMix=Scene.westlakeMix;
  for(const p of Object.values(PROFILES)){Object.freeze(p.melody);Object.freeze(p.chord);Object.freeze(p.ambience);Object.freeze(p);}Object.freeze(PROFILES);
  const hz=midi=>440*Math.pow(2,(midi-69)/12);
@@ -614,6 +614,18 @@
    if(group.routeId==='mogan')return moganMini(event,pan,index);
    if(group.routeId==='tiger')return tigerMini(event,pan,index,start);
    if(group.routeId==='aotai')return aotaiMini(event,pan,index,start);
+   if(group.routeId==='maclehose'){
+    if(event==='coast-step-land')return transient(WUGONG_STEPS[Math.abs(index)%3],pan,.085,.94,{space:.015,cutoff:3200});
+    if(event==='coast-sea-reveal')return true;
+    if(event==='coast-bird-call'||event==='coast-bird-answer'){
+     const bird=Math.max(0,Math.min(2,Math.floor(index))),frequency=[2100,2650,1720][bird];
+     for(let i=0;i<=bird;i++)effect(group,{kind:'chirp',at:i*.12,frequency:frequency*(1-i*.035),pan},start);
+     duck(group,.78,.55);return true;
+    }
+    if(event==='coast-wood-pick'){transient('wugongCloth',pan,.085,.88,{space:0,cutoff:2100});return true;}
+    if(event==='coast-boat-touch'){transient('splash',pan,.10,.75,{space:.06,cutoff:1800});transient('wugongPlace',pan,.075,.8,{space:0,cutoff:1800});return true;}
+    if(event==='coast-rope-pick'||event==='coast-rope-tied'){transient('wugongLine',pan,event==='coast-rope-tied'?.13:.08,.9,{space:0,cutoff:2400});return true;}
+   }
    if(['piece-pick','card-swap','card-return','sling-draw'].includes(event)){
     if(!transient('paper',pan,event==='sling-draw'?.19:.14,event==='card-return'?.88:1.05))texture(group,{kind:'leaves',cutoff:3300,highpass:800,length:.10,gain:.012,pan},start);
     if(event==='sling-draw')texture(group,{kind:'wind',cutoff:900,highpass:200,length:.20,gain:.008,pan},start);return true;

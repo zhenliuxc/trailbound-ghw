@@ -1,0 +1,103 @@
+[
+  {
+    "caption": "西湾山观景处俯瞰海湾 · 2015 年实拍",
+    "decoded": true,
+    "kind": "arrival",
+    "phase": "photo",
+    "src": "photos/maclehose-saiwan-shan-place-v8.webp",
+    "title": "西湾山"
+  },
+  {
+    "chapter": "西湾山 → 西湾",
+    "kind": "paused-revisit",
+    "phase": "paused"
+  },
+  {
+    "caption": "西湾沙滩、海浪与岬角",
+    "decoded": true,
+    "kind": "arrival",
+    "phase": "photo",
+    "src": "photos/maclehose-saiwan.webp",
+    "title": "西湾"
+  },
+  {
+    "caption": "咸田湾海滩实拍",
+    "decoded": true,
+    "kind": "arrival",
+    "phase": "photo",
+    "src": "photos/maclehose-hamtin.webp",
+    "title": "咸田湾"
+  },
+  {
+    "caption": "大浪坳附近的 M040 标距柱 · 2017 年实拍",
+    "decoded": true,
+    "kind": "arrival",
+    "phase": "photo",
+    "src": "photos/maclehose-tailongau-m040-v8.webp",
+    "title": "大浪坳"
+  },
+  {
+    "caption": "赤径码头与内湾，拍摄于 2010 年",
+    "decoded": true,
+    "kind": "arrival",
+    "phase": "photo",
+    "src": "photos/maclehose-chekkeng-pier-v2.webp",
+    "title": "赤径"
+  },
+  {
+    "caption": "北潭凹路口、林缘和远足路标 · 2022 年实拍",
+    "decoded": true,
+    "kind": "arrival",
+    "phase": "photo",
+    "src": "photos/maclehose-paktamau-place-v8.webp",
+    "title": "北潭凹"
+  },
+  {
+    "copy": "从浪茄走到北潭凹，今天的海岸旅程到这里收束。",
+    "kind": "finish",
+    "phase": "finished",
+    "visited": [
+      {
+        "disabled": false,
+        "place": "longke",
+        "visited": "true"
+      },
+      {
+        "disabled": false,
+        "place": "saiwanShan",
+        "visited": "true"
+      },
+      {
+        "disabled": false,
+        "place": "saiwan",
+        "visited": "true"
+      },
+      {
+        "disabled": false,
+        "place": "hamtin",
+        "visited": "true"
+      },
+      {
+        "disabled": false,
+        "place": "taiLongAu",
+        "visited": "true"
+      },
+      {
+        "disabled": false,
+        "place": "chekKeng",
+        "visited": "true"
+      },
+      {
+        "disabled": false,
+        "place": "pakTamAu",
+        "visited": "true"
+      }
+    ]
+  },
+  {
+    "coveredByFinishCard": true,
+    "hitTag": "SECTION",
+    "kind": "narrow-overview-issue",
+    "place": "longke"
+  }
+]

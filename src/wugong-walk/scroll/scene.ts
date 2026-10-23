@@ -1,6 +1,7 @@
 import { Application, Container, Graphics, Sprite, Texture } from 'pixi.js';
 import { DEFAULT_CHARACTER, type CharacterId } from '../../characters/catalog';
 import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../../characters/pixi';
+import { mapCharacterScale } from '../../journey/map-camera';
 import { clamp, mix } from '../model';
 import type { EnvironmentFrame } from '../environment';
 import { ScrollCamera, type ScrollProjection, type ScrollView } from './camera';
@@ -92,7 +93,7 @@ export class ScrollScene {
     this.stars.clear();
     for (let i = 0; i < 38; i++) this.stars.circle((i * 137.3) % width, (i * 61.7) % (height * .48), i % 7 === 0 ? 1.2 : .7).fill({ color: '#f6edcc', alpha: .4 + (i % 4) * .12 });
   }
-  private paintHiker(journey: ScrollJourney, dt: number, reduced: boolean): void {
+  private paintHiker(journey: ScrollJourney, projection: ScrollProjection, dt: number, reduced: boolean): void {
     const pose = journey.pose;
     let a = this.walk[this.stillFrame];
     if (journey.moving) {
@@ -123,20 +124,21 @@ export class ScrollScene {
       this.turnTime += dt;
       if (this.turnTime > .24) { this.facing = Math.sign(direction); this.turnTime = 0; }
     } else this.turnTime = 0;
-    this.hiker.scale.set(this.facing, 1);
-    const contactX = a.contactX;
+    const size = mapCharacterScale(projection);
+    this.hiker.scale.set(this.facing * size.x, size.y);
+    const contactX = a.contactX * size.x;
     const groundY = this.trail.soleOffset(journey.travel, contactX);
     this.hiker.position.set(point.x, point.y + groundY); this.hiker.zIndex = point.y;
     this.shadow.rotation = this.trail.heading(journey.travel); this.shadow.alpha = pose.kind === 'resting' || pose.kind === 'sitting' ? .45 : .7;
   }
   paint(journey: ScrollJourney, environment: EnvironmentFrame, dt: number, reduced: boolean): ScrollProjection {
     const p = this.camera.advance(journey, dt, reduced);
-    this.world.position.set(p.x, p.y); this.world.scale.set(p.scale);
-    this.landscape.lights.position.set(p.x, p.y); this.landscape.lights.scale.set(p.scale);
+    this.world.position.set(p.x, p.y); this.world.scale.set(p.scaleX, p.scaleY);
+    this.landscape.lights.position.set(p.x, p.y); this.landscape.lights.scale.set(p.scaleX, p.scaleY);
     const elapsed = reduced ? 0 : environment.elapsed;
     this.sky.paint(p, environment, reduced);
     this.landscape.paint(environment, reduced, journey);
-    this.paintHiker(journey, dt, reduced);
+    this.paintHiker(journey, p, dt, reduced);
     this.warmth.alpha = environment.warmth * .22;
     this.shade.alpha = environment.night * .66 + environment.cloud * .08;
     this.stars.alpha = environment.night * .8;
@@ -144,7 +146,7 @@ export class ScrollScene {
       const at = this.trail.sample((i + .5) / this.haze.length * this.trail.length);
       const point = p.toScreen({ x: at.x + Math.sin(elapsed * .028 + i) * 45, y: at.y + 140 + (i % 2) * 90 });
       const cleared = journey.hasCollected('clouds') ? 1 - clamp((journey.travel - journey.events.clouds.travel) / 340) : 0;
-      haze.position.set(point.x, point.y); haze.alpha = (.018 + environment.fog * .32) * (1 - cleared * .70); haze.width = (400 + i * 55) * p.scale; haze.height = (34 + environment.fog * 88) * p.scale;
+      haze.position.set(point.x, point.y); haze.alpha = (.018 + environment.fog * .32) * (1 - cleared * .70); haze.width = (400 + i * 55) * p.scaleX; haze.height = (34 + environment.fog * 88) * p.scaleY;
     }
     this.rain.clear();
     if (environment.rain > .04) {

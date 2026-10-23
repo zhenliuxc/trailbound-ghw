@@ -1,7 +1,10 @@
-import type { JournalData, Moment, MomentCatalog, RouteId, RouteSummary } from './contracts';
+import type { JournalArtPresentation, JournalData, Moment, MomentCatalog, RouteId, RouteSummary } from './contracts';
 import type { GameDom } from './dom';
 import { EventBindings } from './dom';
 import type { SceneManager, SceneSession } from './scene-manager';
+import { createJournalStore, type JournalSaveResult } from './journal-store';
+import { tigerLegacyBadgeFile } from './tiger-badge';
+import { createJournalRouteFilter, type JournalRoute } from './journal-route-filter';
 
 interface PlaceSource { name: string; url: string }
 interface JournalOptions {
@@ -22,7 +25,7 @@ interface JournalOptions {
   evidence(id: string): (PlaceSource & { fact: string }) | null;
   observation(id: string): { fact: string; source: string } | null;
   source(id: string): PlaceSource | null;
-  presentArt?(image: HTMLImageElement, moment: Moment): string | null;
+  presentArt?(image: HTMLImageElement, moment: Moment): JournalArtPresentation | null;
 }
 
 /** Owns the tag wall, reader, paging, persistence and per-trip display. Never clears saves. */
@@ -31,9 +34,10 @@ export function createJournalController(options: JournalOptions) {
   const { get: $, html } = dom;
   const bindings = new EventBindings();
   const pictures = new Map<string, HTMLElement>();
-  let records = D.loadMoments(options.storage);
+  const store = createJournalStore({ catalog: D, data, storage: options.storage });
+  let records = store.read();
   let tripMoments: Moment[] = [];
-  let route: RouteId | 'all' = 'all';
+  let route: JournalRoute = 'all';
   let pageSize = data.PAGE_SIZE;
   let session: SceneSession | null = null;
   let trigger: HTMLButtonElement | null = null;
@@ -42,12 +46,16 @@ export function createJournalController(options: JournalOptions) {
   let index = 0;
   let flip: Animation | null = null;
   let swipe: { id: number; x: number; y: number; time: number; scroll: number } | null = null;
+  const routeFilter = createJournalRouteFilter({ dom, routes: options.routes, onChange(selected) {
+    route = selected; pageSize = data.PAGE_SIZE; render();
+  } });
 
   function tagImage(parent: Element, file: string, label: string, reading: boolean, moment: Moment) {
     const key = file + '|' + label;
     const cached = reading && pictures.get(key);
     if (cached) { parent.appendChild(cached); return cached; }
-    const badge = html('span', null, parent, 'journal-badge-art journal-tag-art');
+    const panel = reading ? html('div', null, parent, 'journal-art-view') : null;
+    const badge = html('span', null, panel ?? parent, 'journal-badge-art journal-tag-art');
     badge.setAttribute('role', 'img');
     badge.setAttribute('aria-label', label + ' · 手绘收藏标签');
     const status = html('span', '画作展开中', badge, 'journal-art-status');
@@ -57,14 +65,36 @@ export function createJournalController(options: JournalOptions) {
     image.setAttribute('loading', reading ? 'eager' : 'lazy');
     image.setAttribute('decoding', 'async');
     image.style.opacity = '0';
-    if (reading) pictures.set(key, badge);
-    const reveal = () => { status.hidden = true; image.style.opacity = '1'; };
+    if (panel) pictures.set(key, panel);
     let presented = false;
     image.onload = () => {
       if (!presented && options.presentArt) {
-        presented = true; const file = options.presentArt(image, moment);
-        if (file) { image.src = file; return; }
+        presented = true; const presentation = options.presentArt(image, moment);
+        if (presentation) {
+          const original = presentation.original;
+          if (panel && original) {
+            const ratio = image.naturalWidth / image.naturalHeight;
+            const toggle = html('button', '查看完整原画', panel, 'journal-original-toggle');
+            toggle.type = 'button'; toggle.setAttribute('aria-pressed', 'false');
+            let showOriginal = false;
+            toggle.addEventListener('click', () => {
+              showOriginal = !showOriginal;
+              toggle.setAttribute('aria-pressed', String(showOriginal));
+              toggle.textContent = showOriginal ? '返回圆形徽章' : '查看完整原画';
+              badge.setAttribute('aria-label', label + (showOriginal ? ' · 完整原画' : ' · 手绘收藏标签'));
+              badge.style.aspectRatio = showOriginal ? String(ratio) : '1';
+              image.hidden = false; image.style.opacity = '0'; status.hidden = false;
+              status.textContent = '画作展开中'; image.src = showOriginal ? original : presentation.src;
+            });
+          }
+          if (image.src !== presentation.src) { image.src = presentation.src; return; }
+        }
       }
+      const loadedSource = image.src;
+      const reveal = () => {
+        if (image.src !== loadedSource) return;
+        status.hidden = true; image.hidden = false; image.style.opacity = '1';
+      };
       if (reading && image.decode) image.decode().then(reveal, reveal); else reveal();
     };
     image.onerror = () => {
@@ -73,7 +103,7 @@ export function createJournalController(options: JournalOptions) {
       badge.setAttribute('aria-label', label + ' · 画作暂未加载，文字回忆仍可阅读');
     };
     image.setAttribute('src', file);
-    return badge;
+    return panel ?? badge;
   }
   function badge(parent: Element, moment: Moment, reading = false) {
     if (moment.edition === 3 && !D.hasTag(moment)) {
@@ -87,7 +117,7 @@ export function createJournalController(options: JournalOptions) {
       html('span', '沿途记事', note); html('small', '未获得标签', note);
       return note;
     }
-    const file = D.tagArt(moment);
+    const file = D.tagArt(moment) ?? tigerLegacyBadgeFile(moment);
     if (file) return tagImage(parent, file, moment.tag || moment.title, reading, moment);
     const entryIndex = Math.max(0, D.CATALOG.findIndex(entry => entry.id === moment.id));
     const i = entryIndex % 9;
@@ -100,6 +130,7 @@ export function createJournalController(options: JournalOptions) {
   function render(append = false) {
     const list = $('journal-list');
     const book = data.page(records, route, pageSize);
+    routeFilter.render(route, data.page(records, 'all', D.MAX_MOMENTS).entries);
     $('journal-count').textContent = `${book.totalAll}个瞬间`;
     $('trip-count').textContent = `本次记下${options.tripCount()}个瞬间`;
     const routeName = options.routes.find(r => r.id === route)?.name || '全部路线';
@@ -173,7 +204,7 @@ export function createJournalController(options: JournalOptions) {
     const keep = new Set<string>();
     for (const entry of [previous, moment, next]) {
       if (!entry || !D.hasTag(entry)) continue;
-      const file = D.tagArt(entry); if (!file) continue;
+      const file = D.tagArt(entry) ?? tigerLegacyBadgeFile(entry); if (!file) continue;
       const label = entry.tag || entry.title, key = file + '|' + label;
       keep.add(key);
       if (!pictures.has(key)) tagImage(html('div'), file, label, true, entry);
@@ -213,18 +244,15 @@ export function createJournalController(options: JournalOptions) {
     if (!session || next < 0 || next >= entries.length) return;
     index = next; renderDetail(direction);
   }
-  function remember(moment: Moment) {
-    if (!D.hasTag(moment)) return;
-    tripMoments.push(moment);
-    const result = data.remember(records, moment);
-    if (result.status === 'full') $('journal-storage').textContent = '手帐已满，原回忆已保留。这个新片刻仍可在本次旅程结尾查看。';
-    else if (result.status !== 'unchanged') {
-      records = result.moments;
-      $('journal-storage').textContent = D.saveMoments(options.storage, records) ? '回忆自动保存在这个浏览器，相同的片刻只留一页。' : '这个浏览器无法保存手帐，本次打开页面期间仍可以记下瞬间。';
-    }
-    const message = result.status === 'unchanged' ? '再次遇见，手帐中已留存' : result.status === 'upgraded' ? '手帐已补上手绘' : '刚刚收下标签';
+  function remember(moment: Moment): JournalSaveResult {
+    const result = store.save(moment);
+    if (result.kind === 'error') { $('journal-storage').textContent = result.message; return result; }
+    records = result.moments;
+    if (!tripMoments.some(entry => entry.route === moment.route && entry.id === moment.id)) tripMoments.push(moment);
+    $('journal-storage').textContent = '回忆自动保存在这个浏览器，相同的片刻只留一页。';
+    const message = result.change === 'unchanged' ? '再次遇见，手帐中已留存' : result.change === 'upgraded' ? '手帐已补上手绘' : '刚刚收下标签';
     $('discovery-status').textContent = `${message}「${moment.title}」 · ${moment.place}`;
-    render(); options.onRemember(moment);
+    render(); options.onRemember(moment); return result;
   }
   function renderEnding() {
     const section = $('ending-journal'), list = $('ending-badges'), detail = $('ending-detail');
@@ -267,25 +295,24 @@ export function createJournalController(options: JournalOptions) {
       if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.7) turn(dx < 0 ? 1 : -1);
     });
     bindings.listen(page, 'pointercancel', () => { swipe = null; });
-    for (const r of options.routes) html('option', r.name, $('journal-route')).setAttribute('value', r.id);
-    bindings.listen($('journal-route'), 'change', () => {
-      const selected = $<HTMLSelectElement>('journal-route').value;
-      route = options.routes.find(r => r.id === selected)?.id || 'all'; pageSize = data.PAGE_SIZE; render();
-    });
     bindings.listen($('journal-more'), 'click', () => {
       const previous = $('journal-list').children.length;
       pageSize += data.PAGE_SIZE; render(true);
       $('journal-list').children[previous]?.querySelector('button')?.focus();
     });
   }
+  function reload() { records = store.read(); render(); }
+  const browser = dom.document.defaultView;
+  const storageChanged = (event: StorageEvent) => { if (event.storageArea === options.storage) reload(); };
+  browser?.addEventListener('storage', storageChanged);
   bind();
   return {
     get open() { return session !== null; },
     get records(): readonly Moment[] { return records; },
     render, renderEnding, remember, close,
-    reload() { records = D.loadMoments(options.storage); render(); },
+    reload,
     resetTrip() { tripMoments = []; },
     recent(routeId: RouteId) { return records.filter(moment => moment.route === routeId).slice(-3).map(moment => moment.id); },
-    destroy() { close(false); bindings.destroy(); },
+    destroy() { close(false); routeFilter.destroy(); bindings.destroy(); browser?.removeEventListener('storage', storageChanged); },
   };
 }

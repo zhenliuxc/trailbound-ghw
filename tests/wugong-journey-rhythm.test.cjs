@@ -91,9 +91,13 @@ test('the full route leaves 10 seconds of walking between interruptions and no q
 
 test('new notebook pages deduplicate independently and retain their first artwork, date and words', () => {
   let value = null; const storage = { getItem: () => value, setItem: (_key, next) => { value = next; } };
-  for (const id of [FOREST_LEAVES_ID, HOMEWARD_PAGES_ID]) assert.deepEqual(rememberKeepsake(catalog, journal, storage, id, capture, 'mist', 1000), { kind: 'stored', existing: false });
+  for (const id of [FOREST_LEAVES_ID, HOMEWARD_PAGES_ID]) {
+    const saved = rememberKeepsake(catalog, journal, storage, id, capture, 'mist', 1000);
+    assert.equal(saved.kind, 'stored'); assert.equal(saved.existing, false);
+  }
   const original = value;
-  assert.deepEqual(rememberKeepsake(catalog, journal, storage, FOREST_LEAVES_ID, capture, 'clear', 2000), { kind: 'stored', existing: true });
+  const replay = rememberKeepsake(catalog, journal, storage, FOREST_LEAVES_ID, capture, 'clear', 2000);
+  assert.equal(replay.kind, 'stored'); assert.equal(replay.existing, true);
   assert.equal(value, original); assert.equal(catalog.loadMoments(storage).length, 2);
   assert.ok(catalog.loadMoments(storage).every(moment => moment.createdAt === 1000 && moment.captureArt === capture));
   assert.ok(catalog.loadMoments(storage).every(moment => moment.weather === 'fog'), 'map mist must survive the existing journal weather vocabulary');

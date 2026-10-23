@@ -214,6 +214,9 @@
 .journal-entry.found strong{min-height:3.4em;overflow-wrap:anywhere}.journal-entry .journal-badge-place{margin-top:auto;padding-top:3px}
 .journal-tag-art{position:relative;background-image:none;display:grid;place-items:center;overflow:hidden}
 .journal-tag-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.journal-art-status{font-size:10px;line-height:1.7;color:#8a987c;text-align:center;padding:7px}.journal-art-status[hidden]{display:none}
+.journal-art-view{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;min-width:0}
+.journal-original-toggle{min-height:44px;padding:8px 14px;border:1px solid #d5d3bd;border-radius:18px;background:#faf7ed;color:#63725c;font:12px/1.5 var(--sans);cursor:pointer}
+.journal-original-toggle:focus-visible{outline:2px solid #89947c;outline-offset:3px}
 .journal-note-status{display:block;font-size:11px;line-height:1.8;color:#809073;margin:8px 0}
 @media(max-width:680px){.journal-memory-label{width:82px;height:82px;padding:5px}.journal-memory-label svg{width:48px;height:29px}.journal-memory-label>span{font-size:11px}.journal-memory-label>small{font-size:7px}}
 /* A quiet label wall, with a continuous picture-and-memory reader. */
@@ -225,12 +228,23 @@
 .journal-notebook>.journal-intro{font:normal 14px/1.9 var(--serif);color:#748269;margin:10px 0 22px}
 .journal-notebook>#discovery-status{font-size:11px;margin:0 0 14px;color:#6a805d}
 .journal-notebook>#discovery-status:empty{display:none}
-.journal-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 0;border-block:1px solid #dfe3d1}
-.journal-route-picker{display:flex;align-items:center;gap:12px;min-width:0}
-.journal-route-picker label{font-size:12px;color:#6c7e62}
-.journal-route-picker select{max-width:100%;min-height:44px;padding:8px 32px 8px 12px;font:13px var(--sans);color:#4e6949;background:#fffdf3;border:1px solid #cbd5bb;border-radius:8px}
-.journal-route-picker select:focus-visible{outline:3px solid #cc9b53;outline-offset:3px}
+.journal-toolbar{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:0;padding:16px 0 12px;border-block:1px solid #dfe3d1}
+.journal-toolbar-heading{display:flex;align-items:center;flex-wrap:wrap;gap:6px 16px;padding-inline:2px}
+#journal-route-label{font:12px/1.6 var(--sans);letter-spacing:.6px;color:#68785f}
+.journal-route-picker{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0;width:100%;max-width:100%;box-sizing:border-box;padding:4px 3px 6px;scrollbar-width:thin;scrollbar-color:#bdc8ae transparent;scroll-padding-inline:6px}
+.journal-route-option{position:relative;display:block;flex:none;cursor:pointer;isolation:isolate}
+.journal-route-option input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+.journal-route-tab{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;box-sizing:border-box;padding:9px 14px;border:1px solid #dce1ce;border-radius:5px 13px 13px 5px;background:linear-gradient(110deg,#eeeadb66,transparent 48%),#fbfaf2;color:#64745b;font:13px/1.6 var(--sans);white-space:nowrap;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+.journal-route-total{display:grid;place-items:center;min-width:22px;min-height:22px;padding-inline:5px;box-sizing:border-box;border-radius:11px;background:#e9eddf;color:#617252;font:11px/1 var(--sans);font-variant-numeric:tabular-nums}
+.journal-route-total[hidden]{display:none}
+.journal-route-option input:checked+.journal-route-tab{border-color:#506c4a;background:#506c4a;color:#fffdf3;box-shadow:inset 3px 0 #b5c397}
+.journal-route-option input:checked+.journal-route-tab .journal-route-name{font-weight:600}
+.journal-route-option input:checked+.journal-route-tab .journal-route-total{background:#ffffff20;color:#fffdf3}
+.journal-route-option input:focus-visible+.journal-route-tab{outline:2px solid #ab8952;outline-offset:2px}
+@media(hover:hover){.journal-route-option:hover input:not(:checked)+.journal-route-tab{background:#eff2e5;border-color:#b2c19e;color:#405f3e}}
+.journal-route-scroll-hint{display:none;color:#89947d;font-size:10px}
 .journal-toolbar #trip-count{font-size:11px;color:#7b886e}
+.journal-toolbar-heading #trip-count{margin-left:auto}
 .journal-notebook>#journal-filter-count{font-size:11px;margin:18px 0;color:#7b886e;min-height:18px}
 .journal-notebook .journal-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:stretch;list-style:none;padding:0;margin:0}
 .journal-notebook .journal-entry.found{padding:0;border:0;border-radius:12px;background:transparent;box-shadow:none;text-align:center;animation:none;min-width:0}
@@ -285,7 +299,7 @@
 @media(min-width:681px) and (max-width:960px){.journal-notebook .journal-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.journal-wall-button{padding:18px 8px 12px}.journal-wall-button>.journal-badge-art,.journal-wall-button>.journal-memory-label{width:116px}.journal-detail .journal-spread{padding:28px;gap:26px}.journal-copy .journal-entry-title{font-size:25px}}
 @media(max-width:680px){
  .journal-notebook{margin-top:30px;padding-top:24px}.journal-heading h2{font-size:26px}.journal-heading .eyebrow{font-size:8px;letter-spacing:1px}.journal-heading #journal-count{font-size:11px;padding:5px 10px}
- .journal-notebook>.journal-intro{font-size:13px;margin-bottom:18px}.journal-toolbar{gap:8px}.journal-route-picker{gap:8px}.journal-route-picker label{font-size:11px}.journal-toolbar #trip-count{font-size:10px}
+ .journal-notebook>.journal-intro{font-size:13px;margin-bottom:18px}.journal-toolbar{gap:6px;padding-block:12px 6px}.journal-route-picker{flex-wrap:nowrap;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;padding-bottom:10px}.journal-route-tab{font-size:13px;padding-inline:12px}.journal-route-scroll-hint{display:inline;margin-left:auto}.journal-toolbar #trip-count{font-size:10px}.journal-toolbar-heading #trip-count{margin-left:0}
  .journal-notebook .journal-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.journal-wall-button{padding:18px 10px 12px}.journal-wall-button>.journal-badge-art,.journal-wall-button>.journal-memory-label{width:124px}.journal-notebook .journal-wall-title{font-size:15px;margin-top:14px}.journal-wall-hint{font-size:10px}
  .journal-detail{width:calc(100% - 20px);height:calc(100vh - 24px);height:calc(100dvh - 24px);border-radius:16px}
  .journal-detail-bar{padding:10px 12px 10px 20px}.journal-detail-bar strong{font-size:16px}
@@ -295,7 +309,7 @@
  .journal-detail-nav{padding:12px 14px max(12px,env(safe-area-inset-bottom));gap:8px}.journal-detail-nav button{gap:6px;padding:10px 12px;font-size:12px}.journal-detail-nav small{font-size:9px}.journal-detail-nav #journal-detail-position{font-size:16px}
 }
 @media(max-width:360px){.journal-detail .journal-spread{padding-inline:18px}.journal-detail-nav small{display:none}.journal-detail-nav button{padding-inline:10px}.journal-wall-button{padding-inline:6px}}
-@media(prefers-reduced-motion:reduce){.journal-detail[open]{animation:none}.journal-wall-button,.journal-wall-button>.journal-badge-art{transition:none}.journal-wall-button:hover,.journal-wall-button:hover>.journal-badge-art{transform:none}}
+@media(prefers-reduced-motion:reduce){.journal-detail[open]{animation:none}.journal-wall-button,.journal-wall-button>.journal-badge-art,.journal-route-tab{transition:none}.journal-wall-button:hover,.journal-wall-button:hover>.journal-badge-art{transform:none}}
 
 /* Observation and greeting share the same watercolor stage, with unblocked landmarks. */
 .micro-panel:is([data-game="clouds"],[data-game="altar"],[data-game="greet"]) .wind-hud-top>span:first-child{max-width:60%;padding:8px 12px}
@@ -396,3 +410,38 @@
 .aotai-entry-cover .overlay-card{max-width:780px;width:min(100%,780px);padding:23px 32px;background:#faf8edd9;border:1px solid #f8f6e5c9;box-shadow:0 10px 40px #233f3c1a;backdrop-filter:blur(5px);border-radius:16px}
 .aotai-entry-cover #overlay-kicker{margin:0 0 6px;font-size:10px;letter-spacing:2px}.aotai-entry-cover #overlay-title{font-size:clamp(24px,2.8vw,37px);line-height:1.4;margin:4px 0 9px}.aotai-entry-cover #overlay-copy{font-size:13px;line-height:1.9;margin:0 auto 15px;max-width:650px}.aotai-entry-cover #overlay-action{padding:12px 25px;font-size:14px;min-height:48px}.aotai-entry-cover #overlay-hint{font-size:10px;margin:10px 0 0}
 @media(max-width:600px){.overlay.aotai-entry-cover{padding:14px;background-position:57% center}.aotai-entry-cover .overlay-card{padding:20px 18px}.aotai-entry-cover #overlay-title{font-size:25px}.aotai-entry-cover #overlay-copy{font-size:12px}.aotai-entry-cover #overlay-hint{font-size:9px}}
+
+.maclehose-entry > :is(#map,.pixi-landscape,.weather-badge,#weather-fx-html,.map-toggle){visibility:hidden}
+.overlay.maclehose-entry-cover{background:#b6d6ce url('scenes/maclehose-v1.webp') center/cover no-repeat;place-items:end start;padding:clamp(18px,3.2vw,44px)}
+.maclehose-entry-cover .overlay-card{width:min(100%,510px);max-width:510px;padding:24px 28px;background:#faf8edf0;border-color:#fff9e8bc;border-radius:15px;text-align:left;box-shadow:0 8px 34px #244c4620}
+.maclehose-entry-cover #overlay-kicker{margin:0 0 7px;font-size:10px;letter-spacing:2px}
+.maclehose-entry-cover #overlay-title{font-size:clamp(25px,2.6vw,34px);line-height:1.4;margin:4px 0 12px}
+.maclehose-entry-cover #overlay-copy{font-size:12px;line-height:1.9;margin:0 0 16px;color:#667e6c}
+.maclehose-entry-cover #overlay-action{font-size:13px;padding:11px 23px}
+.maclehose-entry-cover #overlay-hint{font-size:10px;letter-spacing:.3px;margin-top:12px;color:#788c78}
+@media(max-width:680px){.overlay.maclehose-entry-cover{padding:14px;background-position:56% center}.maclehose-entry-cover .overlay-card{padding:21px 20px}.maclehose-entry-cover #overlay-title{font-size:26px}.maclehose-entry-cover #overlay-copy{font-size:11px}.maclehose-entry-cover #overlay-hint{font-size:9px}}
+
+body.choosing-route :is(.album,.route-details){display:none}
+/* The national atlas shares location data and symbols with the journeys. */
+.home-page .site-header,.home-page main{width:calc(100% - clamp(24px,4vw,80px));max-width:1480px;padding-inline:0}
+.home-page .site-header{padding-block:18px}.home-page main{padding-top:24px}
+.home-page .intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 32px;align-items:end;margin:0 0 24px}
+.home-page .intro .eyebrow{grid-column:1/-1;margin-bottom:8px}.home-page .intro h1{font-size:clamp(28px,3vw,40px);margin:0}.home-page .intro>p:last-child{max-width:310px;line-height:1.9;padding-bottom:3px}
+.route-atlas-shell{margin:0 0 32px;padding:21px 24px 14px;border:1px solid #d5ddcf;border-radius:20px;background:radial-gradient(ellipse at 78% 72%,#e8f0e9 0,transparent 55%),linear-gradient(120deg,#f9f7eb,#f0f3e7);overflow:hidden;box-shadow:0 8px 36px #415f3e05}
+.atlas-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:0 4px}.atlas-heading h2{font:normal 21px/1.5 var(--serif);color:#405d48;margin:0}.atlas-heading>span{font-size:11px;color:#7a8974;letter-spacing:1px}
+.atlas-frame{position:relative;width:100%;height:520px;isolation:isolate}.atlas-map{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.atlas-shore,.atlas-coast{fill:none;stroke:#9db9b0;stroke-linejoin:round}.atlas-shore{stroke-width:25;opacity:.08}.atlas-coast{stroke-width:11;opacity:.14}
+.atlas-outline{fill:url(#atlas-wash);stroke:#92a68d;stroke-width:1.1;stroke-linejoin:round}.atlas-relief{stroke-linejoin:round;stroke-width:1}.atlas-relief-plateau{fill:#bbc3a0;fill-opacity:.5;stroke:#adba9860}.atlas-relief-basin{fill:#eadcaf;fill-opacity:.48;stroke:none}.atlas-relief-mountain{fill:#92a387;fill-opacity:.25;stroke:#879a7f35}.atlas-mountains{fill:none;stroke:#678066;stroke-opacity:.32;stroke-width:.8;stroke-linecap:round;stroke-linejoin:round}.atlas-river{fill:none;stroke:#87b4b3;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+.atlas-geography{font:12px var(--serif);fill:#7e8d71;letter-spacing:3px;text-anchor:middle;paint-order:stroke;stroke:#e7e8d2;stroke-width:2px;stroke-opacity:.55}.atlas-geography-sea{fill:#7f9d9b;stroke:#eef2e8;font-size:14px;letter-spacing:5px}
+.atlas-compass{position:absolute;top:28px;left:22px;display:grid;justify-items:center;gap:2px;color:#84977d;font:10px var(--serif)}.atlas-compass svg{display:block;width:27px;height:34px}
+.atlas-leader{fill:none;stroke:#84977c;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;opacity:.65}.atlas-dot{fill:#617e5c;stroke:#faf8e9;stroke-width:1.5;pointer-events:all;cursor:pointer}.atlas-leader:is(.is-selected,.is-hovered){stroke:#526f49;opacity:1;stroke-width:1.4}.atlas-dot:is(.is-selected,.is-hovered){fill:#ab884c;stroke:#fdf9e9;stroke-width:2;r:4.5px}
+.atlas-place{position:absolute;z-index:2;display:flex;align-items:center;gap:8px;min-width:132px;min-height:58px;padding:7px 11px 7px 8px;border:1px solid #d0dac7;border-radius:10px;transform:translate(-50%,-50%);background:#fcfbf1f2;box-shadow:0 3px 10px #41573e08;color:#4e684d;text-align:left;line-height:1.35;white-space:nowrap;transition:background .18s,border-color .18s,box-shadow .18s}
+.atlas-place-symbol{display:block;width:34px;height:34px;flex:none}.atlas-place-symbol svg{display:block;width:100%;height:100%}.atlas-place-symbol .trail-landmark-rim{fill:#f4f4e4;stroke:#b1bd9e;stroke-width:1}
+.atlas-place strong{display:block;font:normal 16px/1.45 var(--serif);color:#35583e}.atlas-place small{display:block;font:10px/1.5 var(--sans);color:#78876d;margin-top:2px}.atlas-place:hover{background:#fffef5;border-color:#8da780;box-shadow:0 5px 16px #405c3b13}.atlas-place[aria-pressed=true]{background:#e7efda;border-color:#829f70;box-shadow:0 0 0 1px #829f7040}.atlas-place:focus-visible{outline:2px solid #b29458;outline-offset:4px}
+.atlas-frame[data-layout="narrow"] .atlas-place{gap:4px;width:90px;min-width:90px;min-height:52px;padding:6px 5px;border-radius:8px}.atlas-frame[data-layout="narrow"] .atlas-place-symbol{width:22px;height:22px}.atlas-frame[data-layout="narrow"] .atlas-place strong{font-size:12px}.atlas-frame[data-layout="narrow"] .atlas-place small{font-size:8px}
+.atlas-status{margin:0;padding:0 8px 13px;text-align:center;font:13px/1.8 var(--serif);color:#637c60}.atlas-footer{display:flex;justify-content:space-between;gap:15px;padding:9px 4px 0;border-top:1px solid #ccd8c155;color:#8a977e;font-size:10px}.atlas-footer a{text-decoration:none;color:#73856a;min-height:24px}.atlas-footer a:hover{text-decoration:underline}.atlas-loading{height:520px;display:grid;place-items:center;margin:0;color:#8d9a81;font:14px var(--serif)}
+.stage-heading:has(.route-map-back){flex-wrap:wrap}.stage-heading .sound-controls{display:flex;align-items:center;gap:7px}.stage-heading .route-map-back{border:0;border-radius:0;padding:0 5px;font-size:10px;min-height:35px}.journey-stage{scroll-margin-top:18px}#route-picker{scroll-margin-top:18px}#overlay-title:focus{outline:none}
+.illustrated-entry > :is(#map,.pixi-landscape,.weather-badge,#weather-fx-html,.map-toggle){visibility:hidden}.overlay.illustrated-entry-cover{background:#d0ddc6 var(--route-cover) center/cover no-repeat;place-items:end center;padding:clamp(18px,3vw,40px)}.illustrated-entry-cover .overlay-card{max-width:540px;padding:24px 30px;background:#fffdf2ee;box-shadow:0 6px 32px #29422b1f}.illustrated-entry-cover .overlay-card h2{font-size:25px}.illustrated-entry-cover .overlay-card>p:not(.eyebrow){margin-bottom:16px}
+@media(max-width:900px){.home-page .intro{display:block}.home-page .intro h1{margin-bottom:8px}.home-page .intro>p:last-child{max-width:none}.route-atlas-shell{padding:18px 14px 12px}.atlas-heading>span{letter-spacing:0}}
+@media(max-width:560px){.home-page .site-header{padding-block:16px}.home-page main{padding-top:21px}.home-page .intro{margin-bottom:21px}.home-page .intro h1{font-size:27px}.home-page .intro>p:last-child{font-size:11px;max-width:320px}.route-atlas-shell{padding:16px 6px 10px;border-radius:15px;margin-bottom:24px}.atlas-heading{padding:0 9px}.atlas-heading h2{font-size:18px}.atlas-heading>span{font-size:10px}.atlas-footer{font-size:9px;margin:0 8px;padding:8px 0 0}.atlas-status{font-size:12px;padding-bottom:12px}.atlas-compass{top:15px;left:12px;font-size:9px}.atlas-compass svg{width:22px;height:28px}.atlas-loading{height:430px}.stage-heading .route-map-back{font-size:9px}.illustrated-entry-cover .overlay-card{padding:23px 20px}.illustrated-entry-cover .overlay-card h2{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.atlas-place{transition:none}}

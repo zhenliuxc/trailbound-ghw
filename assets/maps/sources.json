@@ -1,0 +1,32 @@
+{
+  "source": "Natural Earth 1:50m Admin 0 countries",
+  "url": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_admin_0_countries.geojson",
+  "download": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson",
+  "retrieved": "2026-10-20",
+  "license": "Public domain",
+  "terms": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "originalSha256": "3e458fc036ad0a66411f2c1e6cac49c5d7bfb81cb1123bc513b22511a2b7fdeb",
+  "processing": "Extracted four geometries for a national route overview; removed unrelated properties. Local projection and path generation use d3-geo 3.1.1.",
+  "physical": [
+    {
+      "source": "Natural Earth 1:50m ne_50m_geography_regions_polys",
+      "url": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_geography_regions_polys.geojson",
+      "download": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_geography_regions_polys.geojson",
+      "retrieved": "2026-10-22",
+      "license": "Public domain",
+      "terms": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "originalSha256": "33396643d8f0eed408e80bf5ca43dcdb7993f790fdc4eadae311660f8b91fe76",
+      "processing": "Selected physical regions and Yangtze/Yellow River centerlines. Rendered as a schematic atlas under the same projection as the national outline. No elevation data."
+    },
+    {
+      "source": "Natural Earth 1:50m ne_50m_rivers_lake_centerlines",
+      "url": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_rivers_lake_centerlines.geojson",
+      "download": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_rivers_lake_centerlines.geojson",
+      "retrieved": "2026-10-22",
+      "license": "Public domain",
+      "terms": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "originalSha256": "f286e0ce978fde999ca2d7a78c764be08542e19b63cded52b05c12d5173ccc51",
+      "processing": "Selected physical regions and Yangtze/Yellow River centerlines. Rendered as a schematic atlas under the same projection as the national outline. No elevation data."
+    }
+  ]
+}

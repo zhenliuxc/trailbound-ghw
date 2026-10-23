@@ -7,7 +7,7 @@ import { WorldAssets } from './assets';
 import { WugongJourney } from './journey';
 import { LandmarkCard, stopIcons } from './landmarks';
 import { loadForestTexture } from './tree-textures';
-import { ArtOverlay } from '../wugong-walk/art-overlay';
+import { ArtOverlay } from '../journey/art-overlay';
 
 function element(id: string): HTMLElement {
   const value = document.getElementById(id); if (!value) throw new Error(`武功山地图缺少 ${id}`); return value;

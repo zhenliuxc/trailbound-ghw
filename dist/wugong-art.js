@@ -1,4 +1,4 @@
-// Generated Wugong art bridge. Reuses existing mini-game, reward and journal controllers.
+// Generated from src/journey/art-page.ts. Reuses existing mini-game, reward and journal controllers.
 "use strict";
 (() => {
   var __create = Object.create;
@@ -645,18 +645,18 @@
                   }
                   return vertices;
                 };
-                Vertices.chamfer = function(vertices, radius, quality, qualityMin, qualityMax) {
-                  if (typeof radius === "number") {
-                    radius = [radius];
+                Vertices.chamfer = function(vertices, radius2, quality, qualityMin, qualityMax) {
+                  if (typeof radius2 === "number") {
+                    radius2 = [radius2];
                   } else {
-                    radius = radius || [8];
+                    radius2 = radius2 || [8];
                   }
                   quality = typeof quality !== "undefined" ? quality : -1;
                   qualityMin = qualityMin || 2;
                   qualityMax = qualityMax || 14;
                   var newVertices = [];
                   for (var i = 0; i < vertices.length; i++) {
-                    var prevVertex = vertices[i - 1 >= 0 ? i - 1 : vertices.length - 1], vertex = vertices[i], nextVertex = vertices[(i + 1) % vertices.length], currentRadius = radius[i < radius.length ? i : radius.length - 1];
+                    var prevVertex = vertices[i - 1 >= 0 ? i - 1 : vertices.length - 1], vertex = vertices[i], nextVertex = vertices[(i + 1) % vertices.length], currentRadius = radius2[i < radius2.length ? i : radius2.length - 1];
                     if (currentRadius === 0) {
                       newVertices.push(vertex);
                       continue;
@@ -1273,14 +1273,14 @@
                 };
                 Events2.trigger = function(object, eventNames, event) {
                   var names, name, callbacks, eventClone;
-                  var events = object.events;
-                  if (events && Common.keys(events).length > 0) {
+                  var events2 = object.events;
+                  if (events2 && Common.keys(events2).length > 0) {
                     if (!event)
                       event = {};
                     names = eventNames.split(" ");
                     for (var i = 0; i < names.length; i++) {
                       name = names[i];
-                      callbacks = events[name];
+                      callbacks = events2[name];
                       if (callbacks) {
                         eventClone = Common.clone(event, false);
                         eventClone.name = name;
@@ -1793,12 +1793,12 @@
                   result.overlap = overlapMin;
                 };
                 Collision._findSupports = function(bodyA, bodyB, normal, direction) {
-                  var vertices = bodyB.vertices, verticesLength = vertices.length, bodyAPositionX = bodyA.position.x, bodyAPositionY = bodyA.position.y, normalX = normal.x * direction, normalY = normal.y * direction, vertexA = vertices[0], vertexB = vertexA, nearestDistance = normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y), vertexC, distance3, j;
+                  var vertices = bodyB.vertices, verticesLength = vertices.length, bodyAPositionX = bodyA.position.x, bodyAPositionY = bodyA.position.y, normalX = normal.x * direction, normalY = normal.y * direction, vertexA = vertices[0], vertexB = vertexA, nearestDistance = normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y), vertexC, distance4, j;
                   for (j = 1; j < verticesLength; j += 1) {
                     vertexB = vertices[j];
-                    distance3 = normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y);
-                    if (distance3 < nearestDistance) {
-                      nearestDistance = distance3;
+                    distance4 = normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y);
+                    if (distance4 < nearestDistance) {
+                      nearestDistance = distance4;
                       vertexA = vertexB;
                     }
                   }
@@ -2164,25 +2164,25 @@
                   }
                   return Body2.create(Common.extend({}, trapezoid, options));
                 };
-                Bodies2.circle = function(x, y, radius, options, maxSides) {
+                Bodies2.circle = function(x, y, radius2, options, maxSides) {
                   options = options || {};
-                  var circle = {
+                  var circle2 = {
                     label: "Circle Body",
-                    circleRadius: radius
+                    circleRadius: radius2
                   };
                   maxSides = maxSides || 25;
-                  var sides = Math.ceil(Math.max(10, Math.min(maxSides, radius)));
+                  var sides = Math.ceil(Math.max(10, Math.min(maxSides, radius2)));
                   if (sides % 2 === 1)
                     sides += 1;
-                  return Bodies2.polygon(x, y, sides, radius, Common.extend({}, circle, options));
+                  return Bodies2.polygon(x, y, sides, radius2, Common.extend({}, circle2, options));
                 };
-                Bodies2.polygon = function(x, y, sides, radius, options) {
+                Bodies2.polygon = function(x, y, sides, radius2, options) {
                   options = options || {};
                   if (sides < 3)
-                    return Bodies2.circle(x, y, radius, options);
+                    return Bodies2.circle(x, y, radius2, options);
                   var theta = 2 * Math.PI / sides, path = "", offset = theta * 0.5;
                   for (var i = 0; i < sides; i += 1) {
-                    var angle = offset + i * theta, xx = Math.cos(angle) * radius, yy = Math.sin(angle) * radius;
+                    var angle = offset + i * theta, xx = Math.cos(angle) * radius2, yy = Math.sin(angle) * radius2;
                     path += "L " + xx.toFixed(3) + " " + yy.toFixed(3) + " ";
                   }
                   var polygon2 = {
@@ -3302,13 +3302,13 @@
                 Composites.newtonsCradle = function(x, y, number, size, length) {
                   var newtonsCradle = Composite2.create({ label: "Newtons Cradle" });
                   for (var i = 0; i < number; i++) {
-                    var separation = 1.9, circle = Bodies2.circle(
+                    var separation = 1.9, circle2 = Bodies2.circle(
                       x + i * (size * separation),
                       y + length,
                       size,
                       { inertia: Infinity, restitution: 1, friction: 0, frictionAir: 1e-4, slop: 1 }
-                    ), constraint = Constraint.create({ pointA: { x: x + i * (size * separation), y }, bodyB: circle });
-                    Composite2.addBody(newtonsCradle, circle);
+                    ), constraint = Constraint.create({ pointA: { x: x + i * (size * separation), y }, bodyB: circle2 });
+                    Composite2.addBody(newtonsCradle, circle2);
                     Composite2.addConstraint(newtonsCradle, constraint);
                   }
                   return newtonsCradle;
@@ -4905,6 +4905,358 @@
     }
   });
 
+  // .build/typescript/content/day-photos.js
+  var DAY_PHOTOS = {
+    "changping-forest": {
+      "title": "Xiaojin, Aba, Sichuan, China - panoramio (42).jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(42).jpg",
+      "author": "jetsun",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "file": "photos/changping-forest.webp",
+      "alt": "长坪沟溪边的苔木与针叶林",
+      "caption": "长坪沟森林实拍 · 区域配图，非枯树滩定点"
+    },
+    "changping-valley": {
+      "title": "Xiaojin, Aba, Sichuan, China - panoramio (52).jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(52).jpg",
+      "author": "jetsun",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "file": "photos/changping-valley.webp",
+      "alt": "长坪沟林间溪谷与山间云雾",
+      "caption": "长坪沟溪谷实拍 · 区域配图，非红石阵定点"
+    },
+    "changping-meadow": {
+      "title": "Xiaojin, Aba, Sichuan, China - panoramio (57).jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(57).jpg",
+      "author": "jetsun",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "file": "photos/changping-meadow.webp",
+      "alt": "长坪沟开阔的花草地与山壁",
+      "caption": "长坪沟草甸实拍 · 区域配图，未核准木骡子机位"
+    },
+    "mogan-bamboo": {
+      "title": "Mount Mogan bamboo forest.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Mount_Mogan_bamboo_forest.jpg",
+      "author": "Walter Grassroot",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/mogan-bamboo.webp",
+      "alt": "莫干山云雾中的竹林",
+      "caption": "莫干山竹林实拍 · 区域配图"
+    },
+    "mogan-path": {
+      "title": "Mount Mogan Path3.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Mount_Mogan_Path3.jpg",
+      "author": "Walter Grassroot",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/mogan-path.webp",
+      "alt": "莫干山树林中的木制山间步道",
+      "caption": "莫干山木制步道实拍 · 区域配图，非莫干岭石阶"
+    },
+    "mogan-stream": {
+      "title": "Mount Mogan River.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Mount_Mogan_River.jpg",
+      "author": "Walter Grassroot",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/mogan-stream.webp",
+      "alt": "莫干山石间流淌的溪水",
+      "caption": "莫干山溪水实拍 · 区域配图"
+    },
+    "westlake-creek": {
+      "title": "Jiuxi 20161004.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Jiuxi_20161004.jpg",
+      "author": "Tyg728",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/westlake-creek.webp",
+      "alt": "九溪十八涧的溪流、树林与游人",
+      "caption": "九溪十八涧溪流实拍 · 2016 年"
+    },
+    "westlake-path": {
+      "title": "九溪十八涧.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%B9%9D%E6%BA%AA%E5%8D%81%E5%85%AB%E6%B6%A7.jpg",
+      "author": "三猎",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/westlake-path.webp",
+      "alt": "九溪十八涧树林中的石板步道",
+      "caption": "九溪十八涧石径实拍"
+    },
+    "westlake-tea": {
+      "title": "Longjing tea village Hangzhou.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Longjing_tea_village_Hangzhou.jpg",
+      "author": "Niklas Dougherty",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "file": "photos/westlake-tea.webp",
+      "alt": "龙井村的房屋与周围茶园",
+      "caption": "龙井村与周围茶园实拍"
+    }
+  };
+
+  // .build/typescript/content/day-routes.js
+  var p = (x, y, elevation) => ({ x, y, elevation });
+  var water = '<path d="M4 22q10-8 20 0t20 0M5 32q10-8 20 0t20 0M9 42q8-6 16 0t16 0"/>';
+  var leaf = '<path d="M10 41Q5 10 40 9Q42 37 10 41ZM10 41l24-25M17 32l-1-12M24 26l10 1"/>';
+  var mountain = '<path d="m3 43 14-26 9 14 10-22 12 34H3ZM12 27l5 4 4-5"/>';
+  var steps = '<path d="M4 43h13V32h11V21h14V9M8 34h9M21 22h7M34 11h8"/>';
+  var tea = '<path d="M10 27h27q-1 17-14 17T10 27ZM37 29q14-2 8 9h-9M17 20q-7-6 0-13M27 20q-7-6 0-13"/>';
+  var DAY_ROUTES = {
+    changping: {
+      id: "changping",
+      name: "四姑娘山长坪沟",
+      region: "四川 · 阿坝",
+      title: "走过十月彩林，望见山谷尽头。",
+      subtitle: "喇嘛寺 → 枯树滩 → 干海子 → 木骡子 · 原路返回",
+      note: "沿溪走进彩林，在木骡子折返。",
+      ending: "回到喇嘛寺，带回枝影、铃声、远山与一片秋色。",
+      itinerary: "out-and-back",
+      world: { width: 3e3, height: 1900 },
+      startMinute: 8 * 60 + 30,
+      durationMinute: 8 * 60,
+      waypoints: [p(770, 1660, 3250), p(900, 1540, 3290), p(1070, 1530, 3340), p(1160, 1380, 3400), p(1320, 1310, 3470), p(1420, 1150, 3500), p(1300, 1030, 3520), p(1450, 900, 3540), p(1640, 910, 3570), p(1780, 800, 3590), p(1785, 670, 3630), p(1990, 620, 3660), p(2190, 620, 3690), p(2320, 500, 3720), p(2480, 430, 3760)],
+      places: [
+        { id: "lama", name: "喇嘛寺", knot: 0, feature: "temple", symbol: "temple" },
+        { id: "forest", name: "原始森林", knot: 2, feature: "forest", symbol: "forest", photo: DAY_PHOTOS["changping-forest"] },
+        { id: "deadtrees", name: "枯树滩", knot: 4, feature: "water", symbol: "snag" },
+        { id: "valley", name: "溪谷", knot: 6, feature: "water", symbol: "stream", labelSide: "left", photo: DAY_PHOTOS["changping-valley"] },
+        { id: "lower-meadow", name: "下干海子", knot: 7, feature: "meadow", symbol: "dry-basin", labelSide: "right" },
+        { id: "upper-meadow", name: "上干海子", knot: 9, feature: "meadow", symbol: "dry-basin", labelSide: "left" },
+        { id: "redrock", name: "红石阵", knot: 11, feature: "redrock", symbol: "redrock", labelSide: "right" },
+        { id: "muluozi", name: "木骡子", knot: 14, feature: "meadow", symbol: "alpine-meadow", photo: DAY_PHOTOS["changping-meadow"] }
+      ],
+      events: [
+        { entry: "changping-branch-reflection", knot: 4, place: "长坪沟 · 枯树滩", line: "溪声轻下来，枝桠在浅水里又长了一次。", motif: water },
+        { entry: "changping-bell-cord", knot: 8, place: "长坪沟 · 干海子马道休息处", line: "休息处的布垫上，一枚小铃被叠起的绳圈压住。", motif: '<path d="M13 35h26l-4-19q-9-10-17 0ZM10 36h32M22 41q4 5 8 0M24 8V4h5v4"/>' },
+        { entry: "changping-valley-path", knot: 13, place: "长坪沟 · 木骡子林缘", line: "林子将要让开，手帐里的小径还差一段。", motif: mountain },
+        { entry: "changping-autumn-print", knot: 5, leg: "return", place: "长坪沟 · 返程彩林栈道", line: "下午的光落在纸上，一片落叶露出细细的叶脉。", motif: leaf }
+      ],
+      weather: [{ from: 0, kind: "fog", name: "十月 · 晨雾彩林" }, { from: 0.15, kind: "clear", name: "薄云渐开" }, { from: 0.4, kind: "wind", name: "午间 · 草甸山风" }, { from: 0.61, kind: "clear", name: "返程 · 午后暖光" }],
+      sources: [{ name: "四姑娘山管理局 · 长坪沟", url: "https://www.sgns.cn/understand/cpg" }]
+    },
+    mogan: {
+      id: "mogan",
+      name: "莫干山竹林步道",
+      region: "浙江 · 德清",
+      title: "听着竹声，走过雨后的古道。",
+      subtitle: "莫干岭西坡 → 竹林石阶 → 岭口 → 大坑侧山林",
+      note: "竹叶接住雨滴，脚步慢慢穿过青绿。",
+      ending: "走到大坑侧山林，把竹声与雨后的古道留下。",
+      world: { width: 3e3, height: 1900 },
+      startMinute: 9 * 60,
+      durationMinute: 3 * 60,
+      waypoints: [p(360, 1500, 340), p(510, 1350, 375), p(710, 1400, 400), p(780, 1210, 435), p(960, 1160, 465), p(1030, 990, 500), p(1260, 1020, 530), p(1370, 850, 560), p(1550, 760, 590), p(1740, 830, 570), p(1860, 1040, 520), p(2090, 1030, 485), p(2220, 1190, 450), p(2460, 1260, 420), p(2660, 1390, 395)],
+      places: [
+        { id: "west", name: "莫干岭西坡", knot: 0, feature: "gate", symbol: "trailhead" },
+        { id: "bamboo", name: "竹林", knot: 2, feature: "bamboo", symbol: "bamboo", photo: DAY_PHOTOS["mogan-bamboo"] },
+        { id: "stone", name: "古道石阶", knot: 5, feature: "ridge", symbol: "steps" },
+        { id: "pass", name: "莫干岭口", knot: 8, feature: "ridge", symbol: "pass" },
+        { id: "forest", name: "林间步道", knot: 10, feature: "forest", symbol: "forest", photo: DAY_PHOTOS["mogan-path"] },
+        { id: "stream", name: "山涧", knot: 13, feature: "water", symbol: "stream", photo: DAY_PHOTOS["mogan-stream"] },
+        { id: "dakeng", name: "大坑侧山林", knot: 14, feature: "forest", symbol: "forest" }
+      ],
+      events: [
+        { entry: "bamboo-drop", knot: 3, place: "莫干山 · 莫干岭竹林", line: "雨停了一会儿，叶尖还在落下清亮的水珠。", motif: water },
+        { entry: "bamboo-step", knot: 6, place: "莫干山 · 莫干岭古道", line: "雨后的落叶伏在石阶上，古道在竹林里拐了个弯。", motif: steps },
+        { entry: "bamboo-leaf", knot: 11, place: "莫干山 · 大坑侧山林", line: "竹梢一齐转向远山，一阵风从林隙里经过。", motif: leaf }
+      ],
+      weather: [{ from: 0, kind: "rain", name: "细雨 · 竹林" }, { from: 0.29, kind: "fog", name: "雨歇 · 薄雾" }, { from: 0.62, kind: "clear", name: "林隙微光" }],
+      sources: [{ name: "湖州发布 · 莫干山古道背景资料", url: "https://www.thepaper.cn/newsDetail_forward_2597949" }]
+    },
+    westlake: {
+      id: "westlake",
+      name: "九溪龙井",
+      region: "浙江 · 杭州",
+      title: "沿着溪水，走进春日的茶园。",
+      subtitle: "九溪烟树 → 九溪十八涧 → 龙井茶园 → 龙井村",
+      note: "听溪水绕过石头，茶香在前面的村里。",
+      ending: "龙井村的一盏茶，把今天的溪声留得更久一点。",
+      world: { width: 3e3, height: 1900 },
+      startMinute: 9 * 60,
+      durationMinute: 2.5 * 60,
+      waypoints: [p(660, 1580, 70), p(810, 1460, 76), p(1030, 1460, 80), p(1180, 1280, 88), p(1390, 1330, 95), p(1560, 1170, 106), p(1400, 1050, 115), p(1490, 880, 127), p(1700, 800, 135), p(1930, 860, 148), p(2160, 740, 160), p(2300, 610, 172), p(2150, 510, 185), p(2270, 380, 195), p(2460, 330, 205)],
+      places: [
+        { id: "yan-shu", name: "九溪烟树", knot: 0, feature: "water", symbol: "lake" },
+        { id: "creek", name: "九溪溪谷", knot: 2, feature: "water", symbol: "stream", photo: DAY_PHOTOS["westlake-creek"] },
+        { id: "path", name: "九溪十八涧", knot: 5, feature: "forest", symbol: "stepping-stones", photo: DAY_PHOTOS["westlake-path"] },
+        { id: "tea", name: "龙井茶园", knot: 10, feature: "tea", symbol: "tea" },
+        { id: "village", name: "龙井村", knot: 14, feature: "village", symbol: "village", photo: DAY_PHOTOS["westlake-tea"] }
+      ],
+      events: [
+        { entry: "westlake-floating-leaf", knot: 3, place: "九溪龙井 · 九溪溪谷", line: "一片落叶在溪石旁打转，还没有找到下游的水路。", motif: leaf },
+        { entry: "westlake-stones", knot: 7, place: "九溪龙井 · 十八涧石径", line: "浅水从石头之间绕过，近处和远处是不同的声音。", motif: water },
+        { entry: "westlake-tea", knot: 10, place: "九溪龙井 · 龙井茶园", line: "嫩芽和新叶在晨光里透亮，茶垄铺过缓缓的山坡。", motif: leaf },
+        { entry: "westlake-eaves", knot: 13, place: "九溪龙井 · 龙井村口", line: "村口的茶盏冒起热气，可以在这里歇一会儿。", motif: tea }
+      ],
+      weather: [{ from: 0, kind: "fog", name: "春日 · 溪谷薄雾" }, { from: 0.25, kind: "clear", name: "树隙晴光" }, { from: 0.7, kind: "clear", name: "午前 · 茶园微风" }],
+      sources: [{ name: "杭州政协网 · 九溪至龙井徒步线", url: "https://www.hzzx.gov.cn/cshz/content/2024-07/08/content_8755727.htm" }]
+    }
+  };
+
+  // .build/typescript/content/catalog.js
+  var CHAPTERS = [
+    { id: "wugong", name: "武功山", mapPage: "wugong-walk.html", artPage: "wugong-art.html", cover: {
+      kicker: "东江村经典反穿 · 两天一夜",
+      title: "沿着草甸，把山野收进手帐。",
+      copy: "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。",
+      action: "从东江村出发 →",
+      hint: "跟随山路 · 沿途实景 · 手绘互动与旅行手帐"
+    } },
+    { id: "tiger", name: "虎跳峡", mapPage: "tiger-walk.html", artPage: "tiger-art.html", cover: {
+      kicker: "虎跳峡高路 · 两天一夜",
+      title: "从高路，走到金沙江边。",
+      copy: "从桥头越过二十八道拐，在中途客栈住一晚。清晨经龙洞瀑布走到中峡客栈，也可沿小路下到中虎跳江边，再循原路返回。",
+      action: "从桥头出发 →",
+      hint: "中途客栈过夜 · 沿途实景 · 手绘收藏"
+    } },
+    { id: "aotai", name: "鳌太线", mapPage: "aotai-walk.html", artPage: "aotai-art.html", cover: {
+      kicker: "鳌太线 · 冬季历史路线",
+      title: "循着山脊，走进云与石之间。",
+      copy: "从塘口村上鳌山，翻过飞机梁、金字塔与太白梁，走向大爷海和拔仙台。沿历史路线上下山，在途中歇脚过夜，把山野相遇收进手帐，最后经下板寺向汤峪方向离山。",
+      action: "走进秦岭 →",
+      hint: "历史路线示意 · 多程过夜 · 手绘收藏"
+    } },
+    { id: "maclehose", name: "麦理浩径", mapPage: "maclehose-walk.html", artPage: "maclehose-art.html", cover: {
+      kicker: "麦理浩径第二段 · 一日海岸",
+      title: "翻过山，海就在那里。",
+      copy: "从浪茄翻过西湾山，走过西湾与咸田湾的沙岸。越过大浪坳，在赤径的潮水边歇脚，再沿林间山径走到北潭凹。",
+      action: "从浪茄出发 →",
+      hint: "浪茄 → 北潭凹 · 海岸实景 · 手绘收藏"
+    } },
+    ...Object.values(DAY_ROUTES).map((route) => ({
+      id: route.id,
+      name: route.name,
+      mapPage: `${route.id}-walk.html`,
+      artPage: `${route.id}-art.html`,
+      cover: {
+        kicker: `${route.region} · ${route.id === "changping" ? "十月彩林 · 一日往返" : route.id === "mogan" ? "古道选段" : "溪谷与茶园"}`,
+        title: route.title,
+        copy: `${route.subtitle}。${route.note}`,
+        action: `从${route.places[0].name}出发 →`,
+        hint: "沿途实景 · 手绘互动 · 旅行手帐"
+      }
+    }))
+  ];
+  function chapterFor(id2) {
+    return CHAPTERS.find((chapter2) => chapter2.id === id2) ?? null;
+  }
+  var ROUTE_SUMMARIES = CHAPTERS.map(({ id: id2, name }) => ({ id: id2, name }));
+
+  // .build/typescript/content/wugong.js
+  var WUGONG_EVENTS = {
+    leaves: {
+      id: "leaves",
+      entry: "wugong-forest-leaves",
+      title: "林间的叶影",
+      place: "武功山 · 东江村上山林间",
+      story: "爬过一段林间石路，树影落在手帐上。歇口气，翻开纸叶，找找相同的叶形。",
+      action: "翻开叶影小画",
+      day: 1,
+      trigger: "trail"
+    },
+    kite: {
+      id: "kite",
+      entry: "meadow-bird",
+      title: "借一阵草甸的风",
+      place: "武功山 · 山脊草甸",
+      story: "转过山肩，草甸上的风正好。背包里有一只纸鸢，要不要让它飞一会儿？",
+      action: "放一会儿纸鸢",
+      day: 1,
+      trigger: "trail"
+    },
+    encounter: {
+      id: "encounter",
+      entry: "wugong-wind-hiker",
+      title: "在营地遇见她",
+      place: "武功山 · 观音宕草甸",
+      story: "坐下休息时，旁边的旅人走过来，想请你帮她拍一张草甸里的照片。",
+      action: "帮她拍张照片",
+      day: 1,
+      trigger: "archive"
+    },
+    stars: {
+      id: "stars",
+      entry: "wugong-camp-stars",
+      title: "星夜入帐",
+      place: "武功山 · 观音宕／星空营地",
+      story: "帐篷亮起暖光，坐下来，对着手帐认一认今晚的星星。",
+      action: "认一认星星",
+      day: 1,
+      trigger: "camp"
+    },
+    clouds: {
+      id: "clouds",
+      entry: "meadow-butterfly",
+      title: "山脊上的云",
+      place: "武功山 · 吊马桩山脊",
+      story: "清晨离开观音宕，往吊马桩的山脊上浮起了云。拨开近处的云，看看藏在后面的山。",
+      action: "拨云看山",
+      day: 2,
+      trigger: "trail"
+    },
+    stones: {
+      id: "stones",
+      entry: "meadow-flower",
+      title: "古祭坛边的石语",
+      place: "武功山 · 金顶古祭坛",
+      story: "看过金顶远景，沿山肩再走几步。古祭坛旁的石色与山色，正好拼成一幅小画。",
+      action: "拼好金顶石语",
+      day: 2,
+      trigger: "trail"
+    },
+    return: {
+      id: "return",
+      entry: "wugong-homeward-pages",
+      title: "把来路排进手帐",
+      place: "武功山 · 福星谷下山林间",
+      story: "从草甸下到福星谷，石阶重新走进林荫。坐在路边歇一会儿，把林间、草甸、星夜与金顶的小画按走过的顺序排好，再沿中庵方向下山。",
+      action: "整理这一程的小画",
+      day: 2,
+      trigger: "trail"
+    }
+  };
+
+  // .build/typescript/content/tiger.js
+  var EVENTS = {
+    climb: { entry: "tiger-bends-puzzle-v4", place: "虎跳峡 · 二十八道拐", line: "山径在岩壁边弯成一个 S，江声从谷底传来。", motif: '<path d="M6 44h10V33h10V22h10V11h9M4 36l12-20 9 8 9-18 12 23"/>' },
+    "inn-pairs": { entry: "tiger-inn-pairs-v4", place: "虎跳峡 · 中途客栈", line: "暮色落进峡谷，桌上留着几张小画片。", motif: '<path d="M5 12h18v25H5ZM28 17h18v25H28ZM10 31l5-9 5 9M33 34h8V24h-8Z"/>' },
+    "waterfall-paint": { entry: "tiger-waterfall-paint-v4", place: "虎跳峡 · 龙洞瀑布", line: "水声落在身后，纸上还留着两处山色。", motif: '<path d="M10 4q-4 11 0 22M19 4q-4 11 0 22M4 34q7-5 13 0t13 0M29 46l4-12L45 8l5 3-15 28Z"/>' },
+    "river-frame": { entry: "tiger-river-roundframe-v4", place: "虎跳峡 · 中虎跳江边", line: "白浪擦过巨石，远处的江声已经来到眼前。", motif: '<path d="M2 18q7-8 15 0t15 0t15 0M2 32q7-8 15 0t15 0t15 0M18 41l4-9 8 1 5 8Z"/>' }
+  };
+
+  // .build/typescript/content/aotai.js
+  var CUES = {
+    "snow-tracks": { entry: "snow-tracks", place: "鳌山 · 石海", line: "离开白起庙，石海沿着鳌山大梁铺开。", motif: '<path d="m5 31 8-19 12-5 16 12 4 19H12Z M13 12l7 15 21-8M20 27l-8 11M20 27l14 11"/>' },
+    "snow-lichen": { entry: "snow-lichen", place: "飞机梁 · 连峰", line: "爬出水窝子的谷地，一道道山梁在眼前展开。", motif: '<path d="m3 34 9-12 8 5 9-16 7 9 12-5M3 41h45"/>' },
+    "aotai-takin-first": { entry: "aotai-takin-first", place: "2800营地 · 林缘", line: "前方岩后，传来沉重的踩雪声。", motif: '<path d="M8 25q6-13 21-8l7 6v9H12ZM13 32v10M28 32v10M30 17l-2-8M36 23l8-3 3 9-11 3M43 20l1-8"/>' },
+    "aotai-camp-night": { entry: "aotai-camp-night", place: "大石河 · 雪夜营地", line: "走下石海，背风的河谷里可以歇脚了。", motif: '<path d="m5 40 19-30 20 30ZM24 10v30M10 40l14-19 15 19M3 42h44M29 27h7v9h-7Z"/>' }
+  };
+
+  // .build/typescript/content/maclehose.js
+  var CUES2 = {
+    "coast-sand": { entry: "coast-sand", place: "麦理浩径 · 西湾山山肩", line: "前面的石阶绕进山肩，海风从岩壁外吹来。", motif: '<path d="m3 29 10-15 9 10 8-16 15 25M4 40q8-6 16 0t16 0t12 0"/>' },
+    "maclehose-sideways-crab": { entry: "maclehose-sideways-crab", place: "麦理浩径 · 西湾沙滩", line: "一只小螃蟹停在漂木前，细小的脚印拐了个弯。", motif: '<path d="M15 25q10-10 20 0v10H15ZM15 27l-8-8M35 27l8-8M15 32l-9 7M35 32l9 7M20 21l-2-7M30 21l2-7"/>' },
+    "coast-shell": { entry: "coast-shell", place: "麦理浩径 · 咸田湾沙滩", line: "浪退下去，留出一小片湿润的沙。", motif: '<path d="M4 17q7-6 14 0t14 0t14 0M8 41q8-12 17-2t14-8M6 28q10-6 20 0t20 0"/>' },
+    "maclehose-woodland-echo": { entry: "maclehose-woodland-echo", place: "麦理浩径 · 大浪坳上坡林缘", line: "海浪声远了，枝叶之间传来几声清亮的回应。", motif: '<path d="M5 38q20-6 40 0M16 34q-7-18 7-19q12 0 9 13l-8 8ZM31 19l8 2-7 4M21 35v5M27 34v5M39 12q6 4 2 9"/>' },
+    "coast-pier": { entry: "coast-pier", place: "麦理浩径 · 赤径渡头", line: "渡头旁，一只小木船随着缓流轻轻晃着。", motif: '<path d="M5 27h38M12 27v15M34 27v15M7 19h21M9 19v8M26 19v8M5 47q9-5 18 0t18 0"/>' }
+  };
+
+  // .build/typescript/content/art-events.js
+  var ART_EVENTS = {
+    wugong: [WUGONG_EVENTS.kite, WUGONG_EVENTS.encounter, WUGONG_EVENTS.clouds, WUGONG_EVENTS.stones],
+    tiger: Object.values(EVENTS),
+    aotai: Object.values(CUES),
+    maclehose: Object.values(CUES2),
+    changping: DAY_ROUTES.changping.events,
+    mogan: DAY_ROUTES.mogan.events,
+    westlake: DAY_ROUTES.westlake.events
+  };
+
   // .build/typescript/runtime/dom.js
   function createDom(document2) {
     function get(id2) {
@@ -4948,20 +5300,20 @@
     let serial = 0;
     let background = false;
     function enter(name, returnStatus = options.status()) {
-      const session = { id: ++serial, name, returnStatus };
-      sessions.push(session);
+      const session2 = { id: ++serial, name, returnStatus };
+      sessions.push(session2);
       options.pause();
-      return session;
+      return session2;
     }
-    function leave(session, resume = true) {
-      if (!session)
+    function leave(session2, resume = true) {
+      if (!session2)
         return;
-      const index = sessions.indexOf(session);
+      const index = sessions.indexOf(session2);
       if (index < 0)
         return;
       const wasTop = index === sessions.length - 1;
       sessions.splice(index, 1);
-      if (wasTop && sessions.length === 0 && resume && session.returnStatus === "walking" && !background && !options.hidden())
+      if (wasTop && sessions.length === 0 && resume && session2.returnStatus === "walking" && !background && !options.hidden())
         options.resume();
     }
     return {
@@ -4973,8 +5325,8 @@
       get background() {
         return background;
       },
-      isTop(session) {
-        return !!session && sessions.at(-1) === session;
+      isTop(session2) {
+        return !!session2 && sessions.at(-1) === session2;
       },
       canAnimate(hasMini) {
         if (background || options.hidden())
@@ -4984,8 +5336,8 @@
       },
       suspend() {
         background = true;
-        for (const session of sessions)
-          session.returnStatus = "paused";
+        for (const session2 of sessions)
+          session2.returnStatus = "paused";
         options.pause();
       },
       foreground() {
@@ -4997,23 +5349,276 @@
     };
   }
 
+  // .build/typescript/runtime/journal-store.js
+  function createJournalStore({ catalog: catalog2, data, storage: storage2 }) {
+    const read = () => catalog2.loadMoments(storage2);
+    function save(moment) {
+      if (!catalog2.hasTag(moment) || moment.edition === 3 && !moment.earned) {
+        return { kind: "error", message: "完成互动后才会记入手帐。" };
+      }
+      const result = data.remember(read(), moment);
+      if (result.status === "full")
+        return { kind: "error", message: "手帐已满，原有回忆已保留。可以先留在这里看看画。" };
+      if (result.status !== "unchanged" && !catalog2.saveMoments(storage2, result.moments)) {
+        return { kind: "error", message: "暂时无法保存手帐，可以重试。" };
+      }
+      return { kind: "stored", existing: result.status === "unchanged", change: result.status, moments: result.moments };
+    }
+    return { read, save };
+  }
+
+  // .build/typescript/content/tiger-badges.js
+  var TIGER_BADGE_ART = {
+    bends: { file: "badges/tiger-memories-v4/bends.webp", x: 0.5, y: 0.5, radius: 0.4 },
+    inn: { file: "badges/tiger-memories-v4/inn.webp", x: 0.5, y: 0.5, radius: 0.4 },
+    waterfall: { file: "badges/tiger-memories-v4/waterfall.webp", x: 0.5, y: 0.48, radius: 0.4 },
+    river: { file: "badges/tiger-memories-v4/river.webp", x: 0.5, y: 0.48, radius: 0.4 }
+  };
+  var TIGER_BADGE_ENTRIES = {
+    "tiger-bends-puzzle-v4": TIGER_BADGE_ART.bends,
+    "tiger-inn-pairs-v4": TIGER_BADGE_ART.inn,
+    "tiger-waterfall-paint-v4": TIGER_BADGE_ART.waterfall,
+    "tiger-river-roundframe-v4": TIGER_BADGE_ART.river
+  };
+  var TIGER_LEGACY_BADGE_TILES = {
+    "gorge-goat": { column: 0, row: 1 },
+    "gorge-eagle": { column: 1, row: 1 },
+    "gorge-sparkle": { column: 2, row: 1 }
+  };
+  function tigerBadgeArt(id2) {
+    switch (id2) {
+      case "tiger-bends-puzzle-v4":
+        return TIGER_BADGE_ENTRIES[id2];
+      case "tiger-inn-pairs-v4":
+        return TIGER_BADGE_ENTRIES[id2];
+      case "tiger-waterfall-paint-v4":
+        return TIGER_BADGE_ENTRIES[id2];
+      case "tiger-river-roundframe-v4":
+        return TIGER_BADGE_ENTRIES[id2];
+      default:
+        return null;
+    }
+  }
+  function tigerLegacyBadgeTile(id2) {
+    switch (id2) {
+      case "gorge-goat":
+        return TIGER_LEGACY_BADGE_TILES[id2];
+      case "gorge-eagle":
+        return TIGER_LEGACY_BADGE_TILES[id2];
+      case "gorge-sparkle":
+        return TIGER_LEGACY_BADGE_TILES[id2];
+      default:
+        return null;
+    }
+  }
+
+  // .build/typescript/runtime/badge-paper.js
+  var PAPER_BADGE = { size: 768, center: 384, outerRadius: 360, artRadius: 336 };
+  var PAPER_BADGE_ART = {
+    x: PAPER_BADGE.center,
+    y: PAPER_BADGE.center,
+    radius: PAPER_BADGE.artRadius
+  };
+  function circle(ctx, radius2) {
+    ctx.moveTo(PAPER_BADGE.center + radius2, PAPER_BADGE.center);
+    ctx.arc(PAPER_BADGE.center, PAPER_BADGE.center, radius2, 0, Math.PI * 2);
+  }
+  function paintPaperEdge(ctx) {
+    const { center, outerRadius, artRadius } = PAPER_BADGE;
+    ctx.save();
+    ctx.beginPath();
+    circle(ctx, outerRadius);
+    circle(ctx, artRadius - 0.5);
+    ctx.clip("evenodd");
+    ctx.fillStyle = "#f3edda";
+    ctx.fillRect(0, 0, PAPER_BADGE.size, PAPER_BADGE.size);
+    for (let i = 0; i < 760; i++) {
+      const angle = i * 2.3999632297;
+      const radius2 = artRadius + i * 37 % 97 / 97 * (outerRadius - artRadius);
+      const x = center + Math.cos(angle) * radius2, y = center + Math.sin(angle) * radius2;
+      ctx.strokeStyle = i % 3 ? "#a58c6119" : "#ffffff75";
+      ctx.lineWidth = 0.65;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(angle + 0.7) * 2, y + Math.sin(angle + 0.7) * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+    ctx.save();
+    ctx.lineCap = "round";
+    for (const line2 of [
+      { radius: outerRadius - 2.5, color: "#a58c61", width: 2.5 },
+      { radius: artRadius + 2, color: "#89947c", width: 1.35 }
+    ]) {
+      ctx.strokeStyle = line2.color;
+      ctx.lineWidth = line2.width;
+      ctx.beginPath();
+      for (let i = 0; i <= 192; i++) {
+        const angle = i / 192 * Math.PI * 2;
+        const radius2 = line2.radius + Math.sin(angle * 13) * 0.35 + Math.sin(angle * 29) * 0.15;
+        const x = center + Math.cos(angle) * radius2, y = center + Math.sin(angle) * radius2;
+        if (i)
+          ctx.lineTo(x, y);
+        else
+          ctx.moveTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function composePaperBadge(doc, paint) {
+    const canvas = doc.createElement("canvas");
+    canvas.width = canvas.height = PAPER_BADGE.size;
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return null;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.save();
+    ctx.beginPath();
+    circle(ctx, PAPER_BADGE.artRadius);
+    ctx.clip();
+    paint(ctx, PAPER_BADGE_ART);
+    ctx.restore();
+    paintPaperEdge(ctx);
+    return canvas;
+  }
+  function paintBadgeImage(ctx, image, source, target) {
+    const scale = target.radius / source.radius;
+    ctx.drawImage(image, target.x - source.x * scale, target.y - source.y * scale, image.naturalWidth * scale, image.naturalHeight * scale);
+  }
+  function encodePaperBadge(canvas, maxLength = Infinity) {
+    try {
+      for (const quality of [0.9, 0.8, 0.68]) {
+        const url = canvas.toDataURL("image/webp", quality);
+        if (url.startsWith("data:image/webp;base64,") && url.length < maxLength)
+          return url;
+      }
+    } catch {
+    }
+    return null;
+  }
+
+  // .build/typescript/runtime/tiger-badge.js
+  var presentedArt = /* @__PURE__ */ new WeakMap();
+  function tigerLegacyBadgeFile(moment) {
+    return moment.route === "tiger" && moment.edition !== 3 && tigerLegacyBadgeTile(moment.id) ? "badges/moments-v1.webp" : null;
+  }
+  function tigerJournalArt(image, moment) {
+    if (moment.route !== "tiger" || !image.naturalWidth || !image.naturalHeight)
+      return null;
+    const width = image.naturalWidth, height = image.naturalHeight;
+    const original = image.currentSrc || image.src;
+    const cacheKey = `${moment.id}|${Boolean(moment.captureArt)}|${original}`;
+    const cached = presentedArt.get(image)?.get(cacheKey);
+    if (cached)
+      return cached;
+    const art = tigerBadgeArt(moment.id), tile = tigerLegacyBadgeTile(moment.id);
+    const rectangular = Math.abs(width / height - 1) > 0.05;
+    const atlas = !!tile && /(?:^|\/)moments-v1\.webp(?:[?#]|$)/.test(original);
+    let source;
+    if (atlas && tile) {
+      source = { x: (tile.column + 0.5) * width / 3, y: (tile.row + 0.5) * height / 3, radius: Math.min(width, height) / 3 * 0.41 };
+    } else if (rectangular) {
+      source = { x: width / 2, y: height / 2, radius: Math.min(width, height) / 2 };
+    } else if (moment.captureArt && art) {
+      if (width === PAPER_BADGE.size && height === PAPER_BADGE.size)
+        return { src: original };
+      source = { x: width / 2, y: height / 2, radius: width * 249 / 576 };
+    } else {
+      source = { x: width * (art?.x ?? 0.5), y: height * (art?.y ?? 0.5), radius: Math.min(width, height) * (art?.radius ?? 0.41) };
+    }
+    const canvas = composePaperBadge(image.ownerDocument, (ctx, target) => paintBadgeImage(ctx, image, source, target));
+    const src = canvas && encodePaperBadge(canvas);
+    if (!src)
+      return null;
+    const keepOriginal = !atlas && (rectangular || Boolean(moment.captureArt && !art));
+    const presentation = { src, ...keepOriginal ? { original } : {} };
+    const cache2 = presentedArt.get(image) ?? /* @__PURE__ */ new Map();
+    cache2.set(cacheKey, presentation);
+    presentedArt.set(image, cache2);
+    return presentation;
+  }
+
+  // .build/typescript/runtime/journal-route-filter.js
+  function createJournalRouteFilter({ dom: dom2, routes, onChange }) {
+    const root = dom2.get("journal-route");
+    const bindings = new EventBindings();
+    const choices = [{ id: "all", name: "全部路线" }, ...routes];
+    root.replaceChildren();
+    function reveal(label) {
+      if (root.scrollWidth <= root.clientWidth)
+        return;
+      const bounds = root.getBoundingClientRect(), item = label.getBoundingClientRect();
+      if (item.left < bounds.left + 6)
+        root.scrollLeft += item.left - bounds.left - 6;
+      else if (item.right > bounds.right - 6)
+        root.scrollLeft += item.right - bounds.right + 6;
+    }
+    const tabs = choices.map((choice) => {
+      const label = dom2.html("label", null, root, "journal-route-option");
+      const input = dom2.html("input", null, label);
+      input.type = "radio";
+      input.name = "journal-route";
+      input.value = choice.id;
+      input.checked = choice.id === "all";
+      input.setAttribute("aria-controls", "journal-list");
+      const paper2 = dom2.html("span", null, label, "journal-route-tab");
+      dom2.html("span", choice.name, paper2, "journal-route-name");
+      const count = dom2.html("span", null, paper2, "journal-route-total");
+      count.setAttribute("aria-hidden", "true");
+      bindings.listen(input, "change", () => {
+        if (!input.checked)
+          return;
+        reveal(label);
+        onChange(choice.id);
+      });
+      bindings.listen(input, "focus", () => reveal(label));
+      return { ...choice, input, count };
+    });
+    return {
+      render(selected, moments) {
+        const counts = /* @__PURE__ */ new Map([["all", moments.length]]);
+        for (const moment of moments)
+          counts.set(moment.route, (counts.get(moment.route) ?? 0) + 1);
+        for (const tab of tabs) {
+          const count = counts.get(tab.id) ?? 0;
+          tab.input.checked = tab.id === selected;
+          tab.input.setAttribute("aria-label", `${tab.name}，${count}段回忆`);
+          tab.count.textContent = String(count);
+          tab.count.hidden = count === 0;
+        }
+      },
+      destroy() {
+        bindings.destroy();
+      }
+    };
+  }
+
   // .build/typescript/runtime/journal-controller.js
   function createJournalController(options) {
     const { dom: dom2, catalog: D, data, scenes: scenes2 } = options;
     const { get: $2, html } = dom2;
     const bindings = new EventBindings();
     const pictures = /* @__PURE__ */ new Map();
-    let records = D.loadMoments(options.storage);
+    const store = createJournalStore({ catalog: D, data, storage: options.storage });
+    let records = store.read();
     let tripMoments = [];
     let route = "all";
     let pageSize = data.PAGE_SIZE;
-    let session = null;
+    let session2 = null;
     let trigger = null;
     let bodyOverflow = "";
     let entries = [];
     let index = 0;
     let flip = null;
     let swipe = null;
+    const routeFilter = createJournalRouteFilter({ dom: dom2, routes: options.routes, onChange(selected) {
+      route = selected;
+      pageSize = data.PAGE_SIZE;
+      render();
+    } });
     function tagImage(parent, file, label, reading, moment) {
       const key = file + "|" + label;
       const cached = reading && pictures.get(key);
@@ -5021,7 +5626,8 @@
         parent.appendChild(cached);
         return cached;
       }
-      const badge2 = html("span", null, parent, "journal-badge-art journal-tag-art");
+      const panel = reading ? html("div", null, parent, "journal-art-view") : null;
+      const badge2 = html("span", null, panel ?? parent, "journal-badge-art journal-tag-art");
       badge2.setAttribute("role", "img");
       badge2.setAttribute("aria-label", label + " · 手绘收藏标签");
       const status = html("span", "画作展开中", badge2, "journal-art-status");
@@ -5031,22 +5637,48 @@
       image.setAttribute("loading", reading ? "eager" : "lazy");
       image.setAttribute("decoding", "async");
       image.style.opacity = "0";
-      if (reading)
-        pictures.set(key, badge2);
-      const reveal = () => {
-        status.hidden = true;
-        image.style.opacity = "1";
-      };
+      if (panel)
+        pictures.set(key, panel);
       let presented = false;
       image.onload = () => {
         if (!presented && options.presentArt) {
           presented = true;
-          const file2 = options.presentArt(image, moment);
-          if (file2) {
-            image.src = file2;
-            return;
+          const presentation = options.presentArt(image, moment);
+          if (presentation) {
+            const original = presentation.original;
+            if (panel && original) {
+              const ratio = image.naturalWidth / image.naturalHeight;
+              const toggle = html("button", "查看完整原画", panel, "journal-original-toggle");
+              toggle.type = "button";
+              toggle.setAttribute("aria-pressed", "false");
+              let showOriginal = false;
+              toggle.addEventListener("click", () => {
+                showOriginal = !showOriginal;
+                toggle.setAttribute("aria-pressed", String(showOriginal));
+                toggle.textContent = showOriginal ? "返回圆形徽章" : "查看完整原画";
+                badge2.setAttribute("aria-label", label + (showOriginal ? " · 完整原画" : " · 手绘收藏标签"));
+                badge2.style.aspectRatio = showOriginal ? String(ratio) : "1";
+                image.hidden = false;
+                image.style.opacity = "0";
+                status.hidden = false;
+                status.textContent = "画作展开中";
+                image.src = showOriginal ? original : presentation.src;
+              });
+            }
+            if (image.src !== presentation.src) {
+              image.src = presentation.src;
+              return;
+            }
           }
         }
+        const loadedSource = image.src;
+        const reveal = () => {
+          if (image.src !== loadedSource)
+            return;
+          status.hidden = true;
+          image.hidden = false;
+          image.style.opacity = "1";
+        };
         if (reading && image.decode)
           image.decode().then(reveal, reveal);
         else
@@ -5058,7 +5690,7 @@
         badge2.setAttribute("aria-label", label + " · 画作暂未加载，文字回忆仍可阅读");
       };
       image.setAttribute("src", file);
-      return badge2;
+      return panel ?? badge2;
     }
     function badge(parent, moment, reading = false) {
       if (moment.edition === 3 && !D.hasTag(moment)) {
@@ -5075,7 +5707,7 @@
         html("small", "未获得标签", note);
         return note;
       }
-      const file = D.tagArt(moment);
+      const file = D.tagArt(moment) ?? tigerLegacyBadgeFile(moment);
       if (file)
         return tagImage(parent, file, moment.tag || moment.title, reading, moment);
       const entryIndex = Math.max(0, D.CATALOG.findIndex((entry) => entry.id === moment.id));
@@ -5090,6 +5722,7 @@
     function render(append = false) {
       const list = $2("journal-list");
       const book = data.page(records, route, pageSize);
+      routeFilter.render(route, data.page(records, "all", D.MAX_MOMENTS).entries);
       $2("journal-count").textContent = `${book.totalAll}个瞬间`;
       $2("trip-count").textContent = `本次记下${options.tripCount()}个瞬间`;
       const routeName = options.routes.find((r) => r.id === route)?.name || "全部路线";
@@ -5177,7 +5810,7 @@
       for (const entry of [previous, moment, next]) {
         if (!entry || !D.hasTag(entry))
           continue;
-        const file = D.tagArt(entry);
+        const file = D.tagArt(entry) ?? tigerLegacyBadgeFile(entry);
         if (!file)
           continue;
         const label = entry.tag || entry.title, key = file + "|" + label;
@@ -5192,7 +5825,7 @@
         flip = page.animate([{ opacity: 0.35, transform: `translateX(${direction * 16}px)` }, { opacity: 1, transform: "translateX(0)" }], { duration: 220, easing: "ease-out" });
     }
     function open(moment, button) {
-      if (session || options.rewardOpen())
+      if (session2 || options.rewardOpen())
         return;
       entries = data.page(records, route, D.MAX_MOMENTS).entries;
       index = entries.findIndex((entry) => entry.route === moment.route && entry.id === moment.id);
@@ -5201,7 +5834,7 @@
       renderDetail();
       $2("journal-detail").setAttribute("aria-modal", "true");
       $2("journal-detail").showModal();
-      session = scenes2.enter("journal");
+      session2 = scenes2.enter("journal");
       trigger = button;
       button.setAttribute("aria-expanded", "true");
       bodyOverflow = dom2.document.body.style.overflow || "";
@@ -5212,10 +5845,10 @@
       $2("journal-detail-close").focus({ preventScroll: true });
     }
     function closed(resume = true) {
-      if (!session)
+      if (!session2)
         return;
-      const closing2 = session;
-      session = null;
+      const closing2 = session2;
+      session2 = null;
       dom2.document.body.style.overflow = bodyOverflow;
       swipe = null;
       flip?.cancel();
@@ -5236,26 +5869,26 @@
     }
     function turn(direction) {
       const next = index + direction;
-      if (!session || next < 0 || next >= entries.length)
+      if (!session2 || next < 0 || next >= entries.length)
         return;
       index = next;
       renderDetail(direction);
     }
     function remember(moment) {
-      if (!D.hasTag(moment))
-        return;
-      tripMoments.push(moment);
-      const result = data.remember(records, moment);
-      if (result.status === "full")
-        $2("journal-storage").textContent = "手帐已满，原回忆已保留。这个新片刻仍可在本次旅程结尾查看。";
-      else if (result.status !== "unchanged") {
-        records = result.moments;
-        $2("journal-storage").textContent = D.saveMoments(options.storage, records) ? "回忆自动保存在这个浏览器，相同的片刻只留一页。" : "这个浏览器无法保存手帐，本次打开页面期间仍可以记下瞬间。";
+      const result = store.save(moment);
+      if (result.kind === "error") {
+        $2("journal-storage").textContent = result.message;
+        return result;
       }
-      const message = result.status === "unchanged" ? "再次遇见，手帐中已留存" : result.status === "upgraded" ? "手帐已补上手绘" : "刚刚收下标签";
+      records = result.moments;
+      if (!tripMoments.some((entry) => entry.route === moment.route && entry.id === moment.id))
+        tripMoments.push(moment);
+      $2("journal-storage").textContent = "回忆自动保存在这个浏览器，相同的片刻只留一页。";
+      const message = result.change === "unchanged" ? "再次遇见，手帐中已留存" : result.change === "upgraded" ? "手帐已补上手绘" : "刚刚收下标签";
       $2("discovery-status").textContent = `${message}「${moment.title}」 · ${moment.place}`;
       render();
       options.onRemember(moment);
+      return result;
     }
     function renderEnding() {
       const section = $2("ending-journal"), list = $2("ending-badges"), detail = $2("ending-detail");
@@ -5315,14 +5948,6 @@
       bindings.listen(page, "pointercancel", () => {
         swipe = null;
       });
-      for (const r of options.routes)
-        html("option", r.name, $2("journal-route")).setAttribute("value", r.id);
-      bindings.listen($2("journal-route"), "change", () => {
-        const selected = $2("journal-route").value;
-        route = options.routes.find((r) => r.id === selected)?.id || "all";
-        pageSize = data.PAGE_SIZE;
-        render();
-      });
       bindings.listen($2("journal-more"), "click", () => {
         const previous = $2("journal-list").children.length;
         pageSize += data.PAGE_SIZE;
@@ -5330,10 +5955,20 @@
         $2("journal-list").children[previous]?.querySelector("button")?.focus();
       });
     }
+    function reload() {
+      records = store.read();
+      render();
+    }
+    const browser = dom2.document.defaultView;
+    const storageChanged = (event) => {
+      if (event.storageArea === options.storage)
+        reload();
+    };
+    browser?.addEventListener("storage", storageChanged);
     bind();
     return {
       get open() {
-        return session !== null;
+        return session2 !== null;
       },
       get records() {
         return records;
@@ -5342,10 +5977,7 @@
       renderEnding,
       remember,
       close,
-      reload() {
-        records = D.loadMoments(options.storage);
-        render();
-      },
+      reload,
       resetTrip() {
         tripMoments = [];
       },
@@ -5354,7 +5986,9 @@
       },
       destroy() {
         close(false);
+        routeFilter.destroy();
         bindings.destroy();
+        browser?.removeEventListener("storage", storageChanged);
       }
     };
   }
@@ -5461,7 +6095,7 @@
       if (refs.contentState !== "ready")
         text("wind-cue", refs.contentState === "error" ? "纸鸢画作暂未加载，点「重新试一次」重新展开。" : "水彩纸鸢正在展开，准备好就能起飞。");
     }
-    function water(s) {
+    function water2(s) {
       if (!games2)
         return;
       const flow = games2.waterFlow(s), rain = s.game === "rain";
@@ -5488,8 +6122,8 @@
       else if (s.game === "wind")
         wind(s, refs);
       else if (s.game)
-        water(s);
-      if (s.game) {
+        water2(s);
+      if (s.game || refs.directInput) {
         $2("mini-retry").disabled = s.play.complete;
         text("mini-sound", sound() ? "声音 · 开" : "声音 · 点击开启");
         $2("mini-sound").setAttribute("aria-pressed", String(sound()));
@@ -5514,15 +6148,17 @@
     let current = null;
     let currentEntry = null;
     let refs = null;
-    let session = null;
+    let session2 = null;
     let pendingPoint = null;
     let pointer = null;
     let soundSerial = 0;
     let genericCompletionSound = false;
-    const view = createMiniGameView({ dom: dom2, api: { ...options.api, status: (state) => api.status(state) }, platform: games2, sound: options.sound });
+    const view3 = createMiniGameView({ dom: dom2, api: { ...options.api, status: (state3) => api.status(state3) }, platform: games2, sound: options.sound });
     const surface = $2("micro-surface");
+    const soundTheme = () => api.soundTheme ?? current?.game;
+    const directInput = () => api.input === "direct" || !!refs?.directInput;
     function interactive() {
-      return !!current && scenes2.isTop(session) && !scenes2.background && !dom2.document.hidden;
+      return !!current && scenes2.isTop(session2) && !scenes2.background && !dom2.document.hidden;
     }
     function paint() {
       if (current && refs)
@@ -5531,14 +6167,15 @@
     function updateStatus() {
       if (!current || !refs)
         return;
-      view.update(current, refs);
+      view3.update(current, refs);
       api.present?.(current, refs);
-      if (current.game) {
+      const theme2 = soundTheme();
+      if (theme2) {
         if (current.game === "wind" && games2 && !refs.directInput)
           options.audio.wind?.(games2.flow(current).energy, current.play.complete);
         for (const event of current.events || [])
           if (event.serial > soundSerial) {
-            options.audio.mini?.(current.game, event.type, { x: event.x, index: event.index ?? (current.caught || current.gates) });
+            options.audio.mini?.(theme2, event.type, { x: event.x, index: event.index ?? (current.caught || current.gates) });
             soundSerial = event.serial;
           }
       }
@@ -5564,7 +6201,7 @@
         return false;
       if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready")
         return false;
-      if (refs.art && !view.artReady(refs))
+      if (refs.art && !view3.artReady(refs))
         return false;
       if ((current.game === "wind" || current.game === "clouds") && refs.contentState !== "ready")
         return false;
@@ -5579,7 +6216,7 @@
       if (next === current)
         return;
       current = next;
-      if (!current.game) {
+      if (!current.game && !directInput()) {
         paint();
         options.audio.interact?.(current.kind, { x: current.x, icon: D.item(current.id).icon, playType: current.play.type });
       }
@@ -5590,17 +6227,19 @@
       if (current)
         finish2(false, false);
       options.stopLoop();
-      session = scenes2.enter("minigame", returnStatus);
+      session2 = scenes2.enter("minigame", returnStatus);
       api = registered.get(entry.id) || options.api;
       current = api.create(entry, { reduced: options.reduced, weather: options.weather?.() });
       currentEntry = entry;
       soundSerial = 0;
       genericCompletionSound = false;
       pendingPoint = null;
-      view.reset();
+      view3.reset();
       $2("mini-retry").disabled = false;
       $2("micro-art").replaceChildren();
       refs = api.draw(options.svg, $2("micro-art"), entry);
+      if (api.input === "direct")
+        refs.directInput = true;
       refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || refs.tiger || refs.directInput || current.game === "wind");
       if (refs.waitsForArt)
         refs.contentState = "loading";
@@ -5614,10 +6253,11 @@
       $2("micro-panel").setAttribute("data-mogan", String(!!refs.mogan));
       $2("micro-panel").setAttribute("data-art-game", String(!!refs.art));
       $2("micro-panel").setAttribute("data-game", current.game || "");
+      $2("micro-panel").setAttribute("data-direct", String(directInput()));
       $2("wind-hud").hidden = !current.game || !!refs.art || !!refs.mogan || !!refs.tiger || !!refs.directInput;
       const labels = { wind: "武功山 · 借风", clouds: "武功山 · 拨云见山", altar: "武功山 · 金顶石语", greet: "武功山 · 风口相遇", creek: "九溪 · 推叶", rain: "莫干山 · 接雨" };
       $2("mini-place-label").textContent = current.game && current.game in labels ? labels[current.game] : "";
-      $2("mini-controls").hidden = !current.game;
+      $2("mini-controls").hidden = !current.game && !directInput();
       options.cache?.request(entry.artV5 || entry.artV4 || entry.badge, "high");
       text("micro-place", entry.place + " · " + entry.condition);
       text("micro-title", entry.name);
@@ -5667,14 +6307,15 @@
       options.ensureLoop();
     }
     function finish2(record = true, resume = true) {
-      if (!current || !currentEntry || !refs || !session)
+      if (!current || !currentEntry || !refs || !session2)
         return;
-      const finished = current, closingRefs = refs, closing2 = session, entry = currentEntry;
+      const finished = current, closingRefs = refs, closing2 = session2, entry = currentEntry;
       pause();
+      const outcome = record && finished.play.complete === true ? api.outcome(finished, entry) : null;
       current = null;
       currentEntry = null;
       refs = null;
-      session = null;
+      session2 = null;
       try {
         if (api.dispose)
           api.dispose(closingRefs);
@@ -5686,8 +6327,8 @@
       $2("micro-panel").hidden = true;
       options.stopLoop();
       let rewardShown = false;
-      if (record && finished.play.complete === true)
-        rewardShown = options.onFinished({ state: finished, entry, outcome: api.outcome(finished, entry), returnStatus: closing2.returnStatus });
+      if (outcome)
+        rewardShown = options.onFinished({ state: finished, entry, outcome, returnStatus: closing2.returnStatus });
       scenes2.leave(closing2, resume && !rewardShown);
       options.onClosed?.(finished.id, finished.play.complete === true, resume);
       options.refresh();
@@ -5707,7 +6348,7 @@
         pendingPoint = null;
       }
       current = api.tick(current, dt);
-      if (!current.game && current.play.complete && !genericCompletionSound) {
+      if (!soundTheme() && current.play.complete && !genericCompletionSound) {
         genericCompletionSound = true;
         options.audio.mini?.("memory", "complete");
       }
@@ -5718,8 +6359,8 @@
     }
     function point2(event) {
       const rect = surface.getBoundingClientRect();
-      const p = { x: (event.clientX - rect.left) / rect.width, y: (event.clientY - rect.top) / rect.height };
-      return refs && api.point ? api.point(refs, p) : refs && games2 ? games2.point(refs, p) : p;
+      const p2 = { x: (event.clientX - rect.left) / rect.width, y: (event.clientY - rect.top) / rect.height };
+      return refs && api.point ? api.point(refs, p2) : refs && games2 ? games2.point(refs, p2) : p2;
     }
     function retry() {
       if (!interactive() || !current || !currentEntry || current.play.complete || !refs)
@@ -5727,7 +6368,7 @@
       const entry = currentEntry;
       pause();
       if (refs.waitsForArt && refs.contentState === "error") {
-        const returnStatus = session?.returnStatus;
+        const returnStatus = session2?.returnStatus;
         finish2(false, false);
         begin(entry, returnStatus);
         return;
@@ -5745,7 +6386,7 @@
         return;
       if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready")
         return;
-      if (refs.art && !view.artReady(refs))
+      if (refs.art && !view3.artReady(refs))
         return;
       pause();
       perform({ action: name, value });
@@ -5758,7 +6399,7 @@
     function keydown(event) {
       if (!interactive() || !current || !refs)
         return;
-      if (current.game && event.key.toLowerCase() === "r") {
+      if ((current.game || directInput()) && event.key.toLowerCase() === "r") {
         event.preventDefault();
         retry();
         return;
@@ -5788,7 +6429,7 @@
         if (!supported)
           return;
         event.preventDefault();
-        if (!view.artReady(refs) || event.repeat && !arrows[event.key] || !games2)
+        if (!view3.artReady(refs) || event.repeat && !arrows[event.key] || !games2)
           return;
         current = games2.artKey(current, event.key);
         paint();
@@ -5843,7 +6484,7 @@
         if (!interactive() || !current || !refs?.art || event.key !== " " || !games2)
           return;
         event.preventDefault();
-        if (!view.artReady(refs))
+        if (!view3.artReady(refs))
           return;
         current = games2.artKey(current, event.key, "up");
         paint();
@@ -5856,8 +6497,8 @@
         event.stopPropagation?.();
         pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, drag: false };
         surface.setPointerCapture?.(event.pointerId);
-        if (current.game)
-          perform({ ...point2(event), ...refs?.art || refs?.mogan || refs?.tiger || refs?.directInput || current.game === "clouds" ? { phase: "press" } : {} });
+        if (current.game || directInput())
+          perform({ ...point2(event), ...refs?.art || refs?.mogan || refs?.tiger || directInput() || current.game === "clouds" ? { phase: "press" } : {} });
       });
       bindings.listen(surface, "pointermove", (event) => {
         if (!interactive() || !current)
@@ -5880,7 +6521,7 @@
         if (!pointer.drag)
           return;
         const input = { ...point2(event), gesture: "drag" };
-        if (current.game) {
+        if (current.game || directInput()) {
           pendingPoint = input;
           options.ensureLoop();
           return;
@@ -5901,7 +6542,7 @@
         const dragged = pointer.drag, input = { ...point2(event), gesture: dragged ? "drag" : "tap" };
         if (refs?.art || refs?.mogan || refs?.tiger || refs?.directInput || current.game === "clouds") {
           pendingPoint = null;
-          if (dragged && refs && (view.artReady(refs) || (refs.mogan || refs.tiger || refs.directInput || current.game === "clouds") && refs.contentState === "ready"))
+          if (dragged && refs && (view3.artReady(refs) || (refs.mogan || refs.tiger || refs.directInput || current.game === "clouds") && refs.contentState === "ready"))
             current = api.move(current, input);
           perform({ ...input, phase: "release", dragged });
         } else if (dragged) {
@@ -5963,6 +6604,9 @@
       get active() {
         return current !== null;
       },
+      get soundTheme() {
+        return soundTheme();
+      },
       begin,
       finish: finish2,
       update,
@@ -5987,7 +6631,7 @@
     const { dom: dom2, scenes: scenes2, catalog: D } = options, { get: $2 } = dom2;
     const bindings = new EventBindings();
     let current = null;
-    let session = null;
+    let session2 = null;
     let collecting = false;
     let flight = null;
     let bodyOverflow = "";
@@ -5996,9 +6640,9 @@
     function close(resume = true) {
       if (!current)
         return;
-      const wasMini = !!options.gameKind(current.id), closing2 = session;
+      const wasMini = !!options.gameKind(current.id), closing2 = session2;
       current = null;
-      session = null;
+      session2 = null;
       collecting = false;
       flight?.cancel();
       flight = null;
@@ -6025,7 +6669,7 @@
         close(false);
       current = moment;
       collecting = false;
-      session = scenes2.enter("reward", returnStatus);
+      session2 = scenes2.enter("reward", returnStatus);
       const game = options.gameKind(moment.id);
       $2("reward-overlay").setAttribute("data-wind", String(!!game));
       $2("reward-overlay").setAttribute("data-collecting", "false");
@@ -6040,7 +6684,7 @@
         let image = $2("reward-art");
         if (options.presentArt && current) {
           const framed = cached?.state === "ready" ? options.presentArt(cached.image, current) : null;
-          const source = framed || file;
+          const source = framed?.src || file;
           if (source && image.getAttribute("src") !== source)
             image.setAttribute("src", source);
         } else if (cached?.state === "ready" && cached.image !== image) {
@@ -6105,25 +6749,25 @@
       $2("reward-continue").disabled = true;
       $2("reward-overlay").setAttribute("data-collecting", "true");
       $2("wind-keepsake").hidden = !!options.autoCollect;
-      let animation2;
+      let animation;
       try {
         if (options.autoCollect) {
           const hold = options.reduced ? 1200 : 1500, fade = options.reduced ? 180 : 950;
-          animation2 = flight = targetElement.animate([{ opacity: 1 }, { opacity: 1, offset: hold / (hold + fade) }, { opacity: 0 }], { duration: hold + fade, easing: "ease-in-out", fill: "forwards" });
+          animation = flight = targetElement.animate([{ opacity: 1 }, { opacity: 1, offset: hold / (hold + fade) }, { opacity: 0 }], { duration: hold + fade, easing: "ease-in-out", fill: "forwards" });
         } else {
           const box = $2("reward-dialog").getBoundingClientRect(), target = $2("wind-keepsake").getBoundingClientRect();
           const dx = target.left + target.width / 2 - box.left - box.width / 2, dy = target.top + target.height / 2 - box.top - box.height / 2;
-          animation2 = flight = targetElement.animate([{ transform: "translate(0,0) scale(1) rotate(0)", opacity: 1 }, { transform: "translate(0,-16px) scale(1.025) rotate(-2deg)", opacity: 1, offset: 0.2 }, { transform: `translate(${dx}px,${dy}px) scale(.08) rotate(6deg)`, opacity: 0 }], { duration: 680, easing: "cubic-bezier(.55,0,.25,1)", fill: "forwards" });
+          animation = flight = targetElement.animate([{ transform: "translate(0,0) scale(1) rotate(0)", opacity: 1 }, { transform: "translate(0,-16px) scale(1.025) rotate(-2deg)", opacity: 1, offset: 0.2 }, { transform: `translate(${dx}px,${dy}px) scale(.08) rotate(6deg)`, opacity: 0 }], { duration: 680, easing: "cubic-bezier(.55,0,.25,1)", fill: "forwards" });
         }
       } catch {
         close();
         return;
       }
       const finish2 = () => {
-        if (current === moment && flight === animation2)
+        if (current === moment && flight === animation)
           close();
       };
-      animation2.finished.then(finish2, finish2);
+      animation.finished.then(finish2, finish2);
     }
     bindings.listen($2("reward-continue"), "click", collect);
     function visibilityChanged() {
@@ -6236,7 +6880,7 @@
     let media = null;
     let source = null;
     let volume = null;
-    let state = "off";
+    let state3 = "off";
     let desired = false, destroyed = false, failed = false, pending2 = false;
     let failureState = "error";
     let epoch = 0, target = 0;
@@ -6245,9 +6889,9 @@
     let lastDuck = -Infinity;
     const listeners = [];
     function publish(next) {
-      if (state === next || destroyed)
+      if (state3 === next || destroyed)
         return;
-      state = next;
+      state3 = next;
       onStateChange();
     }
     function cancelStop() {
@@ -6292,14 +6936,14 @@
         return true;
       if (typeof context.createMediaElementSource !== "function") {
         failed = true;
-        state = failureState = "unavailable";
+        state3 = failureState = "unavailable";
         return false;
       }
       try {
         media = createMedia();
         if (!media) {
           failed = true;
-          state = failureState = "unavailable";
+          state3 = failureState = "unavailable";
           return false;
         }
         media.preload = "none";
@@ -6350,7 +6994,7 @@
             media.removeEventListener(type, fn);
         listeners.length = 0;
         media = null;
-        state = failureState = "unavailable";
+        state3 = failureState = "unavailable";
         return false;
       }
     }
@@ -6358,15 +7002,15 @@
       if (pending2 || failed || !media || !desired || destroyed)
         return;
       if (!media.paused) {
-        if (state === "paused") {
-          state = "playing";
+        if (state3 === "paused") {
+          state3 = "playing";
           ramp(target, 1.4);
         }
         return;
       }
       const token = ++epoch;
       pending2 = true;
-      state = "loading";
+      state3 = "loading";
       try {
         Promise.resolve(media.play()).then(() => {
           if (destroyed || !desired) {
@@ -6392,7 +7036,7 @@
         pending2 = false;
         failed = true;
         silence();
-        state = failureState = "error";
+        state3 = failureState = "error";
       }
     }
     function pause(immediate = false, duration = 0.32) {
@@ -6415,7 +7059,7 @@
             media?.pause();
         }, Math.round(duration * 1e3) + 20);
       }
-      state = "paused";
+      state3 = "paused";
     }
     function sync(scene) {
       if (destroyed)
@@ -6431,15 +7075,15 @@
       target = next;
       desired = true;
       if (failed) {
-        state = failureState;
+        state3 = failureState;
         return;
       }
       if (!prepare())
         return;
       if (!wasDesired && !media.paused) {
-        state = "playing";
+        state3 = "playing";
         ramp(target, 1.4);
-      } else if (changed && state === "playing")
+      } else if (changed && state3 === "playing")
         ramp(target, 1.2);
       play();
     }
@@ -6452,7 +7096,7 @@
       sync(scene);
     }
     function duck(strength = 0.78, length = 0.65) {
-      if (!volume || !desired || state !== "playing" || context.currentTime - lastDuck < 0.12)
+      if (!volume || !desired || state3 !== "playing" || context.currentTime - lastDuck < 0.12)
         return;
       lastDuck = context.currentTime;
       const now = context.currentTime;
@@ -6481,9 +7125,9 @@
       volume = null;
     }
     return { sync, resume, pause, duck, destroy: destroy2, get state() {
-      return state;
+      return state3;
     }, get playing() {
-      return desired && state === "playing";
+      return desired && state3 === "playing";
     } };
   }
   function createMusicLayer(options) {
@@ -6580,12 +7224,12 @@
     };
   }
 
-  // .build/typescript/wugong-walk/badge-art.js
-  var ROUND_BADGE_IDS = /* @__PURE__ */ new Set(["wugong-forest-leaves", "wugong-camp-stars", "wugong-homeward-pages", "tiger-28-bends-v1", "tiger-middle-river-frame-v1"]);
+  // .build/typescript/runtime/journal-badge.js
+  var ROUND_BADGE_IDS = /* @__PURE__ */ new Set(["wugong-forest-leaves", "wugong-camp-stars", "wugong-homeward-pages"]);
   var SIZE = 640;
   var CENTER = SIZE / 2;
-  var outline = (radius) => Array.from({ length: 145 }, (_, i) => {
-    const a = i / 144 * Math.PI * 2, r = radius + Math.sin(a * 11) * 0.8 + Math.sin(a * 23) * 0.35;
+  var outline = (radius2) => Array.from({ length: 145 }, (_, i) => {
+    const a = i / 144 * Math.PI * 2, r = radius2 + Math.sin(a * 11) * 0.8 + Math.sin(a * 23) * 0.35;
     return `${i ? "L" : "M"}${CENTER + Math.cos(a) * r},${CENTER + Math.sin(a) * r}`;
   }).join(" ") + "Z";
   var outer = outline(302);
@@ -6596,6 +7240,9 @@
     const a = 0.25 + i / 17 * 1.1, sign = i % 2 ? 1 : -1, x = CENTER + sign * Math.sin(a) * 292, y = CENTER + Math.cos(a) * 292;
     return `M${x},${y}q${sign * 7},-12 ${sign * 1},-18q${-sign * 9},9 ${-sign * 1},18Z`;
   });
+  function badgeFrameSvg() {
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="${outer} ${inner}" fill="#f3edd9" fill-rule="evenodd"/><path d="${gold}" fill="none" stroke="#b69a61" stroke-width="2.4"/><path d="${ink}" fill="none" stroke="#a6a67b" stroke-width="1.1"/>${sprigs.map((d) => `<path d="${d}" fill="#b4a777" fill-opacity=".8"/>`).join("")}</svg>`;
+  }
   function circularBadge(image, options = {}) {
     if (!image.naturalWidth || !image.naturalHeight)
       return null;
@@ -6618,13 +7265,7 @@
     ctx.beginPath();
     ctx.arc(CENTER, CENTER, 280, 0, Math.PI * 2);
     ctx.clip();
-    if (options.preserveFrame) {
-      ctx.fillStyle = "#e9e7d7";
-      ctx.fillRect(0, 0, SIZE, SIZE);
-      const ratio = image.naturalWidth / image.naturalHeight, h = 555 / Math.sqrt(1 + ratio * ratio), w = h * ratio;
-      ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight, CENTER - w / 2, CENTER - h / 2, w, h);
-    } else
-      ctx.drawImage(image, x, y, side, side, 40, 40, 560, 560);
+    ctx.drawImage(image, x, y, side, side, 40, 40, 560, 560);
     ctx.restore();
     ctx.fillStyle = "#f3edd9";
     ctx.fill(new Path2D(`${outer} ${inner}`), "evenodd");
@@ -6642,25 +7283,12 @@
     return canvas;
   }
   function roundJournalArt(image, moment) {
-    const tiger = moment.route === "tiger";
-    if (!ROUND_BADGE_IDS.has(moment.id) || !tiger && image.naturalWidth <= image.naturalHeight * 1.1)
+    if (moment.route === "tiger")
+      return tigerJournalArt(image, moment);
+    if (!ROUND_BADGE_IDS.has(moment.id) || image.naturalWidth <= image.naturalHeight * 1.1)
       return null;
-    const canvas = circularBadge(image, { preserveFrame: tiger, camp: moment.id === "wugong-camp-stars", legacyPaper: !tiger && !!moment.captureArt && moment.id !== "wugong-camp-stars" });
-    return canvas?.toDataURL("image/webp", 0.88) ?? null;
-  }
-
-  // .build/typescript/wugong-walk/scroll/camp-journal.js
-  function storeEarnedMoment(catalog2, journal2, storage2, moment) {
-    if (moment.edition !== 3 || !moment.earned || !catalog2.hasTag(moment))
-      return { kind: "error", message: "完成互动后才会记入手帐。" };
-    const result = journal2.remember(catalog2.loadMoments(storage2), moment);
-    if (result.status === "unchanged")
-      return { kind: "stored", existing: true };
-    if (result.status === "full")
-      return { kind: "error", message: "手帐已满，原有回忆已保留。可以先留在这里看看画。" };
-    if (!catalog2.saveMoments(storage2, result.moments))
-      return { kind: "error", message: "暂时无法保存手帐，可以重试。" };
-    return { kind: "stored", existing: false };
+    const canvas = circularBadge(image, { camp: moment.id === "wugong-camp-stars", legacyPaper: !!moment.captureArt && moment.id !== "wugong-camp-stars" });
+    return canvas ? { src: canvas.toDataURL("image/webp", 0.88) } : null;
   }
 
   // .build/typescript/wugong-walk/model.js
@@ -6744,8 +7372,8 @@
   var CLIMB_TRAIL = makeTrail(CLIMB_PATH);
   var PASSAGE_TRAIL = makeTrail(PASSAGE_PATH);
   var DESCENT_TRAIL = makeTrail(DESCENT_PATH);
-  function pointAt(trail, at) {
-    const d = clamp(Number.isFinite(at) ? at : 0, 0, trail.length);
+  function pointAt(trail, at2) {
+    const d = clamp(Number.isFinite(at2) ? at2 : 0, 0, trail.length);
     let index = 0;
     while (index < trail.points.length - 2 && trail.cumulative[index + 1] <= d)
       index++;
@@ -6759,8 +7387,8 @@
       heading: Math.atan2(b.y - a.y, b.x - a.x)
     };
   }
-  function turnAhead(trail, at, within2 = 48) {
-    const a = pointAt(trail, at), b = pointAt(trail, Math.min(trail.length, at + within2));
+  function turnAhead(trail, at2, within2 = 48) {
+    const a = pointAt(trail, at2), b = pointAt(trail, Math.min(trail.length, at2 + within2));
     return Math.abs(Math.atan2(Math.sin(b.heading - a.heading), Math.cos(b.heading - a.heading)));
   }
 
@@ -6787,8 +7415,8 @@
   var ARROWS = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
   var MOVEMENT_KEYS = { a: "ArrowLeft", d: "ArrowRight", w: "ArrowUp", s: "ArrowDown" };
   var keyName = (key) => MOVEMENT_KEYS[key.toLowerCase()] || key;
-  var hasPoint = (p) => Number.isFinite(p.x) && Number.isFinite(p.y);
-  var scenePoint = (p) => ({ x: clamp(p.x, 0, WORLD.width), y: clamp(p.y, 0, WORLD.height) });
+  var hasPoint = (p2) => Number.isFinite(p2.x) && Number.isFinite(p2.y);
+  var scenePoint = (p2) => ({ x: clamp(p2.x, 0, WORLD.width), y: clamp(p2.y, 0, WORLD.height) });
   function walkStart(trail) {
     const start = pointAt(trail, 0);
     return {
@@ -6850,66 +7478,66 @@
       keys: []
     };
   }
-  function copy(state) {
+  function copy(state3) {
     return {
-      ...state,
-      play: { ...state.play },
-      camera: { ...state.camera },
-      viewport: { ...state.viewport },
-      climb: { ...state.climb, position: { ...state.climb.position } },
-      passage: { ...state.passage, position: { ...state.passage.position } },
-      rest: { ...state.rest },
+      ...state3,
+      play: { ...state3.play },
+      camera: { ...state3.camera },
+      viewport: { ...state3.viewport },
+      climb: { ...state3.climb, position: { ...state3.climb.position } },
+      passage: { ...state3.passage, position: { ...state3.passage.position } },
+      rest: { ...state3.rest },
       river: {
-        ...state.river,
-        captures: state.river.captures.slice(),
-        captureRequest: state.river.captureRequest ? { ...state.river.captureRequest, camera: { ...state.river.captureRequest.camera } } : null
+        ...state3.river,
+        captures: state3.river.captures.slice(),
+        captureRequest: state3.river.captureRequest ? { ...state3.river.captureRequest, camera: { ...state3.river.captureRequest.camera } } : null
       },
-      pointer: state.pointer ? { ...state.pointer } : null,
-      keys: state.keys.slice(),
-      events: state.events.slice(-31)
+      pointer: state3.pointer ? { ...state3.pointer } : null,
+      keys: state3.keys.slice(),
+      events: state3.events.slice(-31)
     };
   }
-  function emit(state, type, x = 0.5, index) {
-    state.events.push({ serial: ++state.serial, type, x: clamp(x, 0, 1), ...index === void 0 ? {} : { index } });
-    if (state.events.length > 32)
-      state.events.shift();
+  function emit(state3, type, x = 0.5, index) {
+    state3.events.push({ serial: ++state3.serial, type, x: clamp(x, 0, 1), ...index === void 0 ? {} : { index } });
+    if (state3.events.length > 32)
+      state3.events.shift();
   }
-  function stopWalking(state) {
-    for (const walk of [state.climb, state.passage]) {
+  function stopWalking(state3) {
+    for (const walk of [state3.climb, state3.passage]) {
       walk.held = false;
       walk.speed = 0;
     }
-    state.pointer = null;
-    state.keys = [];
-    state.dragging = false;
+    state3.pointer = null;
+    state3.keys = [];
+    state3.dragging = false;
   }
-  function finish(state) {
-    stopWalking(state);
-    state.play.complete = true;
-    state.play.progress = 1;
-    state.play.completedAt = state.age;
-    state.river.burst = false;
-    state.river.burstRemaining = 0;
-    state.river.captureRequest = null;
-    emit(state, "complete");
+  function finish(state3) {
+    stopWalking(state3);
+    state3.play.complete = true;
+    state3.play.progress = 1;
+    state3.play.completedAt = state3.age;
+    state3.river.burst = false;
+    state3.river.burstRemaining = 0;
+    state3.river.captureRequest = null;
+    emit(state3, "complete");
   }
-  function requestCapture(state) {
-    const river = state.river;
+  function requestCapture(state3) {
+    const river = state3.river;
     if (river.phase !== "river" || river.captureRequest || river.captures.length >= MAX_CAPTURES)
       return false;
-    river.captureRequest = { id: ++river.captureSerial, age: state.age, waveClock: river.waveClock, camera: { ...state.camera } };
-    state.acted = true;
-    emit(state, "shutter", 0.5, river.captureRequest.id);
+    river.captureRequest = { id: ++river.captureSerial, age: state3.age, waveClock: river.waveClock, camera: { ...state3.camera } };
+    state3.acted = true;
+    emit(state3, "shutter", 0.5, river.captureRequest.id);
     return true;
   }
-  function attachTrailCapture(state, url, requestId) {
-    const request = state.river.captureRequest;
-    if (state.done || state.play.complete || state.game !== "tiger-river" || state.river.phase !== "river" || !request || requestId !== void 0 && request.id !== requestId)
-      return state;
+  function attachTrailCapture(state3, url, requestId) {
+    const request = state3.river.captureRequest;
+    if (state3.done || state3.play.complete || state3.game !== "tiger-river" || state3.river.phase !== "river" || !request || requestId !== void 0 && request.id !== requestId)
+      return state3;
     if (!/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(url) || url.length > 3e5) {
-      return rejectTrailCapture(state, request.id);
+      return rejectTrailCapture(state3, request.id);
     }
-    const next = copy(state);
+    const next = copy(state3);
     next.river.captures.push({ ...request, camera: { ...request.camera }, url });
     if (!next.river.selectionLocked)
       next.river.selected = next.river.captures.length - 1;
@@ -6923,82 +7551,82 @@
     emit(next, "frame-ready", 0.5, next.river.selected);
     return next;
   }
-  function rejectTrailCapture(state, requestId) {
-    if (!state.river.captureRequest || requestId !== void 0 && state.river.captureRequest.id !== requestId)
-      return state;
-    const next = copy(state);
+  function rejectTrailCapture(state3, requestId) {
+    if (!state3.river.captureRequest || requestId !== void 0 && state3.river.captureRequest.id !== requestId)
+      return state3;
+    const next = copy(state3);
     next.river.captureRequest = null;
     next.river.burst = false;
     next.river.burstRemaining = 0;
     next.feedback = "这一帧没能保存，可以再拍一次；已经拍好的画面还在。";
     return next;
   }
-  function beginWalk(state, point2) {
-    const walk = state.climb;
+  function beginWalk(state3, point2) {
+    const walk = state3.climb;
     if (walk.arrivedAt !== null)
       return;
     walk.held = true;
-    state.pointer = point2;
-    state.feedback = PROMPTS[state.game];
-    state.acted = true;
-    state.dragging = true;
-    state.gesture = "hold";
+    state3.pointer = point2;
+    state3.feedback = PROMPTS[state3.game];
+    state3.acted = true;
+    state3.dragging = true;
+    state3.gesture = "hold";
   }
-  function rememberViewport(state, input) {
+  function rememberViewport(state3, input) {
     if (Number.isFinite(input.viewWidth) && input.viewWidth > 0)
-      state.viewport.width = Math.min(WORLD.width, input.viewWidth);
+      state3.viewport.width = Math.min(WORLD.width, input.viewWidth);
     if (Number.isFinite(input.viewHeight) && input.viewHeight > 0)
-      state.viewport.height = Math.min(WORLD.height, input.viewHeight);
+      state3.viewport.height = Math.min(WORLD.height, input.viewHeight);
   }
-  function viewCamera(state, camera) {
-    const halfW = Math.min(WORLD.width, state.viewport.width) / 2;
-    const halfH = Math.min(WORLD.height, state.viewport.height) / 2;
+  function viewCamera(state3, camera) {
+    const halfW = Math.min(WORLD.width, state3.viewport.width) / 2;
+    const halfH = Math.min(WORLD.height, state3.viewport.height) / 2;
     return {
       zoom: clamp(camera.zoom, 1, 1.8),
       x: clamp(camera.x, halfW, WORLD.width - halfW),
       y: clamp(camera.y, halfH, WORLD.height - halfH)
     };
   }
-  function pan(state, point2) {
-    if (!state.pointer)
+  function pan(state3, point2) {
+    if (!state3.pointer)
       return;
-    const dx = point2.x - state.pointer.x, dy = point2.y - state.pointer.y;
-    const before = state.camera;
-    state.camera = viewCamera(state, { ...before, x: before.x - dx, y: before.y - dy });
-    state.pointer = { x: point2.x + state.camera.x - before.x, y: point2.y + state.camera.y - before.y };
-    state.rest.panX = (state.camera.x - 500) / 500;
-    state.dragging = true;
-    state.acted = true;
-    state.gesture = "drag";
+    const dx = point2.x - state3.pointer.x, dy = point2.y - state3.pointer.y;
+    const before = state3.camera;
+    state3.camera = viewCamera(state3, { ...before, x: before.x - dx, y: before.y - dy });
+    state3.pointer = { x: point2.x + state3.camera.x - before.x, y: point2.y + state3.camera.y - before.y };
+    state3.rest.panX = (state3.camera.x - 500) / 500;
+    state3.dragging = true;
+    state3.acted = true;
+    state3.gesture = "drag";
   }
-  function moveTrail(state, input) {
-    if (state.done || state.play.complete || state.game === "tiger-climb" || !hasPoint(input))
-      return state;
-    const next = copy(state), point2 = scenePoint(input);
+  function moveTrail(state3, input) {
+    if (state3.done || state3.play.complete || state3.game === "tiger-climb" || !hasPoint(input))
+      return state3;
+    const next = copy(state3), point2 = scenePoint(input);
     rememberViewport(next, input);
     if (next.pointer && (next.game === "tiger-rest" || next.river.phase === "river"))
       pan(next, point2);
     else
-      return state;
+      return state3;
     return next;
   }
-  function inputTrail(state, input) {
+  function inputTrail(state3, input) {
     if (input.action === "viewport") {
-      const next2 = copy(state);
+      const next2 = copy(state3);
       rememberViewport(next2, input);
       if (next2.game === "tiger-rest" || next2.game === "tiger-river")
         next2.camera = viewCamera(next2, next2.camera);
       return next2;
     }
-    if (state.done || state.play.complete)
-      return state;
+    if (state3.done || state3.play.complete)
+      return state3;
     if (input.phase === "release" && !input.action)
-      return releaseTrail(state);
-    const next = copy(state), action = input.action || "";
+      return releaseTrail(state3);
+    const next = copy(state3), action = input.action || "";
     rememberViewport(next, input);
     if (input.phase === "press" && !action) {
       if (!hasPoint(input))
-        return state;
+        return state3;
       const point2 = scenePoint(input);
       if (next.game === "tiger-climb")
         beginWalk(next, point2);
@@ -7011,7 +7639,7 @@
       return next;
     }
     if (input.phase === "press")
-      return state;
+      return state3;
     if (next.game === "tiger-rest" || next.game === "tiger-passage") {
       if (action === "continue") {
         stopWalking(next);
@@ -7024,7 +7652,7 @@
       }
     }
     if (next.game === "tiger-climb")
-      return state;
+      return state3;
     if (next.game === "tiger-river") {
       if (action === "continue-to-river" && next.river.phase === "descent") {
         next.river.phase = "river";
@@ -7035,7 +7663,7 @@
         return next;
       }
       if (next.river.phase !== "river")
-        return state;
+        return state3;
       if (action === "shutter") {
         if (!requestCapture(next))
           next.feedback = next.river.captures.length >= MAX_CAPTURES ? "已有五帧，先选一张收好，或重新取景。" : "正在留下这一帧。";
@@ -7112,22 +7740,22 @@
       next.rest.panX = (next.camera.x - 500) / 500;
       return next;
     }
-    return state;
+    return state3;
   }
-  function releaseTrail(state) {
-    if (!state.pointer && !state.keys.length && !state.climb.held && !state.passage.held && !state.river.burst)
-      return state;
-    const next = copy(state);
+  function releaseTrail(state3) {
+    if (!state3.pointer && !state3.keys.length && !state3.climb.held && !state3.passage.held && !state3.river.burst)
+      return state3;
+    const next = copy(state3);
     stopWalking(next);
     next.river.burst = false;
     next.river.burstRemaining = 0;
     return next;
   }
-  function advanceClimb(state, dt) {
-    const walk = state.climb, trail = CLIMB_TRAIL;
+  function advanceClimb(state3, dt) {
+    const walk = state3.climb, trail = CLIMB_TRAIL;
     if (walk.arrivedAt !== null)
       return;
-    if (!walk.held && !state.keys.length) {
+    if (!walk.held && !state3.keys.length) {
       walk.speed = 0;
       return;
     }
@@ -7143,14 +7771,14 @@
     walk.heading += Math.atan2(Math.sin(heading - walk.heading), Math.cos(heading - walk.heading)) * (1 - Math.exp(-dt * 10));
     walk.position = { x: position.x, y: position.y };
     walk.progress = walk.distance / trail.length;
-    state.play.progress = walk.progress * 0.94;
-    state.x = position.x / WORLD.width;
-    state.y = position.y / WORLD.height;
+    state3.play.progress = walk.progress * 0.94;
+    state3.x = position.x / WORLD.width;
+    state3.y = position.y / WORLD.height;
     if (travelled > 0) {
       walk.nextStep -= travelled;
       if (walk.nextStep <= 0) {
         walk.nextStep += 20;
-        emit(state, "trail-step", state.x, Math.floor(walk.distance / 20));
+        emit(state3, "trail-step", state3.x, Math.floor(walk.distance / 20));
       }
     }
     if (trail.length - walk.distance <= 0.2) {
@@ -7158,16 +7786,16 @@
       walk.distance = trail.length;
       walk.progress = 1;
       walk.position = { x: end.x, y: end.y };
-      walk.arrivedAt = state.age;
-      stopWalking(state);
-      state.feedback = "转上山肩了。停下脚步，看看谷底的金沙江。";
-      emit(state, "trail-arrive", end.x / WORLD.width);
+      walk.arrivedAt = state3.age;
+      stopWalking(state3);
+      state3.feedback = "转上山肩了。停下脚步，看看谷底的金沙江。";
+      emit(state3, "trail-arrive", end.x / WORLD.width);
     }
   }
-  function tickTrail(state, dt) {
-    if (state.done || !Number.isFinite(dt) || dt <= 0)
-      return state;
-    const next = copy(state), elapsed = Math.min(0.12, dt);
+  function tickTrail(state3, dt) {
+    if (state3.done || !Number.isFinite(dt) || dt <= 0)
+      return state3;
+    const next = copy(state3), elapsed = Math.min(0.12, dt);
     next.age += elapsed;
     if (next.play.complete) {
       next.done = next.age - (next.play.completedAt ?? next.age) >= (next.play.reduced ? 0.25 : 0.85);
@@ -7175,9 +7803,9 @@
     }
     if (next.game === "tiger-climb") {
       const walk = next.climb;
-      const steps = Math.max(1, Math.ceil(elapsed / (1 / 60)));
-      for (let i = 0; i < steps; i++)
-        advanceClimb(next, elapsed / steps);
+      const steps2 = Math.max(1, Math.ceil(elapsed / (1 / 60)));
+      for (let i = 0; i < steps2; i++)
+        advanceClimb(next, elapsed / steps2);
       const follow = next.play.reduced ? 1 : 1 - Math.exp(-elapsed * 3.8);
       const target = walk.arrivedAt !== null ? { x: 590, y: 355, zoom: 1.02 } : {
         x: clamp(walk.position.x + 105, 0, WORLD.width),
@@ -7229,10 +7857,10 @@
     }
     return next;
   }
-  function keyTrail(state, key, phase = "down") {
+  function keyTrail(state3, key, phase = "down") {
     const normalized = keyName(key);
-    if (ARROWS.includes(normalized) || state.game === "tiger-climb" && (normalized === " " || normalized === "Enter")) {
-      const next = copy(state);
+    if (ARROWS.includes(normalized) || state3.game === "tiger-climb" && (normalized === " " || normalized === "Enter")) {
+      const next = copy(state3);
       next.keys = phase === "up" ? next.keys.filter((item) => item !== normalized) : [.../* @__PURE__ */ new Set([...next.keys, normalized])];
       if (phase === "down" && !next.done && !next.play.complete) {
         next.acted = true;
@@ -7245,24 +7873,24 @@
       return next;
     }
     if (phase === "up")
-      return ["Enter", " ", "+", "=", "-", "_", "b", "B", "k", "K"].includes(key) ? state : null;
-    if (state.done || state.play.complete)
+      return ["Enter", " ", "+", "=", "-", "_", "b", "B", "k", "K"].includes(key) ? state3 : null;
+    if (state3.done || state3.play.complete)
       return null;
     if (key === "Enter" || key === " ") {
-      if (state.game === "tiger-rest" || state.game === "tiger-passage")
-        return inputTrail(state, { action: "continue" });
-      return inputTrail(state, { action: state.river.phase === "descent" ? "continue-to-river" : "shutter" });
+      if (state3.game === "tiger-rest" || state3.game === "tiger-passage")
+        return inputTrail(state3, { action: "continue" });
+      return inputTrail(state3, { action: state3.river.phase === "descent" ? "continue-to-river" : "shutter" });
     }
-    if ((key === "+" || key === "=") && (state.game === "tiger-river" || state.game === "tiger-rest"))
-      return inputTrail(state, { action: "zoom", value: state.camera.zoom + 0.15 });
-    if ((key === "-" || key === "_") && (state.game === "tiger-river" || state.game === "tiger-rest"))
-      return inputTrail(state, { action: "zoom", value: state.camera.zoom - 0.15 });
-    if ((key === "b" || key === "B") && state.game === "tiger-river")
-      return inputTrail(state, { action: "burst" });
-    if ((key === "k" || key === "K") && state.game === "tiger-river")
-      return inputTrail(state, { action: "keep" });
-    if (/^[1-5]$/.test(key) && state.game === "tiger-river")
-      return inputTrail(state, { action: "select-frame", value: Number(key) - 1 });
+    if ((key === "+" || key === "=") && (state3.game === "tiger-river" || state3.game === "tiger-rest"))
+      return inputTrail(state3, { action: "zoom", value: state3.camera.zoom + 0.15 });
+    if ((key === "-" || key === "_") && (state3.game === "tiger-river" || state3.game === "tiger-rest"))
+      return inputTrail(state3, { action: "zoom", value: state3.camera.zoom - 0.15 });
+    if ((key === "b" || key === "B") && state3.game === "tiger-river")
+      return inputTrail(state3, { action: "burst" });
+    if ((key === "k" || key === "K") && state3.game === "tiger-river")
+      return inputTrail(state3, { action: "keep" });
+    if (/^[1-5]$/.test(key) && state3.game === "tiger-river")
+      return inputTrail(state3, { action: "select-frame", value: Number(key) - 1 });
     return null;
   }
 
@@ -7318,37 +7946,37 @@
   function walkingFrame(stride) {
     return Math.floor(Math.max(0, stride) / 4) % 8;
   }
-  function stageFrame(state, height, capture = false) {
-    const climb = state.game === "tiger-climb", river = state.game === "tiger-river", passage = state.game === "tiger-passage";
-    const camera = { ...state.camera }, progress = climb ? state.climb.progress : passage ? state.passage.progress : river ? state.river.descentProgress : 0;
-    const request = capture ? state.river.captureRequest : null;
+  function stageFrame(state3, height, capture = false) {
+    const climb = state3.game === "tiger-climb", river = state3.game === "tiger-river", passage = state3.game === "tiger-passage";
+    const camera = { ...state3.camera }, progress = climb ? state3.climb.progress : passage ? state3.passage.progress : river ? state3.river.descentProgress : 0;
+    const request = capture ? state3.river.captureRequest : null;
     if (request)
       Object.assign(camera, request.camera);
     else if (passage) {
-      camera.x = state.passage.position.x + 90;
-      camera.y = state.passage.position.y - 50;
+      camera.x = state3.passage.position.x + 90;
+      camera.y = state3.passage.position.y - 50;
       camera.zoom = 1.12 - progress * 0.05;
-    } else if (river && state.river.phase === "descent") {
+    } else if (river && state3.river.phase === "descent") {
       const q = smooth(progress);
       camera.y -= (1 - q) * 110;
       camera.zoom += (1 - q) * 0.18;
     }
     let actor = null;
     if (climb) {
-      const facing = Math.cos(state.climb.heading) < 0 ? -1 : 1;
-      actor = { at: state.climb.position, width: 38 - smooth(progress) * 10, frame: walkingFrame(state.climb.distance), rotation: clamp2(Math.sin(state.climb.heading) * facing * 0.1, -0.08, 0.06), alpha: 1, mirror: facing };
+      const facing = Math.cos(state3.climb.heading) < 0 ? -1 : 1;
+      actor = { at: state3.climb.position, width: 38 - smooth(progress) * 10, frame: walkingFrame(state3.climb.distance), rotation: clamp2(Math.sin(state3.climb.heading) * facing * 0.1, -0.08, 0.06), alpha: 1, mirror: facing };
     } else if (passage)
-      actor = { at: state.passage.position, width: 40 - progress * 10, frame: walkingFrame(state.passage.distance), rotation: -0.025, alpha: 1, mirror: Math.cos(state.passage.heading) < 0 ? -1 : 1 };
+      actor = { at: state3.passage.position, width: 40 - progress * 10, frame: walkingFrame(state3.passage.distance), rotation: -0.025, alpha: 1, mirror: Math.cos(state3.passage.heading) < 0 ? -1 : 1 };
     return {
       camera,
       projection: project(camera, height),
-      age: request?.age ?? state.age,
-      wave: request?.waveClock ?? (river ? state.river.waveClock : state.age),
-      reduced: !!state.play.reduced,
+      age: request?.age ?? state3.age,
+      wave: request?.waveClock ?? (river ? state3.river.waveClock : state3.age),
+      reduced: !!state3.play.reduced,
       actor,
       river,
       passage,
-      rest: state.game === "tiger-rest",
+      rest: state3.game === "tiger-rest",
       capture
     };
   }
@@ -7367,8 +7995,8 @@
     { x: 0.98, y: 1 }
   ];
   var HIGH_WATER = [
-    ...HIGH_FLOW.map((p) => ({ x: p.x - (15e-4 + (p.y - 0.65) * 0.024), y: p.y })),
-    ...HIGH_FLOW.slice().reverse().map((p) => ({ x: p.x + (15e-4 + (p.y - 0.65) * 0.024), y: p.y }))
+    ...HIGH_FLOW.map((p2) => ({ x: p2.x - (15e-4 + (p2.y - 0.65) * 0.024), y: p2.y })),
+    ...HIGH_FLOW.slice().reverse().map((p2) => ({ x: p2.x + (15e-4 + (p2.y - 0.65) * 0.024), y: p2.y }))
   ];
   var RIVER_WATER = [
     { x: 0, y: 0.54 },
@@ -7411,21 +8039,21 @@
     { x: 0.521, y: 1 }
   ];
   var FALL_WATER = [
-    ...FALL_FLOW.map((p) => ({ x: p.x - (p.y < 0.5 ? 4e-3 : 8e-3), y: p.y })),
-    ...FALL_FLOW.slice().reverse().map((p) => ({ x: p.x + (p.y < 0.5 ? 5e-3 : 0.01), y: p.y }))
+    ...FALL_FLOW.map((p2) => ({ x: p2.x - (p2.y < 0.5 ? 4e-3 : 8e-3), y: p2.y })),
+    ...FALL_FLOW.slice().reverse().map((p2) => ({ x: p2.x + (p2.y < 0.5 ? 5e-3 : 0.01), y: p2.y }))
   ];
   var FALL_LEDGE = [{ x: 0.32, y: 0.565 }, { x: 0.46, y: 0.565 }, { x: 0.46, y: 0.605 }, { x: 0.32, y: 0.605 }];
   function waterPolygon(frame2, rect) {
-    return (frame2.river ? RIVER_WATER : frame2.passage ? FALL_WATER : HIGH_WATER).map((p) => ({ x: rect.x + p.x * rect.width, y: rect.y + p.y * rect.height }));
+    return (frame2.river ? RIVER_WATER : frame2.passage ? FALL_WATER : HIGH_WATER).map((p2) => ({ x: rect.x + p2.x * rect.width, y: rect.y + p2.y * rect.height }));
   }
   function waterHoles(frame2, rect) {
-    return (frame2.river ? RIVER_ROCKS : frame2.passage ? [FALL_LEDGE] : []).map((rock) => rock.map((p) => ({ x: rect.x + p.x * rect.width, y: rect.y + p.y * rect.height })));
+    return (frame2.river ? RIVER_ROCKS : frame2.passage ? [FALL_LEDGE] : []).map((rock) => rock.map((p2) => ({ x: rect.x + p2.x * rect.width, y: rect.y + p2.y * rect.height })));
   }
-  function within(p, polygon2) {
+  function within(p2, polygon2) {
     let yes = false;
     for (let i = 0, j = polygon2.length - 1; i < polygon2.length; j = i++) {
       const a = polygon2[i], b = polygon2[j];
-      if (a.y > p.y !== b.y > p.y && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)
+      if (a.y > p2.y !== b.y > p2.y && p2.x < (b.x - a.x) * (p2.y - a.y) / (b.y - a.y) + a.x)
         yes = !yes;
     }
     return yes;
@@ -7470,11 +8098,11 @@
     return {
       root,
       paint(frame2, resources) {
-        const p = frame2.projection;
-        attrs(parent, { viewBox: "0 0 " + p.width + " " + p.height, preserveAspectRatio: "none" });
-        attrs(paper2, { height: p.height });
-        attrs(loading, { y: p.height / 2, display: resources.has("scene") ? "none" : "" });
-        attrs(world, { transform: "translate(" + p.x + " " + p.y + ") scale(" + p.scale + ")" });
+        const p2 = frame2.projection;
+        attrs(parent, { viewBox: "0 0 " + p2.width + " " + p2.height, preserveAspectRatio: "none" });
+        attrs(paper2, { height: p2.height });
+        attrs(loading, { y: p2.height / 2, display: resources.has("scene") ? "none" : "" });
+        attrs(world, { transform: "translate(" + p2.x + " " + p2.y + ") scale(" + p2.scale + ")" });
         const scene = resources.get("scene");
         if (!scene)
           return;
@@ -7544,7 +8172,7 @@
     const scene = new P.Container(), paper2 = new P.Graphics(), world = new P.Container();
     const waterMask = new P.Sprite(P.Texture.EMPTY), whitewater = new P.Graphics(), shadow = new P.Graphics();
     let maskTexture = null, maskKey = "";
-    let background = null, water = null, original = null, hiker = null;
+    let background = null, water2 = null, original = null, hiker = null;
     const loss = (event) => {
       event.preventDefault();
       dispose();
@@ -7585,8 +8213,8 @@
         const polygon2 = (points) => {
           context.beginPath();
           context.moveTo(points[0].x, points[0].y);
-          for (const p of points.slice(1))
-            context.lineTo(p.x, p.y);
+          for (const p2 of points.slice(1))
+            context.lineTo(p2.x, p2.y);
           context.closePath();
           context.fill();
         };
@@ -7614,15 +8242,15 @@
         background.width = rect.width;
         background.height = rect.height;
         const activeWater = !frame2.rest;
-        water.visible = activeWater;
+        water2.visible = activeWater;
         whitewater.visible = activeWater;
         waterMask.visible = activeWater;
         if (activeWater) {
           setWaterMask2(frame2, rect);
-          water.position.set(rect.x, rect.y);
-          water.width = rect.width;
-          water.height = rect.height;
-          const buffer = water.geometry.getBuffer("aPosition"), values = buffer.data;
+          water2.position.set(rect.x, rect.y);
+          water2.width = rect.width;
+          water2.height = rect.height;
+          const buffer = water2.geometry.getBuffer("aPosition"), values = buffer.data;
           for (let i = 0; i < values.length; i += 2) {
             const x = original[i], y = original[i + 1], q = y / sceneTexture.height;
             values[i] = x + (frame2.reduced ? 0 : Math.sin(y * 0.043 + frame2.wave * 1.3) * (frame2.river ? 2.4 : frame2.passage ? 0.38 : 1.05) * q);
@@ -7675,11 +8303,11 @@
       const sceneTexture = textures.get("scene");
       background = new P.Sprite(sceneTexture);
       world.addChild(background);
-      water = new P.MeshPlane({ texture: sceneTexture, verticesX: 28, verticesY: 20 });
-      original = new Float32Array(water.geometry.getBuffer("aPosition").data);
-      water.alpha = 0.72;
-      world.addChild(water, waterMask, whitewater, shadow);
-      water.mask = waterMask;
+      water2 = new P.MeshPlane({ texture: sceneTexture, verticesX: 28, verticesY: 20 });
+      original = new Float32Array(water2.geometry.getBuffer("aPosition").data);
+      water2.alpha = 0.72;
+      world.addChild(water2, waterMask, whitewater, shadow);
+      water2.mask = waterMask;
       whitewater.mask = waterMask;
       const art = resources.get("actor"), actorTexture = textures.get("actor");
       if (art && actorTexture) {
@@ -7719,11 +8347,11 @@
     attrs(parent, { viewBox: "0 0 1000 720", preserveAspectRatio: "xMidYMid meet" });
     return { tiger: true, tigerTrail: true, game, parent, fallback: fallback(svg, parent, game), gpu: null, resources: /* @__PURE__ */ new Map(), loaded: false, height: 720, displayWidth: 1e3, latest: null, host: null, resize: null, captureBusy: false, generation: 0, embedded: /* @__PURE__ */ new Map(), waitsForArt: true, contentState: "loading", disposed: false };
   }
-  function paintTigerTrail(refs, state) {
+  function paintTigerTrail(refs, state3) {
     if (refs.disposed)
       return;
-    refs.latest = state;
-    const frame2 = stageFrame(state, refs.height);
+    refs.latest = state3;
+    const frame2 = stageFrame(state3, refs.height);
     if (refs.gpu) {
       try {
         refs.gpu.paint(frame2);
@@ -7740,22 +8368,22 @@
     if (loading)
       loading.textContent = refs.contentState === "error" ? "画作暂未展开，可以重试或继续行程。" : "江谷画作正在展开…";
   }
-  function tigerTrailViewport(refs, state = refs.latest) {
-    const p = project(state?.camera || { x: 500, y: 360, zoom: 1 }, refs.height);
-    return { action: "viewport", viewWidth: p.width / p.scale, viewHeight: p.height / p.scale };
+  function tigerTrailViewport(refs, state3 = refs.latest) {
+    const p2 = project(state3?.camera || { x: 500, y: 360, zoom: 1 }, refs.height);
+    return { action: "viewport", viewWidth: p2.width / p2.scale, viewHeight: p2.height / p2.scale };
   }
   function tigerTrailPoint(refs, point2) {
     if (!refs.latest)
       return point2;
-    const p = stageFrame(refs.latest, refs.height).projection;
+    const p2 = stageFrame(refs.latest, refs.height).projection;
     return {
       ...point2,
-      x: ((point2.x ?? 0) * p.width - p.x) / p.scale,
-      y: ((point2.y ?? 0) * p.height - p.y) / p.scale,
-      viewWidth: p.width / p.scale,
-      viewHeight: p.height / p.scale,
-      ...point2.dx === void 0 ? {} : { dx: point2.dx * p.width / p.scale },
-      ...point2.dy === void 0 ? {} : { dy: point2.dy * p.height / p.scale }
+      x: ((point2.x ?? 0) * p2.width - p2.x) / p2.scale,
+      y: ((point2.y ?? 0) * p2.height - p2.y) / p2.scale,
+      viewWidth: p2.width / p2.scale,
+      viewHeight: p2.height / p2.scale,
+      ...point2.dx === void 0 ? {} : { dx: point2.dx * p2.width / p2.scale },
+      ...point2.dy === void 0 ? {} : { dy: point2.dy * p2.height / p2.scale }
     };
   }
   async function mountTigerTrail(refs, host, cache2, pixi) {
@@ -7880,13 +8508,13 @@
       URL.revokeObjectURL(url);
     }
   }
-  async function captureTigerTrail(refs, state = refs.latest) {
-    if (refs.disposed || !refs.loaded || !state || refs.captureBusy)
+  async function captureTigerTrail(refs, state3 = refs.latest) {
+    if (refs.disposed || !refs.loaded || !state3 || refs.captureBusy)
       return null;
     refs.captureBusy = true;
     const generation = refs.generation;
     try {
-      const frame2 = stageFrame(state, refs.height, true), url = refs.gpu ? refs.gpu.capture(frame2) : await svgCapture(refs, frame2);
+      const frame2 = stageFrame(state3, refs.height, true), url = refs.gpu ? refs.gpu.capture(frame2) : await svgCapture(refs, frame2);
       return refs.disposed || generation !== refs.generation ? null : url;
     } catch (error) {
       console.warn("The river photograph could not be saved:", error);
@@ -7935,7 +8563,7 @@
     let shutterPointer = null, shutterHeldAt = 0, holdingBurst = false, ignoreClick = false;
     const strip = $2("tiger-frame-strip");
     const zoom = $2("tiger-trail-zoom");
-    const withViewport = (state) => activeRefs && !activeRefs.disposed ? inputTrail(state, tigerTrailViewport(activeRefs, state)) : state;
+    const withViewport = (state3) => activeRefs && !activeRefs.disposed ? inputTrail(state3, tigerTrailViewport(activeRefs, state3)) : state3;
     function renderFrames(s) {
       strip.hidden = s.game !== "tiger-river" || !s.river.captures.length;
       const key = s.id + ":" + s.river.captures.map((frame2) => frame2.id).join(",");
@@ -7958,8 +8586,8 @@
         button.disabled = s.play.complete;
       });
     }
-    function present(base, view) {
-      const s = base, refs = view, waiting = refs.contentState !== "ready";
+    function present(base, view3) {
+      const s = base, refs = view3, waiting = refs.contentState !== "ready";
       current = s;
       $2("tiger-tools").hidden = false;
       $2("micro-panel").setAttribute("data-trail", "true");
@@ -8029,15 +8657,15 @@
         ignoreClick = false;
         return createTrailState(entry, { ...options, riverArrival: riverArrived ? "river" : "descent" });
       },
-      act: (state, point2) => inputTrail(withViewport(state), point2),
-      move: (state, point2) => moveTrail(state, point2),
-      release(state) {
+      act: (state3, point2) => inputTrail(withViewport(state3), point2),
+      move: (state3, point2) => moveTrail(state3, point2),
+      release(state3) {
         shutterPointer = null;
         holdingBurst = false;
-        return releaseTrail(state);
+        return releaseTrail(state3);
       },
-      tick(state, dt) {
-        let s = withViewport(state);
+      tick(state3, dt) {
+        let s = withViewport(state3);
         if (pending2 && pending2.generation === generation && pending2.id === s.id) {
           const result = pending2;
           pending2 = null;
@@ -8050,8 +8678,8 @@
         return tickTrail(s, dt);
       },
       draw: (svg, parent, entry) => drawTigerTrail(svg, parent, TRAIL_GAMES[entry.id]),
-      paint(view, state) {
-        const refs = view, s = state;
+      paint(view3, state3) {
+        const refs = view3, s = state3;
         activeRefs = refs;
         paintTigerTrail(refs, s);
         const request = s.river.captureRequest;
@@ -8071,9 +8699,9 @@
         });
       },
       instruction: (entry) => PROMPTS[TRAIL_GAMES[entry.id]],
-      status: (state) => state.feedback,
-      outcome(state, entry) {
-        const s = state, captured = s.game === "tiger-river" ? s.river.captures[s.river.selected]?.url : null;
+      status: (state3) => state3.feedback,
+      outcome(state3, entry) {
+        const s = state3, captured = s.game === "tiger-river" ? s.river.captures[s.river.selected]?.url : null;
         return {
           id: s.id,
           edition: entry.edition,
@@ -8102,7 +8730,7 @@
         disposeTigerTrail(refs);
       },
       point: (refs, point2) => tigerTrailPoint(refs, point2),
-      key: (state, key, phase) => keyTrail(withViewport(state), key, phase),
+      key: (state3, key, phase) => keyTrail(withViewport(state3), key, phase),
       present
     };
     const actions = $2("tiger-actions");
@@ -8161,10 +8789,10 @@
   var memoryId = (id2) => Object.hasOwn(MEMORY_SPECS, id2);
   var MEMORY_IDS = Object.keys(MEMORY_SPECS).filter(memoryId);
   var sceneFile = (kind) => `scenes/tiger-memories-v4/${kind}.webp`;
-  var badgeFile = (kind) => `badges/tiger-memories-v4/${kind}.webp`;
+  var badgeFile = (kind) => TIGER_BADGE_ART[kind].file;
   var clamp3 = (value, low, high) => Math.max(low, Math.min(high, value));
   var distance2 = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
-  var inside = (p, r) => p.x >= r.x && p.y >= r.y && p.x <= r.x + r.width && p.y <= r.y + r.height;
+  var inside = (p2, r) => p2.x >= r.x && p2.y >= r.y && p2.x <= r.x + r.width && p2.y <= r.y + r.height;
   var MemoryState = class {
     id;
     route = "tiger";
@@ -8258,11 +8886,11 @@
   var ROAD_RIVER_SECONDS = 4.8;
   var roadWalk = (phase) => phase.kind === "walking" ? phase.progress : phase.kind === "river" ? 1 : 0;
   function roadAt(progress) {
-    const at = clamp3(progress, 0, 1) * ROAD_LENGTH;
+    const at2 = clamp3(progress, 0, 1) * ROAD_LENGTH;
     let i = 1;
-    while (i < lengths.length - 1 && lengths[i] < at)
+    while (i < lengths.length - 1 && lengths[i] < at2)
       i++;
-    const a = ROAD_POINTS[i - 1], b = ROAD_POINTS[i], t = (at - lengths[i - 1]) / Math.max(1e-3, lengths[i] - lengths[i - 1]);
+    const a = ROAD_POINTS[i - 1], b = ROAD_POINTS[i], t = (at2 - lengths[i - 1]) / Math.max(1e-3, lengths[i] - lengths[i - 1]);
     return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, heading: Math.atan2(b.y - a.y, b.x - a.x) };
   }
   function roadWalkingProgress(elapsed) {
@@ -8280,15 +8908,15 @@
   function traceRoad(progress, from, to, tolerance) {
     const count = Math.max(1, Math.min(256, Math.ceil(distance2(from, to) / 8)));
     for (let sample = 1; sample <= count; sample++) {
-      const at = { x: from.x + (to.x - from.x) * sample / count, y: from.y + (to.y - from.y) * sample / count };
+      const at2 = { x: from.x + (to.x - from.x) * sample / count, y: from.y + (to.y - from.y) * sample / count };
       const low = Math.max(0, progress * ROAD_LENGTH - tolerance), high = Math.min(ROAD_LENGTH, progress * ROAD_LENGTH + 22);
       let nearest = Infinity, next = progress;
       for (let i = 1; i < ROAD_POINTS.length; i++) {
         if (lengths[i] < low || lengths[i - 1] > high)
           continue;
         const a = ROAD_POINTS[i - 1], b = ROAD_POINTS[i], len = lengths[i] - lengths[i - 1];
-        const t = clamp3(((at.x - a.x) * (b.x - a.x) + (at.y - a.y) * (b.y - a.y)) / Math.max(1e-3, len * len), clamp3((low - lengths[i - 1]) / Math.max(1e-3, len), 0, 1), clamp3((high - lengths[i - 1]) / Math.max(1e-3, len), 0, 1));
-        const d = distance2(at, { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+        const t = clamp3(((at2.x - a.x) * (b.x - a.x) + (at2.y - a.y) * (b.y - a.y)) / Math.max(1e-3, len * len), clamp3((low - lengths[i - 1]) / Math.max(1e-3, len), 0, 1), clamp3((high - lengths[i - 1]) / Math.max(1e-3, len), 0, 1));
+        const d = distance2(at2, { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
         if (d < nearest) {
           nearest = d;
           next = Math.max(progress, (lengths[i - 1] + t * len) / ROAD_LENGTH);
@@ -8307,11 +8935,11 @@
   var regionRock = [{ x: 0.08, y: 0.05 }, { x: 0.38, y: 0.02 }, { x: 0.47, y: 0.14 }, { x: 0.4, y: 0.33 }, { x: 0.52, y: 0.5 }, { x: 0.4, y: 0.65 }, { x: 0.24, y: 0.67 }, { x: 0.15, y: 0.42 }];
   var regionPlants = [{ x: 0.02, y: 0.47 }, { x: 0.2, y: 0.44 }, { x: 0.29, y: 0.63 }, { x: 0.42, y: 0.72 }, { x: 0.5, y: 0.91 }, { x: 0.32, y: 0.99 }, { x: 0.03, y: 0.97 }];
   var PAINT_REGIONS = [regionRock, regionPlants];
-  function polygonContains(p, polygon2) {
+  function polygonContains(p2, polygon2) {
     let result = false;
     for (let i = 0, j = polygon2.length - 1; i < polygon2.length; j = i++) {
       const a = polygon2[i], b = polygon2[j];
-      if (a.y > p.y !== b.y > p.y && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)
+      if (a.y > p2.y !== b.y > p2.y && p2.x < (b.x - a.x) * (p2.y - a.y) / (b.y - a.y) + a.x)
         result = !result;
     }
     return result;
@@ -8340,42 +8968,42 @@
     const swatches = PALETTE.map((_, i) => s.portrait ? { x: 885, y: 865 + i * 135 } : { x: 508, y: 410 + i * 98 });
     const cardWidth = s.portrait ? 175 : 132, cardHeight = cardWidth * 0.9;
     const cards = Array.from({ length: 4 }, (_, i) => ({ x: (s.portrait ? 105 : 170) + i * (s.portrait ? 205 : 161), y: s.portrait ? 900 : 550, width: cardWidth, height: cardHeight }));
-    const radius = s.portrait ? 360 : 236;
-    return { width: 1e3, height, scene, sketch, sketchImage, swatches, cards, radius };
+    const radius2 = s.portrait ? 360 : 236;
+    return { width: 1e3, height, scene, sketch, sketchImage, swatches, cards, radius: radius2 };
   }
   function riverImageRect(portrait) {
     const height = portrait ? 1260 : 750, scale = Math.max(1, height / 750);
     return { x: (1e3 - 1e3 * scale) * 0.55, y: 0, width: 1e3 * scale, height: 750 * scale };
   }
-  var riverToStage = (p, portrait) => {
+  var riverToStage = (p2, portrait) => {
     const r = riverImageRect(portrait);
-    return { x: r.x + p.x * r.width, y: r.y + p.y * r.height };
+    return { x: r.x + p2.x * r.width, y: r.y + p2.y * r.height };
   };
-  var stageToRiver = (p, portrait) => {
+  var stageToRiver = (p2, portrait) => {
     const r = riverImageRect(portrait);
-    return { x: (p.x - r.x) / r.width, y: (p.y - r.y) / r.height };
+    return { x: (p2.x - r.x) / r.width, y: (p2.y - r.y) / r.height };
   };
   function frameCenter(s) {
-    const at = riverToStage(s.session.kind === "river" ? s.session.center : { x: 0.23, y: 0.3 }, s.portrait), l = layout(s);
-    return { x: clamp3(at.x, l.radius, 1e3 - l.radius), y: clamp3(at.y, l.radius, l.height - l.radius) };
+    const at2 = riverToStage(s.session.kind === "river" ? s.session.center : { x: 0.23, y: 0.3 }, s.portrait), l = layout(s);
+    return { x: clamp3(at2.x, l.radius, 1e3 - l.radius), y: clamp3(at2.y, l.radius, l.height - l.radius) };
   }
   function frameFits(s) {
     if (s.session.kind !== "river")
       return false;
-    const center = frameCenter(s), radius = layout(s).radius;
-    return [{ x: 0.489, y: 0.45 }, { x: 0.765, y: 0.68 }, { x: 0.64, y: 0.81 }, { x: 0.4, y: 0.68 }].every((p) => distance2(center, riverToStage(p, s.portrait)) < radius * 0.94);
+    const center = frameCenter(s), radius2 = layout(s).radius;
+    return [{ x: 0.489, y: 0.45 }, { x: 0.765, y: 0.68 }, { x: 0.64, y: 0.81 }, { x: 0.4, y: 0.68 }].every((p2) => distance2(center, riverToStage(p2, s.portrait)) < radius2 * 0.94);
   }
-  function moveFrame(s, p) {
-    const l = layout(s), radius = l.radius;
-    return stageToRiver({ x: clamp3(p.x, radius, l.width - radius), y: clamp3(p.y, radius, l.height - radius) }, s.portrait);
+  function moveFrame(s, p2) {
+    const l = layout(s), radius2 = l.radius;
+    return stageToRiver({ x: clamp3(p2.x, radius2, l.width - radius2), y: clamp3(p2.y, radius2, l.height - radius2) }, s.portrait);
   }
-  function roadFromStage(s, at, viewport) {
+  function roadFromStage(s, at2, viewport) {
     const r = layout(s, viewport).scene;
-    return { x: (at.x - r.x) * 1e3 / r.width, y: (at.y - r.y) * 750 / r.height };
+    return { x: (at2.x - r.x) * 1e3 / r.width, y: (at2.y - r.y) * 750 / r.height };
   }
-  function roadToStage(s, at, viewport) {
+  function roadToStage(s, at2, viewport) {
     const r = layout(s, viewport).scene;
-    return { x: r.x + at.x * r.width / 1e3, y: r.y + at.y * r.height / 750 };
+    return { x: r.x + at2.x * r.width / 1e3, y: r.y + at2.y * r.height / 750 };
   }
 
   // .build/typescript/runtime/tiger-memories/rules.js
@@ -8388,30 +9016,30 @@
     }
     return new MemoryState(id2, reduced2, order);
   }
-  function beginRoad(s, at) {
-    const p = s.session;
-    if (p.kind !== "bends" || p.phase.kind !== "drawing")
+  function beginRoad(s, at2) {
+    const p2 = s.session;
+    if (p2.kind !== "bends" || p2.phase.kind !== "drawing")
       return;
-    const phase = p.phase;
-    phase.cursor = at;
-    if (distance2(at, roadAt(phase.progress)) > (s.portrait ? 58 : 36)) {
+    const phase = p2.phase;
+    phase.cursor = at2;
+    if (distance2(at2, roadAt(phase.progress)) > (s.portrait ? 58 : 36)) {
       s.feedback = "从已经画好的路头接着画就好。";
       return;
     }
-    phase.pen = { kind: "down", last: at };
+    phase.pen = { kind: "down", last: at2 };
     s.dragging = true;
   }
-  function drawRoad(s, at) {
-    const p = s.session;
-    if (p.kind !== "bends" || p.phase.kind !== "drawing")
+  function drawRoad(s, at2) {
+    const p2 = s.session;
+    if (p2.kind !== "bends" || p2.phase.kind !== "drawing")
       return;
-    const phase = p.phase, before = phase.progress;
+    const phase = p2.phase, before = phase.progress;
     if (phase.pen.kind !== "down")
       return;
-    const next = traceRoad(before, phase.pen.last, at, s.portrait ? 48 : 26);
+    const next = traceRoad(before, phase.pen.last, at2, s.portrait ? 48 : 26);
     phase.progress = next.progress;
-    phase.cursor = at;
-    phase.pen = next.connected ? { kind: "down", last: at } : { kind: "up" };
+    phase.cursor = at2;
+    phase.pen = next.connected ? { kind: "down", last: at2 } : { kind: "up" };
     s.dragging = next.connected;
     if (next.progress > before + 1e-4) {
       if (!s.acted)
@@ -8423,75 +9051,75 @@
     s.feedback = phase.progress >= 0.99 ? "山路画好了，松手就出发。" : next.connected ? "顺着这道山弯，慢慢往上画。" : "这段已经留下了，从路头接着画。";
   }
   function finishRoad(s) {
-    const p = s.session;
-    if (p.kind !== "bends" || p.phase.kind !== "drawing")
+    const p2 = s.session;
+    if (p2.kind !== "bends" || p2.phase.kind !== "drawing")
       return;
-    const phase = p.phase, placed = phase.pen.kind === "down" && phase.progress >= 0.99;
+    const phase = p2.phase, placed = phase.pen.kind === "down" && phase.progress >= 0.99;
     phase.pen = { kind: "up" };
     s.dragging = false;
     if (placed) {
-      p.phase = { kind: "walking", elapsed: 0, progress: 0 };
+      p2.phase = { kind: "walking", elapsed: 0, progress: 0 };
       s.feedback = "沿着刚画好的山路，走上山肩。";
       emit2(s, "pack-place");
     }
   }
   function flipCard(s, index) {
-    const p = s.session;
-    if (p.kind !== "inn" || p.turnAt !== null || p.matched.includes(index) || p.open.includes(index))
+    const p2 = s.session;
+    if (p2.kind !== "inn" || p2.turnAt !== null || p2.matched.includes(index) || p2.open.includes(index))
       return;
-    p.open.push(index);
+    p2.open.push(index);
     s.acted = true;
     s.feedback = "再找找相同的那一张。";
     emit2(s, "depth-paper", index);
-    if (p.open.length !== 2)
+    if (p2.open.length !== 2)
       return;
-    if (p.order[p.open[0]] === p.order[p.open[1]]) {
-      p.matched.push(...p.open);
-      p.open = [];
-      s.play.progress = p.matched.length / 4;
-      s.feedback = p.matched.length === 4 ? "山影与窗灯，都记住了。" : "找到一对了，还有两张。";
+    if (p2.order[p2.open[0]] === p2.order[p2.open[1]]) {
+      p2.matched.push(...p2.open);
+      p2.open = [];
+      s.play.progress = p2.matched.length / 4;
+      s.feedback = p2.matched.length === 4 ? "山影与窗灯，都记住了。" : "找到一对了，还有两张。";
       emit2(s, "pack-place", index);
-      if (p.matched.length === 4)
+      if (p2.matched.length === 4)
         settle(s);
     } else {
-      p.turnAt = s.age;
+      p2.turnAt = s.age;
       s.feedback = "这两张不同，再翻翻看。";
     }
   }
-  function paintPoint(s, at, start = false) {
-    const p = s.session;
-    if (p.kind !== "waterfall")
+  function paintPoint(s, at2, start = false) {
+    const p2 = s.session;
+    if (p2.kind !== "waterfall")
       return;
-    const r = layout(s).sketchImage, next = { x: clamp3((at.x - r.x) / r.width, 0, 1), y: clamp3((at.y - r.y) / r.height, 0, 1) };
-    const lastStroke = p.strokes[p.strokes.length - 1], old = lastStroke?.points[lastStroke.points.length - 1] ?? p.brush;
-    p.brush = next;
-    if (!inside(at, r)) {
-      p.drawing = false;
+    const r = layout(s).sketchImage, next = { x: clamp3((at2.x - r.x) / r.width, 0, 1), y: clamp3((at2.y - r.y) / r.height, 0, 1) };
+    const lastStroke = p2.strokes[p2.strokes.length - 1], old = lastStroke?.points[lastStroke.points.length - 1] ?? p2.brush;
+    p2.brush = next;
+    if (!inside(at2, r)) {
+      p2.drawing = false;
       return;
     }
-    if (!p.drawing && !start)
+    if (!p2.drawing && !start)
       return;
-    if (!start && lastStroke?.color === p.color && distance2(old, next) < 3e-3)
+    if (!start && lastStroke?.color === p2.color && distance2(old, next) < 3e-3)
       return;
-    const begin = start || !p.strokes.length || p.strokes[p.strokes.length - 1].color !== p.color;
+    const begin = start || !p2.strokes.length || p2.strokes[p2.strokes.length - 1].color !== p2.color;
     if (begin) {
-      p.strokes.push({ color: p.color, points: [next] });
+      p2.strokes.push({ color: p2.color, points: [next] });
     } else {
-      const last = p.strokes[p.strokes.length - 1];
+      const last = p2.strokes[p2.strokes.length - 1];
       if (last.points.length >= 500)
-        p.strokes.push({ color: p.color, points: [old, next] });
+        p2.strokes.push({ color: p2.color, points: [old, next] });
       else
-        p.strokes[p.strokes.length - 1] = { color: last.color, points: [...last.points, next] };
+        p2.strokes[p2.strokes.length - 1] = { color: last.color, points: [...last.points, next] };
     }
-    p.drawing = true;
+    p2.drawing = true;
     s.acted = true;
     s.gesture = "drag";
     const samples = Math.max(1, Math.ceil(distance2(begin ? next : old, next) / (BRUSH * 0.35)));
     for (let j = 0; j <= samples; j++) {
       const t = j / samples, a = begin ? next : old, sample = { x: a.x + (next.x - a.x) * t, y: a.y + (next.y - a.y) * t };
       PAINT_CELLS.forEach((cells, region) => cells.forEach((cell, index) => {
-        if (distance2(cell, sample) <= BRUSH && !p.coverage[region].includes(index))
-          p.coverage[region].push(index);
+        if (distance2(cell, sample) <= BRUSH && !p2.coverage[region].includes(index))
+          p2.coverage[region].push(index);
       }));
     }
     const filled = coverage(s);
@@ -8500,83 +9128,83 @@
     if (start)
       emit2(s, "depth-paper");
     if (filled.every((value) => value >= 0.62)) {
-      p.drawing = false;
-      p.keyHeld = false;
+      p2.drawing = false;
+      p2.keyHeld = false;
       settle(s);
     }
   }
   function shoot(s) {
-    const p = s.session;
-    if (p.kind !== "river")
+    const p2 = s.session;
+    if (p2.kind !== "river")
       return;
-    if (!p.adjusted || !frameFits(s)) {
+    if (!p2.adjusted || !frameFits(s)) {
       s.feedback = "把巨石的上缘和旁边的白浪，都留在圆窗里。";
       return;
     }
-    p.shot = { center: frameCenter(s), wave: s.wave, portrait: s.portrait };
+    p2.shot = { center: frameCenter(s), wave: s.wave, portrait: s.portrait };
     s.acted = true;
     s.play.progress = 1;
     emit2(s, "shutter");
     settle(s);
   }
-  function actMemory(state, input) {
-    const s = fork(state);
+  function actMemory(state3, input) {
+    const s = fork(state3);
     if (input.action === "retry-capture" && s.flow.kind === "capture-error") {
       s.flow = { kind: "capturing" };
       return s;
     }
     if (s.flow.kind !== "playing")
-      return state;
-    const at = point(input), l = layout(s), p = s.session;
-    if (!at)
-      return state;
+      return state3;
+    const at2 = point(input), l = layout(s), p2 = s.session;
+    if (!at2)
+      return state3;
     if (input.phase === "press") {
-      switch (p.kind) {
+      switch (p2.kind) {
         case "bends":
-          if (p.phase.kind === "drawing") {
-            p.phase.keyboard = false;
-            beginRoad(s, roadFromStage(s, at));
+          if (p2.phase.kind === "drawing") {
+            p2.phase.keyboard = false;
+            beginRoad(s, roadFromStage(s, at2));
           }
           break;
         case "inn":
           break;
         case "waterfall": {
-          p.keyboard = false;
-          const color = l.swatches.findIndex((c) => distance2(c, at) <= (s.portrait ? 76 : 48));
+          p2.keyboard = false;
+          const color = l.swatches.findIndex((c) => distance2(c, at2) <= (s.portrait ? 76 : 48));
           if (color >= 0) {
-            p.color = color;
+            p2.color = color;
             emit2(s, "depth-paper");
-          } else if (inside(at, l.sketchImage))
-            paintPoint(s, at, true);
+          } else if (inside(at2, l.sketchImage))
+            paintPoint(s, at2, true);
           break;
         }
         case "river": {
           const center = frameCenter(s);
-          if (distance2(at, center) <= l.radius + 35)
-            p.drag = { offset: { x: center.x - at.x, y: center.y - at.y }, moved: false };
+          if (distance2(at2, center) <= l.radius + 35)
+            p2.drag = { offset: { x: center.x - at2.x, y: center.y - at2.y }, moved: false };
           break;
         }
       }
     } else if (input.phase === "release") {
-      switch (p.kind) {
+      switch (p2.kind) {
         case "bends":
-          drawRoad(s, roadFromStage(s, at));
+          drawRoad(s, roadFromStage(s, at2));
           finishRoad(s);
           break;
         case "inn": {
-          const index = l.cards.findIndex((card) => inside(at, card));
+          const index = l.cards.findIndex((card) => inside(at2, card));
           if (index >= 0) {
-            p.focus = index;
+            p2.focus = index;
             flipCard(s, index);
           }
           break;
         }
         case "waterfall":
-          p.drawing = false;
+          p2.drawing = false;
           break;
         case "river": {
-          const moved = p.drag?.moved;
-          p.drag = null;
+          const moved = p2.drag?.moved;
+          p2.drag = null;
           if (moved)
             shoot(s);
           break;
@@ -8586,30 +9214,30 @@
     }
     return s;
   }
-  function moveMemory(state, input) {
-    if (state.flow.kind !== "playing")
-      return state;
-    const at = point(input);
-    if (!at)
-      return state;
-    const s = fork(state), p = s.session;
-    switch (p.kind) {
+  function moveMemory(state3, input) {
+    if (state3.flow.kind !== "playing")
+      return state3;
+    const at2 = point(input);
+    if (!at2)
+      return state3;
+    const s = fork(state3), p2 = s.session;
+    switch (p2.kind) {
       case "bends":
-        drawRoad(s, roadFromStage(s, at));
+        drawRoad(s, roadFromStage(s, at2));
         break;
       case "inn":
         break;
       case "waterfall":
-        if (p.drawing)
-          paintPoint(s, at);
+        if (p2.drawing)
+          paintPoint(s, at2);
         break;
       case "river":
-        if (p.drag) {
-          const center = { x: at.x + p.drag.offset.x, y: at.y + p.drag.offset.y }, before = frameCenter(s);
-          p.center = moveFrame(s, center);
+        if (p2.drag) {
+          const center = { x: at2.x + p2.drag.offset.x, y: at2.y + p2.drag.offset.y }, before = frameCenter(s);
+          p2.center = moveFrame(s, center);
           if (distance2(before, frameCenter(s)) > 0.2) {
-            p.drag.moved = true;
-            p.adjusted = true;
+            p2.drag.moved = true;
+            p2.adjusted = true;
             s.acted = true;
             s.gesture = "drag";
           }
@@ -8619,28 +9247,28 @@
     }
     return s;
   }
-  function releaseMemory(state) {
-    const s = fork(state), p = s.session;
+  function releaseMemory(state3) {
+    const s = fork(state3), p2 = s.session;
     s.dragging = false;
-    if (p.kind === "bends" && p.phase.kind === "drawing")
-      p.phase.pen = { kind: "up" };
-    if (p.kind === "waterfall") {
-      p.drawing = false;
-      p.keyHeld = false;
+    if (p2.kind === "bends" && p2.phase.kind === "drawing")
+      p2.phase.pen = { kind: "up" };
+    if (p2.kind === "waterfall") {
+      p2.drawing = false;
+      p2.keyHeld = false;
     }
-    if (p.kind === "river")
-      p.drag = null;
+    if (p2.kind === "river")
+      p2.drag = null;
     return s;
   }
-  function tickMemory(state, dt) {
-    if (!Number.isFinite(dt) || dt <= 0 || state.done)
-      return state;
-    const s = fork(state), p = s.session;
+  function tickMemory(state3, dt) {
+    if (!Number.isFinite(dt) || dt <= 0 || state3.done)
+      return state3;
+    const s = fork(state3), p2 = s.session;
     s.age += Math.min(dt, 0.1);
-    if (p.kind !== "river" || !p.shot)
+    if (p2.kind !== "river" || !p2.shot)
       s.wave += s.play.reduced ? 0 : Math.min(dt, 0.1);
-    if (p.kind === "bends" && s.flow.kind === "playing") {
-      const phase = p.phase;
+    if (p2.kind === "bends" && s.flow.kind === "playing") {
+      const phase = p2.phase;
       if (phase.kind === "walking") {
         const before = Math.floor(phase.progress * ROAD_LENGTH / 34);
         phase.elapsed += Math.min(dt, 0.1);
@@ -8650,7 +9278,7 @@
         if (step > before)
           emit2(s, "road-step", step);
         if (phase.elapsed >= ROAD_WALK_SECONDS) {
-          p.phase = { kind: "river", elapsed: 0 };
+          p2.phase = { kind: "river", elapsed: 0 };
           s.feedback = "山弯转过，金沙江的激流就在峡谷下方。";
           emit2(s, "river-arrive");
         }
@@ -8661,17 +9289,17 @@
           settle(s);
       }
     }
-    if (p.kind === "inn" && p.turnAt !== null && s.age - p.turnAt > (s.play.reduced ? 0.35 : 0.85)) {
-      p.open = [];
-      p.turnAt = null;
+    if (p2.kind === "inn" && p2.turnAt !== null && s.age - p2.turnAt > (s.play.reduced ? 0.35 : 0.85)) {
+      p2.open = [];
+      p2.turnAt = null;
     }
-    if (p.kind === "waterfall") {
-      if (p.keyHeld && s.flow.kind === "playing") {
+    if (p2.kind === "waterfall") {
+      if (p2.keyHeld && s.flow.kind === "playing") {
         const r = layout(s).sketchImage;
-        paintPoint(s, { x: r.x + p.brush.x * r.width, y: r.y + p.brush.y * r.height });
+        paintPoint(s, { x: r.x + p2.brush.x * r.width, y: r.y + p2.brush.y * r.height });
       }
       if (s.flow.kind !== "playing")
-        p.reveal = clamp3(p.reveal + dt * 1.4, 0, 1);
+        p2.reveal = clamp3(p2.reveal + dt * 1.4, 0, 1);
     }
     if (s.flow.kind === "settling" && s.age - s.flow.at >= (s.play.reduced ? 0.3 : 1.1))
       s.flow = { kind: "capturing" };
@@ -8679,10 +9307,10 @@
       s.done = true;
     return s;
   }
-  function attachMemoryCapture(state, art) {
-    if (state.flow.kind !== "capturing")
-      return state;
-    const s = fork(state);
+  function attachMemoryCapture(state3, art) {
+    if (state3.flow.kind !== "capturing")
+      return state3;
+    const s = fork(state3);
     if (!art) {
       s.flow = { kind: "capture-error" };
       s.feedback = "画面暂未能保存，可重试留下这幅画，或继续旅程。";
@@ -8696,62 +9324,62 @@
     emit2(s, "complete");
     return s;
   }
-  function keyMemory(state, key, phase) {
+  function keyMemory(state3, key, phase) {
     const arrow2 = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[key];
     if (!arrow2 && !["Enter", " ", "1", "2", "3"].includes(key))
       return null;
-    if (state.flow.kind !== "playing")
-      return state;
-    const s = fork(state), p = s.session;
+    if (state3.flow.kind !== "playing")
+      return state3;
+    const s = fork(state3), p2 = s.session;
     if (phase === "up") {
-      if (p.kind === "bends" && (key === " " || key === "Enter"))
+      if (p2.kind === "bends" && (key === " " || key === "Enter"))
         finishRoad(s);
-      if (key === " " && p.kind === "waterfall") {
-        p.keyHeld = false;
-        p.drawing = false;
+      if (key === " " && p2.kind === "waterfall") {
+        p2.keyHeld = false;
+        p2.drawing = false;
       }
       return s;
     }
-    switch (p.kind) {
+    switch (p2.kind) {
       case "bends": {
-        if (p.phase.kind !== "drawing")
+        if (p2.phase.kind !== "drawing")
           break;
-        p.phase.keyboard = true;
+        p2.phase.keyboard = true;
         if (arrow2) {
-          const at = { x: clamp3(p.phase.cursor.x + arrow2[0] * 12, 0, 1e3), y: clamp3(p.phase.cursor.y + arrow2[1] * 12, 0, 750) };
-          if (p.phase.pen.kind === "down")
-            drawRoad(s, at);
+          const at2 = { x: clamp3(p2.phase.cursor.x + arrow2[0] * 12, 0, 1e3), y: clamp3(p2.phase.cursor.y + arrow2[1] * 12, 0, 750) };
+          if (p2.phase.pen.kind === "down")
+            drawRoad(s, at2);
           else
-            p.phase.cursor = at;
-        } else if ((key === " " || key === "Enter") && p.phase.pen.kind === "up")
-          beginRoad(s, p.phase.cursor);
+            p2.phase.cursor = at2;
+        } else if ((key === " " || key === "Enter") && p2.phase.pen.kind === "up")
+          beginRoad(s, p2.phase.cursor);
         break;
       }
       case "inn":
         if (arrow2)
-          p.focus = (p.focus + (arrow2[0] || arrow2[1]) + 4) % 4;
+          p2.focus = (p2.focus + (arrow2[0] || arrow2[1]) + 4) % 4;
         else if (key === "Enter" || key === " ")
-          flipCard(s, p.focus);
+          flipCard(s, p2.focus);
         break;
       case "waterfall": {
-        p.keyboard = true;
+        p2.keyboard = true;
         if (/^[1-3]$/.test(key)) {
-          p.color = Number(key) - 1;
-          p.drawing = false;
+          p2.color = Number(key) - 1;
+          p2.drawing = false;
         } else if (arrow2) {
-          p.brush = { x: clamp3(p.brush.x + arrow2[0] * 0.045, 0, 1), y: clamp3(p.brush.y + arrow2[1] * 0.045, 0, 1) };
+          p2.brush = { x: clamp3(p2.brush.x + arrow2[0] * 0.045, 0, 1), y: clamp3(p2.brush.y + arrow2[1] * 0.045, 0, 1) };
         } else if (key === " ") {
-          p.keyHeld = true;
+          p2.keyHeld = true;
           const r = layout(s).sketchImage;
-          paintPoint(s, { x: r.x + p.brush.x * r.width, y: r.y + p.brush.y * r.height }, !p.drawing);
+          paintPoint(s, { x: r.x + p2.brush.x * r.width, y: r.y + p2.brush.y * r.height }, !p2.drawing);
         }
         break;
       }
       case "river":
         if (arrow2) {
           const center = frameCenter(s);
-          p.center = moveFrame(s, { x: center.x + arrow2[0] * 24, y: center.y + arrow2[1] * 24 });
-          p.adjusted = true;
+          p2.center = moveFrame(s, { x: center.x + arrow2[0] * 24, y: center.y + arrow2[1] * 24 });
+          p2.adjusted = true;
           s.acted = true;
         } else if (key === "Enter" || key === " ")
           shoot(s);
@@ -8817,7 +9445,7 @@
       detail: "灰蓝外套 · 苔绿背包",
       preview: "characters/blue-hiker-preview-v1.webp",
       walk: { file: MAP_WALK_FILE, frames: walkingFrames(MAP_WALK_FRAMES, MAP_WALK_SCALE, [-3.74, 3.74, -0.44, -4.92, -5.12, 2.83, -3.49, -4.95]) },
-      actions: { file: CAMP_POSE_FILE, frames: CAMP_POSES.map((p, i) => ({ ...p, footX: blueCampRoots[i] - p.x, scale: CAMP_POSE_SCALE, contactX: 0 })) }
+      actions: { file: CAMP_POSE_FILE, frames: CAMP_POSES.map((p2, i) => ({ ...p2, footX: blueCampRoots[i] - p2.x, scale: CAMP_POSE_SCALE, contactX: 0 })) }
     },
     braids: {
       name: "双辫旅人",
@@ -8846,8 +9474,8 @@
 
   // .build/typescript/runtime/tiger-memories/view.js
   function polygon(ctx, points, r) {
-    points.forEach((p, i) => {
-      const x = r.x + p.x * r.width, y = r.y + p.y * r.height;
+    points.forEach((p2, i) => {
+      const x = r.x + p2.x * r.width, y = r.y + p2.y * r.height;
       if (!i)
         ctx.moveTo(x, y);
       else
@@ -8885,11 +9513,11 @@
     ctx.stroke();
     ctx.restore();
   }
-  function ink2(ctx, text, at, size = 17) {
+  function ink2(ctx, text, at2, size = 17) {
     ctx.fillStyle = "#6b7761";
     ctx.font = `${size}px "PingFang SC",sans-serif`;
     ctx.textAlign = "center";
-    ctx.fillText(text, at.x, at.y);
+    ctx.fillText(text, at2.x, at2.y);
   }
   var MemoryView = class {
     kind;
@@ -8993,13 +9621,13 @@
       return { ...input, x: typeof input.x === "number" ? (input.x * this.canvas.width - dx) / scale : void 0, y: typeof input.y === "number" ? (input.y * this.canvas.height - dy) / scale : void 0 };
     }
     brushLayer(s) {
-      const p = s.session;
-      if (p.kind !== "waterfall")
+      const p2 = s.session;
+      if (p2.kind !== "waterfall")
         return this.brushCanvas;
-      const points = p.strokes.reduce((sum, stroke) => sum + stroke.points.length, 0);
-      if (this.paintedStrokes === p.strokes.length && this.paintedPoints === points)
+      const points = p2.strokes.reduce((sum, stroke) => sum + stroke.points.length, 0);
+      if (this.paintedStrokes === p2.strokes.length && this.paintedPoints === points)
         return this.brushCanvas;
-      this.paintedStrokes = p.strokes.length;
+      this.paintedStrokes = p2.strokes.length;
       this.paintedPoints = points;
       const ctx = this.brushCanvas.getContext("2d");
       if (!ctx)
@@ -9012,7 +9640,7 @@
       ctx.clip();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      for (const stroke of p.strokes) {
+      for (const stroke of p2.strokes) {
         const first = stroke.points[0];
         if (!first)
           continue;
@@ -9147,11 +9775,11 @@
         ctx.globalAlpha = 0.55;
         ctx.fillStyle = "#ece6d4";
         for (let i = 2; i < ROAD_STATIONS.length; i += 3) {
-          const at2 = ROAD_STATIONS[i];
-          if (at2.progress > drawn)
+          const at3 = ROAD_STATIONS[i];
+          if (at3.progress > drawn)
             break;
           ctx.beginPath();
-          ctx.ellipse(at2.point.x + Math.sin(i) * 1.5, at2.point.y, 1.2, 0.5, i, 0, 7);
+          ctx.ellipse(at3.point.x + Math.sin(i) * 1.5, at3.point.y, 1.2, 0.5, i, 0, 7);
           ctx.fill();
         }
       }
@@ -9173,10 +9801,10 @@
         for (const progress of [0.17, 0.52, 0.84]) {
           if (progress <= drawn)
             continue;
-          const at2 = roadAt(progress), point2 = roadToStage(s, at2, this.canvas);
+          const at3 = roadAt(progress), point2 = roadToStage(s, at3, this.canvas);
           ctx.save();
           ctx.translate(point2.x, point2.y);
-          ctx.rotate(at2.heading);
+          ctx.rotate(at3.heading);
           ctx.lineCap = "round";
           ctx.lineJoin = "round";
           ctx.beginPath();
@@ -9192,11 +9820,11 @@
           ctx.restore();
         }
         const label = (text, progress, below) => {
-          const at2 = roadToStage(s, roadAt(progress), this.canvas), gap = 12 * unit, height = 28 * unit;
+          const at3 = roadToStage(s, roadAt(progress), this.canvas), gap = 12 * unit, height = 28 * unit;
           ctx.save();
           ctx.font = `600 ${13 * unit}px "PingFang SC",sans-serif`;
           const width = ctx.measureText(text).width + 20 * unit;
-          const rect = { x: clamp3(at2.x - width / 2, 8 * unit, l.width - width - 8 * unit), y: below ? at2.y + gap : at2.y - gap - height, width, height };
+          const rect = { x: clamp3(at3.x - width / 2, 8 * unit, l.width - width - 8 * unit), y: below ? at3.y + gap : at3.y - gap - height, width, height };
           paper(ctx, rect, "#99ab8a", true);
           ctx.fillStyle = "#35573f";
           ctx.textAlign = "center";
@@ -9206,20 +9834,20 @@
           ctx.strokeStyle = "#456c4e";
           ctx.lineWidth = 2 * unit;
           ctx.beginPath();
-          ctx.arc(at2.x, at2.y, 5 * unit, 0, Math.PI * 2);
+          ctx.arc(at3.x, at3.y, 5 * unit, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
           if (below) {
             ctx.beginPath();
-            ctx.arc(at2.x, at2.y, 2 * unit, 0, Math.PI * 2);
+            ctx.arc(at3.x, at3.y, 2 * unit, 0, Math.PI * 2);
             ctx.fillStyle = "#456c4e";
             ctx.fill();
           } else {
             ctx.beginPath();
-            ctx.moveTo(at2.x, at2.y - 2 * unit);
-            ctx.lineTo(at2.x, at2.y - 18 * unit);
-            ctx.lineTo(at2.x + 10 * unit, at2.y - 15 * unit);
-            ctx.lineTo(at2.x, at2.y - 10 * unit);
+            ctx.moveTo(at3.x, at3.y - 2 * unit);
+            ctx.lineTo(at3.x, at3.y - 18 * unit);
+            ctx.lineTo(at3.x + 10 * unit, at3.y - 15 * unit);
+            ctx.lineTo(at3.x, at3.y - 10 * unit);
             ctx.stroke();
           }
           ctx.restore();
@@ -9227,29 +9855,29 @@
         label(drawn > 0.01 ? "起点" : "起点 · 从这里画", 0, true);
         label("终点 · 山肩", 1, false);
       }
-      const actor = this.images.actor, at = roadAt(walk);
+      const actor = this.images.actor, at2 = roadAt(walk);
       const moving = phase.kind === "walking" && roadWalkingProgress(phase.elapsed + 0.02) > walk + 1e-5;
       if (actor) {
         const frame2 = CHARACTERS[this.actorId].walk.frames[moving && !s.play.reduced ? Math.floor(walk * ROAD_LENGTH / 12) % 8 : 1];
         const { x: sx, y: sy, width: w, height: h, footX: fx, footY: fy } = frame2;
-        const scale = (60 - walk * 9) / 54 * frame2.scale * l.scene.width / 1e3, facing = Math.cos(at.heading) < 0 ? -1 : 1;
+        const scale = (60 - walk * 9) / 54 * frame2.scale * l.scene.width / 1e3, facing = Math.cos(at2.heading) < 0 ? -1 : 1;
         ctx.save();
-        ctx.translate(l.scene.x + at.x * l.scene.width / 1e3, l.scene.y + at.y * l.scene.height / 750);
+        ctx.translate(l.scene.x + at2.x * l.scene.width / 1e3, l.scene.y + at2.y * l.scene.height / 750);
         if (phase.kind === "drawing")
           ctx.translate(-15, 5);
         ctx.fillStyle = "#38473b35";
         ctx.beginPath();
         ctx.ellipse(0, 1, 12, 3, 0, 0, 7);
         ctx.fill();
-        ctx.rotate(clamp3(Math.sin(at.heading) * facing * 0.08, -0.06, 0.04));
+        ctx.rotate(clamp3(Math.sin(at2.heading) * facing * 0.08, -0.06, 0.04));
         ctx.scale(scale * facing, scale);
         ctx.drawImage(actor, sx, sy, w, h, -fx, -fy, w, h);
         ctx.restore();
       }
       if (phase.kind === "river" && this.images.rapids) {
-        const fade = clamp3(phase.elapsed / (s.play.reduced ? 0.3 : 1), 0, 1), cover2 = Math.max(1, l.height / 750);
+        const fade = clamp3(phase.elapsed / (s.play.reduced ? 0.3 : 1), 0, 1), cover3 = Math.max(1, l.height / 750);
         const zoom = s.play.reduced ? 1 : 1 + Math.min(phase.elapsed, 4.8) * 6e-3;
-        const width = 1e3 * cover2 * zoom, height = 750 * cover2 * zoom;
+        const width = 1e3 * cover3 * zoom, height = 750 * cover3 * zoom;
         ctx.save();
         ctx.globalAlpha = fade * fade * (3 - 2 * fade);
         this.river(ctx, s, phase.elapsed * 1.35, this.images.rapids, { x: (1e3 - width) * 0.55, y: (l.height - height) * 0.5, width, height });
@@ -9259,7 +9887,7 @@
     pairs(ctx, s) {
       if (!this.images || s.session.kind !== "inn")
         return;
-      const p = s.session, l = layout(s);
+      const p2 = s.session, l = layout(s);
       if (s.portrait) {
         ctx.save();
         ctx.fillStyle = "#e7e0ca";
@@ -9269,13 +9897,13 @@
         ctx.restore();
       }
       for (const [index, r] of l.cards.entries()) {
-        const visible = p.open.includes(index) || p.matched.includes(index);
-        paper(ctx, r, p.focus === index ? "#8e9b7b" : "#d4c9ad", true);
+        const visible = p2.open.includes(index) || p2.matched.includes(index);
+        paper(ctx, r, p2.focus === index ? "#8e9b7b" : "#d4c9ad", true);
         ctx.save();
         paperPath(ctx, { x: r.x + 7, y: r.y + 7, width: r.width - 14, height: r.height - 14 });
         ctx.clip();
         if (visible) {
-          const crop = p.order[index] === 0 ? { x: 340, y: 235, width: 290, height: 260 } : { x: 8, y: 200, width: 240, height: 245 };
+          const crop = p2.order[index] === 0 ? { x: 340, y: 235, width: 290, height: 260 } : { x: 8, y: 200, width: 240, height: 245 };
           imagePart(ctx, this.images.scene, crop, { x: r.x + 7, y: r.y + 7, width: r.width - 14, height: r.height - 14 });
         } else {
           ctx.globalAlpha = 0.17;
@@ -9290,14 +9918,14 @@
           ctx.lineTo(r.x + r.width * 0.76, r.y + r.height * 0.36);
           ctx.stroke();
         }
-        if (p.matched.includes(index)) {
+        if (p2.matched.includes(index)) {
           ctx.fillStyle = "#f3ebba17";
           ctx.fillRect(r.x, r.y, r.width, r.height);
         }
         ctx.restore();
       }
       ctx.save();
-      ctx.globalAlpha = p.matched.length / 4 * 0.12;
+      ctx.globalAlpha = p2.matched.length / 4 * 0.12;
       ctx.fillStyle = "#203957";
       ctx.fillRect(0, 0, 1e3, 510);
       ctx.restore();
@@ -9305,7 +9933,7 @@
     painting(ctx, s) {
       if (s.session.kind !== "waterfall")
         return;
-      const l = layout(s), p = s.session;
+      const l = layout(s), p2 = s.session;
       this.waterDrops(ctx, s);
       if (s.portrait) {
         ctx.fillStyle = "#e8e6d7";
@@ -9326,9 +9954,9 @@
         ctx.stroke();
       });
       ctx.restore();
-      for (const [i, at] of l.swatches.entries()) {
+      for (const [i, at2] of l.swatches.entries()) {
         ctx.save();
-        ctx.translate(at.x, at.y);
+        ctx.translate(at2.x, at2.y);
         ctx.beginPath();
         for (let n = 0; n <= 30; n++) {
           const a = n / 30 * Math.PI * 2, r = 24 + Math.sin(n * 2.3) * 2;
@@ -9339,19 +9967,19 @@
         }
         ctx.fillStyle = PALETTE[i];
         ctx.fill();
-        if (p.color === i) {
+        if (p2.color === i) {
           ctx.strokeStyle = "#fef9e4";
           ctx.lineWidth = 3;
           ctx.stroke();
         }
         ctx.restore();
       }
-      if (p.keyboard) {
+      if (p2.keyboard) {
         ctx.save();
         ctx.strokeStyle = "#516d59";
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(l.sketchImage.x + p.brush.x * l.sketchImage.width, l.sketchImage.y + p.brush.y * l.sketchImage.height, 12, 0, 7);
+        ctx.arc(l.sketchImage.x + p2.brush.x * l.sketchImage.width, l.sketchImage.y + p2.brush.y * l.sketchImage.height, 12, 0, 7);
         ctx.stroke();
         ctx.restore();
       }
@@ -9413,44 +10041,35 @@
     capture(s) {
       if (!this.images || this.disposed)
         return null;
-      const canvas = this.doc.createElement("canvas");
-      canvas.width = canvas.height = 576;
-      const ctx = canvas.getContext("2d");
-      if (!ctx)
-        return null;
-      ctx.drawImage(this.images.badge, 0, 0, 576, 576);
-      if (s.session.kind === "waterfall") {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(288, 288, 249, 0, 7);
-        ctx.clip();
-        this.paintedScene(ctx, s, { x: -88, y: -6, width: 752, height: 564 });
-        ctx.restore();
-      } else if (s.session.kind === "river" && s.session.shot) {
-        const l = layout(s), at = s.session.shot.center;
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(288, 288, 249, 0, 7);
-        ctx.clip();
-        ctx.translate(288, 288);
-        ctx.scale(249 / l.radius, 249 / l.radius);
-        ctx.translate(-at.x, -at.y);
-        this.river(ctx, s, s.session.shot.wave);
-        ctx.restore();
-      }
-      try {
-        for (const quality of [0.88, 0.78, 0.65]) {
-          const url = canvas.toDataURL("image/webp", quality);
-          if (url.startsWith("data:image/webp;base64,") && url.length < 4e5) {
-            this.captureImage = new Image();
-            this.captureImage.src = url;
-            return url;
-          }
+      const badge = this.images.badge;
+      const canvas = composePaperBadge(this.doc, (ctx, art) => {
+        if (s.session.kind === "waterfall") {
+          const scale = art.radius / 249;
+          ctx.translate(art.x, art.y);
+          ctx.scale(scale, scale);
+          ctx.translate(-288, -288);
+          this.paintedScene(ctx, s, { x: -88, y: -6, width: 752, height: 564 });
+        } else if (s.session.kind === "river" && s.session.shot) {
+          const l = layout(s), at2 = s.session.shot.center;
+          ctx.translate(art.x, art.y);
+          ctx.scale(art.radius / l.radius, art.radius / l.radius);
+          ctx.translate(-at2.x, -at2.y);
+          this.river(ctx, s, s.session.shot.wave);
+        } else {
+          const source = TIGER_BADGE_ART[s.kind];
+          paintBadgeImage(ctx, badge, {
+            x: badge.naturalWidth * source.x,
+            y: badge.naturalHeight * source.y,
+            radius: Math.min(badge.naturalWidth, badge.naturalHeight) * source.radius
+          }, art);
         }
-      } catch {
-        return null;
+      });
+      const url = canvas && encodePaperBadge(canvas, 4e5);
+      if (url) {
+        this.captureImage = new Image();
+        this.captureImage.src = url;
       }
-      return null;
+      return url;
     }
     reset() {
       this.paintedStrokes = this.paintedPoints = -1;
@@ -9497,8 +10116,8 @@
       act: (s, input) => actMemory(stateOf(s), input),
       move: (s, input) => moveMemory(stateOf(s), input),
       release: (s) => releaseMemory(stateOf(s)),
-      tick(state, dt) {
-        let s = tickMemory(stateOf(state), dt);
+      tick(state3, dt) {
+        let s = tickMemory(stateOf(state3), dt);
         s.portrait = s.session.kind === "river" && s.session.shot ? s.session.shot.portrait : active?.portrait ?? s.portrait;
         if (s.flow.kind === "capturing" && active?.contentState === "ready")
           s = attachMemoryCapture(s, active.capture(s));
@@ -9509,16 +10128,16 @@
           throw new Error("虎跳峡画作不存在");
         return new MemoryView(MEMORY_SPECS[entry.id].kind, dom2.document);
       },
-      paint(refs, state) {
-        const view = viewOf(refs), s = stateOf(state);
-        active = view;
-        s.portrait = s.session.kind === "river" && s.session.shot ? s.session.shot.portrait : view.portrait;
-        view.paint(s);
+      paint(refs, state3) {
+        const view3 = viewOf(refs), s = stateOf(state3);
+        active = view3;
+        s.portrait = s.session.kind === "river" && s.session.shot ? s.session.shot.portrait : view3.portrait;
+        view3.paint(s);
       },
       instruction: (entry) => memoryId(entry.id) ? MEMORY_SPECS[entry.id].prompt : "",
       status: (s) => stateOf(s).feedback,
-      outcome(state, entry) {
-        const s = stateOf(state);
+      outcome(state3, entry) {
+        const s = stateOf(state3);
         return { id: s.id, edition: entry.edition, earned: s.play.complete && s.flow.kind === "complete", interaction: s.gesture, memory: MEMORY_SPECS[s.id].memory, title: MEMORY_SPECS[s.id].badge, ...s.flow.kind === "complete" && (s.kind === "waterfall" || s.kind === "river") ? { captureArt: s.flow.art, artSource: "capture" } : {} };
       },
       assets: (entry) => ({ scene: memoryId(entry.id) ? sceneFile(MEMORY_SPECS[entry.id].kind) : void 0 }),
@@ -9533,25 +10152,25 @@
       },
       point: (refs, input) => viewOf(refs).input(input),
       key: (s, key, phase) => keyMemory(stateOf(s), key, phase),
-      present(state, refs) {
-        const s = stateOf(state), view = viewOf(refs), spec = MEMORY_SPECS[s.id];
+      present(state3, refs) {
+        const s = stateOf(state3), view3 = viewOf(refs), spec = MEMORY_SPECS[s.id];
         const panel = $2("micro-panel");
         panel.dataset.memory = s.kind;
         panel.dataset.memoryActed = String(s.acted);
         panel.dataset.phase = s.play.complete ? "memory" : s.acted ? "play" : "invite";
         text("micro-title", spec.title);
-        text("micro-instruction", view.contentState === "ready" ? spec.prompt : view.contentState === "error" ? "画作暂未展开，可以重试或继续走。" : "手绘正在展开……");
+        text("micro-instruction", view3.contentState === "ready" ? spec.prompt : view3.contentState === "error" ? "画作暂未展开，可以重试或继续走。" : "手绘正在展开……");
         text("micro-result", s.feedback);
         text("micro-skip", "继续旅程 →");
         if (s.session.kind === "bends") {
           panel.dataset.roadPhase = s.session.phase.kind;
-          if (s.session.phase.kind === "drawing" && !s.acted && view.contentState === "ready")
+          if (s.session.phase.kind === "drawing" && !s.acted && view3.contentState === "ready")
             text("micro-result", "画一个 S 弯，再看看山下的江。");
-          else if (s.session.phase.kind !== "drawing" && view.contentState === "ready")
+          else if (s.session.phase.kind !== "drawing" && view3.contentState === "ready")
             text("micro-instruction", "");
         }
         $2("micro-surface").setAttribute("aria-label", spec.prompt + " " + spec.keys + (s.kind === "bends" ? "" : " R 重试。"));
-        $2("micro-surface").setAttribute("aria-busy", String(view.contentState === "loading"));
+        $2("micro-surface").setAttribute("aria-busy", String(view3.contentState === "loading"));
         $2("tiger-tools").hidden = s.flow.kind !== "capture-error";
         $2("tiger-trail-lens").hidden = true;
         $2("tiger-frame-strip").hidden = true;
@@ -9580,61 +10199,61 @@
   }
   var trailY = (x) => 0.7 - x * 0.055;
   var TRAIL_HALF_WIDTH = 0.037;
-  function onPlatform(p) {
+  function onPlatform(p2) {
     let inside2 = false;
     for (let i = 0, j = TAKIN_PLATFORM.length - 1; i < TAKIN_PLATFORM.length; j = i++) {
       const a = TAKIN_PLATFORM[i], b = TAKIN_PLATFORM[j];
-      if (a.y > p.y !== b.y > p.y && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)
+      if (a.y > p2.y !== b.y > p2.y && p2.x < (b.x - a.x) * (p2.y - a.y) / (b.y - a.y) + a.x)
         inside2 = !inside2;
     }
     return inside2;
   }
-  function passageClear(p, height) {
-    const distance3 = Math.abs((p.y - trailY(p.x)) * height) / Math.hypot(1, 0.055 * height / 1e3);
-    return onPlatform(p) && distance3 > TRAIL_HALF_WIDTH * height + 27;
+  function passageClear(p2, height) {
+    const distance4 = Math.abs((p2.y - trailY(p2.x)) * height) / Math.hypot(1, 0.055 * height / 1e3);
+    return onPlatform(p2) && distance4 > TRAIL_HALF_WIDTH * height + 27;
   }
-  function walkable(p) {
-    return p.x >= 0.09 && p.x <= 0.57 && (Math.abs(p.y - trailY(p.x)) <= 0.055 || onPlatform(p) || p.x >= 0.29 && p.x <= 0.46 && p.y >= 0.67 && p.y <= 0.81);
+  function walkable(p2) {
+    return p2.x >= 0.09 && p2.x <= 0.57 && (Math.abs(p2.y - trailY(p2.x)) <= 0.055 || onPlatform(p2) || p2.x >= 0.29 && p2.x <= 0.46 && p2.y >= 0.67 && p2.y <= 0.81);
   }
-  function targetEncounter(p, at) {
-    if (p.phase.kind === "opening" || p.phase.kind === "aftermath" || p.phase.kind === "returning" || p.phase.kind === "finished" || !walkable(at))
+  function targetEncounter(p2, at2) {
+    if (p2.phase.kind === "opening" || p2.phase.kind === "aftermath" || p2.phase.kind === "returning" || p2.phase.kind === "finished" || !walkable(at2))
       return false;
-    if ((p.phase.kind === "yielding" || p.phase.kind === "adult") && at.x > p.actor.x + 0.035)
+    if ((p2.phase.kind === "yielding" || p2.phase.kind === "adult") && at2.x > p2.actor.x + 0.035)
       return false;
-    p.target = at;
+    p2.target = at2;
     return true;
   }
-  function encounterAdult(p) {
-    return p.phase.kind === "opening" ? 0.8 + (1 - Math.min(1, Math.max(0, (p.phase.elapsed - 4) / 6))) * 0.32 : p.phase.kind === "yielding" ? 0.8 : p.phase.kind === "adult" ? 0.8 - p.phase.progress * 1.04 : -0.24;
+  function encounterAdult(p2) {
+    return p2.phase.kind === "opening" ? 0.8 + (1 - Math.min(1, Math.max(0, (p2.phase.elapsed - 4) / 6))) * 0.32 : p2.phase.kind === "yielding" ? 0.8 : p2.phase.kind === "adult" ? 0.8 - p2.phase.progress * 1.04 : -0.24;
   }
-  function encounterCalf(p) {
-    return p.phase.kind === "calf" ? 0.94 - p.phase.progress * 1.15 : p.phase.kind === "aftermath" || p.phase.kind === "returning" || p.phase.kind === "finished" ? -0.21 : 0.94;
+  function encounterCalf(p2) {
+    return p2.phase.kind === "calf" ? 0.94 - p2.phase.progress * 1.15 : p2.phase.kind === "aftermath" || p2.phase.kind === "returning" || p2.phase.kind === "finished" ? -0.21 : 0.94;
   }
-  function tickEncounter(p, dt, height, reduced2) {
-    const wasMoving = p.moving;
-    p.moving = false;
-    if (p.target) {
-      const dx = (p.target.x - p.actor.x) * 1e3, dy = (p.target.y - p.actor.y) * height, length = Math.hypot(dx, dy), step = Math.min(length, dt * 48);
+  function tickEncounter(p2, dt, height, reduced2) {
+    const wasMoving = p2.moving;
+    p2.moving = false;
+    if (p2.target) {
+      const dx = (p2.target.x - p2.actor.x) * 1e3, dy = (p2.target.y - p2.actor.y) * height, length = Math.hypot(dx, dy), step = Math.min(length, dt * 48);
       if (length > 1) {
-        p.actor.x += dx / length * step / 1e3;
-        p.actor.y += dy / length * step / height;
-        p.moving = true;
-        p.stride += step / 23;
+        p2.actor.x += dx / length * step / 1e3;
+        p2.actor.y += dy / length * step / height;
+        p2.moving = true;
+        p2.stride += step / 23;
       }
     }
-    const clear = passageClear(p.actor, height), phase = p.phase, pace = reduced2 ? 1.65 : 1;
+    const clear = passageClear(p2.actor, height), phase = p2.phase, pace = reduced2 ? 1.65 : 1;
     let walking = false;
     switch (phase.kind) {
       case "opening":
         phase.elapsed += dt * pace;
         walking = phase.elapsed > 1 && phase.elapsed < 10;
         if (phase.elapsed >= 10)
-          p.phase = { kind: "yielding", clearFor: 0 };
+          p2.phase = { kind: "yielding", clearFor: 0 };
         break;
       case "yielding":
         phase.clearFor = clear ? phase.clearFor + dt : 0;
         if (phase.clearFor >= 0.8)
-          p.phase = { kind: "adult", progress: 0 };
+          p2.phase = { kind: "adult", progress: 0 };
         break;
       case "adult":
         if (clear) {
@@ -9642,12 +10261,12 @@
           walking = true;
         }
         if (phase.progress >= 1)
-          p.phase = { kind: "calf-reveal", elapsed: 0 };
+          p2.phase = { kind: "calf-reveal", elapsed: 0 };
         break;
       case "calf-reveal":
         phase.elapsed += dt * pace;
         if (phase.elapsed >= 6)
-          p.phase = { kind: "calf", progress: 0 };
+          p2.phase = { kind: "calf", progress: 0 };
         break;
       case "calf":
         if (clear) {
@@ -9655,35 +10274,35 @@
           walking = true;
         }
         if (phase.progress >= 1) {
-          p.target = null;
-          p.phase = { kind: "aftermath", elapsed: 0 };
+          p2.target = null;
+          p2.phase = { kind: "aftermath", elapsed: 0 };
         }
         break;
       case "aftermath":
         phase.elapsed += dt * pace;
         if (phase.elapsed >= 7)
-          p.phase = { kind: "returning", elapsed: 0, from: { ...p.actor } };
+          p2.phase = { kind: "returning", elapsed: 0, from: { ...p2.actor } };
         break;
       case "returning": {
         phase.elapsed += dt * pace;
-        const t = Math.min(1, phase.elapsed / 4), ease = t * t * (3 - 2 * t);
-        p.actor = { x: phase.from.x + (TAKIN_START.x - phase.from.x) * ease, y: phase.from.y + (TAKIN_START.y - phase.from.y) * ease };
-        p.moving = t < 1;
-        p.stride += dt * 1.6;
+        const t = Math.min(1, phase.elapsed / 4), ease2 = t * t * (3 - 2 * t);
+        p2.actor = { x: phase.from.x + (TAKIN_START.x - phase.from.x) * ease2, y: phase.from.y + (TAKIN_START.y - phase.from.y) * ease2 };
+        p2.moving = t < 1;
+        p2.stride += dt * 1.6;
         if (t === 1)
-          p.phase = { kind: "finished" };
+          p2.phase = { kind: "finished" };
         break;
       }
       case "finished":
         break;
     }
-    const oldFootsteps = p.footsteps;
+    const oldFootsteps = p2.footsteps;
     if (walking)
-      p.footsteps += dt * (phase.kind === "calf" ? 1.55 : 1.1);
-    const oldBreath = p.breath;
+      p2.footsteps += dt * (phase.kind === "calf" ? 1.55 : 1.1);
+    const oldBreath = p2.breath;
     if (!walking && ["yielding", "adult", "calf"].includes(phase.kind))
-      p.breath += dt / 3.8;
-    return { complete: p.phase.kind === "finished", hoof: Math.floor(oldFootsteps) !== Math.floor(p.footsteps), breath: Math.floor(oldBreath) !== Math.floor(p.breath), cloth: p.moving && !wasMoving };
+      p2.breath += dt / 3.8;
+    return { complete: p2.phase.kind === "finished", hoof: Math.floor(oldFootsteps) !== Math.floor(p2.footsteps), breath: Math.floor(oldBreath) !== Math.floor(p2.breath), cloth: p2.moving && !wasMoving };
   }
 
   // .build/typescript/runtime/aotai-games/painterly-art.js
@@ -9842,7 +10461,7 @@
     return s;
   }
   var clamp4 = (n, min, max) => Math.max(min, Math.min(max, n));
-  var near = (a, b, radius) => Math.hypot(a.x - b.x, a.y - b.y) <= radius;
+  var near = (a, b, radius2) => Math.hypot(a.x - b.x, a.y - b.y) <= radius2;
   function layout2(s) {
     const height = s.portrait ? 1240 : 720, offset = s.portrait ? 320 : 0;
     const tentHeight = 470 * PAINTED_PROPS.tent.height / PAINTED_PROPS.tent.width;
@@ -9864,7 +10483,7 @@
     const phase = age % 5.8;
     return phase < 2.6 ? 0.17 : phase < 4.4 ? 0.88 : 0.3;
   };
-  var ropeTied = (p, index) => p.kind !== "ropes" || p.tied === (index === 0 ? "left" : "right");
+  var ropeTied = (p2, index) => p2.kind !== "ropes" || p2.tied === (index === 0 ? "left" : "right");
   function emit3(s, type, x = 0.5, index = 0) {
     s.events.push({ serial: ++s.serial, type, x, index });
     if (s.events.length > 12)
@@ -9880,26 +10499,26 @@
     emit3(s, "pack-place");
   }
   function launch(s, drag) {
-    const p = s.session;
-    if (p.kind !== "snowball")
+    const p2 = s.session;
+    if (p2.kind !== "snowball")
       return;
     if (Math.hypot(drag.x, drag.y) < 24) {
-      p.motion = { kind: "ready" };
+      p2.motion = { kind: "ready" };
       s.feedback = "轻轻向右下方推一下雪球，再松手。";
       return;
     }
-    p.world.launch(drag);
-    p.motion = { kind: "rolling", elapsed: 0, stable: 0, impacts: p.world.impacts };
+    p2.world.launch(drag);
+    p2.motion = { kind: "rolling", elapsed: 0, stable: 0, impacts: p2.world.impacts };
     s.acted = true;
     s.gesture = "drag";
     s.feedback = "雪球滚起来了。";
     emit3(s, "sling-release", 0.2);
   }
   function tieRope(s) {
-    const p = s.session;
-    if (p.kind !== "camp")
+    const p2 = s.session;
+    if (p2.kind !== "camp")
       return;
-    const phase = p.phase;
+    const phase = p2.phase;
     if (phase.kind !== "ropes")
       return;
     const drag = phase.drag;
@@ -9915,7 +10534,7 @@
     s.gesture = "drag";
     emit3(s, "pack-place", drag.index ? 0.85 : 0.15);
     if (phase.tied !== "none") {
-      p.phase = { kind: "lamp", pressed: false };
+      p2.phase = { kind: "lamp", pressed: false };
       s.play.progress = 0.7;
       s.feedback = "帐篷稳下来了，点亮帐门里的营灯。";
     } else {
@@ -9927,10 +10546,10 @@
     }
   }
   function lightLamp(s) {
-    const p = s.session;
-    if (p.kind !== "camp" || p.phase.kind !== "lamp")
+    const p2 = s.session;
+    if (p2.kind !== "camp" || p2.phase.kind !== "lamp")
       return;
-    p.phase = { kind: "lit", elapsed: 0 };
+    p2.phase = { kind: "lit", elapsed: 0 };
     emit3(s, "aotai-camp-quiet");
     s.acted = true;
     s.play.progress = 0.9;
@@ -9940,58 +10559,58 @@
   function actAotai(s, input) {
     if (s.settledAt !== null || typeof input.x !== "number" || typeof input.y !== "number")
       return s;
-    const p = s.session, at = { x: input.x, y: input.y }, l = layout2(s);
+    const p2 = s.session, at2 = { x: input.x, y: input.y }, l = layout2(s);
     if (input.phase === "press") {
-      switch (p.kind) {
+      switch (p2.kind) {
         case "snowball":
-          if (p.motion.kind === "ready" && near(at, { x: SNOW_START.x, y: SNOW_START.y + l.snowOffset }, 75)) {
-            p.motion = { kind: "aiming", to: at };
+          if (p2.motion.kind === "ready" && near(at2, { x: SNOW_START.x, y: SNOW_START.y + l.snowOffset }, 75)) {
+            p2.motion = { kind: "aiming", to: at2 };
             s.dragging = true;
           }
           break;
         case "wind":
-          if (near(at, { x: windPoint(s).x, y: windPoint(s).y - 55 }, 100)) {
-            p.holding = true;
+          if (near(at2, { x: windPoint(s).x, y: windPoint(s).y - 55 }, 100)) {
+            p2.holding = true;
             s.dragging = true;
             s.acted = true;
           }
           break;
         case "takin":
-          if (targetEncounter(p, { x: at.x / 1e3, y: at.y / l.height })) {
+          if (targetEncounter(p2, { x: at2.x / 1e3, y: at2.y / l.height })) {
             s.dragging = true;
             s.acted = true;
             s.gesture = "hold";
           }
           break;
         case "camp":
-          if (p.phase.kind === "ropes") {
-            const index = near(at, l.loose[0], 72) ? 0 : near(at, l.loose[1], 72) ? 1 : null;
-            if (index !== null && !ropeTied(p.phase, index)) {
-              p.phase.drag = { index, point: at };
-              p.phase.focus = index;
+          if (p2.phase.kind === "ropes") {
+            const index = near(at2, l.loose[0], 72) ? 0 : near(at2, l.loose[1], 72) ? 1 : null;
+            if (index !== null && !ropeTied(p2.phase, index)) {
+              p2.phase.drag = { index, point: at2 };
+              p2.phase.focus = index;
               s.dragging = true;
             }
-          } else if (p.phase.kind === "lamp")
-            p.phase.pressed = near(at, l.lamp, 76);
+          } else if (p2.phase.kind === "lamp")
+            p2.phase.pressed = near(at2, l.lamp, 76);
           break;
       }
     } else if (input.phase === "release") {
-      switch (p.kind) {
+      switch (p2.kind) {
         case "snowball":
-          if (p.motion.kind === "aiming")
-            launch(s, { x: at.x - SNOW_START.x, y: at.y - l.snowOffset - SNOW_START.y });
+          if (p2.motion.kind === "aiming")
+            launch(s, { x: at2.x - SNOW_START.x, y: at2.y - l.snowOffset - SNOW_START.y });
           break;
         case "wind":
-          p.holding = false;
+          p2.holding = false;
           break;
         case "takin":
-          p.target = null;
+          p2.target = null;
           break;
         case "camp":
-          if (p.phase.kind === "ropes" && p.phase.drag) {
-            p.phase.drag.point = at;
+          if (p2.phase.kind === "ropes" && p2.phase.drag) {
+            p2.phase.drag.point = at2;
             tieRope(s);
-          } else if (p.phase.kind === "lamp" && p.phase.pressed && near(at, l.lamp, 76))
+          } else if (p2.phase.kind === "lamp" && p2.phase.pressed && near(at2, l.lamp, 76))
             lightLamp(s);
           break;
       }
@@ -10002,29 +10621,29 @@
   function moveAotai(s, input) {
     if (s.settledAt !== null || typeof input.x !== "number" || typeof input.y !== "number")
       return s;
-    const p = s.session;
-    if (p.kind === "snowball" && p.motion.kind === "aiming")
-      p.motion.to = { x: input.x, y: input.y };
-    else if (p.kind === "takin" && s.dragging)
-      targetEncounter(p, { x: input.x / 1e3, y: input.y / layout2(s).height });
-    else if (p.kind === "camp" && p.phase.kind === "ropes" && p.phase.drag)
-      p.phase.drag.point = { x: input.x, y: input.y };
+    const p2 = s.session;
+    if (p2.kind === "snowball" && p2.motion.kind === "aiming")
+      p2.motion.to = { x: input.x, y: input.y };
+    else if (p2.kind === "takin" && s.dragging)
+      targetEncounter(p2, { x: input.x / 1e3, y: input.y / layout2(s).height });
+    else if (p2.kind === "camp" && p2.phase.kind === "ropes" && p2.phase.drag)
+      p2.phase.drag.point = { x: input.x, y: input.y };
     return s;
   }
   function releaseAotai(s) {
     s.dragging = false;
-    const p = s.session;
-    if (p.kind === "snowball" && p.motion.kind === "aiming")
-      p.motion = { kind: "ready" };
-    else if (p.kind === "wind")
-      p.holding = false;
-    else if (p.kind === "takin")
-      p.target = null;
-    else if (p.kind === "camp") {
-      if (p.phase.kind === "ropes")
-        p.phase.drag = null;
-      if (p.phase.kind === "lamp")
-        p.phase.pressed = false;
+    const p2 = s.session;
+    if (p2.kind === "snowball" && p2.motion.kind === "aiming")
+      p2.motion = { kind: "ready" };
+    else if (p2.kind === "wind")
+      p2.holding = false;
+    else if (p2.kind === "takin")
+      p2.target = null;
+    else if (p2.kind === "camp") {
+      if (p2.phase.kind === "ropes")
+        p2.phase.drag = null;
+      if (p2.phase.kind === "lamp")
+        p2.phase.pressed = false;
     }
     return s;
   }
@@ -10032,81 +10651,81 @@
     if (dt <= 0 || !Number.isFinite(dt))
       return s;
     s.age += dt;
-    const p = s.session;
+    const p2 = s.session;
     if (s.settledAt === null)
-      switch (p.kind) {
+      switch (p2.kind) {
         case "snowball":
-          if (p.motion.kind === "rolling") {
-            p.world.tick(dt);
-            p.motion.elapsed += dt;
-            if (p.world.impacts !== p.motion.impacts) {
-              p.motion.impacts = p.world.impacts;
-              emit3(s, "altar-place", p.world.point.x / 1e3);
+          if (p2.motion.kind === "rolling") {
+            p2.world.tick(dt);
+            p2.motion.elapsed += dt;
+            if (p2.world.impacts !== p2.motion.impacts) {
+              p2.motion.impacts = p2.world.impacts;
+              emit3(s, "altar-place", p2.world.point.x / 1e3);
             }
-            const ball = p.world.point;
+            const ball = p2.world.point;
             s.play.progress = clamp4((ball.x - SNOW_START.x) / (SNOW_GOAL.x - SNOW_START.x), 0, 0.94);
-            if (near(ball, SNOW_GOAL, 49) && p.world.speed < 1.7)
-              p.motion.stable += dt;
+            if (near(ball, SNOW_GOAL, 49) && p2.world.speed < 1.7)
+              p2.motion.stable += dt;
             else
-              p.motion.stable = 0;
-            if (p.motion.stable > 0.6)
+              p2.motion.stable = 0;
+            if (p2.motion.stable > 0.6)
               settle2(s, "雪球停在雪窝里，石海也安静下来。");
-            else if (ball.y > 900 || ball.x < 20 || ball.x > 1010 || p.motion.elapsed > 12) {
-              p.motion = { kind: "retry", elapsed: 0 };
+            else if (ball.y > 900 || ball.x < 20 || ball.x > 1010 || p2.motion.elapsed > 12) {
+              p2.motion = { kind: "retry", elapsed: 0 };
               s.feedback = "再轻推一次，让雪球顺着石槽走。";
             }
-          } else if (p.motion.kind === "retry") {
-            p.motion.elapsed += dt;
-            if (p.motion.elapsed > 1) {
-              p.world.reset();
-              p.motion = { kind: "ready" };
+          } else if (p2.motion.kind === "retry") {
+            p2.motion.elapsed += dt;
+            if (p2.motion.elapsed > 1) {
+              p2.world.reset();
+              p2.motion = { kind: "ready" };
               s.play.progress = 0;
             }
           }
           break;
         case "wind": {
           const gust = windStrength(s.age);
-          if (p.gust <= 0.6 && gust > 0.6)
+          if (p2.gust <= 0.6 && gust > 0.6)
             emit3(s, "aotai-gust");
-          p.gust = gust;
-          if (!p.holding && p.progress >= 0.34 && p.progress <= 0.5 && p.gust > 0.6) {
-            p.rested = true;
+          p2.gust = gust;
+          if (!p2.holding && p2.progress >= 0.34 && p2.progress <= 0.5 && p2.gust > 0.6) {
+            p2.rested = true;
             s.feedback = "在岩后歇一下，风缓了再按住小人出发。";
           }
-          if (p.holding) {
-            const speed = p.gust > 0.6 ? 0.018 : 0.15, next = Math.min(p.rested ? 1 : 0.48, p.progress + speed * dt);
-            p.stride += (next - p.progress) * 17;
-            p.progress = next;
-            s.feedback = p.gust > 0.6 ? "风强了，松手在岩后歇一下。" : "一步一步，远山正在展开。";
-            if (p.progress >= 0.48 && !p.rested)
+          if (p2.holding) {
+            const speed = p2.gust > 0.6 ? 0.018 : 0.15, next = Math.min(p2.rested ? 1 : 0.48, p2.progress + speed * dt);
+            p2.stride += (next - p2.progress) * 17;
+            p2.progress = next;
+            s.feedback = p2.gust > 0.6 ? "风强了，松手在岩后歇一下。" : "一步一步，远山正在展开。";
+            if (p2.progress >= 0.48 && !p2.rested)
               s.feedback = "松开，在岩后歇一下，等风缓下来。";
           }
-          s.play.progress = p.progress;
-          if (p.progress >= 1 && p.rested && s.acted) {
-            p.holding = false;
+          s.play.progress = p2.progress;
+          if (p2.progress >= 1 && p2.rested && s.acted) {
+            p2.holding = false;
             settle2(s, "登上山梁，秦岭在眼前展开。");
           }
           break;
         }
         case "takin": {
-          const result = tickEncounter(p, dt, layout2(s).height, s.play.reduced);
+          const result = tickEncounter(p2, dt, layout2(s).height, s.play.reduced);
           if (result.hoof)
-            emit3(s, "aotai-hoof", p.phase.kind === "calf" ? 0.94 - p.phase.progress : 0.8, Math.floor(p.footsteps));
+            emit3(s, "aotai-hoof", p2.phase.kind === "calf" ? 0.94 - p2.phase.progress : 0.8, Math.floor(p2.footsteps));
           if (result.breath)
             emit3(s, "aotai-breath", 0.72);
           if (result.cloth)
-            emit3(s, "aotai-cloth", p.actor.x);
-          const phase = p.phase;
+            emit3(s, "aotai-cloth", p2.actor.x);
+          const phase = p2.phase;
           s.play.progress = phase.kind === "opening" ? 0.02 : phase.kind === "yielding" ? 0.08 : phase.kind === "adult" ? 0.15 + phase.progress * 0.3 : phase.kind === "calf-reveal" ? 0.5 : phase.kind === "calf" ? 0.55 + phase.progress * 0.3 : 0.9;
-          s.feedback = phase.kind === "opening" ? "风雪里，传来沉重的踩雪声。" : phase.kind === "yielding" || phase.kind === "adult" ? passageClear(p.actor, layout2(s).height) ? "停在宽处，等它经过。" : p.actor.x < 0.36 ? "再向平台里面退一点，主路还没让开。" : AOTAI_GAMES[s.id].prompt : phase.kind === "calf-reveal" || phase.kind === "calf" ? "雪幕里还有一组脚步，继续留在宽处。" : "脚步声远了，雪地上留下交错的足迹。";
+          s.feedback = phase.kind === "opening" ? "风雪里，传来沉重的踩雪声。" : phase.kind === "yielding" || phase.kind === "adult" ? passageClear(p2.actor, layout2(s).height) ? "停在宽处，等它经过。" : p2.actor.x < 0.36 ? "再向平台里面退一点，主路还没让开。" : AOTAI_GAMES[s.id].prompt : phase.kind === "calf-reveal" || phase.kind === "calf" ? "雪幕里还有一组脚步，继续留在宽处。" : "脚步声远了，雪地上留下交错的足迹。";
           if (result.complete && s.acted)
             settle2(s, "山路重新安静下来，把这次相遇留在手帐。");
           break;
         }
         case "camp":
-          if (p.phase.kind === "lit") {
-            p.phase.elapsed += dt;
-            if (p.phase.elapsed >= (s.play.reduced ? 1 : 2.5))
+          if (p2.phase.kind === "lit") {
+            p2.phase.elapsed += dt;
+            if (p2.phase.elapsed >= (s.play.reduced ? 1 : 2.5))
               settle2(s, "帐绳系稳，营灯亮起。把这一夜的温暖收进手帐。");
           }
           break;
@@ -10121,40 +10740,40 @@
   function keyAotai(s, key, phase) {
     if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", " "].includes(key))
       return null;
-    const p = s.session, confirm = key === "Enter" || key === " ", left = key === "ArrowLeft", right = key === "ArrowRight", up = key === "ArrowUp", down = key === "ArrowDown";
+    const p2 = s.session, confirm = key === "Enter" || key === " ", left = key === "ArrowLeft", right = key === "ArrowRight", up = key === "ArrowUp", down = key === "ArrowDown";
     if (phase === "up") {
-      if (p.kind === "wind" && confirm)
-        p.holding = false;
-      if (p.kind === "takin")
-        p.target = null;
+      if (p2.kind === "wind" && confirm)
+        p2.holding = false;
+      if (p2.kind === "takin")
+        p2.target = null;
       return s;
     }
     if (s.settledAt !== null)
       return s;
-    switch (p.kind) {
+    switch (p2.kind) {
       case "snowball":
-        if (p.motion.kind === "ready") {
-          p.aim.x = clamp4(p.aim.x + (right ? 20 : left ? -20 : 0), -100, 170);
-          p.aim.y = clamp4(p.aim.y + (down ? 20 : up ? -20 : 0), -120, 100);
+        if (p2.motion.kind === "ready") {
+          p2.aim.x = clamp4(p2.aim.x + (right ? 20 : left ? -20 : 0), -100, 170);
+          p2.aim.y = clamp4(p2.aim.y + (down ? 20 : up ? -20 : 0), -120, 100);
           if (confirm)
-            launch(s, p.aim);
+            launch(s, p2.aim);
         }
         break;
       case "wind":
         if (confirm) {
-          p.holding = true;
+          p2.holding = true;
           s.acted = true;
         }
         break;
       case "takin":
-        if (!confirm && targetEncounter(p, { x: p.actor.x + (left ? -0.12 : right ? 0.12 : 0), y: p.actor.y + (up ? -0.12 : down ? 0.12 : 0) })) {
+        if (!confirm && targetEncounter(p2, { x: p2.actor.x + (left ? -0.12 : right ? 0.12 : 0), y: p2.actor.y + (up ? -0.12 : down ? 0.12 : 0) })) {
           s.acted = true;
           s.gesture = "hold";
         }
         break;
       case "camp":
-        if (p.phase.kind === "ropes") {
-          const phase2 = p.phase, l = layout2(s);
+        if (p2.phase.kind === "ropes") {
+          const phase2 = p2.phase, l = layout2(s);
           if (phase2.drag) {
             phase2.drag.point.x += left ? -48 : right ? 48 : 0;
             phase2.drag.point.y += up ? -48 : down ? 48 : 0;
@@ -10165,7 +10784,7 @@
               phase2.drag = { index: phase2.focus, point: { ...l.loose[phase2.focus] } };
           } else if (left || right)
             phase2.focus = right ? 1 : 0;
-        } else if (p.phase.kind === "lamp" && confirm)
+        } else if (p2.phase.kind === "lamp" && confirm)
           lightLamp(s);
         break;
     }
@@ -10202,9 +10821,9 @@
     }
     return canvas;
   }
-  function snowContact(ctx, at, width, depth = 7) {
+  function snowContact(ctx, at2, width, depth = 7) {
     ctx.save();
-    ctx.translate(at.x, at.y);
+    ctx.translate(at2.x, at2.y);
     ctx.fillStyle = "#70858a";
     for (let i = 0; i < 5; i++) {
       ctx.globalAlpha = 0.025 + i * 7e-3;
@@ -10221,9 +10840,9 @@
     ctx.stroke();
     ctx.restore();
   }
-  function snowMark(ctx, at, size, angle, hoof = false) {
+  function snowMark(ctx, at2, size, angle, hoof = false) {
     ctx.save();
-    ctx.translate(at.x, at.y);
+    ctx.translate(at2.x, at2.y);
     ctx.rotate(angle);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -10269,7 +10888,7 @@
   }
   function line(ctx, points) {
     ctx.beginPath();
-    points.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
+    points.forEach((p2, i) => i ? ctx.lineTo(p2.x, p2.y) : ctx.moveTo(p2.x, p2.y));
   }
   function arrow(ctx, a, b, alpha = 0.7) {
     const angle = Math.atan2(b.y - a.y, b.x - a.x);
@@ -10445,15 +11064,15 @@
       }
       return canvas;
     }
-    characterAt(ctx, at, height, frame2 = 2, pose = false, lean = 0) {
+    characterAt(ctx, at2, height, frame2 = 2, pose = false, lean = 0) {
       const appearance = CHARACTERS[this.character], image = pose ? this.actions : this.actor;
       if (!image)
         return;
       const frames = pose ? appearance.actions.frames : appearance.walk.frames, spec = frames[frame2 % frames.length], base = frames[0];
       const scale = height / (base.height * base.scale) * spec.scale;
-      snowContact(ctx, at, height * 0.43, height * 0.035);
+      snowContact(ctx, at2, height * 0.43, height * 0.035);
       ctx.save();
-      ctx.translate(at.x, at.y);
+      ctx.translate(at2.x, at2.y);
       ctx.rotate(lean);
       ctx.filter = "saturate(.88) contrast(.96)";
       ctx.drawImage(image, spec.x, spec.y, spec.width, spec.height, -spec.footX * scale, -spec.footY * scale, spec.width * scale, spec.height * scale);
@@ -10485,10 +11104,10 @@
       }
     }
     snowball(ctx, s) {
-      const p = s.session;
-      if (p.kind !== "snowball")
+      const p2 = s.session;
+      if (p2.kind !== "snowball")
         return;
-      const l = layout2(s), points = SNOW_FLOOR.map((p2) => ({ x: p2.x, y: p2.y + l.snowOffset }));
+      const l = layout2(s), points = SNOW_FLOOR.map((p3) => ({ x: p3.x, y: p3.y + l.snowOffset }));
       ctx.save();
       ctx.lineJoin = "round";
       ctx.lineCap = "round";
@@ -10506,21 +11125,21 @@
       ctx.font = '20px "Kaiti SC","STKaiti",serif';
       ctx.textAlign = "center";
       ctx.fillText("雪窝", gx + 12, gy + 59);
-      const ball = p.world.point, by = ball.y + l.snowOffset;
+      const ball = p2.world.point, by = ball.y + l.snowOffset;
       snowContact(ctx, { x: ball.x, y: by + SNOW_RADIUS - 2 }, SNOW_RADIUS * 1.7, 4);
       if (this.props) {
         const f = PAINTED_PROPS.snowball;
         ctx.save();
         ctx.translate(ball.x, by);
-        ctx.rotate(p.world.angle);
+        ctx.rotate(p2.world.angle);
         ctx.drawImage(this.props, f.x, f.y, f.width, f.height, -SNOW_RADIUS, -SNOW_RADIUS, SNOW_RADIUS * 2, SNOW_RADIUS * 2);
         ctx.restore();
       }
-      if (p.motion.kind === "ready")
+      if (p2.motion.kind === "ready")
         arrow(ctx, { x: SNOW_START.x + 38, y: SNOW_START.y + l.snowOffset - 42 }, { x: SNOW_START.x + 102, y: SNOW_START.y + l.snowOffset - 12 }, 0.65);
-      if (p.motion.kind === "aiming")
-        arrow(ctx, { x: SNOW_START.x, y: SNOW_START.y + l.snowOffset }, p.motion.to);
-      if (p.motion.kind === "rolling" && p.world.speed > 1.5 && !s.play.reduced)
+      if (p2.motion.kind === "aiming")
+        arrow(ctx, { x: SNOW_START.x, y: SNOW_START.y + l.snowOffset }, p2.motion.to);
+      if (p2.motion.kind === "rolling" && p2.world.speed > 1.5 && !s.play.reduced)
         for (let i = 0; i < 7; i++) {
           ctx.fillStyle = "#f4f5e7a6";
           ctx.beginPath();
@@ -10531,19 +11150,19 @@
       ctx.restore();
     }
     wind(ctx, s) {
-      const p = s.session;
-      if (p.kind !== "wind")
+      const p2 = s.session;
+      if (p2.kind !== "wind")
         return;
       const l = layout2(s);
       ctx.save();
       if (this.slope)
         ctx.drawImage(this.slope, 0, 0, 1e3, l.height);
-      for (let i = 0; i < Math.floor(p.progress * 25); i++) {
-        const at = windPointAt(i / 25, s.portrait);
-        snowMark(ctx, { x: at.x + (i % 2 ? 4 : -4), y: at.y + 5 }, 6, -0.32);
+      for (let i = 0; i < Math.floor(p2.progress * 25); i++) {
+        const at2 = windPointAt(i / 25, s.portrait);
+        snowMark(ctx, { x: at2.x + (i % 2 ? 4 : -4), y: at2.y + 5 }, 6, -0.32);
       }
-      this.characterAt(ctx, windPoint(s), s.portrait ? 145 : 110, p.holding ? Math.floor(p.stride * 8) % 8 : 2, false, p.holding ? 0.035 + p.gust * 0.045 : -0.025);
-      this.snow(ctx, s, p.gust);
+      this.characterAt(ctx, windPoint(s), s.portrait ? 145 : 110, p2.holding ? Math.floor(p2.stride * 8) % 8 : 2, false, p2.holding ? 0.035 + p2.gust * 0.045 : -0.025);
+      this.snow(ctx, s, p2.gust);
       ctx.restore();
     }
     animal(ctx, frame2, x, footY, height, gait, faceLeft = false) {
@@ -10565,10 +11184,10 @@
       ctx.restore();
     }
     takin(ctx, s) {
-      const p = s.session;
-      if (p.kind !== "takin")
+      const p2 = s.session;
+      if (p2.kind !== "takin")
         return;
-      const l = layout2(s), phase = p.phase, clear = passageClear(p.actor, l.height);
+      const l = layout2(s), phase = p2.phase, clear = passageClear(p2.actor, l.height);
       ctx.save();
       for (let i = 0; i < 32; i++) {
         const x = 110 + noise(i + 91) * 330, y = l.height * (0.75 + noise(i + 112) * 0.14);
@@ -10577,7 +11196,7 @@
         ctx.ellipse(x, y, 2 + noise(i) * 4, 1.3, -0.2, 0, Math.PI * 2);
         ctx.fill();
       }
-      const adultX = encounterAdult(p), calfX = encounterCalf(p), adultProgress = Math.max(0, (0.8 - adultX) / 1.04), calfProgress = Math.max(0, (0.94 - calfX) / 1.15);
+      const adultX = encounterAdult(p2), calfX = encounterCalf(p2), adultProgress = Math.max(0, (0.8 - adultX) / 1.04), calfProgress = Math.max(0, (0.94 - calfX) / 1.15);
       for (let animal = 0; animal < 2; animal++)
         for (let i = 0; i < Math.floor((animal ? calfProgress : adultProgress) * 27); i++) {
           const x = (animal ? 0.94 : 0.8) * 1e3 - i * 40, y = trailY(x / 1e3) * l.height;
@@ -10590,19 +11209,19 @@
       if (!["aftermath", "returning", "finished"].includes(phase.kind)) {
         ctx.save();
         ctx.globalAlpha = phase.kind === "calf" ? 1 : phase.kind === "calf-reveal" ? 0.2 + Math.min(1, phase.elapsed / 6) * 0.8 : 0.13;
-        this.animal(ctx, PAINTED_PROPS.calf, calfX * 1e3, trailY(calfX) * l.height + 2, ch, calfWalking && !s.play.reduced ? p.footsteps * Math.PI : 0, true);
+        this.animal(ctx, PAINTED_PROPS.calf, calfX * 1e3, trailY(calfX) * l.height + 2, ch, calfWalking && !s.play.reduced ? p2.footsteps * Math.PI : 0, true);
         ctx.restore();
       }
       if (adultX > -0.21)
-        this.animal(ctx, PAINTED_PROPS.mother, adultX * 1e3, trailY(adultX) * l.height, mh, adultWalking && !s.play.reduced ? p.footsteps * Math.PI : 0, true);
+        this.animal(ctx, PAINTED_PROPS.mother, adultX * 1e3, trailY(adultX) * l.height, mh, adultWalking && !s.play.reduced ? p2.footsteps * Math.PI : 0, true);
       if (phase.kind === "opening" || phase.kind === "calf-reveal") {
         ctx.fillStyle = "#e4e9df38";
         ctx.beginPath();
         ctx.ellipse(970, l.height * 0.61, 70, 55, -0.1, 0, Math.PI * 2);
         ctx.fill();
       }
-      const actor = { x: p.actor.x * 1e3, y: p.actor.y * l.height };
-      this.characterAt(ctx, actor, s.portrait ? 112 : 90, p.moving ? Math.floor(p.stride * 4) % 8 : 2);
+      const actor = { x: p2.actor.x * 1e3, y: p2.actor.y * l.height };
+      this.characterAt(ctx, actor, s.portrait ? 112 : 90, p2.moving ? Math.floor(p2.stride * 4) % 8 : 2);
       if ((phase.kind === "yielding" || phase.kind === "adult" || phase.kind === "calf") && !clear && !s.play.reduced) {
         const x = (phase.kind === "calf" ? calfX : adultX) * 1e3, y = trailY(x / 1e3) * l.height;
         ctx.strokeStyle = "#f7f3e150";
@@ -10617,10 +11236,10 @@
       ctx.restore();
     }
     camp(ctx, s) {
-      const p = s.session;
-      if (p.kind !== "camp" || !this.props)
+      const p2 = s.session;
+      if (p2.kind !== "camp" || !this.props)
         return;
-      const l = layout2(s), phase = p.phase, t = l.tent;
+      const l = layout2(s), phase = p2.phase, t = l.tent;
       const lit = phase.kind === "lit" ? Math.min(1, phase.elapsed / 1.7) : 0;
       ctx.fillStyle = `rgba(14,30,56,${0.66 + lit * 0.06})`;
       ctx.fillRect(this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height);
@@ -10784,8 +11403,8 @@
       paint: (refs, s) => viewOf2(refs).paint(stateOf2(s)),
       instruction: (entry) => aotaiGameId(entry.id) ? AOTAI_GAMES[entry.id].prompt : "",
       status: (s) => stateOf2(s).feedback,
-      outcome(state, entry) {
-        const s = stateOf2(state), spec = AOTAI_GAMES[s.id];
+      outcome(state3, entry) {
+        const s = stateOf2(state3), spec = AOTAI_GAMES[s.id];
         return { id: s.id, edition: entry.edition, earned: s.play.complete && s.settledAt !== null, interaction: s.gesture, memory: spec.memory, title: spec.badge };
       },
       assets: (entry) => ({ scene: aotaiGameId(entry.id) ? sceneFile2(entry.id) : void 0 }),
@@ -10796,44 +11415,3662 @@
       },
       point: (refs, input) => viewOf2(refs).input(input),
       key: (s, key, phase) => keyAotai(stateOf2(s), key, phase),
-      present(state, refs) {
-        const s = stateOf2(state), spec = AOTAI_GAMES[s.id], view = viewOf2(refs);
+      present(state3, refs) {
+        const s = stateOf2(state3), spec = AOTAI_GAMES[s.id], view3 = viewOf2(refs);
         $2("micro-panel").dataset.aotai = s.kind;
         if (s.session.kind === "takin") {
           $2("micro-panel").dataset.encounterPhase = s.session.phase.kind;
           $2("micro-panel").dataset.activeSeconds = s.age.toFixed(1);
         }
         text("micro-title", spec.title);
-        text("micro-instruction", view.contentState === "ready" ? s.settledAt !== null ? "" : spec.prompt : view.contentState === "error" ? "画作暂未展开，可以重试或继续山路。" : "山间画作正在展开……");
-        text("micro-result", view.contentState === "ready" && s.feedback !== spec.prompt ? s.feedback : "");
+        text("micro-instruction", view3.contentState === "ready" ? s.settledAt !== null ? "" : spec.prompt : view3.contentState === "error" ? "画作暂未展开，可以重试或继续山路。" : "山间画作正在展开……");
+        text("micro-result", view3.contentState === "ready" && s.feedback !== spec.prompt ? s.feedback : "");
         text("micro-skip", "继续山路 →");
         $2("micro-surface").setAttribute("aria-label", spec.prompt + " " + spec.keys + " R 重试。");
-        $2("micro-surface").setAttribute("aria-busy", String(view.contentState === "loading"));
+        $2("micro-surface").setAttribute("aria-busy", String(view3.contentState === "loading"));
       }
     };
   }
 
-  // .build/typescript/wugong-walk/art-page.js
+  // .build/typescript/runtime/projection.js
+  function createProjection(x, y, scaleX, scaleY = scaleX) {
+    return {
+      x,
+      y,
+      scaleX,
+      scaleY,
+      toScreen: (world) => ({ x: x + world.x * scaleX, y: y + world.y * scaleY }),
+      toWorld: (screen) => ({ x: (screen.x - x) / scaleX, y: (screen.y - y) / scaleY })
+    };
+  }
+  function coverCamera(width, height, world, focus, zoom = 1) {
+    const scale = Math.max(width / world.width, height / world.height) * zoom;
+    const halfWidth = width / scale / 2, halfHeight = height / scale / 2;
+    const cx = Math.max(halfWidth, Math.min(world.width - halfWidth, focus.x));
+    const cy = Math.max(halfHeight, Math.min(world.height - halfHeight, focus.y));
+    return { ...createProjection(width / 2 - cx * scale, height / 2 - cy * scale, scale), scale };
+  }
+
+  // .build/typescript/runtime/coast-memories/birdsong.js
+  var BIRDS = [0, 1, 2];
+  var PHRASES = [[0, 2], [1, 0, 2]];
+  var PERCHES = [{ x: 220, y: 322 }, { x: 500, y: 262 }, { x: 780, y: 339 }];
+  function birdsongLayout(width, height) {
+    const portrait = height > width;
+    const sceneHeight = 1e3 * height / Math.max(1, width);
+    const cover3 = Math.max(1, sceneHeight / 1500), left = (1e3 - 1e3 * cover3) / 2, top = (sceneHeight - 1500 * cover3) / 2;
+    const camera = coverCamera(1e3, sceneHeight, { width: 1e3, height: 667 }, { x: 500, y: 255 });
+    const scale = portrait ? 0.38 * cover3 : 0.25 * camera.scale;
+    const perches = portrait ? [{ x: 220 * cover3 + left, y: 334.5 * cover3 + top }, { x: 500, y: 882 * cover3 + top }, { x: 780 * cover3 + left, y: 750 * cover3 + top }] : PERCHES.map(camera.toScreen);
+    return { portrait, height: sceneHeight, scale, perches, headOffset: 45 * scale / 0.25, camera };
+  }
+  function createBirdsong() {
+    return { kind: "birdsong", round: 0, matched: 0, phase: { kind: "arriving", elapsed: 0 }, cue: null, repeated: false };
+  }
+  function repeatBirdsong(p2) {
+    if (p2.phase.kind === "leaving" || p2.phase.kind === "finished" || p2.phase.kind === "breath")
+      return;
+    p2.phase = { kind: "listening", cursor: p2.matched, wait: 0.55 };
+    p2.cue = null;
+  }
+  function answerBird(p2, bird) {
+    if (p2.phase.kind !== "answering")
+      return false;
+    const phrase = PHRASES[p2.round];
+    if (phrase[p2.matched] !== bird) {
+      p2.repeated = true;
+      repeatBirdsong(p2);
+      return false;
+    }
+    p2.matched++;
+    p2.cue = { bird, age: 0, source: "answer" };
+    p2.repeated = false;
+    p2.phase = p2.matched < phrase.length ? { kind: "answering", idle: 0 } : p2.round === 0 ? { kind: "breath", elapsed: 0 } : { kind: "leaving", elapsed: 0 };
+    return true;
+  }
+  function tickBirdsong(p2, dt) {
+    if (p2.cue) {
+      p2.cue.age += dt;
+      if (p2.cue.age >= 0.85)
+        p2.cue = null;
+    }
+    const phase = p2.phase;
+    switch (phase.kind) {
+      case "arriving":
+        phase.elapsed += dt;
+        if (phase.elapsed >= 1.15)
+          repeatBirdsong(p2);
+        break;
+      case "listening": {
+        phase.wait -= dt;
+        if (phase.wait > 0)
+          break;
+        const bird = PHRASES[p2.round][phase.cursor];
+        if (bird === void 0)
+          p2.phase = { kind: "answering", idle: 0 };
+        else {
+          phase.cursor++;
+          phase.wait = 1.2;
+          p2.cue = { bird, age: 0, source: "call" };
+          return bird;
+        }
+        break;
+      }
+      case "answering":
+        phase.idle += dt;
+        if (phase.idle >= 10)
+          repeatBirdsong(p2);
+        break;
+      case "breath":
+        phase.elapsed += dt;
+        if (phase.elapsed >= 1.65) {
+          p2.round = 1;
+          p2.matched = 0;
+          p2.repeated = false;
+          p2.phase = { kind: "listening", cursor: 0, wait: 0.5 };
+        }
+        break;
+      case "leaving":
+        phase.elapsed += dt;
+        if (phase.elapsed >= 2)
+          p2.phase = { kind: "finished" };
+        break;
+      case "finished":
+        break;
+      default: {
+        const exhaustive = phase;
+        return exhaustive;
+      }
+    }
+    return null;
+  }
+  function birdsongFeedback(p2) {
+    switch (p2.phase.kind) {
+      case "arriving":
+        return "海浪声远了，林间传来一小段鸣叫。";
+      case "listening":
+        return p2.repeated ? "再听剩下这一段，已经回应过的留着。" : p2.round === 0 ? "先听两声，看看是哪两只小鸟。" : "这次多了一声，先看它们依次鸣叫。";
+      case "answering":
+        return p2.matched ? "记住了这一声，接着回应。" : "轮到你了，按刚才的顺序轻点小鸟。";
+      case "breath":
+        return "回应上了，树枝上又响起一段短句。";
+      case "leaving":
+      case "finished":
+        return "鸣叫在林间接上了，海风还在山口等你。";
+      default: {
+        const exhaustive = p2.phase;
+        return exhaustive;
+      }
+    }
+  }
+
+  // .build/typescript/runtime/coast-memories/model.js
+  var COAST_MEMORIES = {
+    "maclehose-sideways-crab": { kind: "driftwood", game: "packing", title: "给它让一条沙路", badge: "横着也能到", prompt: "把挡路的漂木拖到旁边沙地，让螃蟹自己经过。", keys: "数字 1、2、3 选择漂木，方向键挪动，R 重试。", memory: "西湾的沙地上，一只小螃蟹正在找路。我挪开几根漂木，看它横着走过，留下一串浅浅的脚印。" },
+    "coast-pier": { kind: "mooring", game: "creek", title: "把小船轻轻泊好", badge: "赤径慢潮", prompt: "拖动小船靠近左侧渡头，松手停稳，再把绳圈套到系桩。", keys: "方向键移动小船，Enter 停船；靠泊后 Enter 拿绳，方向键挪动，Enter 系好。R 重试。", memory: "赤径的水慢下来。我把纸上的小船轻轻送到渡头，套好绳圈，看倒影在船边重新聚拢。" },
+    "maclehose-woodland-echo": { kind: "birdsong", game: "bells", title: "林间回声", badge: "山坳回声", prompt: "先听小鸟的短句，再按顺序轻点回应。", keys: "数字 1、2、3 对应左、中、右的小鸟；空格重听，R 重试。静音可看抬头和枝叶提示。", memory: "离开咸田湾，往大浪坳的林缘歇了歇。纸上的小鸟依次鸣叫，我记住一小段顺序，轻轻回应，才发现海浪声已经远了。" }
+  };
+  var coastMemoryId = (id2) => Object.hasOwn(COAST_MEMORIES, id2);
+  var COAST_MEMORY_IDS = Object.keys(COAST_MEMORIES).filter(coastMemoryId);
+  var WIDTH = 1e3;
+  var HEIGHT = 667;
+  var DOCK = { x: 507, y: 355 };
+  var POST = { x: 361, y: 301 };
+  var boatRope = (boat) => ({ x: boat.x - 69, y: boat.y - 19 });
+  var crabPoint = (progress) => ({ x: 185 + 710 * progress, y: 365 + 105 * progress + Math.sin(Math.PI * progress) * 6 });
+  var clamp5 = (n, min, max) => Math.max(min, Math.min(max, n));
+  var distance3 = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+  var validPoint = (input) => typeof input.x === "number" && Number.isFinite(input.x) && typeof input.y === "number" && Number.isFinite(input.y) ? { x: input.x, y: input.y } : null;
+  var radius = (input) => Math.max(18, 22 * WIDTH / Math.max(220, input.viewWidth ?? WIDTH));
+  var CoastMemoryState = class {
+    id;
+    route = "maclehose";
+    game;
+    kind;
+    age = 0;
+    acted = false;
+    dragging = false;
+    gesture = "tap";
+    done = false;
+    x = 0.5;
+    y = 0.5;
+    events = [];
+    serial = 0;
+    feedback;
+    play;
+    session;
+    constructor(id2, reduced2) {
+      this.id = id2;
+      const spec = COAST_MEMORIES[id2];
+      this.game = spec.game;
+      this.kind = spec.kind;
+      this.feedback = spec.prompt;
+      this.play = { type: "coast-memory-5", progress: 0, complete: false, completedAt: null, reduced: reduced2 };
+      this.session = spec.kind === "birdsong" ? createBirdsong() : spec.kind === "driftwood" ? { kind: "driftwood", crab: 0, moving: false, focus: 0, drag: null, logs: [
+        { x: 400, y: 404, width: 24, height: 96, axis: "vertical" },
+        { x: 590, y: 437, width: 218, height: 56, axis: "horizontal" },
+        { x: 780, y: 470, width: 24, height: 96, axis: "vertical" }
+      ] } : { kind: "mooring", boat: { x: 600, y: 480 }, phase: { kind: "sailing", velocity: { x: 0, y: 0 }, lastMove: 0, released: false, stable: 0, travel: 0, drag: null } };
+    }
+  };
+  function stateOf3(state3) {
+    if (!(state3 instanceof CoastMemoryState))
+      throw new Error("海岸互动状态不匹配");
+    return state3;
+  }
+  function emit4(s, type, x) {
+    s.events.push({ serial: ++s.serial, type, x: x / WIDTH });
+    if (s.events.length > 10)
+      s.events.shift();
+  }
+  function complete(s, feedback) {
+    s.play.complete = true;
+    s.play.progress = 1;
+    s.play.completedAt = s.age;
+    s.dragging = false;
+    s.feedback = feedback;
+    emit4(s, "complete", 0.5 * WIDTH);
+  }
+  function echoReply(s, p2, bird) {
+    if (answerBird(p2, bird)) {
+      s.acted = true;
+      s.gesture = "tap";
+      s.events.push({ serial: ++s.serial, type: "coast-bird-answer", x: PERCHES[bird].x / WIDTH, index: bird });
+    }
+    s.feedback = birdsongFeedback(p2);
+  }
+  function logBlocks(log, at2) {
+    return Math.abs(log.x - at2.x) < log.width / 2 + 46 && Math.abs(log.y - at2.y) < log.height / 2 + 28;
+  }
+  function logClear(log) {
+    for (let i = 0; i <= 50; i++)
+      if (logBlocks(log, crabPoint(i / 50)))
+        return false;
+    return true;
+  }
+  function logsOverlap(a, b) {
+    return Math.abs(a.x - b.x) < (a.width + b.width) / 2 + 6 && Math.abs(a.y - b.y) < (a.height + b.height) / 2 + 6;
+  }
+  function sandBottom(x) {
+    return x < 500 ? 475 + (x - 280) * 0.5 : x < 760 ? 585 + (x - 500) * 0.14 : 621.4 - (x - 760) * 0.18;
+  }
+  function moveLog(s, p2, index, target) {
+    const log = p2.logs[index], start = { x: log.x, y: log.y }, span = distance3(start, target), steps2 = Math.max(1, Math.ceil(span / 12));
+    for (let i = 1; i <= steps2; i++) {
+      const x = clamp5(start.x + (target.x - start.x) * i / steps2, 280 + log.width / 2, 945 - log.width / 2);
+      const y = clamp5(start.y + (target.y - start.y) * i / steps2, 205 + x * 0.25 + log.height / 2, sandBottom(x) - log.height / 2);
+      const next = { ...log, x, y };
+      if (p2.logs.some((other, j) => j !== index && logsOverlap(next, other)) || logBlocks(next, crabPoint(p2.crab)))
+        break;
+      log.x = x;
+      log.y = y;
+    }
+    if (distance3(log, start) > 1) {
+      s.acted = true;
+      s.gesture = "drag";
+    }
+  }
+  function moveBoat(s, p2, target) {
+    if (p2.phase.kind !== "sailing")
+      return;
+    const before = p2.boat, next = { x: clamp5(target.x, 493, 896), y: clamp5(target.y, 335, 582) }, dt = Math.max(0.025, s.age - p2.phase.lastMove);
+    p2.phase.velocity = { x: clamp5((next.x - before.x) / dt, -200, 200), y: clamp5((next.y - before.y) / dt, -200, 200) };
+    p2.phase.lastMove = s.age;
+    p2.phase.travel += distance3(before, next);
+    p2.phase.released = false;
+    p2.boat = next;
+    s.acted = true;
+    s.gesture = "drag";
+  }
+  function released(s, input) {
+    const p2 = s.session, at2 = validPoint(input);
+    if (p2.kind === "driftwood") {
+      p2.drag = null;
+    } else if (p2.kind === "mooring" && p2.phase.kind === "sailing" && p2.phase.drag) {
+      p2.phase.drag = null;
+      p2.phase.released = true;
+      p2.phase.velocity.x *= 0.08;
+      p2.phase.velocity.y *= 0.08;
+      s.feedback = distance3(p2.boat, DOCK) < 46 ? "松开了，让船在渡头旁慢慢停稳。" : "再靠近一点，左侧的渡头就在前面。";
+    } else if (p2.kind === "mooring" && p2.phase.kind === "rope" && p2.phase.holding) {
+      if (at2)
+        p2.phase.end = at2;
+      if (distance3(p2.phase.end, POST) <= Math.max(43, radius(input))) {
+        p2.phase = { kind: "tied", elapsed: 0 };
+        s.play.progress = 0.94;
+        s.feedback = "绳圈套好了，小船在水面上轻轻晃。";
+        emit4(s, "coast-rope-tied", POST.x);
+      } else {
+        p2.phase.holding = false;
+        p2.phase.end = boatRope(p2.boat);
+        s.feedback = "把船头的绳圈拖到渡头上的木桩，再松手。";
+      }
+    }
+    s.dragging = false;
+    return s;
+  }
+  function actCoast(s, input) {
+    if (s.play.complete)
+      return s;
+    if (s.session.kind === "birdsong") {
+      const p3 = s.session;
+      if (input.action === "echo-repeat") {
+        repeatBirdsong(p3);
+        s.feedback = birdsongFeedback(p3);
+        return s;
+      }
+      const at3 = validPoint(input);
+      if (input.phase !== "press" || !at3)
+        return s;
+      const layout3 = birdsongLayout(input.viewWidth ?? WIDTH, input.viewHeight ?? HEIGHT), pad2 = Math.max(65 * layout3.scale / 0.25, radius(input));
+      const bird = BIRDS.find((bird2) => distance3(at3, { x: layout3.perches[bird2].x, y: layout3.perches[bird2].y - layout3.headOffset }) <= pad2);
+      if (bird !== void 0)
+        echoReply(s, p3, bird);
+      return s;
+    }
+    if (input.phase === "release") {
+      moveCoast(s, input);
+      return released(s, input);
+    }
+    const at2 = validPoint(input);
+    if (!at2 || input.phase !== "press")
+      return s;
+    s.x = at2.x / WIDTH;
+    s.y = at2.y / HEIGHT;
+    const p2 = s.session, pad = radius(input);
+    if (p2.kind === "driftwood") {
+      const candidates = p2.logs.map((log, index) => ({ log, index })).filter(({ log }) => Math.abs(log.x - at2.x) < log.width / 2 + pad && Math.abs(log.y - at2.y) < log.height / 2 + pad).sort((a, b) => distance3(a.log, at2) - distance3(b.log, at2));
+      const picked = candidates[0];
+      if (!picked)
+        return s;
+      p2.focus = picked.index;
+      p2.drag = { index: picked.index, offset: { x: at2.x - picked.log.x, y: at2.y - picked.log.y } };
+      s.dragging = true;
+      s.feedback = "轻轻挪开，给它留出能横着经过的空隙。";
+      emit4(s, "coast-wood-pick", at2.x);
+    } else if (p2.phase.kind === "sailing" && Math.abs(at2.x - p2.boat.x) < 100 + pad && Math.abs(at2.y - p2.boat.y) < 44 + pad) {
+      p2.phase.drag = { x: at2.x - p2.boat.x, y: at2.y - p2.boat.y };
+      p2.phase.velocity = { x: 0, y: 0 };
+      p2.phase.released = false;
+      s.dragging = true;
+      s.feedback = "靠近左侧渡头，再松手。";
+    } else if (p2.phase.kind === "rope" && distance3(at2, boatRope(p2.boat)) < 27 + pad) {
+      p2.phase.holding = true;
+      p2.phase.end = at2;
+      s.dragging = true;
+      s.feedback = "把绳圈套到渡头上的木桩。";
+      emit4(s, "coast-rope-pick", at2.x);
+    }
+    return s;
+  }
+  function moveCoast(s, input) {
+    const at2 = validPoint(input);
+    if (!at2 || s.play.complete)
+      return s;
+    const p2 = s.session;
+    s.x = at2.x / WIDTH;
+    s.y = at2.y / HEIGHT;
+    if (p2.kind === "driftwood" && p2.drag)
+      moveLog(s, p2, p2.drag.index, { x: at2.x - p2.drag.offset.x, y: at2.y - p2.drag.offset.y });
+    else if (p2.kind === "mooring") {
+      if (p2.phase.kind === "sailing" && p2.phase.drag)
+        moveBoat(s, p2, { x: at2.x - p2.phase.drag.x, y: at2.y - p2.phase.drag.y });
+      else if (p2.phase.kind === "rope" && p2.phase.holding)
+        p2.phase.end = { x: clamp5(at2.x, 30, 950), y: clamp5(at2.y, 180, 600) };
+    }
+    return s;
+  }
+  function cancelCoast(s) {
+    const p2 = s.session;
+    s.dragging = false;
+    if (p2.kind === "driftwood")
+      p2.drag = null;
+    else if (p2.kind === "mooring" && p2.phase.kind === "sailing") {
+      p2.phase.drag = null;
+      p2.phase.released = false;
+      p2.phase.velocity = { x: 0, y: 0 };
+      p2.phase.stable = 0;
+    } else if (p2.kind === "mooring" && p2.phase.kind === "rope") {
+      p2.phase.holding = false;
+      p2.phase.end = boatRope(p2.boat);
+    }
+    return s;
+  }
+  function tickCoast(s, dt) {
+    if (s.done || !Number.isFinite(dt) || dt <= 0)
+      return s;
+    dt = Math.min(0.05, dt);
+    s.age += dt;
+    if (s.play.complete) {
+      s.done = s.play.completedAt !== null && s.age - s.play.completedAt >= 1.7;
+      return s;
+    }
+    const p2 = s.session;
+    if (p2.kind === "driftwood") {
+      const next = Math.min(1, p2.crab + dt * 0.073);
+      p2.moving = s.acted && !p2.logs.some((log) => logBlocks(log, crabPoint(next)));
+      if (p2.moving)
+        p2.crab = next;
+      const cleared = p2.logs.filter(logClear).length;
+      s.play.progress = Math.min(0.94, cleared * 0.17 + p2.crab * 0.43);
+      if (s.acted && !s.dragging)
+        s.feedback = p2.moving ? "路让出来了，它正沿着沙地慢慢经过。" : "前面还有一根漂木，再给它让一点空间。";
+      if (p2.crab === 1 && !s.dragging)
+        complete(s, "它走过去了，沙地上留下浅浅的足迹。");
+    } else if (p2.kind === "mooring") {
+      const phase = p2.phase;
+      if (phase.kind === "sailing") {
+        if (!phase.drag) {
+          const damping = Math.exp(-dt * 7);
+          phase.velocity.x *= damping;
+          phase.velocity.y *= damping;
+          p2.boat.x = clamp5(p2.boat.x + phase.velocity.x * dt, 493, 896);
+          p2.boat.y = clamp5(p2.boat.y + phase.velocity.y * dt, 335, 582);
+        }
+        s.play.progress = s.acted ? clamp5((1 - distance3(p2.boat, DOCK) / 340) * 0.65, 0.02, 0.65) : 0;
+        const near3 = distance3(p2.boat, DOCK) < 43 && Math.hypot(phase.velocity.x, phase.velocity.y) < 14;
+        phase.stable = phase.released && phase.travel > 100 && near3 ? phase.stable + dt : 0;
+        if (phase.stable >= 0.65) {
+          p2.phase = { kind: "landing", from: { ...p2.boat }, elapsed: 0 };
+          s.feedback = "船靠稳了，船头还放着一个绳圈。";
+          emit4(s, "coast-boat-touch", p2.boat.x);
+        }
+      } else if (phase.kind === "landing") {
+        phase.elapsed += dt;
+        const t = Math.min(1, phase.elapsed / 0.7), ease2 = t * t * (3 - 2 * t);
+        p2.boat = { x: phase.from.x + (DOCK.x - phase.from.x) * ease2, y: phase.from.y + (DOCK.y - phase.from.y) * ease2 };
+        if (t === 1) {
+          p2.phase = { kind: "rope", end: boatRope(p2.boat), holding: false };
+          s.play.progress = 0.78;
+          s.feedback = "把船头的绳圈拖到木桩上，系好这段慢潮。";
+        }
+      } else if (phase.kind === "tied") {
+        phase.elapsed += dt;
+        if (phase.elapsed >= 1.4)
+          complete(s, "绳结稳了，村落与小船的倒影慢慢聚拢。");
+      }
+    } else {
+      const bird = tickBirdsong(p2, dt);
+      if (bird !== null)
+        s.events.push({ serial: ++s.serial, type: "coast-bird-call", x: PERCHES[bird].x / WIDTH, index: bird });
+      s.play.progress = Math.min(0.94, ((p2.round === 0 ? 0 : 2) + p2.matched) / 5 * 0.94);
+      s.feedback = birdsongFeedback(p2);
+      if (p2.phase.kind === "finished" && s.acted)
+        complete(s, s.feedback);
+    }
+    if (s.events.length > 10)
+      s.events.splice(0, s.events.length - 10);
+    return s;
+  }
+  function keyCoast(s, key, phase) {
+    if (phase === "up" || s.play.complete)
+      return null;
+    const arrows = { ArrowLeft: { x: -18, y: 0 }, ArrowRight: { x: 18, y: 0 }, ArrowUp: { x: 0, y: -18 }, ArrowDown: { x: 0, y: 18 } }, direction = arrows[key], p2 = s.session;
+    if (p2.kind === "birdsong") {
+      const bird = key === "1" ? 0 : key === "2" ? 1 : key === "3" ? 2 : null;
+      if (bird !== null) {
+        echoReply(s, p2, bird);
+        return s;
+      }
+      if (key === " " || key === "Enter") {
+        repeatBirdsong(p2);
+        s.feedback = birdsongFeedback(p2);
+        return s;
+      }
+      return null;
+    }
+    if (p2.kind === "driftwood") {
+      if (/^[1-3]$/.test(key)) {
+        p2.focus = Number(key) - 1;
+        return s;
+      }
+      if (!direction)
+        return null;
+      const log = p2.logs[p2.focus];
+      moveLog(s, p2, p2.focus, { x: log.x + direction.x, y: log.y + direction.y });
+      return s;
+    }
+    if (p2.phase.kind === "sailing") {
+      if (direction) {
+        moveBoat(s, p2, { x: p2.boat.x + direction.x, y: p2.boat.y + direction.y });
+        p2.phase.velocity = { x: 0, y: 0 };
+        return s;
+      }
+      if (key === "Enter" || key === " ") {
+        p2.phase.released = true;
+        p2.phase.velocity = { x: 0, y: 0 };
+        return s;
+      }
+    } else if (p2.phase.kind === "rope") {
+      if (key === "Enter" || key === " ") {
+        if (!p2.phase.holding) {
+          p2.phase.holding = true;
+          s.dragging = true;
+          s.acted = true;
+        } else
+          released(s, { x: p2.phase.end.x, y: p2.phase.end.y });
+        return s;
+      }
+      if (direction && p2.phase.holding) {
+        p2.phase.end = { x: clamp5(p2.phase.end.x + direction.x, 30, 950), y: clamp5(p2.phase.end.y + direction.y, 180, 600) };
+        return s;
+      }
+    }
+    return null;
+  }
+
+  // .build/typescript/runtime/coast-memories/view.js
+  var FRAMES = {
+    crab: { x: 43, y: 166, width: 502, height: 272 },
+    horizontal: { x: 581, y: 238, width: 684, height: 178 },
+    vertical: { x: 1308, y: 10, width: 139, height: 572 },
+    boat: { x: 37, y: 653, width: 686, height: 278 },
+    rope: { x: 769, y: 611, width: 426, height: 340 },
+    post: { x: 1253, y: 601, width: 242, height: 392 }
+  };
+  var PROPS = "scenes/maclehose-games-v5/props.webp";
+  var PHONE_SCENE = "scenes/maclehose-echo-v9/forest-phone.webp";
+  var propsFile = (id2) => id2 === "maclehose-woodland-echo" ? "scenes/maclehose-echo-v9/birds.webp" : PROPS;
+  var sceneFile3 = (id2) => id2 === "maclehose-woodland-echo" ? "scenes/maclehose-echo-v9/forest.webp" : `scenes/maclehose-games-v5/${id2 === "coast-pier" ? "pier" : "beach"}.webp`;
+  var BIRD_FRAMES = [
+    { x: 0, y: 64, width: 550, height: 540, footX: 355, footY: 504 },
+    { x: 570, y: 64, width: 480, height: 540, footX: 174, footY: 493 },
+    { x: 1050, y: 64, width: 486, height: 540, footX: 188, footY: 493 }
+  ];
+  function pencil(ctx, a, b) {
+    const angle = Math.atan2(b.y - a.y, b.x - a.x);
+    ctx.save();
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    for (const [color, width] of [["#fff9e4c9", 6], ["#716e56b0", 2]]) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.quadraticCurveTo((a.x + b.x) / 2 + 8, (a.y + b.y) / 2, b.x, b.y);
+      ctx.moveTo(b.x - Math.cos(angle - 0.6) * 13, b.y - Math.sin(angle - 0.6) * 13);
+      ctx.lineTo(b.x, b.y);
+      ctx.lineTo(b.x - Math.cos(angle + 0.6) * 13, b.y - Math.sin(angle + 0.6) * 13);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  var CoastMemoryView = class {
+    id;
+    doc;
+    directInput = true;
+    canvas;
+    contentState = "loading";
+    disposed = false;
+    pending = new AbortController();
+    observer = null;
+    host = null;
+    scene = null;
+    phoneScene = null;
+    props = null;
+    state = null;
+    repeat;
+    focus = null;
+    paintedAt = 0;
+    constructor(id2, doc, onAction) {
+      this.id = id2;
+      this.doc = doc;
+      this.canvas = doc.createElement("canvas");
+      this.canvas.className = "coast-memory-canvas";
+      this.canvas.setAttribute("aria-hidden", "true");
+      this.repeat = id2 === "maclehose-woodland-echo" ? doc.createElement("button") : null;
+      if (this.repeat) {
+        const repeat = this.repeat;
+        repeat.type = "button";
+        repeat.className = "coast-echo-repeat";
+        repeat.textContent = "再听一遍";
+        repeat.disabled = true;
+        repeat.addEventListener("pointerdown", (event) => event.stopPropagation(), { signal: this.pending.signal });
+        repeat.addEventListener("keydown", (event) => {
+          if (event.key === " " || event.key === "Enter")
+            event.stopPropagation();
+        }, { signal: this.pending.signal });
+        repeat.addEventListener("click", (event) => {
+          event.stopPropagation();
+          onAction("echo-repeat");
+        }, { signal: this.pending.signal });
+      }
+    }
+    resize() {
+      if (!this.host || this.disposed)
+        return;
+      const rect = this.host.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1, Math.sqrt(24e5 / Math.max(1, rect.width * rect.height)));
+      this.canvas.width = Math.max(1, Math.round(rect.width * dpr));
+      this.canvas.height = Math.max(1, Math.round(rect.height * dpr));
+      if (this.state)
+        this.paint(this.state);
+    }
+    async mount(host, cache2) {
+      this.host = host;
+      host.append(this.canvas);
+      if (this.repeat)
+        this.doc.getElementById("mini-controls")?.append(this.repeat);
+      this.observer = new ResizeObserver(() => this.resize());
+      this.observer.observe(host);
+      this.resize();
+      const { signal } = this.pending;
+      const load = (file) => new Promise((resolve, reject) => {
+        const entry = cache2?.request(file, "high");
+        let image = null;
+        const clean = () => {
+          signal.removeEventListener("abort", abort);
+          if (image)
+            image.onload = image.onerror = null;
+        };
+        const abort = () => {
+          clean();
+          reject(new DOMException("已离开海岸画作", "AbortError"));
+        };
+        if (signal.aborted) {
+          abort();
+          return;
+        }
+        signal.addEventListener("abort", abort, { once: true });
+        if (entry)
+          void entry.promise.then((asset) => {
+            if (signal.aborted)
+              return;
+            clean();
+            if (asset.state === "ready")
+              resolve(asset.image);
+            else
+              reject(new Error("海岸画作暂未展开"));
+          });
+        else {
+          image = this.doc.createElement("img");
+          image.decoding = "async";
+          image.onload = () => {
+            if (!image)
+              return;
+            clean();
+            resolve(image);
+          };
+          image.onerror = () => {
+            clean();
+            reject(new Error("海岸画作暂未展开"));
+          };
+          image.src = file;
+        }
+      });
+      try {
+        const [scene, props, phone] = await Promise.all([load(sceneFile3(this.id)), load(propsFile(this.id)), this.id === "maclehose-woodland-echo" ? load(PHONE_SCENE) : Promise.resolve(null)]);
+        if (this.disposed || signal.aborted)
+          return;
+        this.scene = scene;
+        this.props = props;
+        this.phoneScene = phone;
+        this.contentState = "ready";
+      } catch {
+        if (!this.disposed && !signal.aborted)
+          this.contentState = "error";
+      }
+      if (!this.disposed) {
+        host.setAttribute("aria-busy", String(this.contentState === "loading"));
+        if (this.state)
+          this.paint(this.state);
+      }
+    }
+    input(input) {
+      const rect = this.host?.getBoundingClientRect();
+      if (!rect || typeof input.x !== "number" || typeof input.y !== "number")
+        return input;
+      const point2 = this.id === "maclehose-woodland-echo" ? { x: input.x * WIDTH, y: input.y * birdsongLayout(rect.width, rect.height).height } : coverCamera(rect.width, rect.height, { width: WIDTH, height: HEIGHT }, this.focus ?? { x: WIDTH / 2, y: HEIGHT / 2 }).toWorld({ x: input.x * rect.width, y: input.y * rect.height });
+      return { ...input, ...point2, viewWidth: rect.width, viewHeight: rect.height };
+    }
+    sprite(ctx, name, at2, width, height, rotation = 0) {
+      if (!this.props)
+        return;
+      const frame2 = FRAMES[name], scale = Math.min(width / frame2.width, height / frame2.height), w = frame2.width * scale, h = frame2.height * scale;
+      ctx.save();
+      ctx.translate(at2.x, at2.y);
+      ctx.rotate(rotation);
+      ctx.drawImage(this.props, frame2.x, frame2.y, frame2.width, frame2.height, -w / 2, -h / 2, w, h);
+      ctx.restore();
+    }
+    shadow(ctx, at2, rx, ry) {
+      ctx.save();
+      ctx.fillStyle = "#675d3b24";
+      ctx.beginPath();
+      ctx.ellipse(at2.x + 2, at2.y + 6, rx, ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    driftwood(ctx, s) {
+      const p2 = s.session;
+      if (p2.kind !== "driftwood")
+        return;
+      ctx.save();
+      ctx.fillStyle = "#8b745342";
+      for (let i = 0; i < Math.floor(p2.crab * 36); i++) {
+        const at3 = crabPoint(i / 36);
+        for (const side of [-1, 1]) {
+          ctx.beginPath();
+          ctx.ellipse(at3.x, at3.y + side * 18, 2.8, 1.4, side * 0.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      for (const [index, log] of p2.logs.entries()) {
+        this.shadow(ctx, { x: log.x, y: log.y + log.height * 0.22 }, log.width * 0.53, log.height * 0.19);
+        this.sprite(ctx, log.axis, log, log.width, log.height);
+        if (p2.drag?.index === index) {
+          ctx.strokeStyle = "#90775342";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(log.x - 12, log.y + log.height / 2 + 9);
+          ctx.quadraticCurveTo(log.x, log.y + log.height / 2 + 13, log.x + 12, log.y + log.height / 2 + 9);
+          ctx.stroke();
+        }
+      }
+      const at2 = crabPoint(p2.crab), gait = s.play.reduced || !p2.moving ? 0 : Math.sin(s.age * 17);
+      this.shadow(ctx, { x: at2.x, y: at2.y + 12 }, 35, 6);
+      this.sprite(ctx, "crab", at2, 92, 56, gait * 0.018);
+      if (!s.acted || !s.dragging && p2.crab < 0.03) {
+        const log = p2.logs.find((log2) => !logClear(log2));
+        if (log)
+          pencil(ctx, { x: log.x + log.width / 2 + 20, y: log.y - 20 }, { x: log.x + log.width / 2 + 20, y: log.y + 38 });
+      }
+      ctx.restore();
+    }
+    rope(ctx, a, b, taut) {
+      ctx.save();
+      ctx.lineCap = "round";
+      for (const [color, width] of [["#79684eaa", 5], ["#e0c89f", 3], ["#f7e6c76b", 1]]) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.quadraticCurveTo((a.x + b.x) / 2, (a.y + b.y) / 2 + (taut ? 4 : 15), b.x, b.y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    mooring(ctx, s) {
+      const p2 = s.session;
+      if (p2.kind !== "mooring")
+        return;
+      const phase = p2.phase, boat = p2.boat, reduced2 = s.play.reduced;
+      ctx.save();
+      for (let i = 0; i < 16; i++) {
+        const x = 460 + i * 31 % 470, y = 220 + i * 59 % 380;
+        ctx.strokeStyle = "#f6f4dc48";
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.quadraticCurveTo(x + 28, y + (reduced2 ? 0 : Math.sin(s.age * 0.6 + i) * 2.4), x + 57, y - 1);
+        ctx.stroke();
+      }
+      ctx.fillStyle = "#2e77714a";
+      ctx.beginPath();
+      ctx.ellipse(boat.x + 7, boat.y + 21, 103, 16, -0.04, 0, Math.PI * 2);
+      ctx.fill();
+      const speed = phase.kind === "sailing" ? Math.hypot(phase.velocity.x, phase.velocity.y) : 0;
+      if (!reduced2)
+        for (let i = 0; i < 3; i++) {
+          const t = (s.age * 0.24 + i / 3) % 1;
+          ctx.strokeStyle = `rgba(240,240,214,${(1 - t) * (speed > 8 ? 0.38 : 0.14)})`;
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.ellipse(boat.x + 7, boat.y + 22, 100 + t * 42, 15 + t * 13, -0.04, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      this.sprite(ctx, "boat", boat, 202, 86, reduced2 || s.dragging ? 0 : Math.sin(s.age * 1.05) * 6e-3);
+      const root = boatRope(boat);
+      if (phase.kind === "rope") {
+        if (phase.holding)
+          this.rope(ctx, root, phase.end, false);
+        this.sprite(ctx, "rope", phase.holding ? phase.end : root, 37, 31);
+        if (!phase.holding)
+          pencil(ctx, { x: root.x - 10, y: root.y - 25 }, { x: POST.x + 19, y: POST.y - 5 });
+      } else if (phase.kind === "tied")
+        this.rope(ctx, root, { x: POST.x, y: POST.y + 4 }, true);
+      else {
+        this.sprite(ctx, "rope", root, 35, 30);
+        if (!s.acted)
+          pencil(ctx, { x: boat.x - 100, y: boat.y + 64 }, { x: DOCK.x + 25, y: DOCK.y + 65 });
+      }
+      this.sprite(ctx, "post", POST, 36, 56);
+      if (phase.kind === "tied") {
+        ctx.strokeStyle = "#e8d5ac";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.ellipse(POST.x, POST.y + 3, 14, 5, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    birdsong(ctx, s, p2) {
+      if (!this.props)
+        return;
+      const cue = p2.cue, layout3 = birdsongLayout(this.canvas.width, this.canvas.height);
+      for (const bird of BIRDS) {
+        const frame2 = BIRD_FRAMES[bird], perch = layout3.perches[bird], calling = cue?.bird === bird;
+        const pulse = calling ? Math.sin(Math.min(1, cue.age / 0.85) * Math.PI) : 0;
+        ctx.save();
+        ctx.translate(perch.x, perch.y);
+        const idle = s.play.reduced ? 0 : Math.sin(s.age * 0.7 + bird) * 6e-3;
+        ctx.rotate(s.play.reduced ? 0 : idle + pulse * (bird === 0 ? -0.075 : 0.075));
+        ctx.scale(layout3.scale, layout3.scale);
+        ctx.drawImage(this.props, frame2.x, frame2.y, frame2.width, frame2.height, -frame2.footX, -frame2.footY, frame2.width, frame2.height);
+        ctx.restore();
+        if (calling) {
+          const side = bird === 0 ? 1 : -1;
+          ctx.save();
+          ctx.strokeStyle = cue.source === "answer" ? "#547866" : "#576653";
+          ctx.lineWidth = 2.1;
+          ctx.lineCap = "round";
+          ctx.globalAlpha = s.play.reduced ? 0.9 : 0.3 + pulse * 0.7;
+          for (let i = 0; i < 2; i++) {
+            const x = perch.x + side * (50 + i * 10) * layout3.scale / 0.25, y = perch.y - 101 * layout3.scale / 0.25;
+            ctx.beginPath();
+            ctx.moveTo(x, y - 6 - i * 3);
+            ctx.quadraticCurveTo(x + side * 9, y, x, y + 6 + i * 3);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+      }
+      if (!s.play.reduced) {
+        ctx.save();
+        ctx.strokeStyle = "#b8bd86a8";
+        ctx.lineWidth = 1.4;
+        ctx.lineCap = "round";
+        for (let i = 0; i < 5; i++) {
+          const x = 95 + i * 193, y = 130 + i % 2 * 400, drift = Math.sin(s.age * 0.75 + i) * 5;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.quadraticCurveTo(x + 12 + drift, y - 7, x + 23 + drift, y - 3);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    }
+    paint(s) {
+      this.state = s;
+      if (this.disposed)
+        return;
+      const ctx = this.canvas.getContext("2d");
+      if (!ctx) {
+        this.contentState = "error";
+        return;
+      }
+      const echo = s.session.kind === "birdsong", layout3 = birdsongLayout(this.canvas.width, this.canvas.height), height = echo ? layout3.height : HEIGHT;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      if (echo)
+        ctx.setTransform(this.canvas.width / WIDTH, 0, 0, this.canvas.height / height, 0, 0);
+      else {
+        const target = s.session.kind === "driftwood" ? { x: crabPoint(s.session.crab).x + 135, y: 440 } : s.session.kind === "mooring" ? { x: (s.session.boat.x + DOCK.x) / 2 - 25, y: 390 } : { x: WIDTH / 2, y: HEIGHT / 2 };
+        const elapsed = Math.max(0, s.age - this.paintedAt);
+        if (!this.focus || s.age < this.paintedAt || s.play.reduced)
+          this.focus = target;
+        else if (!s.dragging) {
+          const blend = 1 - Math.exp(-elapsed * 3);
+          this.focus = { x: this.focus.x + (target.x - this.focus.x) * blend, y: this.focus.y + (target.y - this.focus.y) * blend };
+        }
+        this.paintedAt = s.age;
+        const camera = coverCamera(this.canvas.width, this.canvas.height, { width: WIDTH, height: HEIGHT }, this.focus);
+        ctx.setTransform(camera.scale, 0, 0, camera.scale, camera.x, camera.y);
+      }
+      ctx.fillStyle = "#e9e5d0";
+      ctx.fillRect(0, 0, WIDTH, height);
+      const scene = echo && layout3.portrait ? this.phoneScene : this.scene;
+      if (scene) {
+        if (echo && !layout3.portrait)
+          ctx.drawImage(scene, layout3.camera.x, layout3.camera.y, WIDTH * layout3.camera.scale, HEIGHT * layout3.camera.scale);
+        else if (echo) {
+          const cover3 = Math.max(WIDTH / scene.naturalWidth, height / scene.naturalHeight), w = scene.naturalWidth * cover3, h = scene.naturalHeight * cover3;
+          ctx.drawImage(scene, (WIDTH - w) / 2, (height - h) / 2, w, h);
+        } else
+          ctx.drawImage(scene, 0, 0, WIDTH, height);
+      }
+      if (this.repeat && s.session.kind === "birdsong")
+        this.repeat.disabled = this.contentState !== "ready" || s.play.complete || ["breath", "leaving", "finished"].includes(s.session.phase.kind);
+      if (this.contentState === "ready") {
+        if (s.session.kind === "driftwood")
+          this.driftwood(ctx, s);
+        else if (s.session.kind === "mooring")
+          this.mooring(ctx, s);
+        else
+          this.birdsong(ctx, s, s.session);
+      }
+    }
+    dispose() {
+      if (this.disposed)
+        return;
+      this.disposed = true;
+      this.pending.abort();
+      this.observer?.disconnect();
+      this.canvas.remove();
+      this.repeat?.remove();
+      this.canvas.width = this.canvas.height = 1;
+      this.scene = this.props = this.phoneScene = null;
+      this.state = null;
+      this.host = null;
+    }
+  };
+  function viewOf3(refs) {
+    if (!(refs instanceof CoastMemoryView))
+      throw new Error("海岸画作界面不匹配");
+    return refs;
+  }
+
+  // .build/typescript/runtime/coast-memories/adapter.js
+  function createCoastMemories(dom2, onAction) {
+    const { get: $2, text } = dom2;
+    return {
+      create(entry, options) {
+        if (!coastMemoryId(entry.id))
+          throw new Error("海岸互动不存在");
+        return new CoastMemoryState(entry.id, options.reduced);
+      },
+      act: (s, input) => actCoast(stateOf3(s), input),
+      move: (s, input) => moveCoast(stateOf3(s), input),
+      release: (s) => cancelCoast(stateOf3(s)),
+      tick: (s, dt) => tickCoast(stateOf3(s), dt),
+      draw(_svg, _parent, entry) {
+        if (!coastMemoryId(entry.id))
+          throw new Error("海岸画作不存在");
+        return new CoastMemoryView(entry.id, dom2.document, onAction);
+      },
+      paint: (refs, s) => viewOf3(refs).paint(stateOf3(s)),
+      instruction: (entry) => coastMemoryId(entry.id) ? COAST_MEMORIES[entry.id].prompt : "",
+      status: (s) => stateOf3(s).feedback,
+      outcome(state3, entry) {
+        const s = stateOf3(state3), spec = COAST_MEMORIES[s.id];
+        return { id: s.id, edition: entry.edition, earned: s.play.complete && s.play.completedAt !== null, interaction: s.gesture, memory: spec.memory, title: spec.badge };
+      },
+      assets: (entry) => coastMemoryId(entry.id) ? { scene: sceneFile3(entry.id), actor: propsFile(entry.id), ...entry.id === "maclehose-woodland-echo" ? { front: PHONE_SCENE } : {} } : {},
+      mount: (refs, context) => viewOf3(refs).mount(context.host, context.cache),
+      dispose(refs) {
+        viewOf3(refs).dispose();
+        for (const key of ["coastMemory", "coastPhase", "clearedLogs"])
+          delete $2("micro-panel").dataset[key];
+      },
+      point: (refs, point2) => viewOf3(refs).input(point2),
+      key: (s, key, phase) => keyCoast(stateOf3(s), key, phase),
+      present(state3, refs) {
+        const s = stateOf3(state3), spec = COAST_MEMORIES[s.id], view3 = viewOf3(refs), panel = $2("micro-panel");
+        panel.dataset.coastMemory = s.kind;
+        panel.dataset.coastPhase = s.play.complete ? "complete" : s.session.kind === "driftwood" ? s.session.moving ? "passing" : "waiting" : s.session.phase.kind;
+        if (s.session.kind === "driftwood")
+          panel.dataset.clearedLogs = String(s.session.logs.filter(logClear).length);
+        text("micro-title", spec.title);
+        text("micro-instruction", spec.prompt);
+        text("micro-result", view3.contentState === "ready" ? s.feedback : view3.contentState === "error" ? "画作暂未展开，可以重试或继续山径。" : "海岸画作正在展开……");
+        text("micro-skip", "继续山径 →");
+        $2("micro-surface").setAttribute("aria-label", spec.prompt + " 键盘辅助：" + spec.keys);
+        $2("micro-surface").setAttribute("aria-busy", String(view3.contentState === "loading"));
+      }
+    };
+  }
+
+  // .build/typescript/runtime/coast-memories/shoulder/model.js
+  var SCENE = { width: 1672, height: 941 };
+  var FOOTHOLDS = [
+    { x: 505, y: 913 },
+    { x: 445, y: 816 },
+    { x: 410, y: 718 },
+    { x: 450, y: 651 },
+    { x: 505, y: 600 },
+    { x: 560, y: 575 },
+    { x: 760, y: 643 },
+    { x: 900, y: 666 },
+    { x: 1030, y: 675 }
+  ];
+  var LOOKOUT = FOOTHOLDS[FOOTHOLDS.length - 1];
+  var PROMPT = "轻点山路，登高望海。";
+  var MEMORY = "沿西湾山的石阶登高，转过山肩，白沙海湾与蚺蛇尖一起展开。我背着包站在高处，让海风吹过，把这一眼山海留在手帐里。";
+  var clamp6 = (n, min = 0, max = 1) => Math.max(min, Math.min(max, n));
+  var mix = (a, b, t) => a + (b - a) * t;
+  var ease = (t) => {
+    const x = clamp6(t);
+    return x * x * (3 - 2 * x);
+  };
+  var STEP_TIME = 0.8;
+  var VIEW_TIME = 6;
+  var ShoulderState = class {
+    id = "coast-sand";
+    route = "maclehose";
+    kind = "saiwan-steps";
+    age = 0;
+    acted = false;
+    dragging = false;
+    gesture = "tap";
+    done = false;
+    x = 0.5;
+    y = 0.5;
+    play;
+    phase = { kind: "ready", idle: 0 };
+    step = 0;
+    cameraProgress = 0;
+    hover = false;
+    feedback = PROMPT;
+    events = [];
+    serial = 0;
+    constructor(reduced2) {
+      this.play = { type: "saiwan-lookout-14", progress: 0, complete: false, completedAt: null, reduced: reduced2 };
+    }
+    emit(type, at2, index = 0) {
+      this.events.push({ serial: ++this.serial, type, x: clamp6(at2 / SCENE.width), index });
+      if (this.events.length > 12)
+        this.events.shift();
+    }
+  };
+  function shoulderState(state3) {
+    if (!(state3 instanceof ShoulderState))
+      throw new Error("西湾山互动状态不匹配");
+    return state3;
+  }
+  function accepts(s, at2) {
+    if (s.phase.kind !== "ready")
+      return false;
+    for (let i = 1; i < FOOTHOLDS.length; i++) {
+      const a = FOOTHOLDS[i - 1], b = FOOTHOLDS[i], dx = b.x - a.x, dy = b.y - a.y;
+      const t = clamp6(((at2.x - a.x) * dx + (at2.y - a.y) * dy) / (dx * dx + dy * dy));
+      if (Math.hypot(at2.x - mix(a.x, b.x, t), at2.y - mix(a.y, b.y, t)) <= 90)
+        return true;
+    }
+    return false;
+  }
+  function actShoulder(s, input) {
+    if (input.phase !== "press" || s.phase.kind !== "ready" || typeof input.x !== "number" || !Number.isFinite(input.x) || typeof input.y !== "number" || !Number.isFinite(input.y))
+      return s;
+    const at2 = { x: input.x, y: input.y };
+    if (!accepts(s, at2)) {
+      s.feedback = "轻点脚边的山路，跟着海风往上走。";
+      return s;
+    }
+    s.acted = true;
+    s.hover = false;
+    s.phase = { kind: "climbing", to: 1, elapsed: 0, landed: false };
+    s.feedback = "沿着石阶登高，海风从山肩外吹来。";
+    return s;
+  }
+  function hoverShoulder(s, input) {
+    s.hover = typeof input.x === "number" && typeof input.y === "number" && accepts(s, { x: input.x, y: input.y });
+    return s;
+  }
+  function keyShoulder(s, key, phase) {
+    if (!["Enter", " ", "ArrowUp", "ArrowRight"].includes(key))
+      return null;
+    if (phase === "down")
+      actShoulder(s, { phase: "press", ...FOOTHOLDS[1], key: true });
+    return s;
+  }
+  function walkProgress(s) {
+    return s.phase.kind === "climbing" ? (s.step + ease(s.phase.elapsed / STEP_TIME)) / (FOOTHOLDS.length - 1) : s.step / (FOOTHOLDS.length - 1);
+  }
+  function actorPoint(s) {
+    const phase = s.phase;
+    if (phase.kind === "climbing") {
+      const a = FOOTHOLDS[s.step], b = FOOTHOLDS[phase.to], t = ease(phase.elapsed / STEP_TIME);
+      return { x: mix(a.x, b.x, t), y: mix(a.y, b.y, t) - (s.play.reduced ? 0 : Math.sin(Math.PI * t) * 4) };
+    }
+    return FOOTHOLDS[s.step];
+  }
+  function tickShoulder(s, dt) {
+    if (s.done || !Number.isFinite(dt) || dt <= 0)
+      return s;
+    dt = Math.min(0.05, dt);
+    s.age += dt;
+    if (s.play.complete) {
+      s.done = s.play.completedAt !== null && s.age - s.play.completedAt >= 1;
+      return s;
+    }
+    const phase = s.phase;
+    switch (phase.kind) {
+      case "ready":
+        phase.idle += dt;
+        break;
+      case "climbing": {
+        phase.elapsed += dt;
+        if (!phase.landed && phase.elapsed >= STEP_TIME * 0.82) {
+          phase.landed = true;
+          s.emit("coast-step-land", FOOTHOLDS[phase.to].x, phase.to);
+        }
+        if (phase.elapsed >= STEP_TIME) {
+          s.step = phase.to;
+          s.phase = s.step === FOOTHOLDS.length - 1 ? { kind: "view", elapsed: 0 } : { kind: "climbing", to: s.step + 1, elapsed: 0, landed: false };
+          s.feedback = s.phase.kind === "view" ? "站在高处，望见白沙湾与蚺蛇尖。" : s.step < 4 ? "沿着石阶登高，海风从山肩外吹来。" : "转过山肩，海湾慢慢展开。";
+          if (s.step === 5)
+            s.emit("coast-sea-reveal", 0.6 * SCENE.width);
+        }
+        break;
+      }
+      case "view":
+        phase.elapsed += dt;
+        if (phase.elapsed >= VIEW_TIME) {
+          s.phase = { kind: "finished" };
+          s.play.complete = true;
+          s.play.completedAt = s.age;
+          s.play.progress = 1;
+          s.emit("complete", LOOKOUT.x);
+        }
+        break;
+      case "finished":
+        break;
+      default: {
+        const exhaustive = phase;
+        return exhaustive;
+      }
+    }
+    const target = ease((walkProgress(s) - 0.18) / 0.82);
+    s.cameraProgress = mix(s.cameraProgress, target, s.play.reduced ? 1 : 1 - Math.exp(-dt * 2.2));
+    if (!s.play.complete)
+      s.play.progress = walkProgress(s) * 0.8 + (s.phase.kind === "view" ? 0.18 * clamp6(s.phase.elapsed / VIEW_TIME) : 0);
+    return s;
+  }
+
+  // .build/typescript/runtime/coast-memories/shoulder/pose-art.generated.js
+  var SHOULDER_POSES = {
+    "blue": [
+      {
+        "x": 80,
+        "y": 4,
+        "width": 300,
+        "height": 439,
+        "footX": 138.3165059284735,
+        "footY": 435
+      },
+      {
+        "x": 532,
+        "y": 5,
+        "width": 283,
+        "height": 434,
+        "footX": 183.1916584587168,
+        "footY": 396
+      },
+      {
+        "x": 960,
+        "y": 4,
+        "width": 280,
+        "height": 436,
+        "footX": 87.69340905104377,
+        "footY": 432
+      },
+      {
+        "x": 1431,
+        "y": 5,
+        "width": 280,
+        "height": 435,
+        "footX": 190.96598377281953,
+        "footY": 417
+      },
+      {
+        "x": 94,
+        "y": 443,
+        "width": 233,
+        "height": 429,
+        "footX": 165.32516494901574,
+        "footY": 425
+      },
+      {
+        "x": 479,
+        "y": 489,
+        "width": 324,
+        "height": 370,
+        "footX": 204.12,
+        "footY": 366
+      },
+      {
+        "x": 908,
+        "y": 514,
+        "width": 390,
+        "height": 346,
+        "footX": 245.7,
+        "footY": 342
+      },
+      {
+        "x": 1368,
+        "y": 512,
+        "width": 384,
+        "height": 350,
+        "footX": 241.92000000000002,
+        "footY": 346
+      }
+    ],
+    "braids": [
+      {
+        "x": 158,
+        "y": 11,
+        "width": 277,
+        "height": 432,
+        "footX": 138,
+        "footY": 428
+      },
+      {
+        "x": 566,
+        "y": 16,
+        "width": 274,
+        "height": 415,
+        "footX": 187.46434866828088,
+        "footY": 406
+      },
+      {
+        "x": 964,
+        "y": 16,
+        "width": 262,
+        "height": 418,
+        "footX": 89.56974282302644,
+        "footY": 414
+      },
+      {
+        "x": 1411,
+        "y": 10,
+        "width": 279,
+        "height": 418,
+        "footX": 192.18316072668358,
+        "footY": 410
+      },
+      {
+        "x": 155,
+        "y": 443,
+        "width": 220,
+        "height": 427,
+        "footX": 135.3892030619133,
+        "footY": 423
+      },
+      {
+        "x": 506,
+        "y": 489,
+        "width": 301,
+        "height": 373,
+        "footX": 189.63,
+        "footY": 369
+      },
+      {
+        "x": 940,
+        "y": 506,
+        "width": 340,
+        "height": 359,
+        "footX": 214.2,
+        "footY": 355
+      },
+      {
+        "x": 1378,
+        "y": 512,
+        "width": 339,
+        "height": 353,
+        "footX": 213.57,
+        "footY": 349
+      }
+    ]
+  };
+
+  // .build/typescript/runtime/coast-memories/shoulder/layout.js
+  function shoulderCamera(s, width, height) {
+    const portrait = height > width, reveal = s.cameraProgress;
+    const zoom = mix(portrait ? 1.13 : 1.55, 1, reveal);
+    const focus = { x: mix(portrait ? 505 : 540, portrait ? 1e3 : SCENE.width / 2, reveal), y: mix(710, SCENE.height / 2, reveal) };
+    return { ...coverCamera(width, height, SCENE, focus, zoom), portrait };
+  }
+
+  // .build/typescript/runtime/coast-memories/shoulder/view.js
+  var ART_ROOT = "scenes/maclehose-saiwan-v13/";
+  var ShoulderView = class {
+    doc;
+    directInput = true;
+    canvas;
+    contentState = "loading";
+    disposed = false;
+    character;
+    lifecycle = new AbortController();
+    observer = null;
+    host = null;
+    images = null;
+    state = null;
+    width = 1e3;
+    height = 563;
+    constructor(doc) {
+      this.doc = doc;
+      this.character = characterId(new URLSearchParams(doc.defaultView?.location.search).get("character")) ?? readCharacterId();
+      this.canvas = doc.createElement("canvas");
+      this.canvas.className = "coast-memory-canvas saiwan-steps-canvas";
+      this.canvas.setAttribute("aria-hidden", "true");
+    }
+    resize() {
+      if (!this.host || this.disposed)
+        return;
+      const r = this.host.getBoundingClientRect();
+      this.width = Math.max(1, r.width);
+      this.height = Math.max(1, r.height);
+      const ratio = Math.min(2, this.doc.defaultView?.devicePixelRatio || 1, Math.sqrt(26e5 / (this.width * this.height)));
+      this.canvas.width = Math.max(1, Math.round(this.width * ratio));
+      this.canvas.height = Math.max(1, Math.round(this.height * ratio));
+      if (this.state)
+        this.paint(this.state);
+    }
+    async mount(host, cache2) {
+      this.host = host;
+      host.append(this.canvas);
+      this.observer = new ResizeObserver(() => this.resize());
+      this.observer.observe(host);
+      this.resize();
+      const { signal } = this.lifecycle;
+      const load = (file) => new Promise((resolve, reject) => {
+        const asset = cache2?.request(file, "high");
+        let image = null;
+        const clean = () => {
+          signal.removeEventListener("abort", abort);
+          if (image)
+            image.onload = image.onerror = null;
+        };
+        const abort = () => {
+          clean();
+          reject(new DOMException("已离开西湾山", "AbortError"));
+        };
+        if (signal.aborted) {
+          abort();
+          return;
+        }
+        signal.addEventListener("abort", abort, { once: true });
+        if (asset)
+          void asset.promise.then((entry) => {
+            if (signal.aborted)
+              return;
+            clean();
+            if (entry.state === "ready")
+              resolve(entry.image);
+            else
+              reject(new Error("山海画作暂未展开"));
+          });
+        else {
+          image = this.doc.createElement("img");
+          image.decoding = "async";
+          image.onload = () => {
+            if (!image)
+              return;
+            clean();
+            resolve(image);
+          };
+          image.onerror = () => {
+            clean();
+            reject(new Error("山海画作暂未展开"));
+          };
+          image.src = file;
+        }
+      });
+      try {
+        if (!this.canvas.getContext("2d"))
+          throw new Error("画面暂不支持绘制");
+        const [panorama, terrain, shoulder, poses, walk] = await Promise.all([
+          load(ART_ROOT + "panorama.webp"),
+          load(ART_ROOT + "terrain.webp"),
+          load(ART_ROOT + "shoulder.webp"),
+          load(ART_ROOT + `${this.character}-poses.webp`),
+          load(CHARACTERS[this.character].walk.file)
+        ]);
+        if (this.disposed || signal.aborted)
+          return;
+        this.images = { panorama, terrain, shoulder, poses, walk };
+        this.contentState = "ready";
+      } catch {
+        if (!this.disposed && !signal.aborted)
+          this.contentState = "error";
+      }
+      if (!this.disposed) {
+        host.setAttribute("aria-busy", "false");
+        if (this.state)
+          this.paint(this.state);
+      }
+    }
+    input(input) {
+      if (!this.state || typeof input.x !== "number" || typeof input.y !== "number")
+        return input;
+      const world = shoulderCamera(this.state, this.width, this.height).toWorld({ x: input.x * this.width, y: input.y * this.height });
+      return { ...input, x: world.x, y: world.y, viewWidth: this.width, viewHeight: this.height };
+    }
+    person(ctx, s) {
+      if (!this.images)
+        return;
+      const phase = s.phase, at2 = actorPoint(s), poses = SHOULDER_POSES[this.character];
+      let index, facing = 1, walking = false;
+      if (phase.kind === "climbing") {
+        const t = clamp6(phase.elapsed / STEP_TIME);
+        facing = FOOTHOLDS[phase.to].x < FOOTHOLDS[s.step].x ? -1 : 1;
+        walking = phase.to > 5;
+        index = walking ? Math.floor(s.age * 9) % 8 : (phase.to % 2 ? 0 : 2) + (t >= 0.56 ? 1 : 0);
+      } else {
+        index = 4;
+        if (phase.kind === "ready")
+          facing = -1;
+      }
+      const standingHeight = (poses[0].height + poses[1].height + poses[2].height + poses[3].height) / 4;
+      const scale = 128 / standingHeight;
+      ctx.save();
+      ctx.translate(at2.x, at2.y);
+      ctx.fillStyle = "#3e514a30";
+      ctx.beginPath();
+      ctx.ellipse(0, 3, 21, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.scale(facing, 1);
+      if (walking) {
+        const appearance = CHARACTERS[this.character].walk, frame2 = appearance.frames[index], walkScale = 128 / appearance.frames[0].height;
+        ctx.drawImage(this.images.walk, frame2.x, frame2.y, frame2.width, frame2.height, -frame2.footX * walkScale, -frame2.footY * walkScale, frame2.width * walkScale, frame2.height * walkScale);
+      } else {
+        const frame2 = poses[index];
+        ctx.drawImage(this.images.poses, frame2.x, frame2.y, frame2.width, frame2.height, -frame2.footX * scale, -frame2.footY * scale, frame2.width * scale, frame2.height * scale);
+      }
+      ctx.restore();
+    }
+    footprint(ctx, at2, strength, facing) {
+      ctx.save();
+      ctx.translate(at2.x, at2.y);
+      ctx.rotate(facing < 0 ? -0.35 : 0.35);
+      ctx.globalAlpha = strength;
+      ctx.fillStyle = "#66725c";
+      ctx.beginPath();
+      ctx.ellipse(0, -3, 5, 11, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#f9edcc";
+      ctx.beginPath();
+      ctx.ellipse(0, -5, 2.3, 6, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    hints(ctx, s) {
+      if (s.phase.kind === "ready") {
+        const next = FOOTHOLDS[1], hint = s.hover || s.phase.idle > 2.5;
+        if (hint)
+          this.footprint(ctx, next, s.hover ? 0.54 : 0.28 + (s.play.reduced ? 0 : Math.sin(s.age * 1.5) * 0.05), next.x - FOOTHOLDS[s.step].x);
+      }
+    }
+    sea(ctx, s) {
+      if (s.play.reduced)
+        return;
+      ctx.save();
+      ctx.strokeStyle = "#e1f0e979";
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 13; i++) {
+        const x = 1290 + i * 87 % 355, y = 323 + i * 13 % 78, drift = Math.sin(s.age * 0.45 + i) * 3;
+        ctx.globalAlpha = 0.24 + Math.sin(s.age * 0.6 + i) * 0.1;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.quadraticCurveTo(x + 11 + drift, y - 2, x + 28 + drift, y - 1);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    paint(s) {
+      this.state = s;
+      if (this.disposed)
+        return;
+      const ctx = this.canvas.getContext("2d");
+      if (!ctx) {
+        this.contentState = "error";
+        return;
+      }
+      ctx.setTransform(this.canvas.width / this.width, 0, 0, this.canvas.height / this.height, 0, 0);
+      ctx.fillStyle = "#f0ecdc";
+      ctx.fillRect(0, 0, this.width, this.height);
+      if (!this.images)
+        return;
+      const camera = shoulderCamera(s, this.width, this.height), reveal = s.cameraProgress;
+      ctx.save();
+      ctx.translate(camera.x, camera.y);
+      ctx.scale(camera.scale, camera.scale);
+      ctx.drawImage(this.images.panorama, 0, 0, SCENE.width, SCENE.height);
+      this.sea(ctx, s);
+      ctx.save();
+      ctx.translate(mix(0, -90, reveal), 0);
+      ctx.scale(mix(1.1, 1, reveal), mix(1.1, 1, reveal));
+      ctx.drawImage(this.images.shoulder, 0, 0, SCENE.width, SCENE.height);
+      ctx.restore();
+      ctx.drawImage(this.images.terrain, 0, 0, SCENE.width, SCENE.height);
+      this.hints(ctx, s);
+      this.person(ctx, s);
+      if (s.phase.kind === "climbing" && s.phase.landed && !s.play.reduced) {
+        const at2 = actorPoint(s), t = clamp6((s.phase.elapsed / STEP_TIME - 0.82) / 0.18);
+        ctx.save();
+        ctx.globalAlpha = (1 - t) * 0.2;
+        ctx.fillStyle = "#c4b694";
+        for (let i = 0; i < 4; i++) {
+          ctx.beginPath();
+          ctx.arc(at2.x + (i - 1.5) * (5 + t * 7), at2.y - t * (3 + i % 2 * 3), 1.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+      ctx.restore();
+      this.host?.setAttribute("data-scene-ready", String(this.contentState === "ready"));
+    }
+    dispose() {
+      if (this.disposed)
+        return;
+      this.disposed = true;
+      this.lifecycle.abort();
+      this.observer?.disconnect();
+      this.canvas.remove();
+      this.canvas.width = this.canvas.height = 1;
+      this.images = null;
+      this.state = null;
+      this.host = null;
+    }
+  };
+  function shoulderView(refs) {
+    if (!(refs instanceof ShoulderView))
+      throw new Error("西湾山画面不匹配");
+    return refs;
+  }
+
+  // .build/typescript/runtime/coast-memories/shoulder/adapter.js
+  function createSaiwanShoulder(dom2) {
+    const { get: $2, text } = dom2;
+    return {
+      input: "direct",
+      soundTheme: "footsteps",
+      create: (_entry, options) => new ShoulderState(options.reduced),
+      act: (state3, input) => actShoulder(shoulderState(state3), input),
+      move: (state3, input) => hoverShoulder(shoulderState(state3), input),
+      hover: (state3, input) => hoverShoulder(shoulderState(state3), input),
+      release(state3) {
+        shoulderState(state3).hover = false;
+        return state3;
+      },
+      tick: (state3, dt) => tickShoulder(shoulderState(state3), dt),
+      draw: () => new ShoulderView(dom2.document),
+      paint: (refs, state3) => shoulderView(refs).paint(shoulderState(state3)),
+      instruction: () => PROMPT,
+      status: (state3) => shoulderState(state3).feedback,
+      outcome(state3, entry) {
+        const s = shoulderState(state3);
+        return { id: s.id, edition: entry.edition, earned: s.play.complete && s.play.completedAt !== null, interaction: "tap", memory: MEMORY, title: "转角见海" };
+      },
+      assets: () => ({ scene: ART_ROOT + "panorama.webp", front: ART_ROOT + "terrain.webp", hint: ART_ROOT + "shoulder.webp" }),
+      mount: (refs, context) => shoulderView(refs).mount(context.host, context.cache),
+      dispose(refs) {
+        shoulderView(refs).dispose();
+        delete $2("micro-panel").dataset.coastMemory;
+        delete $2("micro-panel").dataset.coastPhase;
+        delete $2("micro-panel").dataset.coastStep;
+      },
+      point: (refs, input) => shoulderView(refs).input(input),
+      key: (state3, key, phase) => keyShoulder(shoulderState(state3), key, phase),
+      present(state3, refs) {
+        const s = shoulderState(state3), view3 = shoulderView(refs), panel = $2("micro-panel");
+        panel.dataset.coastMemory = "saiwan-steps";
+        panel.dataset.coastPhase = s.phase.kind;
+        panel.dataset.coastStep = String(s.step);
+        text("micro-place", "麦理浩径 · 西湾山");
+        text("micro-title", "登高望海");
+        text("micro-instruction", s.phase.kind === "ready" ? PROMPT : "跟着山路登高，看海湾在山肩外展开。");
+        text("micro-result", view3.contentState === "error" ? "画作暂未展开，可以重试或继续山径。" : view3.contentState === "loading" ? "山肩外的海风，正吹开这一页。" : s.feedback);
+        text("micro-skip", "继续山径 →");
+        $2("micro-surface").setAttribute("aria-label", "轻点山路，人物会自动登高，停下望海。键盘 Enter 或空格开始，R 重试。");
+        $2("micro-surface").setAttribute("aria-busy", String(view3.contentState === "loading"));
+      }
+    };
+  }
+
+  // .build/typescript/runtime/coast-memories/tide/model.js
+  var SAND = [{ x: 65, y: 225 }, { x: 250, y: 260 }, { x: 490, y: 325 }, { x: 760, y: 400 }, { x: 970, y: 450 }, { x: 950, y: 545 }, { x: 750, y: 620 }, { x: 500, y: 580 }, { x: 280, y: 470 }, { x: 90, y: 350 }];
+  var QUIET_TIME = 4.5;
+  var WASH_TIME = 3.2;
+  var shoreY = (x) => 145 + x * 0.25;
+  var PROMPT2 = "在沙面上拖动画一画，停笔后让潮水收走。";
+  var TideState = class {
+    id = "coast-shell";
+    route = "maclehose";
+    kind = "ripple";
+    age = 0;
+    acted = false;
+    dragging = false;
+    gesture = "look";
+    done = false;
+    x = 500;
+    y = 420;
+    play;
+    strokes = [];
+    events = [];
+    phase = { kind: "ready" };
+    length = 0;
+    points = 0;
+    cursorVisible = false;
+    serial = 0;
+    constructor(reduced2) {
+      this.play = { type: "coast-sand-18", progress: 0, complete: false, completedAt: null, reduced: reduced2 };
+    }
+    event(type) {
+      this.events.push({ serial: ++this.serial, type, x: this.x / 1e3 });
+      if (this.events.length > 8)
+        this.events.shift();
+    }
+  };
+  function tideState(state3) {
+    if (!(state3 instanceof TideState))
+      throw new Error("沙滩画笔状态不匹配");
+    return state3;
+  }
+  function onSand(point2) {
+    let inside2 = false;
+    for (let i = 0, j = SAND.length - 1; i < SAND.length; j = i++) {
+      const a = SAND[i], b = SAND[j];
+      if (a.y > point2.y !== b.y > point2.y && point2.x < (b.x - a.x) * (point2.y - a.y) / (b.y - a.y) + a.x)
+        inside2 = !inside2;
+    }
+    return inside2;
+  }
+  function at(input) {
+    return typeof input.x === "number" && typeof input.y === "number" && Number.isFinite(input.x) && Number.isFinite(input.y) ? { x: input.x, y: input.y } : null;
+  }
+  function endStroke(state3) {
+    if (state3.phase.kind !== "drawing")
+      return;
+    state3.dragging = false;
+    state3.phase = state3.strokes.length ? { kind: "pause", quiet: 0 } : { kind: "ready" };
+  }
+  function actTide(state3, input) {
+    if (input.phase === "release") {
+      endStroke(state3);
+      return state3;
+    }
+    if (!["ready", "pause"].includes(state3.phase.kind))
+      return state3;
+    const point2 = input.assist ? { x: state3.x, y: state3.y } : at(input);
+    if (!point2 || !onSand(point2) || state3.points >= 6e3)
+      return state3;
+    if (!input.key)
+      state3.cursorVisible = false;
+    const stroke = [point2];
+    state3.strokes.push(stroke);
+    state3.points++;
+    state3.x = point2.x;
+    state3.y = point2.y;
+    state3.phase = { kind: "drawing", stroke };
+    state3.dragging = true;
+    return state3;
+  }
+  function moveTide(state3, input) {
+    if (state3.phase.kind !== "drawing")
+      return state3;
+    const point2 = at(input);
+    if (!point2 || !onSand(point2)) {
+      endStroke(state3);
+      return state3;
+    }
+    const previous = state3.phase.stroke[state3.phase.stroke.length - 1];
+    const distance4 = Math.hypot(point2.x - previous.x, point2.y - previous.y);
+    if (distance4 < 0.5 || state3.points >= 6e3)
+      return state3;
+    state3.phase.stroke.push(point2);
+    state3.points++;
+    state3.length += distance4;
+    state3.x = point2.x;
+    state3.y = point2.y;
+    state3.acted = true;
+    state3.gesture = "drag";
+    state3.play.progress = Math.min(0.65, state3.length / 160 * 0.65);
+    return state3;
+  }
+  function cancelTide(state3) {
+    if (state3.phase.kind === "drawing") {
+      state3.strokes.pop();
+      state3.length = 0;
+      state3.points = 0;
+      for (const stroke of state3.strokes) {
+        state3.points += stroke.length;
+        for (let i = 1; i < stroke.length; i++)
+          state3.length += Math.hypot(stroke[i].x - stroke[i - 1].x, stroke[i].y - stroke[i - 1].y);
+      }
+      state3.phase = state3.strokes.length ? { kind: "pause", quiet: 0 } : { kind: "ready" };
+      state3.play.progress = Math.min(0.65, state3.length / 160 * 0.65);
+    } else if (state3.phase.kind === "pause")
+      state3.phase.quiet = 0;
+    state3.dragging = false;
+    return state3;
+  }
+  function tickTide(state3, dt) {
+    if (state3.done || !Number.isFinite(dt) || dt <= 0)
+      return state3;
+    dt = Math.min(0.1, dt);
+    state3.age += dt;
+    const phase = state3.phase;
+    if (phase.kind === "pause") {
+      phase.quiet += dt;
+      if (state3.length >= 80 && phase.quiet >= QUIET_TIME) {
+        state3.phase = { kind: "washing", elapsed: 0 };
+        state3.event("water");
+      }
+    } else if (phase.kind === "washing") {
+      phase.elapsed += dt;
+      state3.play.progress = 0.65 + 0.35 * Math.min(1, phase.elapsed / WASH_TIME);
+      if (phase.elapsed >= WASH_TIME) {
+        state3.phase = { kind: "memory", elapsed: 0 };
+        state3.play.progress = 1;
+        state3.play.complete = true;
+        state3.play.completedAt = state3.age;
+        state3.event("complete");
+      }
+    } else if (phase.kind === "memory") {
+      phase.elapsed += dt;
+      state3.done = phase.elapsed >= 1.2;
+    }
+    return state3;
+  }
+  function tideFeedback(state3) {
+    switch (state3.phase.kind) {
+      case "ready":
+        return PROMPT2;
+      case "drawing":
+        return "笔迹留在沙面上，慢慢画。";
+      case "pause":
+        return state3.length < 80 ? "再画长一点，让这一笔留在沙面。" : "还可以接着画，下一道浪还没到。";
+      case "washing":
+        return "潮水漫过笔迹，再轻轻退去。";
+      case "memory":
+        return "沙面重新平整，这一笔留进回忆里。";
+      default: {
+        const exhaustive = state3.phase;
+        return exhaustive;
+      }
+    }
+  }
+  function keyTide(state3, key, phase) {
+    if (key === " ") {
+      if (phase === "up")
+        endStroke(state3);
+      else if (state3.phase.kind !== "drawing") {
+        state3.cursorVisible = true;
+        actTide(state3, { x: state3.x, y: state3.y, phase: "press", key: true });
+      }
+      return state3;
+    }
+    if (key === "Enter") {
+      if (phase === "down") {
+        state3.cursorVisible = true;
+        state3.phase.kind === "drawing" ? endStroke(state3) : actTide(state3, { x: state3.x, y: state3.y, phase: "press", key: true });
+      }
+      return state3;
+    }
+    const direction = key === "ArrowLeft" ? { x: -16, y: 0 } : key === "ArrowRight" ? { x: 16, y: 0 } : key === "ArrowUp" ? { x: 0, y: -16 } : key === "ArrowDown" ? { x: 0, y: 16 } : null;
+    if (!direction)
+      return null;
+    state3.cursorVisible = true;
+    if (phase === "down") {
+      const point2 = { x: state3.x + direction.x, y: state3.y + direction.y };
+      if (onSand(point2)) {
+        if (state3.phase.kind === "drawing")
+          moveTide(state3, point2);
+        else {
+          state3.x = point2.x;
+          state3.y = point2.y;
+        }
+      }
+    }
+    return state3;
+  }
+
+  // .build/typescript/runtime/coast-memories/tide/view.js
+  var TIDE_SCENE = "scenes/maclehose-games-v5/beach.webp";
+  var tideCamera = (width, height) => coverCamera(width, height, { width: 1e3, height: 667 }, { x: 590, y: 275 });
+  var TideView = class {
+    doc;
+    directInput = true;
+    canvas;
+    contentState = "loading";
+    disposed = false;
+    observer = null;
+    host = null;
+    image = null;
+    state = null;
+    width = 1e3;
+    height = 667;
+    pending = new AbortController();
+    constructor(doc) {
+      this.doc = doc;
+      this.canvas = doc.createElement("canvas");
+      this.canvas.className = "coast-memory-canvas";
+      this.canvas.setAttribute("aria-hidden", "true");
+    }
+    resize() {
+      if (!this.host || this.disposed)
+        return;
+      const rect = this.host.getBoundingClientRect();
+      this.width = Math.max(1, rect.width);
+      this.height = Math.max(1, rect.height);
+      const dpr = Math.min(2, this.doc.defaultView?.devicePixelRatio || 1, Math.sqrt(26e5 / (this.width * this.height)));
+      this.canvas.width = Math.max(1, Math.round(this.width * dpr));
+      this.canvas.height = Math.max(1, Math.round(this.height * dpr));
+      if (this.state)
+        this.paint(this.state);
+    }
+    async mount(host, cache2) {
+      this.host = host;
+      host.append(this.canvas);
+      this.observer = new ResizeObserver(() => this.resize());
+      this.observer.observe(host);
+      this.resize();
+      try {
+        const asset = cache2?.request(TIDE_SCENE, "high");
+        if (asset) {
+          const loaded = await asset.promise;
+          if (loaded.state !== "ready")
+            throw new Error("海滩画作暂未展开");
+          this.image = loaded.image;
+        } else
+          this.image = await new Promise((resolve, reject) => {
+            const image = this.doc.createElement("img"), { signal } = this.pending;
+            const cleanup = () => {
+              image.onload = image.onerror = null;
+              signal.removeEventListener("abort", abort);
+            };
+            const abort = () => {
+              cleanup();
+              reject(new DOMException("已离开海滩", "AbortError"));
+            };
+            if (signal.aborted) {
+              abort();
+              return;
+            }
+            signal.addEventListener("abort", abort, { once: true });
+            image.decoding = "async";
+            image.onload = () => {
+              cleanup();
+              resolve(image);
+            };
+            image.onerror = () => {
+              cleanup();
+              reject(new Error("海滩画作暂未展开"));
+            };
+            image.src = TIDE_SCENE;
+          });
+        if (!this.disposed)
+          this.contentState = this.canvas.getContext("2d") ? "ready" : "error";
+      } catch {
+        if (!this.disposed)
+          this.contentState = "error";
+      }
+      if (!this.disposed) {
+        host.setAttribute("aria-busy", "false");
+        if (this.state)
+          this.paint(this.state);
+      } else
+        this.image = null;
+    }
+    input(input) {
+      if (typeof input.x !== "number" || typeof input.y !== "number")
+        return input;
+      return { ...input, ...tideCamera(this.width, this.height).toWorld({ x: input.x * this.width, y: input.y * this.height }) };
+    }
+    sand(ctx) {
+      ctx.beginPath();
+      SAND.forEach((point2, i) => i ? ctx.lineTo(point2.x, point2.y) : ctx.moveTo(point2.x, point2.y));
+      ctx.closePath();
+    }
+    path(ctx, stroke) {
+      if (!stroke.length)
+        return;
+      ctx.beginPath();
+      ctx.moveTo(stroke[0].x, stroke[0].y);
+      if (stroke.length === 1)
+        ctx.lineTo(stroke[0].x + 0.5, stroke[0].y);
+      for (let i = 1; i < stroke.length; i++) {
+        const point2 = stroke[i], next = stroke[i + 1];
+        if (next)
+          ctx.quadraticCurveTo(point2.x, point2.y, (point2.x + next.x) / 2, (point2.y + next.y) / 2);
+        else
+          ctx.lineTo(point2.x, point2.y);
+      }
+      ctx.stroke();
+    }
+    ink(ctx, state3) {
+      ctx.save();
+      ctx.lineJoin = ctx.lineCap = "round";
+      for (const [color, width, dx, dy] of [["#87694242", 6, 1, 1.5], ["#89633f", 3.7, 0, 0], ["#5e482b99", 1.3, 0, 0.3], ["#fff0caaa", 0.8, -0.7, -1.5]]) {
+        ctx.save();
+        ctx.translate(dx, dy);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        for (const stroke of state3.strokes)
+          this.path(ctx, stroke);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+    paint(state3) {
+      this.state = state3;
+      if (this.disposed)
+        return;
+      const ctx = this.canvas.getContext("2d");
+      if (!ctx) {
+        this.contentState = "error";
+        return;
+      }
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      const camera = tideCamera(this.width, this.height), ratio = this.canvas.width / this.width;
+      ctx.setTransform(camera.scale * ratio, 0, 0, camera.scale * ratio, camera.x * ratio, camera.y * ratio);
+      ctx.fillStyle = "#eee4c6";
+      ctx.fillRect(0, 0, 1e3, 667);
+      if (this.image)
+        ctx.drawImage(this.image, 0, 0, 1e3, 667);
+      if (state3.phase.kind === "memory")
+        return;
+      ctx.save();
+      this.sand(ctx);
+      ctx.clip();
+      if (state3.phase.kind === "washing") {
+        const t = Math.min(1, state3.phase.elapsed / WASH_TIME);
+        if (state3.play.reduced) {
+          ctx.globalAlpha = 1 - t;
+          this.ink(ctx, state3);
+        } else {
+          const reach = Math.min(1, t / 0.58), level = t < 0.58 ? reach : 1 - (t - 0.58) / 0.42;
+          const front = (x, advance) => shoreY(x) + advance * 470 + Math.sin(x * 0.025 + state3.age) * 4;
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(0, front(0, reach));
+          for (let x = 0; x <= 1e3; x += 20)
+            ctx.lineTo(x, front(x, reach));
+          ctx.lineTo(1e3, 700);
+          ctx.lineTo(0, 700);
+          ctx.closePath();
+          ctx.clip();
+          this.ink(ctx, state3);
+          ctx.restore();
+          ctx.restore();
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(1e3, 0);
+          ctx.lineTo(1e3, 550);
+          for (const point2 of SAND.slice(6))
+            ctx.lineTo(point2.x, point2.y);
+          ctx.lineTo(0, 320);
+          ctx.closePath();
+          ctx.clip();
+          ctx.globalAlpha = Math.min(1, t * 10, (1 - t) * 10);
+          ctx.beginPath();
+          ctx.moveTo(0, shoreY(0) - 15);
+          for (let x = 0; x <= 1e3; x += 20)
+            ctx.lineTo(x, shoreY(x) - 15);
+          for (let x = 1e3; x >= 0; x -= 20)
+            ctx.lineTo(x, front(x, level));
+          ctx.closePath();
+          const water2 = ctx.createLinearGradient(0, 170, 0, 650);
+          water2.addColorStop(0, "#83c5bc00");
+          water2.addColorStop(0.4, "#94cbb948");
+          water2.addColorStop(1, "#c6dcc95c");
+          ctx.fillStyle = water2;
+          ctx.fill();
+          ctx.beginPath();
+          for (let x = 0; x <= 1e3; x += 10)
+            x ? ctx.lineTo(x, front(x, level)) : ctx.moveTo(x, front(x, level));
+          ctx.shadowColor = "#fff8e999";
+          ctx.shadowBlur = 7;
+          ctx.strokeStyle = "#fff8e9c9";
+          ctx.lineWidth = 3;
+          ctx.lineCap = "round";
+          ctx.stroke();
+        }
+      } else
+        this.ink(ctx, state3);
+      ctx.restore();
+      if (state3.cursorVisible && state3.phase.kind !== "washing") {
+        ctx.strokeStyle = "#655439c9";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(state3.x - 4, state3.y);
+        ctx.lineTo(state3.x + 4, state3.y);
+        ctx.moveTo(state3.x, state3.y - 4);
+        ctx.lineTo(state3.x, state3.y + 4);
+        ctx.stroke();
+      }
+    }
+    dispose() {
+      this.disposed = true;
+      this.pending.abort();
+      this.observer?.disconnect();
+      this.canvas.remove();
+      this.canvas.width = this.canvas.height = 1;
+      this.host = null;
+      this.image = null;
+      this.state = null;
+    }
+  };
+  function tideView(refs) {
+    if (!(refs instanceof TideView))
+      throw new Error("沙滩画笔界面不匹配");
+    return refs;
+  }
+
+  // .build/typescript/runtime/coast-memories/tide/adapter.js
+  function createTide(dom2) {
+    const { get: $2, text } = dom2;
+    return {
+      input: "direct",
+      soundTheme: "creek",
+      create: (_entry, options) => new TideState(options.reduced),
+      act: (state3, input) => actTide(tideState(state3), input),
+      move: (state3, input) => moveTide(tideState(state3), input),
+      release: (state3) => cancelTide(tideState(state3)),
+      tick: (state3, dt) => tickTide(tideState(state3), dt),
+      draw: () => new TideView(dom2.document),
+      paint: (refs, state3) => tideView(refs).paint(tideState(state3)),
+      assets: () => ({ scene: TIDE_SCENE }),
+      mount: (refs, { host, cache: cache2 }) => tideView(refs).mount(host, cache2),
+      point: (refs, input) => tideView(refs).input(input),
+      key: (state3, key, phase) => keyTide(tideState(state3), key, phase),
+      instruction: () => PROMPT2,
+      status: (state3) => tideFeedback(tideState(state3)),
+      outcome(state3, entry) {
+        const s = tideState(state3);
+        return { id: s.id, edition: entry.edition, earned: s.play.complete && s.play.completedAt !== null, interaction: "drag", title: "潮汐收笔", memory: "我在咸田湾的沙面上慢慢画了几笔，看潮水漫过笔迹，再一点点退去。沙面平整了，这一刻却留了下来。" };
+      },
+      dispose(refs) {
+        tideView(refs).dispose();
+        for (const key of ["coastMemory", "coastPhase", "tideStrokes", "tidePoints"])
+          delete $2("micro-panel").dataset[key];
+      },
+      present(state3, refs) {
+        const s = tideState(state3), panel = $2("micro-panel");
+        panel.dataset.coastMemory = "tide";
+        panel.dataset.coastPhase = s.phase.kind;
+        panel.dataset.tideStrokes = String(s.strokes.filter((stroke) => stroke.length > 1).length);
+        panel.dataset.tidePoints = String(s.points);
+        text("micro-title", "留给下一道浪的一笔");
+        text("micro-instruction", PROMPT2);
+        text("micro-skip", "继续山径 →");
+        text("micro-result", refs.contentState === "ready" ? tideFeedback(s) : refs.contentState === "error" ? "海滩暂未展开，可以重试或继续山径。" : "海滩水彩正在展开……");
+        $2("micro-surface").setAttribute("aria-label", PROMPT2 + " 键盘辅助：方向键移动笔尖，按住空格画，松开收笔，R 重试。");
+      }
+    };
+  }
+
+  // .build/typescript/journey/art-session.js
+  var PROTOCOL = "trailbound.art.v1";
+  function artMessage(session2, type, collected2 = 0) {
+    return type === "ready" || type === "dispose" ? { ...session2, protocol: PROTOCOL, type } : { ...session2, protocol: PROTOCOL, type, collected: collected2 };
+  }
+  function readArtMessage(value, current) {
+    if (!current || !value || typeof value !== "object" || !("protocol" in value) || value.protocol !== PROTOCOL || !("session" in value) || value.session !== current.session || !("entry" in value) || value.entry !== current.entry || !("type" in value))
+      return null;
+    if (value.type === "ready" || value.type === "dispose")
+      return artMessage(current, value.type);
+    if ((value.type === "collected" || value.type === "close") && "collected" in value && typeof value.collected === "number" && Number.isSafeInteger(value.collected) && value.collected >= 0 && value.collected <= 1) {
+      return artMessage(current, value.type, value.collected);
+    }
+    return null;
+  }
+
+  // .build/typescript/runtime/day-memories/model.js
+  var DAY_MEMORIES = {
+    "valley-moss": { kind: "reflection", title: "把枝影留在水里", prompt: "轻拖水中的倒影，让岸上的枯树与枝影相接。", memory: "我把错开的枝影轻轻合上，清水里又长出一棵树。" },
+    "valley-bridge": { kind: "lichen", title: "石头上，也有一片森林", prompt: "拖动透镜，慢慢看过红石表面的细小纹理。", memory: "红石的纹理在透镜里展开，山野也藏在很小的地方。" },
+    "valley-reflection": { kind: "vista", title: "走出森林，雪山就在眼前", prompt: "向两边拨开林缘，给远处的雪山让出视野。", memory: "林缘退开，溪谷、草甸和雪山在眼前连成了一幅画。" },
+    "bamboo-drop": { kind: "rain", title: "接一小段竹雨", prompt: "移动竹筒，接住叶尖落下的四滴雨，听它们落成一段短音。", memory: "四滴竹雨落进筒里，一深一浅，像山林写来的短曲。" },
+    "bamboo-step": { kind: "steps", title: "拂开落叶，沿古道上山", prompt: "轻扫石阶上的落叶，露出脚下的路，再看旅人走过山弯。", memory: "拂开雨后的落叶，石阶重新显出轮廓，脚步沿着竹林上山。" },
+    "bamboo-leaf": { kind: "wind", title: "借一阵风，送出叶笺", prompt: "看叶梢的方向，等风朝向远山时轻点，送出一枚叶笺。", memory: "我等来一阵顺风，看一枚叶笺穿过竹隙，慢慢飞向远山。" },
+    "westlake-floating-leaf": { kind: "leaf", title: "推一圈水纹，送落叶过溪", prompt: "轻点落叶后方的水面，用水纹把它推向下游。", memory: "水纹轻轻推着落叶，绕过溪石，带着我的目光漂向下游。" },
+    "westlake-stones": { kind: "stones", title: "踏石听溪", prompt: "轻点前方相连的溪石，让旅人走过浅溪，听脚下的水声。", memory: "我顺着三块相连的溪石走过去，水声在脚边一近一远。" },
+    "westlake-tea": { kind: "tea", title: "一芽两叶，留一页春天", prompt: "认出一枚细嫩的芽和两片嫩叶，点选它们留在手帐里。", memory: "一枚嫩芽和两片新叶，在纸上拼成了今天的春天。" },
+    "westlake-eaves": { kind: "brew", title: "慢慢注水，等一盏茶", prompt: "按住茶盏注水，水面过半后松手，看茶叶慢慢舒展。", memory: "水温让叶子慢慢舒展。村口的一盏茶，收住了今天的溪声。" }
+  };
+  function dayMemoryId(value) {
+    return Object.hasOwn(DAY_MEMORIES, value);
+  }
+  var STONES = [{ x: 0.34, y: 0.79 }, { x: 0.52, y: 0.69 }, { x: 0.69, y: 0.58 }];
+  var TEA = [
+    { x: 0.28, y: 0.46, young: true, bud: true },
+    { x: 0.52, y: 0.46, young: false, bud: false },
+    { x: 0.74, y: 0.46, young: true, bud: false },
+    { x: 0.28, y: 0.73, young: false, bud: false },
+    { x: 0.51, y: 0.73, young: true, bud: false },
+    { x: 0.74, y: 0.73, young: false, bud: false }
+  ];
+  var STEP_LEAVES = Array.from({ length: 12 }, (_, i) => ({ x: 0.38 + i % 4 * 0.085 + Math.floor(i / 4) * 0.05, y: 0.82 - Math.floor(i / 4) * 0.13 }));
+  var RAIN = [0.28, 0.67, 0.43, 0.72];
+  var clamp7 = (n, min = 0, max = 1) => Math.max(min, Math.min(max, n));
+  function sceneFor(id2) {
+    switch (DAY_MEMORIES[id2].kind) {
+      case "reflection":
+        return { kind: "reflection", offset: 0.23, still: 0 };
+      case "lichen":
+        return { kind: "lichen", cells: /* @__PURE__ */ new Set() };
+      case "vista":
+        return { kind: "vista", opened: 0 };
+      case "rain":
+        return { kind: "rain", cup: 0.5, target: 0.5, drop: 0.16, count: 0, wait: 0.8 };
+      case "steps":
+        return { kind: "steps", cleared: /* @__PURE__ */ new Set() };
+      case "wind":
+        return { kind: "wind", gust: 0 };
+      case "leaf":
+        return { kind: "leaf", distance: 0, impulse: 0 };
+      case "stones":
+        return { kind: "stones", index: 0, walking: 0 };
+      case "tea":
+        return { kind: "tea", picked: /* @__PURE__ */ new Set() };
+      case "brew":
+        return { kind: "brew", water: 0, steep: 0, released: false };
+    }
+  }
+  var DayMemoryState = class {
+    reduced;
+    id;
+    route;
+    kind = "day-memory";
+    scene;
+    play = { type: "day-memory", progress: 0, complete: false, completedAt: 0 };
+    age = 0;
+    acted = false;
+    dragging = false;
+    gesture = "tap";
+    done = false;
+    x = 0.5;
+    y = 0.65;
+    phase = "play";
+    reveal = 0;
+    feedback;
+    sounds = 0;
+    constructor(entry, reduced2) {
+      this.reduced = reduced2;
+      if (!dayMemoryId(entry.id))
+        throw new Error("未知山野互动");
+      this.id = entry.id;
+      this.route = entry.route;
+      this.scene = sceneFor(this.id);
+      this.feedback = DAY_MEMORIES[this.id].prompt;
+    }
+    found() {
+      this.phase = "reveal";
+      this.reveal = 0;
+      this.dragging = false;
+      this.play.progress = 1;
+      this.feedback = "把这一刻多留一会儿…";
+      this.sounds++;
+    }
+    input(p2, move = false) {
+      if (p2.phase === "release") {
+        this.dragging = false;
+        if (this.scene.kind === "brew" && this.scene.water >= 0.45)
+          this.scene.released = true;
+        return this;
+      }
+      if (this.phase !== "play" || this.done || p2.action === "outside-scene")
+        return this;
+      const previous = this.x;
+      this.x = clamp7(p2.x ?? this.x);
+      this.y = clamp7(p2.y ?? this.y);
+      this.acted = true;
+      this.dragging = move || p2.phase === "press";
+      this.gesture = move ? "drag" : "tap";
+      const s = this.scene;
+      switch (s.kind) {
+        case "reflection":
+          if (move && this.y > 0.48) {
+            s.offset = clamp7(s.offset + this.x - previous, -0.35, 0.35);
+            s.still = 0;
+            this.play.progress = 1 - Math.min(1, Math.abs(s.offset) / 0.23);
+          }
+          break;
+        case "lichen": {
+          const u = (this.x - 0.25) / 0.5, v = (this.y - 0.35) / 0.48;
+          if (u >= 0 && u < 1 && v >= 0 && v < 1) {
+            s.cells.add(Math.floor(u * 4) + Math.floor(v * 3) * 4);
+            this.play.progress = s.cells.size / 8;
+          }
+          if (s.cells.size >= 8)
+            this.found();
+          break;
+        }
+        case "vista":
+          if (move) {
+            s.opened = clamp7(s.opened + Math.abs(this.x - previous) * 1.5);
+            this.play.progress = s.opened;
+            if (s.opened >= 1)
+              this.found();
+          }
+          break;
+        case "rain":
+          s.target = clamp7(this.x, 0.16, 0.84);
+          break;
+        case "steps":
+          STEP_LEAVES.forEach((leaf2, i) => {
+            if (Math.hypot(this.x - leaf2.x, this.y - leaf2.y) < 0.09)
+              s.cleared.add(i);
+          });
+          this.play.progress = s.cleared.size / 10;
+          if (s.cleared.size >= 10)
+            this.found();
+          break;
+        case "wind":
+          if (!move && s.gust > 0.05)
+            this.found();
+          else
+            this.feedback = "等叶梢朝向远山，再轻点送出。";
+          break;
+        case "leaf": {
+          const leaf2 = leafPosition(s.distance);
+          if (this.x < leaf2.x + 0.05 && Math.hypot(this.x - leaf2.x, this.y - leaf2.y) < 0.25) {
+            s.impulse = Math.min(1, s.impulse + 0.48);
+            this.sounds++;
+            this.feedback = "水纹推开了，再从落叶后方送它一程。";
+          }
+          break;
+        }
+        case "stones":
+          if (!move && s.walking === 0 && s.index < STONES.length && Math.hypot(this.x - STONES[s.index].x, this.y - STONES[s.index].y) < 0.1) {
+            s.walking = 1e-3;
+            this.sounds++;
+          }
+          break;
+        case "tea":
+          if (!move) {
+            const i = TEA.findIndex((t) => Math.hypot(t.x - this.x, t.y - this.y) < 0.105);
+            if (i >= 0 && TEA[i].young) {
+              if (!s.picked.has(i))
+                this.sounds++;
+              s.picked.add(i);
+              this.play.progress = s.picked.size / 3;
+              if (s.picked.size === 3)
+                this.found();
+            } else
+              this.feedback = "嫩芽细长，嫩叶更小、更浅绿。再看看。";
+          }
+          break;
+        case "brew":
+          if (!s.released)
+            this.dragging = true;
+          break;
+      }
+      this.play.progress = clamp7(this.play.progress);
+      return this;
+    }
+    release() {
+      this.dragging = false;
+      return this;
+    }
+    tick(dt) {
+      if (this.done)
+        return this;
+      this.age += dt;
+      if (this.play.complete) {
+        this.done = this.age - this.play.completedAt >= 1.2;
+        return this;
+      }
+      if (this.phase === "reveal") {
+        this.reveal += dt;
+        const duration = this.reduced ? 1.5 : this.scene.kind === "vista" || this.scene.kind === "steps" || this.scene.kind === "wind" ? 5 : 2.6;
+        if (this.reveal >= duration) {
+          this.play.complete = true;
+          this.play.completedAt = this.age;
+          this.feedback = "已留住这一刻，正在收进手帐…";
+        }
+        return this;
+      }
+      const s = this.scene;
+      if (s.kind === "wind")
+        s.gust = Math.sin(this.age * 0.9);
+      if (!this.acted)
+        return this;
+      if (s.kind === "reflection" && Math.abs(s.offset) < 0.035 && !this.dragging) {
+        s.still += dt;
+        if (s.still > 0.8)
+          this.found();
+      }
+      if (s.kind === "rain") {
+        s.cup += (s.target - s.cup) * (1 - Math.exp(-dt * 12));
+        if (s.wait > 0)
+          s.wait -= dt;
+        else {
+          s.drop += dt * 0.23;
+          if (s.drop >= 0.73) {
+            if (Math.abs(s.cup - RAIN[s.count]) < 0.12) {
+              s.count++;
+              this.sounds++;
+              this.play.progress = s.count / 4;
+              this.feedback = `接住了 ${s.count} 声竹雨`;
+            } else
+              this.feedback = "雨落在筒旁了，下一滴还会从这片叶尖落下。";
+            s.drop = 0.16;
+            s.wait = 0.55;
+            if (s.count === 4)
+              this.found();
+          }
+        }
+      }
+      if (s.kind === "leaf") {
+        s.distance = clamp7(s.distance + s.impulse * dt * 0.4);
+        s.impulse = Math.max(0, s.impulse - dt * 0.22);
+        this.play.progress = s.distance;
+        if (s.distance >= 1)
+          this.found();
+      }
+      if (s.kind === "stones" && s.walking > 0) {
+        s.walking += dt / 1.2;
+        if (s.walking >= 1) {
+          s.walking = 0;
+          s.index++;
+          this.play.progress = s.index / 3;
+          this.feedback = "下一块溪石，就在前面。";
+          if (s.index === 3)
+            this.found();
+        }
+      }
+      if (s.kind === "brew") {
+        if (this.dragging && !s.released)
+          s.water = clamp7(s.water + dt * 0.3);
+        if (s.water >= 0.45 && !s.released)
+          this.feedback = "水面已经过半，可以松手，等茶叶舒展。";
+        if (s.released) {
+          s.steep += dt;
+          this.feedback = "茶叶慢慢舒展，溪声还在窗外。";
+          if (s.steep >= 4)
+            this.found();
+        }
+        this.play.progress = s.released ? 0.45 + 0.55 * clamp7(s.steep / 4) : Math.min(0.45, s.water);
+      }
+      return this;
+    }
+    key(key, phase) {
+      const supported = ["Enter", " ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
+      if (!supported.includes(key))
+        return null;
+      if (phase === "up")
+        return this.input({ phase: "release" });
+      if (key.startsWith("Arrow"))
+        return this.input({ x: this.x + (key === "ArrowLeft" ? -0.065 : key === "ArrowRight" ? 0.065 : 0), y: this.y + (key === "ArrowUp" ? -0.09 : key === "ArrowDown" ? 0.09 : 0) }, true).release();
+      const s = this.scene;
+      if (s.kind === "reflection")
+        return this.input({ x: this.x - s.offset, y: 0.65 }, true).release();
+      if (s.kind === "lichen") {
+        const i = Array.from({ length: 12 }, (_, i2) => i2).find((i2) => !s.cells.has(i2)) ?? 0;
+        return this.input({ x: 0.25 + (i % 4 + 0.5) * 0.125, y: 0.35 + (Math.floor(i / 4) + 0.5) * 0.16 });
+      }
+      if (s.kind === "vista")
+        return this.input({ x: this.x < 0.5 ? 0.9 : 0.1 }, true).release();
+      if (s.kind === "rain")
+        return this.input({ x: RAIN[Math.min(3, s.count)] });
+      if (s.kind === "steps") {
+        const i = STEP_LEAVES.findIndex((_, i2) => !s.cleared.has(i2));
+        return this.input(STEP_LEAVES[Math.max(0, i)], true).release();
+      }
+      if (s.kind === "leaf") {
+        const p2 = leafPosition(s.distance);
+        return this.input({ x: p2.x - 0.08, y: p2.y });
+      }
+      if (s.kind === "stones")
+        return this.input(STONES[Math.min(2, s.index)]);
+      if (s.kind === "tea")
+        return this.input(TEA.find((t, i) => t.young && !s.picked.has(i)) ?? {});
+      return this.input({ phase: "press" });
+    }
+  };
+  function rainX(state3) {
+    return state3.scene.kind === "rain" ? RAIN[Math.min(3, state3.scene.count)] : 0.5;
+  }
+  function leafPosition(t) {
+    return { x: 0.24 + t * 0.53, y: 0.77 - t * 0.25 + Math.sin(t * Math.PI * 2) * 0.04 };
+  }
+
+  // .build/typescript/content/westlake-scenes.js
+  var WESTLAKE_SCENES = {
+    "westlake-floating-leaf": {
+      kind: "leaf",
+      place: "九溪溪谷",
+      background: "scenes/westlake-journey-v3/forest-pool.webp",
+      focus: { x: 0.5, y: 0.66 },
+      portraitFocus: { x: 0.5, y: 0.5 }
+    },
+    "westlake-stones": {
+      kind: "stones",
+      place: "九溪十八涧",
+      background: "scenes/day-route-v2/westlake.webp",
+      focus: { x: 0.48, y: 0.82 },
+      portraitFocus: { x: 0.49, y: 0.65 }
+    },
+    "westlake-tea": {
+      kind: "tea",
+      place: "龙井茶园",
+      background: "scenes/westlake-v1.webp",
+      focus: { x: 0.74, y: 0.13 },
+      portraitFocus: { x: 0.75, y: 0.12 }
+    },
+    "westlake-eaves": {
+      kind: "brew",
+      place: "龙井村口",
+      background: "scenes/westlake-journey-v3/village-tea.webp",
+      focus: { x: 0.5, y: 0.65 },
+      portraitFocus: { x: 0.54, y: 0.5 }
+    }
+  };
+  function isWestlakeSceneId(id2) {
+    return Object.hasOwn(WESTLAKE_SCENES, id2);
+  }
+
+  // .build/typescript/runtime/day-memories/westlake-layout.js
+  function westlakeField(kind, width, height) {
+    switch (kind) {
+      case "leaf":
+        return { x: 0, y: 0.25, width: 1, height: 0.72 };
+      case "stones":
+        return { x: 0.04, y: 0.31, width: 0.92, height: 0.65 };
+      case "tea":
+        return { x: 0.03, y: 0.18, width: 0.94, height: 0.9 };
+      case "brew": {
+        const size = westlakeCupSize(width, height);
+        return { x: 0.5 - size / width * 0.44, y: 0.72 - size / height * 0.43, width: size / width * 0.88, height: size / height * 0.88 };
+      }
+    }
+  }
+  function westlakeCupSize(width, height) {
+    return Math.min(width * 0.72, height * 0.48, 390);
+  }
+  function westlakePoint(field, point2) {
+    return { x: field.x + point2.x * field.width, y: field.y + point2.y * field.height };
+  }
+  function westlakeInput(kind, input) {
+    if (input.x === void 0 || input.y === void 0 || input.phase === "release" || input.action === "outside-scene")
+      return input;
+    const field = westlakeField(kind, input.viewWidth, input.viewHeight);
+    const x = (input.x - field.x) / field.width, y = (input.y - field.y) / field.height;
+    return { ...input, x, y, action: x < 0 || x > 1 || y < 0 || y > 1 ? "outside-scene" : input.action };
+  }
+
+  // .build/typescript/runtime/day-memories/westlake-scene.js
+  function paintWestlake({ ctx, images, character, id: id2, state: s, width: w, height: h }) {
+    const spec = WESTLAKE_SCENES[id2], bg = images.get(spec.background);
+    if (!bg)
+      return;
+    const focus = w < h ? spec.portraitFocus : spec.focus;
+    const cover3 = Math.max(w / bg.naturalWidth, h / bg.naturalHeight);
+    ctx.drawImage(bg, -(bg.naturalWidth * cover3 - w) * focus.x, -(bg.naturalHeight * cover3 - h) * focus.y, bg.naturalWidth * cover3, bg.naturalHeight * cover3);
+    const field = westlakeField(spec.kind, w, h), unit = Math.min(w, h * 1.45), t = s.reduced ? 0 : s.age;
+    const point2 = (p2) => {
+      const at2 = westlakePoint(field, p2);
+      return { x: at2.x * w, y: at2.y * h };
+    };
+    const sprite = (file, at2, width, angle = 0, alpha = 1) => {
+      const img = images.get(file);
+      if (!img)
+        return;
+      const height = width * img.naturalHeight / img.naturalWidth;
+      ctx.save();
+      ctx.translate(at2.x, at2.y);
+      ctx.rotate(angle);
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(img, -width / 2, -height / 2, width, height);
+      ctx.restore();
+    };
+    const ripple = (at2, radius2, alpha) => {
+      ctx.save();
+      ctx.strokeStyle = `rgba(246,243,213,${alpha})`;
+      ctx.lineWidth = Math.max(1, unit * 18e-4);
+      ctx.beginPath();
+      ctx.ellipse(at2.x, at2.y, radius2, radius2 * 0.23, -0.07, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    };
+    const leafArt = (frame2, at2, width, rotation = 0, alpha = 1) => {
+      const img = images.get("sprites/art-play-props-v1.webp");
+      if (!img)
+        return;
+      const regions = [[99, 26, 169, 350], [393, 75, 367, 282], [810, 80, 317, 274]];
+      const region = regions[frame2];
+      if (!region)
+        return;
+      const [sx, sy, sw, sh] = region;
+      ctx.save();
+      ctx.translate(at2.x, at2.y);
+      ctx.rotate(rotation);
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(img, sx, sy, sw, sh, -width / 2, -width * sh / sw / 2, width, width * sh / sw);
+      ctx.restore();
+    };
+    const scene = s.scene;
+    if (scene.kind === "leaf") {
+      const at2 = point2(leafPosition(scene.distance)), size = Math.min(74, unit * 0.11);
+      ripple({ x: at2.x - size * 0.06, y: at2.y + size * 0.16 }, size * 0.47, 0.38);
+      sprite("sprites/creek-leaf-v1.webp", at2, size, -0.12 + Math.sin(t * 0.6) * 0.07);
+      if (s.acted)
+        for (let i = 0; i < 3; i++) {
+          const progress = (t * 0.48 + i / 3) % 1;
+          ripple(point2({ x: s.x, y: s.y }), unit * (0.025 + progress * 0.095), (1 - progress) * 0.4);
+        }
+      else
+        ripple(point2({ x: leafPosition(0).x - 0.08, y: leafPosition(0).y }), unit * 0.035, 0.65);
+    } else if (scene.kind === "stones") {
+      const rock = images.get("sprites/mogan-props-v1.webp");
+      const start = { x: 0.18, y: 0.88 }, exit = { x: 0.86, y: 0.48 };
+      const rockAt = (p2, size) => {
+        const at3 = point2(p2), height = size * 158 / 480;
+        ripple({ x: at3.x, y: at3.y + height * 0.35 }, size * 0.48, 0.32);
+        if (rock)
+          ctx.drawImage(rock, 16, 177, 480, 158, at3.x - size / 2, at3.y - height * 0.44, size, height);
+      };
+      rockAt(start, unit * 0.21);
+      rockAt(exit, unit * 0.2);
+      STONES.forEach((p2, i) => rockAt(p2, unit * (0.19 - i * 0.018)));
+      const active = STONES[scene.index];
+      if (active && scene.walking === 0)
+        ripple(point2(active), unit * 0.054, 0.75);
+      const from = scene.index === 0 ? start : STONES[Math.min(2, scene.index - 1)];
+      const to = scene.index >= 3 ? exit : STONES[scene.index];
+      const fraction = scene.index >= 3 ? Math.min(1, s.reveal / 1.5) : scene.walking;
+      const at2 = point2({ x: from.x + (to.x - from.x) * fraction, y: from.y + (to.y - from.y) * fraction });
+      const image = images.get(character.walk.file);
+      if (image) {
+        const moving = fraction > 0 && fraction < 1;
+        const frame2 = character.walk.frames[moving && !s.reduced ? Math.floor(s.age * 8) % 8 : 2];
+        const size = Math.max(38, Math.min(72, unit * 0.1)), scale = size / frame2.height;
+        ctx.save();
+        ctx.fillStyle = "#34463d32";
+        ctx.beginPath();
+        ctx.ellipse(at2.x, at2.y + 1, size * 0.2, size * 0.045, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.drawImage(image, frame2.x, frame2.y, frame2.width, frame2.height, at2.x - frame2.footX * scale, at2.y - frame2.footY * scale, frame2.width * scale, frame2.height * scale);
+        ctx.restore();
+      }
+    } else if (scene.kind === "tea") {
+      const left = w * 0.1, top = h * 0.49, width = w * 0.8, height = h * 0.46;
+      ctx.save();
+      ctx.shadowColor = "#32493632";
+      ctx.shadowBlur = 14;
+      ctx.shadowOffsetY = 5;
+      ctx.fillStyle = "#faf5e6f2";
+      ctx.beginPath();
+      ctx.moveTo(left, top + 4);
+      ctx.lineTo(left + width * 0.49, top);
+      ctx.lineTo(left + width, top + 5);
+      ctx.lineTo(left + width - 3, top + height);
+      ctx.lineTo(left + 4, top + height - 3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.shadowColor = "transparent";
+      ctx.strokeStyle = "#cfc7a65c";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.5, top + 8);
+      ctx.lineTo(w * 0.5, top + height - 8);
+      ctx.stroke();
+      ctx.restore();
+      TEA.forEach((p2, i) => {
+        const at2 = point2(p2), picked = scene.picked.has(i), size = Math.min(w * 0.145, h * 0.17);
+        leafArt(p2.bud ? 0 : p2.young ? 1 : 2, at2, size * (p2.bud ? 0.44 : p2.young ? 0.8 : 1.1), Math.sin(i) * 0.12, picked ? 0.5 : 1);
+        if (picked) {
+          ctx.save();
+          ctx.strokeStyle = "#607c50";
+          ctx.lineWidth = Math.max(1.5, unit * 22e-4);
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(at2.x - 5, at2.y + size * 0.56);
+          ctx.lineTo(at2.x - 1, at2.y + size * 0.61);
+          ctx.lineTo(at2.x + 8, at2.y + size * 0.49);
+          ctx.stroke();
+          ctx.restore();
+        }
+      });
+    } else if (scene.kind === "brew") {
+      const size = westlakeCupSize(w, h), cx = w * 0.5, cy = h * 0.72;
+      ctx.save();
+      ctx.fillStyle = "#56432b26";
+      ctx.beginPath();
+      ctx.ellipse(cx, cy + size * 0.4, size * 0.42, size * 0.06, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      sprite("scenes/day-route-v2/teacup.webp", { x: cx, y: cy }, size);
+      const waterY = cy + size * 0.19 - scene.water * size * 0.3;
+      ctx.save();
+      ctx.fillStyle = "#bad27c55";
+      ctx.beginPath();
+      ctx.ellipse(cx, waterY, size * 0.31, size * 0.07, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      for (let i = 0; i < 3; i++)
+        leafArt(i === 0 ? 0 : 1, { x: cx + size * (i * 0.085 - 0.085), y: waterY + size * 0.045 + Math.sin(t + i) * size * 6e-3 }, size * 0.075, Math.sin(i + scene.steep) * 0.4, 0.8);
+      if (s.dragging && !scene.released) {
+        ctx.save();
+        ctx.strokeStyle = "#ecf4dbab";
+        ctx.lineWidth = Math.max(2, size * 0.018);
+        ctx.beginPath();
+        ctx.moveTo(cx - size * 0.12, cy - size * 0.52);
+        ctx.quadraticCurveTo(cx, cy - size * 0.25, cx, waterY);
+        ctx.stroke();
+        ctx.restore();
+      }
+      if (scene.released)
+        for (let i = 0; i < 3; i++) {
+          const drift = s.reduced ? 0 : Math.sin(t * 0.6 + i) * size * 0.012;
+          ctx.save();
+          ctx.strokeStyle = "#fffbe7a6";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(cx + size * (i * 0.1 - 0.1), cy - size * 0.23);
+          ctx.bezierCurveTo(cx + size * (i * 0.1 - 0.13) + drift, cy - size * 0.33, cx + size * (i * 0.1 - 0.07), cy - size * 0.38, cx + size * (i * 0.1 - 0.1) + drift, cy - size * 0.46);
+          ctx.stroke();
+          ctx.restore();
+        }
+    }
+    if (s.phase === "reveal") {
+      ctx.fillStyle = `rgba(251,247,225,${Math.min(0.1, s.reveal * 0.02)})`;
+      ctx.fillRect(0, 0, w, h);
+    }
+  }
+
+  // .build/typescript/runtime/day-memories/scene.js
+  var DayMemoryView = class {
+    route;
+    id;
+    directInput = true;
+    contentState = "loading";
+    disposed = false;
+    canvas = null;
+    ctx = null;
+    observer = null;
+    images = /* @__PURE__ */ new Map();
+    width = 1e3;
+    height = 700;
+    character = CHARACTERS[readCharacterId()];
+    latest = null;
+    constructor(route, id2) {
+      this.route = route;
+      this.id = id2;
+    }
+    get background() {
+      return isWestlakeSceneId(this.id) ? WESTLAKE_SCENES[this.id].background : `scenes/day-route-v2/${this.route}.webp`;
+    }
+    input(point2) {
+      return isWestlakeSceneId(this.id) ? westlakeInput(WESTLAKE_SCENES[this.id].kind, { ...point2, viewWidth: this.width, viewHeight: this.height }) : point2;
+    }
+    async mount(host, cache2) {
+      const canvas = document.createElement("canvas");
+      this.canvas = canvas;
+      canvas.className = "mini-game-canvas day-memory-canvas";
+      canvas.setAttribute("aria-hidden", "true");
+      const ctx = canvas.getContext("2d");
+      if (!ctx)
+        throw new Error("画作无法展开");
+      this.ctx = ctx;
+      const props = isWestlakeSceneId(this.id) ? WESTLAKE_SCENES[this.id].kind === "leaf" ? ["sprites/creek-leaf-v1.webp"] : WESTLAKE_SCENES[this.id].kind === "stones" ? [this.character.walk.file, "sprites/mogan-props-v1.webp"] : WESTLAKE_SCENES[this.id].kind === "tea" ? ["sprites/art-play-props-v1.webp"] : ["sprites/art-play-props-v1.webp", "scenes/day-route-v2/teacup.webp"] : [this.character.walk.file, "sprites/creek-leaf-v1.webp", "sprites/art-play-props-v1.webp", "sprites/mogan-props-v1.webp", "sprites/bamboo-cup-v2.webp", "scenes/day-route-v2/teacup.webp"];
+      const files = [this.background, ...props];
+      const resources = await Promise.all(files.map((file) => cache2?.request(file, "high")?.promise));
+      if (this.disposed)
+        return;
+      if (resources.some((asset) => asset?.state !== "ready")) {
+        this.contentState = "error";
+        return;
+      }
+      resources.forEach((asset, i) => {
+        if (asset)
+          this.images.set(files[i], asset.image);
+      });
+      host.append(canvas);
+      this.contentState = "ready";
+      const resize = () => {
+        const box = host.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+        this.width = Math.max(1, box.width);
+        this.height = Math.max(1, box.height);
+        canvas.width = Math.round(this.width * dpr);
+        canvas.height = Math.round(this.height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (this.latest)
+          this.paint(this.latest);
+      };
+      this.observer = new ResizeObserver(resize);
+      this.observer.observe(host);
+      resize();
+      host.setAttribute("aria-busy", "false");
+    }
+    dispose() {
+      this.disposed = true;
+      this.observer?.disconnect();
+      this.canvas?.remove();
+      this.images.clear();
+    }
+    paint(s) {
+      this.latest = s;
+      const ctx = this.ctx, bg = this.images.get(this.background);
+      if (!ctx || !bg || this.disposed)
+        return;
+      const w = this.width, h = this.height, unit = Math.min(w, h * 1.45), scene = s.scene, t = s.reduced ? 0 : s.age;
+      ctx.clearRect(0, 0, w, h);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      if (isWestlakeSceneId(this.id)) {
+        paintWestlake({ ctx, images: this.images, character: this.character, id: this.id, state: s, width: w, height: h });
+        this.canvas?.setAttribute("data-scene", WESTLAKE_SCENES[this.id].kind);
+        this.canvas?.setAttribute("data-place", WESTLAKE_SCENES[this.id].place);
+        return;
+      }
+      const focus = scene.kind === "reflection" ? 0.14 : scene.kind === "lichen" ? 0.78 : this.route === "mogan" ? 0.64 : 0.5;
+      const cover3 = Math.max(w / bg.naturalWidth, h / bg.naturalHeight), cropX = (bg.naturalWidth * cover3 - w) * focus;
+      ctx.drawImage(bg, -cropX, (h - bg.naturalHeight * cover3) / 2, bg.naturalWidth * cover3, bg.naturalHeight * cover3);
+      const image = (file, x, y, width, rotation = 0, alpha = 1) => {
+        const img = this.images.get(file);
+        if (!img)
+          return;
+        const height = width * img.naturalHeight / img.naturalWidth;
+        ctx.save();
+        ctx.translate(x * w, y * h);
+        ctx.rotate(rotation);
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(img, -width / 2, -height / 2, width, height);
+        ctx.restore();
+      };
+      const ring = (x, y, r, alpha = 0.7) => {
+        ctx.save();
+        ctx.strokeStyle = `rgba(248,242,208,${alpha})`;
+        ctx.lineWidth = Math.max(1, unit * 3e-3);
+        ctx.beginPath();
+        ctx.ellipse(x * w, y * h, r * unit, r * unit * 0.28, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      };
+      const atlas = (frame2, x, y, size, rotation = 0, alpha = 1) => {
+        const img = this.images.get("sprites/art-play-props-v1.webp");
+        if (!img)
+          return;
+        const regions = [[99, 26, 169, 350], [393, 75, 367, 282], [810, 80, 317, 274], [1161, 34, 352, 333], [82, 399, 241, 339], [447, 457, 269, 246]];
+        const [sx, sy, sw, sh] = regions[frame2], height = size * sh / sw;
+        ctx.save();
+        ctx.translate(x * w, y * h);
+        ctx.rotate(rotation);
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(img, sx, sy, sw, sh, -size / 2, -height / 2, size, height);
+        ctx.restore();
+      };
+      const hiker = (x, y, walk) => {
+        const img = this.images.get(this.character.walk.file);
+        if (!img)
+          return;
+        const frame2 = this.character.walk.frames[walk > 0 ? Math.floor(walk * 8) % 8 : 2], size = Math.max(34, Math.min(66, unit * 0.09)), scale = size / frame2.height;
+        ctx.save();
+        ctx.fillStyle = "#3f4c4133";
+        ctx.beginPath();
+        ctx.ellipse(x * w, y * h + 1, size * 0.24, size * 0.06, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.drawImage(img, frame2.x, frame2.y, frame2.width, frame2.height, x * w - frame2.footX * scale, y * h - frame2.footY * scale, frame2.width * scale, frame2.height * scale);
+        ctx.restore();
+      };
+      const reveal = Math.min(1, s.reveal / 4);
+      if (scene.kind === "reflection") {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(w * 0.08, h * 0.58, w * 0.84, h * 0.32);
+        ctx.clip();
+        ctx.globalAlpha = 0.26;
+        ctx.translate(w * scene.offset, h * 1.07);
+        ctx.scale(1, -0.45);
+        ctx.drawImage(bg, -cropX, 0, bg.naturalWidth * cover3, bg.naturalHeight * cover3);
+        ctx.restore();
+        for (let i = 0; i < 6; i++)
+          ring(0.25 + i * 0.1, 0.67 + Math.sin(i) * 0.055, 0.06 + Math.sin(t * 0.8 + i) * 8e-3, 0.22);
+        if (s.phase === "play") {
+          ring(0.5, 0.7, 0.12, 0.6);
+          ctx.fillStyle = "#fff8e6c9";
+          ctx.font = `${Math.max(12, unit * 0.02)}px serif`;
+          ctx.textAlign = "center";
+          ctx.fillText("← 轻拖枝影 →", w * 0.5, h * 0.9);
+        }
+      } else if (scene.kind === "lichen") {
+        const rw = w * 0.68, rh = Math.min(h * 0.58, rw * 0.8), rx = (w - rw) / 2, ry = h * 0.34;
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(w * 0.5, ry + rh * 0.5, rw * 0.5, rh * 0.5, -0.08, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(bg, bg.naturalWidth * 0.55, bg.naturalHeight * 0.65, bg.naturalWidth * 0.45, bg.naturalHeight * 0.35, rx, ry, rw, rh);
+        ctx.restore();
+        const lx = s.x * w, ly = s.y * h, lr = unit * 0.115;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(bg, bg.naturalWidth * (0.57 + (s.x - 0.25) * 0.45), bg.naturalHeight * (0.66 + (s.y - 0.35) * 0.25), bg.naturalWidth * 0.13, bg.naturalHeight * 0.13, lx - lr, ly - lr, lr * 2, lr * 2);
+        ctx.restore();
+        ctx.strokeStyle = "#a1885d";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+        ctx.moveTo(lx + lr * 0.7, ly + lr * 0.7);
+        ctx.lineTo(lx + lr * 1.25, ly + lr * 1.25);
+        ctx.stroke();
+      } else if (scene.kind === "vista") {
+        const opened = s.phase === "reveal" ? Math.min(1, scene.opened + reveal) : scene.opened;
+        ctx.save();
+        ctx.globalAlpha = 1 - opened * 0.95;
+        const strip = bg.naturalWidth * 0.28;
+        ctx.drawImage(bg, 0, 0, strip, bg.naturalHeight, -opened * w * 0.45, 0, w * 0.43, h);
+        ctx.drawImage(bg, bg.naturalWidth - strip, 0, strip, bg.naturalHeight, w * 0.57 + opened * w * 0.45, 0, w * 0.43, h);
+        ctx.restore();
+        hiker(0.76 + reveal * 0.04, 0.9 - reveal * 0.06, s.phase === "reveal" && reveal < 1 ? s.reveal : 0);
+      } else if (scene.kind === "rain") {
+        image("sprites/bamboo-cup-v2.webp", scene.cup, 0.81, unit * 0.18);
+        const dx = rainX(s);
+        ctx.fillStyle = "#a2cad6";
+        ctx.strokeStyle = "#eaf0dd";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(dx * w, scene.drop * h, Math.max(3, unit * 8e-3), Math.max(5, unit * 0.013), 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        const sprig = this.images.get("sprites/mogan-props-v1.webp");
+        if (sprig)
+          ctx.drawImage(sprig, 528, 549, 480, 437, dx * w - unit * 0.13, 0.04 * h, unit * 0.26, unit * 0.24);
+        for (let i = 0; i < 4; i++)
+          ring(0.4 + i * 0.065, 0.94, 0.012, i < scene.count ? 1 : 0.25);
+      } else if (scene.kind === "steps") {
+        for (const [i, p2] of STEP_LEAVES.entries())
+          if (!scene.cleared.has(i))
+            image("sprites/creek-leaf-v1.webp", p2.x, p2.y, unit * 0.065, i * 0.8);
+        hiker(0.45 + reveal * 0.23, 0.91 - reveal * 0.35, s.phase === "reveal" && reveal < 1 ? s.reveal : 0);
+      } else if (scene.kind === "wind") {
+        const x = s.phase === "play" ? 0.3 : 0.3 + reveal * 0.43, y = s.phase === "play" ? 0.68 : 0.68 - reveal * 0.32 - Math.sin(reveal * Math.PI) * 0.1;
+        atlas(5, x, y, unit * (0.12 - reveal * 0.05), s.phase === "play" ? scene.gust * 0.28 : reveal * 2);
+        const sprig = this.images.get("sprites/mogan-props-v1.webp");
+        if (sprig) {
+          ctx.save();
+          ctx.translate(w * 0.73, h * 0.23);
+          ctx.rotate(scene.gust * 0.13);
+          ctx.drawImage(sprig, 528, 549, 480, 437, -unit * 0.17, -unit * 0.08, unit * 0.34, unit * 0.31);
+          ctx.restore();
+        }
+        if (scene.gust > 0.05 && s.phase === "play")
+          ring(0.3, 0.79, 0.06, 0.65);
+      }
+      if (s.phase === "reveal") {
+        ctx.fillStyle = `rgba(251,247,225,${Math.min(0.12, s.reveal * 0.025)})`;
+        ctx.fillRect(0, 0, w, h);
+      }
+      this.canvas?.setAttribute("data-scene", DAY_MEMORIES[s.id].kind);
+    }
+  };
+
+  // .build/typescript/runtime/day-memories/adapter.js
+  function state(value) {
+    if (!(value instanceof DayMemoryState))
+      throw new Error("山野互动状态无法读取");
+    return value;
+  }
+  function view(value) {
+    if (!(value instanceof DayMemoryView))
+      throw new Error("山野画作无法读取");
+    return value;
+  }
+  function createDayMemories(dom2, audio2) {
+    let sounded = 0;
+    return {
+      input: "direct",
+      create(entry, options) {
+        sounded = 0;
+        return new DayMemoryState(entry, options.reduced);
+      },
+      act: (s, p2) => state(s).input(p2),
+      move: (s, p2) => state(s).input(p2, true),
+      release: (s) => state(s).release(),
+      point: (v, p2) => view(v).input(p2),
+      hover: (s, p2) => state(s).scene.kind === "rain" && s.acted ? state(s).input(p2, true).release() : s,
+      tick: (s, dt) => state(s).tick(dt),
+      key: (s, key, phase) => state(s).key(key, phase),
+      draw: (_svg, _parent, entry) => new DayMemoryView(entry.route, entry.id),
+      paint: (v, s) => view(v).paint(state(s)),
+      mount: (v, context) => view(v).mount(context.host, context.cache),
+      dispose: (v) => view(v).dispose(),
+      assets: (entry) => ({ scene: isWestlakeSceneId(entry.id) ? WESTLAKE_SCENES[entry.id].background : `scenes/day-route-v2/${entry.route}.webp` }),
+      instruction: (entry) => dayMemoryId(entry.id) ? DAY_MEMORIES[entry.id].prompt : "",
+      status: (s) => state(s).feedback,
+      outcome(s, entry) {
+        const current = state(s);
+        return { id: s.id, edition: entry.edition, earned: s.play.complete, interaction: s.gesture, memory: DAY_MEMORIES[current.id].memory, title: entry.tag };
+      },
+      present(s, v) {
+        const current = state(s), painting = view(v);
+        dom2.text("micro-title", DAY_MEMORIES[current.id].title);
+        dom2.text("micro-result", painting.contentState === "loading" ? "山野画作正在展开…" : painting.contentState === "error" ? "画作暂未展开，点「重新试一次」。" : current.feedback);
+        dom2.get("micro-panel").setAttribute("data-day-memory", "true");
+        dom2.get("micro-surface").setAttribute("aria-label", `${DAY_MEMORIES[current.id].prompt} 可用方向键移动，空格或 Enter 操作。`);
+        if (current.sounds > sounded) {
+          sounded = current.sounds;
+          audio2.interact?.(current.scene.kind === "rain" || current.scene.kind === "leaf" || current.scene.kind === "stones" ? "ripple" : "leaf", { x: s.x, icon: "", playType: current.scene.kind });
+        }
+      }
+    };
+  }
+
+  // .build/typescript/content/changping-memories.js
+  var CHANGPING_MEMORIES = {
+    "changping-branch-reflection": { kind: "branches", title: "枯枝认影", prompt: "看看纸上的枝桠，点出水里同样的倒影。", badge: "枯林水镜", memory: "十月的枯树滩，我认出了浅水中的两种枝影。风经过，它们又轻轻散开。" },
+    "changping-bell-cord": { kind: "cords", title: "马铃解绳", prompt: "先拉开压在上面的绳头，再解开下面的一圈。", badge: "铃响山谷", memory: "干海子一带歇脚时，我理开布垫上的两圈闲绳。小铃重新响起，远处的马抬起了头。" },
+    "changping-valley-path": { kind: "path", title: "画里有条路", prompt: "上下移动近处的纸片，把两段小径接起来。", badge: "长谷见峰", memory: "到木骡子前，我把手帐里错开的两段小径接好。走出林边，草甸、溪水与雪山一起展开了。" },
+    "changping-autumn-print": { kind: "print", title: "叶脉留秋", prompt: "在纸上来回轻擦，让落叶的叶脉慢慢显出来。", badge: "一叶长坪", memory: "返程经过彩林，我用蜡笔拓下落叶的叶脉。留下的是纸上的秋色，落叶仍回到林间。" }
+  };
+  var CHANGPING_MEMORY_IDS = Object.keys(CHANGPING_MEMORIES);
+  function changpingMemoryId(id2) {
+    return Object.hasOwn(CHANGPING_MEMORIES, id2);
+  }
+
+  // .build/typescript/runtime/changping-memories/model.js
+  var SHADOW_X = [0.22, 0.5, 0.78];
+  var SHADOW_ANSWER = [2, 0];
+  var CORD_ENDS = [{ x: 0.74, y: 0.55 }, { x: 0.26, y: 0.61 }];
+  var PATH_PAGE = { x: 0.08, y: 0.62, width: 0.84, height: 0.36 };
+  function leafFrame(width, height) {
+    const size = Math.min(width * 0.58, height * 0.62);
+    return { x: width * 0.5 - size / 2, y: height * 0.57 - size / 2, size };
+  }
+  var clamp8 = (n, min = 0, max = 1) => Math.max(min, Math.min(max, n));
+  var near2 = (a, b, radius2 = 0.1) => Math.hypot(a.x - b.x, a.y - b.y) <= radius2;
+  function insideLeaf(x, y) {
+    return ((x - 0.5) / 0.34) ** 2 + ((y - 0.5) / 0.44) ** 2 < 1;
+  }
+  var PRINT_CELLS = Array.from({ length: 15 * 18 }, (_, i) => ({
+    x: (i % 15 + 0.5) / 15,
+    y: (Math.floor(i / 15) + 0.5) / 18
+  })).filter((p2) => insideLeaf(p2.x, p2.y));
+  var ChangpingMemoryState = class {
+    reduced;
+    kind = "changping-memory";
+    route = "changping";
+    id;
+    scene;
+    play = { type: "changping-memory", progress: 0, complete: false, completedAt: null };
+    phase = "play";
+    age = 0;
+    acted = false;
+    dragging = false;
+    gesture = "tap";
+    done = false;
+    x = 0.5;
+    y = 0.65;
+    reveal = 0;
+    sounds = 0;
+    mistake = 0;
+    keyboard = false;
+    rubbingSoundAt = 0;
+    width = 1e3;
+    height = 700;
+    feedback;
+    constructor(entry, reduced2) {
+      this.reduced = reduced2;
+      if (!changpingMemoryId(entry.id))
+        throw new Error("无法读取长坪沟互动");
+      this.id = entry.id;
+      const spec = CHANGPING_MEMORIES[this.id];
+      this.feedback = spec.prompt;
+      switch (spec.kind) {
+        case "branches":
+          this.scene = { kind: "branches", round: 0, found: 0, selected: null, settle: 0 };
+          break;
+        case "cords":
+          this.scene = { kind: "cords", opened: 0, held: null, tug: 0, end: { ...CORD_ENDS[0] } };
+          break;
+        case "path":
+          this.scene = { kind: "path", offset: 0.18, grab: null, walked: 0 };
+          break;
+        case "print":
+          this.scene = { kind: "print", strokes: [], cells: /* @__PURE__ */ new Set(), current: null };
+          break;
+      }
+    }
+    finish() {
+      if (this.phase !== "play")
+        return;
+      this.phase = "reveal";
+      this.reveal = 0;
+      this.dragging = false;
+      this.play.progress = 1;
+      this.sounds++;
+      this.feedback = this.scene.kind === "branches" ? "认出来了。让溪水再晃一会儿。" : this.scene.kind === "cords" ? "铃响了，山谷里传来轻轻的回声。" : this.scene.kind === "path" ? "路接好了。沿着纸上的小径，走进开阔处。" : "这一片秋色，会连同你的笔触留在手帐里。";
+    }
+    input(p2, move = false) {
+      if (this.phase !== "play" || this.done)
+        return this;
+      if (p2.phase === "release")
+        return this.release();
+      this.width = p2.viewWidth ?? this.width;
+      this.height = p2.viewHeight ?? this.height;
+      const x = clamp8(p2.x ?? this.x), y = clamp8(p2.y ?? this.y);
+      this.x = x;
+      this.y = y;
+      this.gesture = move ? "drag" : "tap";
+      const s = this.scene;
+      switch (s.kind) {
+        case "branches": {
+          if (move || s.settle > 0)
+            break;
+          const selected = SHADOW_X.findIndex((cx) => Math.abs(x - cx) < 0.12 && Math.abs(y - 0.7) < 0.2);
+          if (selected < 0)
+            break;
+          this.acted = true;
+          s.selected = selected;
+          if (selected === SHADOW_ANSWER[s.round]) {
+            s.found++;
+            s.settle = 1.25;
+            this.play.progress = s.found / 2;
+            this.sounds++;
+            this.feedback = s.found === 1 ? "是这一枝。再看看那根弯弯的枝桠。" : "两种枝影都认出来了。";
+          } else {
+            this.mistake = 1.1;
+            this.feedback = "看看分叉的方向，再试一枝。";
+          }
+          break;
+        }
+        case "cords": {
+          if (!move) {
+            const index = CORD_ENDS.findIndex((end, i) => i >= s.opened && near2({ x, y }, end, 0.12));
+            if (index < 0)
+              break;
+            this.acted = true;
+            this.dragging = true;
+            s.held = index;
+            s.end = { x, y };
+          } else if (this.dragging && s.held !== null) {
+            s.end = { x, y };
+            if (s.held !== s.opened) {
+              s.tug = 0.9;
+              this.feedback = "这根还被压着，先看看上面的绳头。";
+              break;
+            }
+            const opened = s.opened === 0 ? x > 0.8 && y < 0.46 : x < 0.2 && y < 0.48;
+            if (opened) {
+              s.opened++;
+              s.held = null;
+              this.dragging = false;
+              this.play.progress = s.opened / 2;
+              this.sounds++;
+              if (s.opened === 2)
+                this.finish();
+              else
+                this.feedback = "上面的一圈松开了，再拉开左边的绳头。";
+            }
+          }
+          break;
+        }
+        case "path": {
+          if (!move && x > PATH_PAGE.x && x < PATH_PAGE.x + PATH_PAGE.width && y > PATH_PAGE.y + s.offset && y < PATH_PAGE.y + PATH_PAGE.height + s.offset) {
+            s.grab = { y, offset: s.offset };
+            this.dragging = true;
+            this.acted = true;
+          } else if (move && s.grab && this.dragging) {
+            s.offset = clamp8(s.grab.offset + y - s.grab.y, -0.16, 0.22);
+            this.play.progress = clamp8(1 - Math.abs(s.offset) / 0.18) * 0.85;
+            this.feedback = Math.abs(s.offset) < 0.035 ? "两段路接上了，松手出发。" : CHANGPING_MEMORIES[this.id].prompt;
+          }
+          break;
+        }
+        case "print": {
+          const frame2 = leafFrame(this.width, this.height);
+          const px = (x * this.width - frame2.x) / frame2.size, py = (y * this.height - frame2.y) / frame2.size;
+          if (!move) {
+            this.dragging = true;
+            this.acted = true;
+            s.current = [];
+            s.strokes.push(s.current);
+          }
+          if (!this.dragging || !s.current || !insideLeaf(px, py))
+            break;
+          const last = s.current.at(-1);
+          if (last && near2(last, { x: px, y: py }, 6e-3))
+            break;
+          if (s.current.length < 1600 && s.strokes.length < 120)
+            s.current.push({ x: px, y: py });
+          if (last) {
+            const steps2 = Math.max(1, Math.ceil(Math.hypot(px - last.x, py - last.y) / 0.012));
+            for (let j = 0; j <= steps2; j++)
+              this.rub({ x: last.x + (px - last.x) * j / steps2, y: last.y + (py - last.y) * j / steps2 });
+          }
+          if (last)
+            this.rub({ x: px, y: py });
+          if (last && this.age - this.rubbingSoundAt > 0.35) {
+            this.sounds++;
+            this.rubbingSoundAt = this.age;
+          }
+          this.play.progress = Math.min(0.98, s.cells.size / PRINT_CELLS.length / 0.65);
+          this.feedback = this.play.progress >= 0.98 ? "叶脉已显出，松手把秋色留下。" : "顺着叶形轻擦，细细的叶脉正在显出来。";
+          break;
+        }
+      }
+      return this;
+    }
+    rub(p2) {
+      if (this.scene.kind !== "print")
+        return;
+      PRINT_CELLS.forEach((cell, i) => {
+        if (near2(p2, cell, 0.085) && this.scene.kind === "print")
+          this.scene.cells.add(i);
+      });
+    }
+    release(commit = true) {
+      this.dragging = false;
+      if (this.scene.kind === "cords")
+        this.scene.held = null;
+      if (this.scene.kind === "path") {
+        const hadGrab = this.scene.grab !== null;
+        this.scene.grab = null;
+        if (commit && hadGrab && Math.abs(this.scene.offset) < 0.035) {
+          this.scene.offset = 0;
+          this.finish();
+        }
+      }
+      if (this.scene.kind === "print") {
+        this.scene.current = null;
+        if (commit && this.scene.cells.size / PRINT_CELLS.length >= 0.65)
+          this.finish();
+      }
+      return this;
+    }
+    tick(dt) {
+      if (!Number.isFinite(dt) || dt <= 0 || this.done)
+        return this;
+      const step = Math.min(dt, 0.1);
+      this.age += step;
+      this.mistake = Math.max(0, this.mistake - step);
+      const s = this.scene;
+      if (s.kind === "cords")
+        s.tug = Math.max(0, s.tug - step);
+      if (s.kind === "branches" && s.settle > 0) {
+        s.settle = Math.max(0, s.settle - step);
+        if (s.settle === 0) {
+          if (s.found === 2)
+            this.finish();
+          else {
+            s.round = 1;
+            s.selected = null;
+          }
+        }
+      }
+      if (this.phase === "reveal") {
+        this.reveal += step;
+        if (s.kind === "path")
+          s.walked = clamp8(this.reveal / (this.reduced ? 2.6 : 6.5));
+        const duration = s.kind === "path" ? this.reduced ? 4 : 8 : this.reduced ? 1.5 : 3.5;
+        if (this.reveal >= duration) {
+          this.done = true;
+          this.play.complete = true;
+          this.play.completedAt = this.age;
+        }
+      }
+      return this;
+    }
+    key(key, phase) {
+      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "Enter", "1", "2", "3"].includes(key))
+        return null;
+      this.keyboard = true;
+      if (phase === "up") {
+        if (key === " " || key === "Enter")
+          this.release();
+        return this;
+      }
+      if (this.scene.kind === "branches" && ["1", "2", "3"].includes(key))
+        return this.input({ x: SHADOW_X[Number(key) - 1], y: 0.7 });
+      if (key === " " || key === "Enter") {
+        if (!this.dragging)
+          this.input({ x: this.x, y: this.y });
+        return this;
+      }
+      const x = clamp8(this.x + (key === "ArrowRight" ? 0.035 : key === "ArrowLeft" ? -0.035 : 0));
+      const y = clamp8(this.y + (key === "ArrowDown" ? 0.035 : key === "ArrowUp" ? -0.035 : 0));
+      if (this.dragging)
+        this.input({ x, y }, true);
+      else {
+        this.x = x;
+        this.y = y;
+      }
+      return this;
+    }
+  };
+
+  // .build/typescript/runtime/changping-memories/scene.js
+  var AUTUMN_ASSETS = {
+    creek: "scenes/day-route-v2/changping.webp",
+    horse: "scenes/changping-autumn-v1/horse-rest.webp",
+    valley: "scenes/changping-autumn-v1/valley.webp",
+    props: "scenes/changping-autumn-v1/props.webp"
+  };
+  function backgroundFor(id2) {
+    return id2 === "changping-branch-reflection" ? AUTUMN_ASSETS.creek : id2 === "changping-valley-path" ? AUTUMN_ASSETS.valley : AUTUMN_ASSETS.horse;
+  }
+  function cover2(ctx, image, w, h, focus = 0.5, focusY = 0.5) {
+    const scale = Math.max(w / image.naturalWidth, h / image.naturalHeight);
+    ctx.drawImage(image, -(image.naturalWidth * scale - w) * focus, (h - image.naturalHeight * scale) * focusY, image.naturalWidth * scale, image.naturalHeight * scale);
+  }
+  var ChangpingMemoryView = class {
+    id;
+    directInput = true;
+    contentState = "loading";
+    disposed = false;
+    canvas = null;
+    ctx = null;
+    observer = null;
+    images = /* @__PURE__ */ new Map();
+    character = CHARACTERS[readCharacterId()];
+    width = 1e3;
+    height = 700;
+    latest = null;
+    layer = document.createElement("canvas");
+    mask = document.createElement("canvas");
+    maskRevision = -1;
+    frame = new Image();
+    constructor(id2) {
+      this.id = id2;
+      this.frame.src = `data:image/svg+xml,${encodeURIComponent(badgeFrameSvg())}`;
+    }
+    async mount(host, cache2) {
+      const canvas = document.createElement("canvas");
+      canvas.className = "mini-game-canvas day-memory-canvas";
+      canvas.setAttribute("aria-hidden", "true");
+      this.canvas = canvas;
+      this.ctx = canvas.getContext("2d");
+      if (!this.ctx)
+        throw new Error("画作无法展开");
+      const files = [backgroundFor(this.id), AUTUMN_ASSETS.props, this.character.walk.file];
+      const resources = await Promise.all(files.map((file) => cache2?.request(file, "high")?.promise));
+      if (this.disposed)
+        return;
+      if (resources.some((asset) => asset?.state !== "ready")) {
+        this.contentState = "error";
+        return;
+      }
+      resources.forEach((asset, i) => {
+        if (asset)
+          this.images.set(files[i], asset.image);
+      });
+      host.append(canvas);
+      this.contentState = "ready";
+      host.setAttribute("aria-busy", "false");
+      const resize = () => {
+        const box = host.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+        this.width = Math.max(1, box.width);
+        this.height = Math.max(1, box.height);
+        canvas.width = Math.round(this.width * dpr);
+        canvas.height = Math.round(this.height * dpr);
+        this.ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+        this.maskRevision = -1;
+        if (this.latest)
+          this.paint(this.latest);
+      };
+      this.observer = new ResizeObserver(resize);
+      this.observer.observe(host);
+      resize();
+    }
+    input(p2) {
+      return { ...p2, viewWidth: this.width, viewHeight: this.height };
+    }
+    dispose() {
+      this.disposed = true;
+      this.observer?.disconnect();
+      this.canvas?.remove();
+      this.images.clear();
+    }
+    prop(ctx, cell, x, y, size, rotation = 0, mirror = false) {
+      const image = this.images.get(AUTUMN_ASSETS.props);
+      if (!image)
+        return;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      if (mirror)
+        ctx.scale(-1, 1);
+      ctx.drawImage(image, cell % 3 * 512, Math.floor(cell / 3) * 512, 512, 512, -size / 2, -size / 2, size, size);
+      ctx.restore();
+    }
+    paper(ctx, x, y, w, h) {
+      ctx.save();
+      ctx.shadowColor = "#31403640";
+      ctx.shadowBlur = 14;
+      ctx.shadowOffsetY = 6;
+      ctx.fillStyle = "#f4eddc";
+      ctx.beginPath();
+      ctx.moveTo(x, y + 3);
+      ctx.lineTo(x + w * 0.31, y);
+      ctx.lineTo(x + w * 0.68, y + 2);
+      ctx.lineTo(x + w, y - 1);
+      ctx.lineTo(x + w - 2, y + h);
+      ctx.lineTo(x + w * 0.4, y + h - 2);
+      ctx.lineTo(x + 2, y + h + 1);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      const props = this.images.get(AUTUMN_ASSETS.props);
+      if (props) {
+        ctx.save();
+        ctx.globalAlpha = 0.5;
+        ctx.drawImage(props, 1024, 512, 512, 512, x, y, w, h);
+        ctx.restore();
+      }
+    }
+    caption(ctx, text, x, y, size) {
+      ctx.save();
+      ctx.font = `${size}px "Songti SC", "Noto Serif SC", serif`;
+      ctx.fillStyle = "#505a47";
+      ctx.textAlign = "center";
+      ctx.fillText(text, x, y);
+      ctx.restore();
+    }
+    paint(s) {
+      this.latest = s;
+      const ctx = this.ctx;
+      if (!ctx || this.contentState !== "ready" || this.disposed)
+        return;
+      this.draw(ctx, s, this.width, this.height, false);
+      if (s.keyboard && s.phase === "play") {
+        ctx.save();
+        ctx.strokeStyle = "#faf4df";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(s.x * this.width, s.y * this.height, 8, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = "#53674d";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+    draw(ctx, s, w, h, badge) {
+      const bg = this.images.get(backgroundFor(this.id));
+      if (!bg)
+        return;
+      const u = Math.min(w, h * 1.3), t = s.reduced ? 0 : s.age;
+      ctx.clearRect(0, 0, w, h);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      const valleyFocus = s.scene.kind === "path" ? 0.5 - s.scene.walked * 0.2 : 0.5;
+      cover2(ctx, bg, w, h, s.scene.kind === "cords" ? w < h ? 0.92 : 0.68 : s.scene.kind === "branches" ? 0.3 : 0.5, valleyFocus);
+      if (s.scene.kind === "branches") {
+        const scene = s.scene;
+        const wash = ctx.createLinearGradient(0, h * 0.45, 0, h);
+        wash.addColorStop(0, "#d9e3d600");
+        wash.addColorStop(0.35, "#d8e1d6dd");
+        wash.addColorStop(1, "#abbeb8ef");
+        ctx.fillStyle = wash;
+        ctx.fillRect(0, h * 0.45, w, h * 0.55);
+        if (!badge) {
+          const pw = Math.min(w * 0.38, h * 0.4), ph = Math.min(h * 0.36, pw * 1.1);
+          this.paper(ctx, w * 0.5 - pw / 2, h * 0.07, pw, ph);
+          this.prop(ctx, scene.round === 0 ? 1 : 2, w * 0.5, h * 0.07 + ph * 0.49, ph * 0.87);
+          this.caption(ctx, "找找它的倒影", w * 0.5, h * 0.07 + ph * 0.93, Math.max(11, Math.min(16, u * 0.025)));
+        }
+        for (const [i, x] of SHADOW_X.entries()) {
+          const answer = SHADOW_ANSWER[scene.round], isMatch = i === answer;
+          const frame2 = isMatch ? scene.round === 0 ? 1 : 2 : i === (answer + 1) % 3 ? scene.round === 0 ? 2 : 1 : scene.round === 0 ? 1 : 2;
+          const size = Math.min(w * 0.23, h * 0.36);
+          ctx.save();
+          ctx.translate(x * w, 0.7 * h);
+          ctx.scale(1, -1);
+          ctx.globalAlpha = scene.selected === i && s.mistake > 0 ? 0.32 : 0.76;
+          this.prop(ctx, frame2, 0, 0, size, 0, !isMatch && frame2 === (scene.round === 0 ? 1 : 2));
+          ctx.restore();
+          ctx.strokeStyle = scene.selected === i && s.mistake === 0 ? "#f4e4ba" : "#ecf0e0a0";
+          ctx.lineWidth = 1.4;
+          for (let j = 0; j < 3; j++) {
+            ctx.beginPath();
+            ctx.ellipse(x * w + Math.sin(t * 0.6 + j) * 3, h * (0.8 + j * 0.025), size * (0.3 + j * 0.08), 3 + j, -0.08, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          if (!badge)
+            this.caption(ctx, String(i + 1), x * w, h * 0.93, Math.max(13, u * 0.026));
+        }
+      } else if (s.scene.kind === "cords") {
+        const scene = s.scene;
+        const stroke = (points, color, width) => {
+          const draw = (dy) => {
+            ctx.beginPath();
+            ctx.moveTo(points[0].x * w, points[0].y * h + dy);
+            for (let i = 1; i + 2 < points.length; i += 3)
+              ctx.bezierCurveTo(points[i].x * w, points[i].y * h + dy, points[i + 1].x * w, points[i + 1].y * h + dy, points[i + 2].x * w, points[i + 2].y * h + dy);
+          };
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.strokeStyle = "#3e332633";
+          ctx.lineWidth = width + 3;
+          draw(2);
+          ctx.stroke();
+          ctx.strokeStyle = color;
+          ctx.lineWidth = width;
+          draw(0);
+          ctx.stroke();
+          ctx.strokeStyle = "#eee2b672";
+          ctx.lineWidth = width * 0.25;
+          draw(-1);
+          ctx.stroke();
+        };
+        const bellSize = u * 0.24, swing = s.phase === "reveal" ? Math.sin(s.reveal * 7) * 0.13 * Math.exp(-s.reveal * 0.8) : 0;
+        this.prop(ctx, 0, w * 0.5, h * 0.79, bellSize, swing);
+        if (scene.opened < 2) {
+          const end = scene.held === 1 ? { x: CORD_ENDS[1].x + (scene.end.x - CORD_ENDS[1].x) * (scene.opened === 0 ? 0.12 : 1), y: CORD_ENDS[1].y + (scene.end.y - CORD_ENDS[1].y) * (scene.opened === 0 ? 0.12 : 1) } : CORD_ENDS[1];
+          stroke([{ x: 0.5, y: 0.73 }, { x: 0.35, y: 0.63 }, { x: 0.69, y: 0.4 }, { x: 0.7, y: 0.62 }, { x: 0.72, y: 0.79 }, { x: 0.37, y: 0.78 }, end], "#9d8253", Math.max(4.5, u * 0.012));
+        } else
+          stroke([{ x: 0.5, y: 0.72 }, { x: 0.38, y: 0.65 }, { x: 0.25, y: 0.45 }, { x: 0.15, y: 0.4 }], "#9d8253", Math.max(4.5, u * 0.012));
+        if (scene.opened === 0) {
+          const end = scene.held === 0 ? scene.end : CORD_ENDS[0];
+          stroke([{ x: 0.5, y: 0.72 }, { x: 0.7, y: 0.59 }, { x: 0.27, y: 0.38 }, { x: 0.3, y: 0.65 }, { x: 0.33, y: 0.84 }, { x: 0.63, y: 0.74 }, end], "#936650", Math.max(5, u * 0.014));
+        } else
+          stroke([{ x: 0.5, y: 0.72 }, { x: 0.65, y: 0.65 }, { x: 0.77, y: 0.38 }, { x: 0.86, y: 0.39 }], "#936650", Math.max(5, u * 0.014));
+        if (s.phase === "play" && !badge) {
+          for (let i = scene.opened; i < 2; i++) {
+            const end = scene.held === i && i === scene.opened ? scene.end : CORD_ENDS[i];
+            ctx.fillStyle = i === 0 ? "#865b47" : "#957849";
+            ctx.beginPath();
+            ctx.ellipse(end.x * w, end.y * h, Math.max(8, u * 0.016), Math.max(7, u * 0.012), -0.3, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          if (!s.acted)
+            this.caption(ctx, "顺着绳子，找到上面的绳头", w * 0.5, h * 0.93, Math.max(12, Math.min(17, u * 0.028)));
+        }
+        if (s.phase === "reveal") {
+          ctx.save();
+          ctx.strokeStyle = "#c5a158";
+          ctx.lineWidth = 1.5;
+          ctx.globalAlpha = 0.65 * Math.exp(-s.reveal * 0.55);
+          for (const direction of [-1, 1]) {
+            ctx.beginPath();
+            ctx.ellipse(w * 0.5, h * 0.78, bellSize * (0.48 + s.reveal * 0.04), bellSize * 0.28, 0, direction < 0 ? 2.5 : -0.6, direction < 0 ? 3.7 : 0.6);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+      } else if (s.scene.kind === "path") {
+        const scene = s.scene, fade = s.phase === "reveal" ? Math.max(0, 1 - s.reveal / 1.2) : 1;
+        const x = w * PATH_PAGE.x, y = h * PATH_PAGE.y, pw = w * PATH_PAGE.width, ph = h * PATH_PAGE.height;
+        if (fade > 0 && !badge) {
+          ctx.save();
+          ctx.globalAlpha = fade;
+          this.paper(ctx, x - 4, y + scene.offset * h - 4, pw + 8, ph + 8);
+          ctx.beginPath();
+          ctx.rect(x, y + scene.offset * h, pw, ph);
+          ctx.clip();
+          ctx.translate(0, scene.offset * h);
+          cover2(ctx, bg, w, h, 0.5, valleyFocus);
+          ctx.restore();
+          if (s.phase === "play") {
+            this.caption(ctx, "↕", w * 0.86, Math.min(h * 0.94, y + scene.offset * h + ph * 0.4), Math.max(20, u * 0.045));
+          }
+        }
+        const progress = scene.walked, scale = Math.max(w / bg.naturalWidth, h / bg.naturalHeight), cropX = (bg.naturalWidth * scale - w) / 2, cropY = (bg.naturalHeight * scale - h) * valleyFocus;
+        const px = 0.465 + 0.125 * Math.sin(progress * Math.PI / 2), py = 0.82 - 0.22 * progress;
+        const hx = px * bg.naturalWidth * scale - cropX, hy = py * bg.naturalHeight * scale - cropY + (s.phase === "play" ? scene.offset * h : 0);
+        const person = this.images.get(this.character.walk.file);
+        if (person && !badge) {
+          const moving = s.phase === "reveal" && progress < 1, frame2 = this.character.walk.frames[moving ? Math.floor(s.reveal * 7) % 8 : 2];
+          const size = Math.max(28, Math.min(76, u * 0.105)) * (1 - progress * 0.28), factor = size / frame2.height;
+          ctx.fillStyle = "#48513a33";
+          ctx.beginPath();
+          ctx.ellipse(hx, hy, size * 0.18, size * 0.055, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.drawImage(person, frame2.x, frame2.y, frame2.width, frame2.height, hx - frame2.footX * factor, hy - frame2.footY * factor, frame2.width * factor, frame2.height * factor);
+        }
+      } else {
+        const scene = s.scene;
+        ctx.fillStyle = "#d8b2732a";
+        ctx.fillRect(0, 0, w, h);
+        this.paper(ctx, w * 0.17, h * 0.19, w * 0.66, h * 0.75);
+        const frame2 = leafFrame(w, h), size = frame2.size, x = frame2.x + size / 2, y = frame2.y + size / 2;
+        ctx.save();
+        ctx.globalAlpha = 0.13;
+        this.prop(ctx, 3, x, y, size);
+        ctx.restore();
+        const revision = scene.strokes.reduce((count, stroke) => count + stroke.length, 0);
+        if (this.maskRevision !== revision || this.layer.width !== Math.ceil(w) || this.layer.height !== Math.ceil(h)) {
+          this.layer.width = this.mask.width = Math.ceil(w);
+          this.layer.height = this.mask.height = Math.ceil(h);
+          const ink3 = this.layer.getContext("2d"), mask = this.mask.getContext("2d");
+          if (ink3 && mask) {
+            this.prop(ink3, 3, x, y, size);
+            mask.lineWidth = size * 0.17;
+            mask.lineCap = "round";
+            mask.lineJoin = "round";
+            mask.strokeStyle = "#000";
+            for (const stroke of scene.strokes)
+              if (stroke.length > 1) {
+                mask.beginPath();
+                mask.moveTo(frame2.x + stroke[0].x * size, frame2.y + stroke[0].y * size);
+                for (const p2 of stroke.slice(1))
+                  mask.lineTo(frame2.x + p2.x * size, frame2.y + p2.y * size);
+                mask.stroke();
+              }
+            ink3.globalCompositeOperation = "destination-in";
+            ink3.drawImage(this.mask, 0, 0);
+            ink3.globalCompositeOperation = "source-over";
+          }
+          this.maskRevision = revision;
+        }
+        ctx.drawImage(this.layer, 0, 0);
+        ctx.save();
+        ctx.strokeStyle = "#be8b3d2c";
+        ctx.lineWidth = Math.max(2, u * 6e-3);
+        ctx.lineCap = "round";
+        for (const stroke of scene.strokes)
+          if (stroke.length > 1) {
+            ctx.beginPath();
+            ctx.moveTo(frame2.x + stroke[0].x * size, frame2.y + stroke[0].y * size);
+            for (const p2 of stroke.slice(1))
+              ctx.lineTo(frame2.x + p2.x * size, frame2.y + p2.y * size);
+            ctx.stroke();
+          }
+        ctx.restore();
+        if (!badge)
+          this.caption(ctx, s.phase === "play" ? "十月 · 长坪沟" : "把秋色留在纸上", w * 0.5, h * 0.9, Math.max(12, Math.min(17, u * 0.027)));
+        if (s.dragging && !badge) {
+          ctx.save();
+          ctx.translate(s.x * w, s.y * h);
+          ctx.rotate(-0.6);
+          ctx.fillStyle = "#c49b51";
+          ctx.fillRect(-3, -u * 0.13, 8, u * 0.13);
+          ctx.fillStyle = "#e1c691";
+          ctx.fillRect(-3, -u * 0.105, 8, u * 0.065);
+          ctx.restore();
+        }
+      }
+    }
+    capture(s) {
+      if (this.contentState !== "ready")
+        return void 0;
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 640;
+      const ctx = canvas.getContext("2d");
+      if (!ctx)
+        return void 0;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(320, 320, 280, 0, Math.PI * 2);
+      ctx.clip();
+      this.draw(ctx, s, 640, 640, true);
+      ctx.restore();
+      if (this.frame.complete && this.frame.naturalWidth)
+        ctx.drawImage(this.frame, 0, 0, 640, 640);
+      else {
+        ctx.strokeStyle = "#d4bf89";
+        ctx.lineWidth = 15;
+        ctx.beginPath();
+        ctx.arc(320, 320, 288, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      return canvas.toDataURL("image/webp", 0.86);
+    }
+  };
+
+  // .build/typescript/runtime/changping-memories/adapter.js
+  function state2(value) {
+    if (!(value instanceof ChangpingMemoryState))
+      throw new Error("无法读取彩林互动");
+    return value;
+  }
+  function view2(value) {
+    if (!(value instanceof ChangpingMemoryView))
+      throw new Error("无法读取彩林画作");
+    return value;
+  }
+  function createChangpingMemories(dom2, audio2) {
+    let sounded = 0;
+    let painting = null;
+    return {
+      input: "direct",
+      soundTheme: "creek",
+      create(entry, options) {
+        sounded = 0;
+        return new ChangpingMemoryState(entry, options.reduced);
+      },
+      act: (s, p2) => state2(s).input(p2),
+      move: (s, p2) => state2(s).input(p2, true),
+      release: (s) => state2(s).release(false),
+      point: (v, p2) => view2(v).input(p2),
+      tick: (s, dt) => state2(s).tick(dt),
+      key: (s, key, phase) => state2(s).key(key, phase),
+      draw(_svg, _parent, entry) {
+        if (!changpingMemoryId(entry.id))
+          throw new Error("无法读取彩林画作");
+        painting = new ChangpingMemoryView(entry.id);
+        return painting;
+      },
+      paint: (v, s) => view2(v).paint(state2(s)),
+      mount: (v, { host, cache: cache2 }) => view2(v).mount(host, cache2),
+      dispose(v) {
+        view2(v).dispose();
+        painting = null;
+        delete dom2.get("micro-panel").dataset.changpingMemory;
+        delete dom2.get("micro-panel").dataset.dayMemory;
+      },
+      assets: (entry) => changpingMemoryId(entry.id) ? { scene: backgroundFor(entry.id) } : {},
+      instruction: (entry) => changpingMemoryId(entry.id) ? CHANGPING_MEMORIES[entry.id].prompt : "",
+      status: (s) => state2(s).feedback,
+      outcome(s, entry) {
+        const current = state2(s), spec = CHANGPING_MEMORIES[current.id], captureArt = painting?.capture(current);
+        return { id: s.id, edition: entry.edition, earned: s.play.complete, interaction: s.gesture, memory: spec.memory, title: spec.badge, ...captureArt ? { captureArt, artSource: "capture" } : {} };
+      },
+      present(s, v) {
+        const current = state2(s), spec = CHANGPING_MEMORIES[current.id];
+        const panel = dom2.get("micro-panel");
+        panel.dataset.dayMemory = "true";
+        panel.dataset.changpingMemory = current.scene.kind;
+        panel.dataset.memoryPhase = current.phase;
+        dom2.text("micro-title", spec.title);
+        dom2.text("micro-skip", "继续山径 →");
+        dom2.text("micro-result", v.contentState === "loading" ? "彩林画作正在展开…" : v.contentState === "error" ? "画作暂未展开，可以重试或继续山径。" : current.feedback);
+        dom2.get("micro-surface").setAttribute("aria-label", `${spec.prompt} 键盘：方向键移动，按住空格操作、松开停下；枝影可按 1、2、3 选择。`);
+        if (current.sounds > sounded) {
+          sounded = current.sounds;
+          audio2.interact?.(current.scene.kind === "branches" ? "ripple" : "leaf", { x: s.x, icon: current.scene.kind === "cords" && current.phase === "reveal" ? "bell" : "leaf", playType: current.scene.kind });
+        }
+      }
+    };
+  }
+
+  // .build/typescript/runtime/frame-loop.js
+  function createFrameLoop(options) {
+    let pending2 = null;
+    let lastTime = null;
+    let generation = 0;
+    function stop() {
+      generation++;
+      if (pending2 !== null)
+        options.cancel(pending2);
+      pending2 = null;
+      lastTime = null;
+    }
+    function ensure() {
+      if (!options.active()) {
+        stop();
+        return;
+      }
+      if (pending2 !== null)
+        return;
+      const version = generation;
+      pending2 = options.request((time) => {
+        if (version !== generation)
+          return;
+        pending2 = null;
+        if (!options.active()) {
+          stop();
+          return;
+        }
+        const dt = lastTime === null ? 0 : Math.max(0, Math.min(options.maxDelta ?? 0.25, (time - lastTime) / 1e3));
+        lastTime = time;
+        options.update(dt);
+        if (version === generation)
+          ensure();
+      });
+    }
+    return { ensure, stop };
+  }
+
+  // .build/typescript/journey/art-page.js
   var dom = createDom(document);
   var { get: $ } = dom;
   var query = new URLSearchParams(location.search);
   var id = query.get("entry");
-  var routeId = document.body.dataset.route === "tiger" ? "tiger" : document.body.dataset.route === "aotai" ? "aotai" : "wugong";
-  var artRoutes = {
-    wugong: { map: "wugong-walk.html", entries: ["meadow-bird", "meadow-butterfly", "meadow-flower", "wugong-wind-hiker"], places: ["武功山 · 山脊草甸", "武功山 · 观音宕草甸", "武功山 · 吊马桩", "武功山 · 吊马桩山脊", "武功山 · 金顶古祭坛"] },
-    tiger: { map: "tiger-walk.html", entries: [...Object.keys(TRAIL_GAMES), ...MEMORY_IDS], places: ["虎跳峡 · 二十八道拐", "虎跳峡 · 中虎跳江边", "虎跳峡 · 中途客栈", "虎跳峡 · 龙洞瀑布"] },
-    aotai: { map: "aotai-walk.html", entries: AOTAI_IDS, places: AOTAI_IDS.map((id2) => AOTAI_GAMES[id2].place) }
-  };
-  var mapPage = artRoutes[routeId].map;
-  var allowed = new Set(artRoutes[routeId].entries);
-  var places = new Set(artRoutes[routeId].places);
-  var requestedPlace = query.get("place");
-  var place = requestedPlace && places.has(requestedPlace) ? requestedPlace : null;
+  var sessionId = query.get("session");
+  var session = sessionId ? { session: sessionId, entry: id } : null;
+  document.body.dataset.embedded = String(window.parent !== window);
+  function notifyParent(type) {
+    if (window.parent !== window && session)
+      window.parent.postMessage(type === "ready" ? artMessage(session, type) : artMessage(session, type, collected), location.origin);
+  }
+  var chapter = chapterFor(document.body.dataset.route ?? "wugong");
+  if (!chapter)
+    throw new Error("无法读取这段旅程");
+  var routeId = chapter.id;
+  var mapPage = chapter.mapPage;
+  var events = ART_EVENTS[routeId];
+  var allowed = /* @__PURE__ */ new Set([...events.map((event) => event.entry), ...routeId === "tiger" ? Object.keys(TRAIL_GAMES) : []]);
+  var place = events.find((event) => event.entry === id)?.place ?? null;
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var disposed = false;
   var closing = false;
-  var animation = 0;
-  var lastTime = 0;
   var collected = 0;
   var pending = null;
   var storage = null;
@@ -10847,27 +15084,23 @@
   }, resume() {
   }, hidden: () => document.hidden });
   var cache = window.TrailImageCache.create(Image);
-  var routes = [{ id: "wugong", name: "武功山" }, { id: "tiger", name: "虎跳峡" }, { id: "aotai", name: "鳌太线" }, { id: "maclehose", name: "麦理浩径" }, { id: "changping", name: "长坪沟" }, { id: "mogan", name: "莫干山" }, { id: "westlake", name: "九溪 · 西湖" }];
   function returnToMap() {
     if (disposed)
       return;
     if (window.parent !== window)
-      window.parent.postMessage({ type: "trailbound-wugong-art-close", collected }, location.origin);
+      notifyParent("close");
     else
       location.href = mapPage;
   }
   function stopLoop() {
-    cancelAnimationFrame(animation);
-    animation = 0;
-    lastTime = 0;
+    clock.stop();
   }
   function ensureLoop() {
-    if (!disposed && !document.hidden && !animation)
-      animation = requestAnimationFrame(frame);
+    clock.ensure();
   }
   function audioScene() {
     const current = mini.state, phase = current instanceof MemoryState && current.session.kind === "bends" ? current.session.phase : null;
-    return { routeId, mode: reward.open ? "reward" : mini.active ? "moment" : "silent", momentId: current?.id ?? pending?.id, momentGame: phase?.kind === "river" ? "tiger-river" : current?.game ?? null, ...phase ? { gorgeOpenness: roadWalk(phase), riverApproach: phase.kind === "river" ? Math.min(1, phase.elapsed) : 0 } : {} };
+    return { routeId, mode: reward.open ? "reward" : mini.active ? "moment" : "silent", momentId: current?.id ?? pending?.id, momentGame: phase?.kind === "river" ? "tiger-river" : mini.soundTheme ?? null, ...phase ? { gorgeOpenness: roadWalk(phase), riverApproach: phase.kind === "river" ? Math.min(1, phase.elapsed) : 0 } : {}, ...current instanceof ShoulderState ? { coastOpenness: current.cameraProgress } : {} };
   }
   function refresh() {
     if (disposed)
@@ -10893,21 +15126,19 @@
     reduced,
     autoCollect: true,
     presentArt: roundJournalArt,
-    gameKind: (entryId) => routeId === "aotai" ? aotaiGameId(entryId) ? AOTAI_GAMES[entryId].game : void 0 : routeId === "tiger" ? memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId] : games.kinds[entryId],
+    gameKind: (entryId) => routeId === "aotai" ? aotaiGameId(entryId) ? AOTAI_GAMES[entryId].game : void 0 : routeId === "tiger" ? memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId] : routeId === "maclehose" && entryId === "coast-sand" ? "footsteps" : routeId === "maclehose" && coastMemoryId(entryId) ? COAST_MEMORIES[entryId].game : games.kinds[entryId],
     refresh,
     stopLoop,
     onCollected(moment) {
-      const saved = storeEarnedMoment(catalog, window.TrailJournal, storage, moment);
+      const saved = journal.remember(moment);
       if (saved.kind === "error") {
         $("reward-copy").textContent = saved.message;
         return false;
       }
-      journal.reload();
       $("reward-copy").textContent = "已收进手帐";
-      collected++;
+      collected = 1;
       pending = null;
-      if (window.parent !== window)
-        window.parent.postMessage({ type: "trailbound-wugong-art-collected", collected }, location.origin);
+      notifyParent("collected");
       return true;
     }
   });
@@ -10916,7 +15147,7 @@
     scenes,
     catalog,
     data: window.TrailJournal,
-    routes,
+    routes: ROUTE_SUMMARIES,
     weather: { clear: { name: "晴" }, cloud: { name: "多云" }, mist: { name: "薄雾" }, drizzle: { name: "小雨" } },
     storage,
     reduced,
@@ -10932,10 +15163,11 @@
     observation: () => null,
     source: () => null
   });
+  var legacyMini = games.enhance(window.TrailMicroMoments);
   var mini = createMiniGameController({
     dom,
     scenes,
-    api: games.enhance(window.TrailMicroMoments),
+    api: legacyMini,
     platform: games,
     pixi: window.PIXI,
     catalog,
@@ -10997,20 +15229,24 @@
     mini.registerGame(MEMORY_IDS, tigerMemories.adapter);
   if (routeId === "aotai")
     mini.registerGame(AOTAI_IDS, createAotaiGames(dom));
-  var lastRoadSound = 0;
-  function frame(now) {
-    animation = 0;
-    if (disposed || document.hidden)
-      return;
-    const dt = lastTime ? Math.min(0.05, (now - lastTime) / 1e3) : 0;
-    lastTime = now;
+  if (routeId === "maclehose") {
+    mini.registerGame(COAST_MEMORY_IDS, createCoastMemories(dom, (name) => mini.action(name)));
+    mini.registerGame(["coast-sand"], createSaiwanShoulder(dom));
+    mini.registerGame(["coast-shell"], createTide(dom));
+  }
+  if (routeId === "changping" || routeId === "mogan" || routeId === "westlake")
+    mini.registerGame(Object.keys(DAY_MEMORIES), createDayMemories(dom, audio));
+  if (routeId === "changping")
+    mini.registerGame(CHANGPING_MEMORY_IDS, createChangpingMemories(dom, audio));
+  var clock = createFrameLoop({ request: (callback) => requestAnimationFrame(callback), cancel: (id2) => cancelAnimationFrame(id2), maxDelta: 0.05, active: () => !disposed && !document.hidden && mini.active, update: frame });
+  var soundElapsed = 0;
+  function frame(dt) {
     mini.update(dt);
-    if (mini.state instanceof MemoryState && mini.state.session.kind === "bends" && now - lastRoadSound > 180) {
+    soundElapsed += dt;
+    if (soundElapsed > 0.18 && (mini.state instanceof ShoulderState || mini.state instanceof MemoryState && mini.state.session.kind === "bends")) {
       audio.setScene(audioScene());
-      lastRoadSound = now;
+      soundElapsed = 0;
     }
-    if (mini.active)
-      ensureLoop();
   }
   function destroy() {
     if (disposed)
@@ -11027,12 +15263,12 @@
   $("walk-toggle").addEventListener("click", () => {
     destroy();
     if (window.parent !== window)
-      window.parent.postMessage({ type: "trailbound-wugong-art-close", collected }, location.origin);
+      notifyParent("close");
     else
       location.href = mapPage;
   });
   window.addEventListener("message", (event) => {
-    if (event.source === window.parent && event.origin === location.origin && event.data?.type === "trailbound-wugong-art-dispose")
+    if (event.source === window.parent && event.origin === location.origin && readArtMessage(event.data, session)?.type === "dispose")
       destroy();
   });
   window.addEventListener("keydown", (event) => {
@@ -11055,18 +15291,16 @@
     }
   });
   window.addEventListener("pagehide", destroy);
-  window.addEventListener("storage", (event) => {
-    if (event.storageArea === storage)
-      journal.reload();
-  });
   journal.render();
   if (id && allowed.has(id)) {
+    if (routeId === "maclehose")
+      $("art-page-title").textContent = id === "coast-sand" ? "转角见海" : "海岸手绘";
     $("art-journal-wall").hidden = true;
-    const original = catalog.item(id);
-    mini.begin(place ? { ...original, place, memory: original.memory.replace(original.place, place) } : original, "paused");
+    const original = catalog.item(id), currentPlace = place;
+    mini.begin(currentPlace ? { ...original, place: currentPlace, memory: original.memory.replace(original.place, currentPlace) } : original, "paused");
   } else
     $("art-page-title").textContent = "旅行手帐";
-  window.parent.postMessage({ type: "trailbound-wugong-art-ready" }, location.origin);
+  notifyParent("ready");
 })();
 /*! Bundled license information:
 

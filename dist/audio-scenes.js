@@ -39,6 +39,7 @@
   'coast-shell':{zone:'beach',cue:'sand'},
   'coast-pier':{zone:'harbour',cue:'water'},
   'maclehose-sideways-crab':{zone:'beach',cue:'sand'},
+  'maclehose-woodland-echo':{zone:'woodland',cue:'leaves'},
   'valley-moss':{zone:'pools',cue:'water'},
   'valley-bridge':{zone:'creek',cue:'stone'},
   'valley-reflection':{zone:'meadow',cue:'air'},
@@ -70,11 +71,11 @@
   if(route==='wugong')return {leaves:zone==='meadow'?.21:zone==='ridge'?.10:.055};
   if(route==='tiger')return {creek:zone==='river-close'?.46:zone==='waterfall'?.39:zone==='gorge'?.27:zone==='inn'?.09:.15,leaves:zone==='river-close'?.008:zone==='inn'?.055:.025};
   if(route==='aotai')return {leaves:zone==='rocks'?.065:.035};
-  if(route==='maclehose')return {creek:zone==='harbour'?.09:zone==='beach'?.17:.12,leaves:zone==='bay'?.065:.025};
+  if(route==='maclehose')return {creek:zone==='woodland'?.006:zone==='harbour'?.09:zone==='beach'?.17:.12,leaves:zone==='woodland'?.07:zone==='bay'?.065:.025};
   if(route==='changping')return {creek:zone==='creek'?.27:zone==='pools'?.19:.12,leaves:zone==='meadow'?.085:.17};
   return {leaves:zone==='bamboo'?.19:zone==='forest'?.20:.12,drips:zone==='creek'?.14:.07};
  }
- function landscape({routeId='wugong',checkpointId=null,progress=0,momentGame=null,momentId=null,mode='walk',weather='clear',riverApproach=1,gorgeOpenness=0}={}){
+ function landscape({routeId='wugong',checkpointId=null,progress=0,momentGame=null,momentId=null,mode='walk',weather='clear',riverApproach=1,gorgeOpenness=0,coastOpenness=1}={}){
   const base=ROUTES[routeId]||ROUTES.wugong,entry=MOMENTS[momentId],game=momentGame||entry?.game;
   const zone=(routeId==='tiger'&&TIGER_GAME_ZONES[game])||CHECKPOINTS[checkpointId]||entry?.zone||zoneFor(routeId,clamp(progress));
   const mix=routeMix(routeId,progress,zone),recording={},layers=[{...base,id:'landscape'}];
@@ -105,6 +106,7 @@
    layers[0]={...layers[0],cutoff:1100+2100*approach,highpass:65,gain:.019+.013*approach,mod:.075,depth:.12,space:.08};
   }
   if(routeId==='maclehose'&&zone==='harbour')layers[0]={...layers[0],cutoff:1200,gain:.012,depth:.27,mod:.19};
+  if(routeId==='maclehose'&&zone==='woodland')layers[0]={...layers[0],kind:'wind',cutoff:950,highpass:260,gain:.006,depth:.12,mod:.09};
   if(routeId==='changping'&&zone==='meadow')layers[0]={...layers[0],kind:'wind',gain:.012,cutoff:900};
   if(routeId==='westlake'&&zone!=='creek')layers[0]={...layers[0],kind:'leaves',cutoff:2000,highpass:600,gain:.006};
   if(game==='match'){mix.creek=.025;mix.leaves=.13;mix.drips=0;layers[0].gain*=.5;}
@@ -114,6 +116,11 @@
   if(game==='creek'){mix.creek=.31;mix.leaves=.055;mix.drips=0;}
   if(game==='rain'){mix.leaves=.13;mix.drips=.065;layers[0].gain*=.65;}
   if(game==='footsteps'){mix.leaves=.105;mix.drips=.035;layers[0].gain*=.55;}
+  if(routeId==='maclehose'&&momentId==='coast-sand'){
+   const open=clamp(coastOpenness);mix.creek=.025+.10*open;mix.leaves=.055-.027*open;mix.drips=0;
+   recording.creek={...recording.creek,cutoff:650+1150*open,highpass:170,pan:.22-.08*open,mod:.10,depth:.45};
+   layers[0]={...layers[0],kind:'wind',cutoff:850+450*open,highpass:180,gain:.005+.003*open,mod:.10,depth:.25};
+  }
   if(game==='sling'){mix.leaves=.16;mix.drips=.025;}
   if(['rain','storm'].includes(weather)){
    layers.push({id:'weather',kind:'rain',highpass:1500,cutoff:6000,gain:weather==='storm'?.018:.009,mod:.27,depth:.13,space:0});

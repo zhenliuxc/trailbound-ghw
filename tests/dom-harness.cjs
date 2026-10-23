@@ -61,12 +61,12 @@ function harness(storage={getItem:()=>null,setItem:()=>{}},options={}){
   const messages=[];
   if(options.artEntry){
     window.parent={postMessage(message,origin){messages.push({message,origin});}};
-    window.location={protocol:'http:',origin:'http://fixture.local',search:'?entry='+encodeURIComponent(options.artEntry)+(options.artPlace?'&place='+encodeURIComponent(options.artPlace):'')};
+    window.location={protocol:'http:',origin:'http://fixture.local',search:'?session=fixture-art-session&entry='+encodeURIComponent(options.artEntry)+(options.artPlace?'&place='+encodeURIComponent(options.artPlace):'')};
     window.TrailMicroMoments=window.TrailMicroMoments||require('../dist/micro-moments.js');
   }
   const globals={window,document,localStorage:storage,console};
   if(options.artEntry)Object.assign(globals,{location:window.location,URLSearchParams,Image,AudioContext:undefined,navigator:{},fetch:async()=>{throw Error('Unexpected fixture network request');},matchMedia:window.matchMedia,requestAnimationFrame:window.requestAnimationFrame,cancelAnimationFrame:window.cancelAnimationFrame});
-  vm.runInNewContext(fs.readFileSync(require.resolve(options.artEntry?'../dist/wugong-art.js':'../dist/app.js'),'utf8'),globals, {filename:options.artEntry?'wugong-art.js':'app.js'});
+  if(options.initializeApp!==false)vm.runInNewContext(fs.readFileSync(require.resolve(options.artEntry?'../dist/wugong-art.js':'../dist/app.js'),'utf8'),globals, {filename:options.artEntry?'wugong-art.js':'app.js'});
   const api={document,window,downloads,messages,photoImages,photoRequests,advance(seconds){const count=Math.ceil(seconds*50);for(let i=0;i<count;i++){now+=20;const callbacks=[...pending.values()];pending.clear();for(const callback of callbacks)callback(now);}},pendingFrames:()=>pending.size,$:id=>document.getElementById(id),click:id=>document.getElementById(id).emit('click'),key:key=>window.emit('keydown',{key})};
   api.readyArt=async()=>{for(let i=0;i<100;i++)await Promise.resolve();};
   api.finishMoment=(mode='tap')=>{if(api.$('micro-panel').hidden)throw Error('No active micro-moment');if(mode==='tap')for(let i=0;i<3&&!api.$('micro-panel').hidden;i++){api.click('micro-surface');api.advance(.22);}for(let i=0;i<520&&!api.$('micro-panel').hidden;i++)api.advance(.02);if(!api.$('micro-panel').hidden)throw Error('Micro-moment did not finish');if(!api.$('reward-overlay').hidden)api.click('reward-continue');};

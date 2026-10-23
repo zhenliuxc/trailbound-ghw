@@ -8,6 +8,7 @@ export interface MapLabel {
   height: number;
   clearance: number;
   preferredSide: 'top' | 'bottom';
+  preferredOffset?: MapLabelPoint;
   priority: number;
   required?: boolean;
 }
@@ -42,6 +43,7 @@ export function layoutMapLabels(layout: MapLabelLayout): Map<string, MapLabelPla
     const offsets: MapLabelPoint[] = [];
     const remembered = layout.previous?.get(label.id);
     if (remembered?.visible) offsets.push(remembered.offset);
+    if (label.preferredOffset) offsets.push(label.preferredOffset);
     for (const direction of [side, -side]) {
       for (const shift of [0, -.3, .3, -.6, .6]) offsets.push({ x: label.width * shift, y: direction * vertical });
     }

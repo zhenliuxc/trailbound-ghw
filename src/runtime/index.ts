@@ -1,4 +1,7 @@
 export { createDom } from './dom';
+export { CHAPTERS, ROUTE_SUMMARIES, chapterFor } from '../content/catalog';
+export { createRouteMapPicker } from './route-map-picker';
+export type { RouteMapPicker } from './route-map-picker';
 export { createSceneManager } from './scene-manager';
 export { createFrameLoop } from './frame-loop';
 export { mapViewport, mapFollowViewport, mapSymbols, mapMarkerAnchor } from './map-viewport';
@@ -18,7 +21,9 @@ export { createWugongStops } from './wugong-stops';
 export { createMiniGameController } from './mini-game-controller';
 export { createRewardController } from './reward-controller';
 export { createJournalController } from './journal-controller';
-export { roundJournalArt } from '../wugong-walk/badge-art';
+export { createJournalStore } from './journal-store';
+export { roundJournalArt } from './journal-badge';
+export { tigerJournalArt } from './tiger-badge';
 export { createMusicLayer, musicLevel, musicTrack, WUGONG_MUSIC, WUGONG_THEMES, MOGAN_MUSIC, MOGAN_THEMES } from './music-layer';
 export { createMoganGames } from './mogan/adapter';
 export { createTigerGames } from './tiger/adapter';

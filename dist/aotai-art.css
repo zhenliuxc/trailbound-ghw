@@ -23,3 +23,11 @@
 .aotai-art-page #micro-panel[data-aotai] :is(.mini-controls button,.micro-heading button):focus-visible{outline:2px solid #8c9b86;outline-offset:2px}
 .aotai-art-page #micro-panel[data-aotai] #micro-result{font-size:12px;color:#798478}
 @media(max-width:600px){.aotai-art-page #micro-panel[data-aotai] #micro-result{font-size:11px}.aotai-art-page #micro-panel[data-aotai] .mini-controls{gap:4px 8px}}
+
+.aotai-art-page:has(#art-journal-wall[hidden]){display:flex;flex-direction:column;height:100dvh;min-height:320px;overflow:hidden}
+.aotai-art-page:has(#art-journal-wall[hidden]) .art-page-header{flex:none}
+.aotai-art-page:has(#art-journal-wall[hidden]) #app-main{flex:1;min-height:0;width:100%;overflow:auto}
+.aotai-art-page:has(#art-journal-wall[hidden]) #journey-stage{height:100%;min-height:0}
+.aotai-art-page #micro-panel[data-aotai]{height:100%;min-height:280px;grid-template-rows:auto minmax(120px,1fr) 0 auto auto}
+.aotai-art-page #micro-panel[data-aotai] #micro-surface{height:100%;min-height:0;aspect-ratio:auto}
+@media(max-width:600px){.aotai-art-page #micro-panel[data-aotai]{grid-template-rows:auto minmax(120px,1fr) 0 auto auto auto}}

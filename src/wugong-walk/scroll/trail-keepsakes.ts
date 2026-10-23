@@ -1,7 +1,7 @@
 import { FOREST_ART, FOREST_LEAVES_ID, HOMEWARD_PAGES_ID, JOURNEY_PAGES, JourneyPages, LeafPairs, RETURN_ART, type KeepsakeId } from './keepsake-games';
 import type { CampSaveResult } from './camp-journal';
-import { circularBadge } from '../badge-art';
-import { enterDialog, leaveDialog, type CancelMotion } from '../visible-motion';
+import { circularBadge } from '../../runtime/journal-badge';
+import { enterDialog, leaveDialog, type CancelMotion } from '../../journey/visible-motion';
 
 interface KeepsakeOptions {
   readonly signal: AbortSignal;

@@ -1,0 +1,8 @@
+{
+  "command": "node --test tests/maclehose-tide.test.cjs tests/maclehose-coast.test.cjs",
+  "total": 26,
+  "passed": 26,
+  "failed": 0,
+  "build": "npm run build succeeded",
+  "kind": "model and adapter checks, not browser rendering or audio listening"
+}

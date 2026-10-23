@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>山径 · 地点图标库</title>
+  <link rel="stylesheet" href="landmark-markers.css?v=landmarks-2">
+  <style>
+    :root{color-scheme:light;--paper:#f5f3e8;--ink:#3e5b4c;--muted:#81917c;--line:#dce0cf}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+    main{max-width:1560px;margin:auto;padding:32px 4vw 50px}nav{display:flex;justify-content:space-between;gap:20px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:20px}a{color:inherit;text-decoration:none}a:focus-visible{outline:2px solid #81936f;outline-offset:4px}nav a{font:24px Georgia,"Songti SC",serif}nav span{font-size:12px;color:var(--muted);letter-spacing:2px}
+    header{display:flex;justify-content:space-between;align-items:end;gap:24px;padding:28px 0}h1{font:400 34px/1.4 Georgia,"Songti SC",serif;margin:0 0 10px}header p{color:var(--muted);margin:0}.note{max-width:390px;font-size:12px;line-height:1.8}
+    .sizes{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 18px}.sizes>span{font-size:12px;color:var(--muted);margin-right:4px}.sizes button{min-height:40px;padding:7px 14px;border:1px solid var(--line);border-radius:22px;background:#fbf9f0;color:var(--ink);font:inherit;cursor:pointer}.sizes button[aria-pressed=true]{background:#e3ead8;border-color:#92a57e}.sizes button:focus-visible{outline:2px solid #81936f;outline-offset:3px}
+    .symbols{--preview-size:54px;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px}.symbol-card{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;min-height:138px;padding:14px 6px;border:1px solid var(--line);border-radius:14px;background:#fbf9f0;transition:background .15s,border-color .15s}.symbol-card:hover{border-color:#9aa98a;background:#fffdf5}.symbol-card .icon-slot{width:54px;height:54px;display:grid;place-items:center;margin-bottom:3px}.symbol-card svg{width:var(--preview-size);height:var(--preview-size)}.symbol-card span{font:16px Georgia,"Songti SC",serif}.symbol-card code{font:10px/1.5 ui-monospace,SFMono-Regular,monospace;color:#8b977f}
+    .routes{margin-top:28px;border-top:1px solid var(--line);padding-top:21px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}.routes>span{color:var(--muted);font-size:12px;margin-right:8px}.routes a{border:1px solid var(--line);border-radius:30px;padding:8px 15px;min-height:40px;font-size:12px}.routes a:hover{background:#e9edde}
+    @media(max-width:1100px){.symbols{grid-template-columns:repeat(7,minmax(0,1fr))}header .note{max-width:300px}}@media(max-width:750px){main{padding:20px 18px 36px}.symbols{--preview-size:46px;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}header{display:block;padding:24px 0}header .note{margin-top:14px;max-width:none}h1{font-size:28px}.symbol-card{min-height:127px}.symbol-card span{font-size:14px}.symbol-card code{font-size:8px}nav span{font-size:10px;letter-spacing:1px}}@media(max-width:400px){.symbols{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .symbols[data-size=follow]{--preview-size:var(--landmark-follow)}.symbols[data-size=overview]{--preview-size:var(--landmark-overview)}.symbols[data-size=compact]{--preview-size:var(--landmark-compact)}
+  </style>
+</head>
+<body><main>
+  <nav><a href="index.html">△ 山径</a><span>地点图标库 · LANDMARKS</span></nav>
+  <header><div><h1>山路上的地点</h1><p>{{count}} 枚地景图标，七条路线共用。</p></div><p class="note">米白圆底，草木色线描。点击可下载 SVG，后续按图标名称接入。地图标记与手帐里的手绘收藏徽章分别保留。</p></header>
+  <div class="sizes" role="group" aria-label="预览图标尺寸"><span>预览尺寸</span><button type="button" data-size="catalog" aria-pressed="true">图形总览</button><button type="button" data-size="follow" aria-pressed="false">随行</button><button type="button" data-size="overview" aria-pressed="false">全图</button><button type="button" data-size="compact" aria-pressed="false">小屏全图</button></div>
+  <div class="symbols" data-size="catalog">{{icons}}</div>
+  <div class="routes"><span>到地图里看看</span><a href="wugong-walk.html?scene=landmarks-2">武功山</a><a href="tiger-walk.html?scene=landmarks-2">虎跳峡</a><a href="aotai-walk.html?scene=landmarks-2">鳌太线</a><a href="maclehose-walk.html?scene=landmarks-2">麦理浩径</a><a href="changping-walk.html?scene=landmarks-2">长坪沟</a><a href="mogan-walk.html?scene=landmarks-2">莫干山</a><a href="westlake-walk.html?scene=landmarks-2">九溪龙井</a></div>
+</main><script>
+  const symbols = document.querySelector('.symbols');
+  document.querySelectorAll('.sizes button').forEach(button => button.addEventListener('click', () => {
+    symbols.dataset.size = button.dataset.size;
+    document.querySelectorAll('.sizes button').forEach(option => option.setAttribute('aria-pressed', String(option === button)));
+  }));
+</script></body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "createdAt": "2026-10-20",
+  "tool": "imagegen built-in",
+  "purpose": "Two MacLehose watercolor direct-manipulation memories; main 2D map and existing circular badges unchanged.",
+  "assets": [
+    {
+      "file": "scenes/maclehose-games-v5/beach.webp",
+      "source": "art/maclehose-games-v5/beach.png",
+      "generation": "exec-ca7861cd-3a22-4e54-8640-0b95e8d3c767",
+      "reference": "dist/scenes/maclehose-v1.webp",
+      "description": "High oblique Sai Wan watercolor beach with open playable sand"
+    },
+    {
+      "file": "scenes/maclehose-games-v5/pier.webp",
+      "source": "art/maclehose-games-v5/pier.png",
+      "generation": "exec-f27b66e5-4670-40d1-8f0b-02e6b541a7a0",
+      "description": "Quiet Chek Keng inspired watercolor inlet and short pier; fictional game composition"
+    },
+    {
+      "file": "scenes/maclehose-games-v5/props.webp",
+      "source": "art/maclehose-games-v5/props.png",
+      "generation": "exec-7c903161-187b-4ed8-ac00-dafe917cf84f",
+      "initialGeneration": "exec-6636cbb3-f248-4176-8d62-ad952e497d7e",
+      "description": "Watercolor crab, driftwood, sampan, rope coil and post on alpha. Game uses measured individual frames, not assumed equal grid cells."
+    }
+  ],
+  "processing": "Backgrounds encoded WebP quality 89. Props encoded lossless WebP preserving alpha. Source PNGs retained. No image edits performed by scripts."
+}

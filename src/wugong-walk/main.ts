@@ -3,7 +3,7 @@ import { WalkRenderer } from './renderer';
 import { type CameraMode, type FrameProjection } from './camera';
 import { VisitView } from './visits';
 import { parseTimeSetting, parseWeatherSetting, SceneEnvironment } from './environment';
-import { ArtOverlay } from './art-overlay';
+import { ArtOverlay } from '../journey/art-overlay';
 
 function element(id: string): HTMLElement {
   const node = document.getElementById(id);

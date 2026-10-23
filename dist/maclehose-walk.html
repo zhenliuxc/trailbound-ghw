@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>麦理浩径 · 一日海岸 / 山径</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="maclehose-walk.css?v=landmarks-2"><link rel="stylesheet" href="wugong-transitions.css?v=discovery-fade-10"><link rel="stylesheet" href="character-picker.css?v=character-choice-1">
+<script defer src="audio-scenes.js?v=sand-brush-18"></script><script defer src="audio.js?v=sand-brush-18"></script><script defer src="maclehose-walk.js?v=landmarks-2"></script>
+<link rel="preload" as="image" href="scenes/maclehose-v1.webp"><link rel="preload" as="image" href="photos/maclehose-longke-place-v8.webp"><link rel="preload" as="image" href="badges/maclehose-bay-reveal-v4.webp"><link rel="stylesheet" href="journey-map.css?v=shared-camera-2"><link rel="stylesheet" href="landmark-markers.css?v=landmarks-2"></head>
+<body class="coast-walk">
+<nav class="co-nav"><a href="./" aria-label="山径，回到旅程"><img src="icon.svg" alt="">山径 <small>TRAILBOUND</small></a><a href="./">回到旅程 ↗</a></nav>
+<main class="co-shell">
+<header class="co-heading"><div><small>麦理浩径第二段 · 一日海岸</small><h1>翻过山，海就在那里。</h1><p>浪茄 → 西湾山 → 西湾 → 咸田湾 → 大浪坳 → 赤径 → 北潭凹</p></div><div class="co-head-actions"><button id="co-character" type="button" disabled>角色</button><button id="co-journal" type="button">旅行手帐</button><button id="co-sound" type="button" aria-pressed="false">声音 · 关</button></div></header>
+<div class="co-meta"><span id="co-environment">09:00 · 晨间海风</span><span>13.5 公里 · 一日旅程 · 路线示意</span></div>
+<section id="co-map" class="co-map journey-map" data-view="follow" aria-label="麦理浩径第二段海岸与村落的二维示意图，默认跟随，可主动切换全图">
+<canvas id="co-canvas" aria-label="海岸山径，轻点画面或按空格暂停、继续，方向键辅助">请使用支持 Canvas 的浏览器。</canvas><div id="co-markers" aria-label="打卡地点与名称"></div>
+<div class="co-view" role="group" aria-label="地图视角"><button id="co-follow" type="button" aria-pressed="true" disabled>跟随</button><button id="co-overview" type="button" aria-pressed="false" disabled>全图</button></div>
+<p id="co-chapter" class="co-chapter">浪茄出发</p>
+<section id="co-finish" class="co-card" aria-labelledby="co-finish-title" hidden><small>终点 · 北潭凹</small><h2 id="co-finish-title">把这一天，留在手帐里。</h2><p id="co-finish-copy"></p><button id="co-finish-journal" type="button">翻开手帐 ↗</button></section>
+<div id="co-loading" class="co-loading" role="status"><p id="co-loading-copy">山与海正在展开…</p><button id="co-retry" type="button" hidden>重新展开</button></div>
+</section>
+<footer class="co-walk-bar"><p id="co-note" role="status" aria-live="polite">跟着山径，看海湾一点点展开。</p><button id="co-walk" class="co-primary" type="button" disabled>从浪茄出发 →</button></footer>
+<div class="co-bottom"><span>慢慢走，把海风留下。</span><a href="maclehose-credits.html" target="_blank" rel="noopener">致谢与路线资料</a></div>
+</main>
+<dialog id="co-photo" class="co-photo" aria-labelledby="co-photo-title"><button id="co-photo-close" class="co-close" type="button" aria-label="关闭照片，停在山径">×</button><div class="co-photo-media"><img id="co-photo-image" alt="" hidden><div id="co-photo-state" role="status"><p id="co-photo-message">实景照片正在展开…</p><button id="co-photo-retry" type="button" hidden>重新加载</button></div></div><p id="co-photo-caption" class="co-photo-caption"></p><div class="co-photo-copy"><h2 id="co-photo-title"></h2><p><a id="co-photo-source" target="_blank" rel="noopener"></a> · <a id="co-photo-license" target="_blank" rel="noopener"></a></p><button id="co-photo-continue" class="co-primary" type="button">继续走 →</button></div></dialog>
+<dialog id="co-art" aria-label="麦理浩径手绘互动与旅行手帐"><button id="co-art-close" class="co-close" type="button" aria-label="关闭手绘，回到山径">×</button><p id="co-art-state" role="status">手绘正在展开…</p><iframe id="co-art-frame" title="麦理浩径手绘互动与旅行手帐" hidden></iframe></dialog>
+</body></html>

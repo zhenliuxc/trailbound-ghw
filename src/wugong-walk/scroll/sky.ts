@@ -74,7 +74,7 @@ export class ScrollSky {
     for (const cloud of this.distant) {
       const at = projection.toScreen({ x: cloud.x + Math.sin(elapsed * .025 + cloud.phase) * 32, y: cloud.y });
       cloud.shape.position.set(at.x, at.y);
-      cloud.shape.scale.set(cloud.width / 240 * projection.scale);
+      cloud.shape.scale.set(cloud.width / 240 * projection.scaleX);
       cloud.shape.tint = environment.skyBottom; cloud.shape.alpha = .50 + environment.cloud * .24;
       cloud.shape.visible = at.x > -240 && at.x < this.width + 240 && at.y > -100 && at.y < this.height + 100;
     }

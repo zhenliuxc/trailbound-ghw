@@ -1,0 +1,349 @@
+{
+  "checks": [
+    {
+      "case": "initial",
+      "count": 7,
+      "journal": "20个瞬间",
+      "selected": 0,
+      "size": [
+        1454,
+        818
+      ],
+      "stageHidden": true
+    },
+    {
+      "case": "narrow-layout",
+      "overflow": false,
+      "overlaps": [],
+      "size": [
+        443,
+        959
+      ],
+      "targets": [
+        {
+          "height": 51.99751281738281,
+          "id": "route-mogan",
+          "width": 100.99431610107422
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-westlake",
+          "width": 100.99431610107422
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-wugong",
+          "width": 100.99431610107422
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-tiger",
+          "width": 100.99431610107422
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-aotai",
+          "width": 100.99431610107422
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-maclehose",
+          "width": 100.99431610107422
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-changping",
+          "width": 100.99431610107422
+        }
+      ]
+    },
+    {
+      "allPinsInViewport": true,
+      "case": "default-layout",
+      "frameHeight": 491.9921875,
+      "overflow": false,
+      "overlaps": [],
+      "size": [
+        542,
+        884
+      ]
+    },
+    {
+      "allPinsInViewport": true,
+      "case": "desktop-layout",
+      "frameHeight": 509.9964294433594,
+      "overflow": false,
+      "overlaps": [],
+      "size": [
+        1363,
+        909
+      ]
+    },
+    {
+      "action": "从东江村出发 →",
+      "background": "url(\"http://127.0.0.1:8000/scenes/wugong-v1.webp\")",
+      "case": "cover",
+      "coverHidden": false,
+      "focus": "overlay-title",
+      "id": "wugong",
+      "journal": "20个瞬间",
+      "progress": "0",
+      "selected": [
+        "route-wugong"
+      ],
+      "stageHidden": false,
+      "title": "沿着草甸，把山野收进手帐。"
+    },
+    {
+      "case": "return",
+      "focus": "route-wugong",
+      "id": "wugong"
+    },
+    {
+      "action": "从桥头出发 →",
+      "background": "url(\"http://127.0.0.1:8000/scenes/tiger-v1.webp\")",
+      "case": "cover",
+      "coverHidden": false,
+      "focus": "overlay-title",
+      "id": "tiger",
+      "journal": "20个瞬间",
+      "progress": "0",
+      "selected": [
+        "route-tiger"
+      ],
+      "stageHidden": false,
+      "title": "从高路，走到金沙江边。"
+    },
+    {
+      "case": "return",
+      "focus": "route-tiger",
+      "id": "tiger"
+    },
+    {
+      "action": "走进秦岭 →",
+      "background": "url(\"http://127.0.0.1:8000/scenes/aotai-v1.webp\")",
+      "case": "cover",
+      "coverHidden": false,
+      "focus": "overlay-title",
+      "id": "aotai",
+      "journal": "20个瞬间",
+      "progress": "0",
+      "selected": [
+        "route-aotai"
+      ],
+      "stageHidden": false,
+      "title": "循着山脊，走进云与石之间。"
+    },
+    {
+      "case": "return",
+      "focus": "route-aotai",
+      "id": "aotai"
+    },
+    {
+      "action": "从浪茄出发 →",
+      "background": "url(\"http://127.0.0.1:8000/scenes/maclehose-v1.webp\")",
+      "case": "cover",
+      "coverHidden": false,
+      "focus": "overlay-title",
+      "id": "maclehose",
+      "journal": "20个瞬间",
+      "progress": "0",
+      "selected": [
+        "route-maclehose"
+      ],
+      "stageHidden": false,
+      "title": "翻过山，海就在那里。"
+    },
+    {
+      "case": "return",
+      "focus": "route-maclehose",
+      "id": "maclehose"
+    },
+    {
+      "action": "出发，走一走 →",
+      "background": "url(\"http://127.0.0.1:8000/scenes/changping-v1.webp\")",
+      "case": "cover",
+      "coverHidden": false,
+      "focus": "overlay-title",
+      "id": "changping",
+      "journal": "20个瞬间",
+      "progress": "0",
+      "selected": [
+        "route-changping"
+      ],
+      "stageHidden": false,
+      "title": "沿着溪声，走进森林深处。"
+    },
+    {
+      "case": "return",
+      "focus": "route-changping",
+      "id": "changping"
+    },
+    {
+      "action": "出发，走一走 →",
+      "background": "url(\"http://127.0.0.1:8000/scenes/mogan-v1.webp\")",
+      "case": "cover",
+      "coverHidden": false,
+      "focus": "overlay-title",
+      "id": "mogan",
+      "journal": "20个瞬间",
+      "progress": "0",
+      "selected": [
+        "route-mogan"
+      ],
+      "stageHidden": false,
+      "title": "今天，跟着竹影慢慢走。"
+    },
+    {
+      "case": "return",
+      "focus": "route-mogan",
+      "id": "mogan"
+    },
+    {
+      "action": "出发，走一走 →",
+      "background": "url(\"http://127.0.0.1:8000/scenes/westlake-v1.webp\")",
+      "case": "cover",
+      "coverHidden": false,
+      "focus": "overlay-title",
+      "id": "westlake",
+      "journal": "20个瞬间",
+      "progress": "0",
+      "selected": [
+        "route-westlake"
+      ],
+      "stageHidden": false,
+      "title": "把一段午后，泡进茶香里。"
+    },
+    {
+      "case": "return",
+      "focus": "route-westlake",
+      "id": "westlake"
+    },
+    {
+      "case": "start-navigation",
+      "heading": "沿着山路，慢慢走。",
+      "id": "wugong",
+      "path": "/wugong-walk.html",
+      "title": "武功山 · 山路漫游 / 山径"
+    },
+    {
+      "case": "start-navigation",
+      "heading": "江在脚下，山在身旁。",
+      "id": "tiger",
+      "path": "/tiger-walk.html",
+      "title": "虎跳峡 · 高路与江边 / 山径"
+    },
+    {
+      "case": "start-navigation",
+      "heading": "从鳌山，走向太白山。",
+      "id": "aotai",
+      "path": "/aotai-walk.html",
+      "title": "鳌太线 · 秦岭山间 / 山径"
+    },
+    {
+      "case": "start-navigation",
+      "heading": "翻过山，海就在那里。",
+      "id": "maclehose",
+      "path": "/maclehose-walk.html",
+      "title": "麦理浩径 · 一日海岸 / 山径"
+    },
+    {
+      "case": "inline-start-keyboard",
+      "coverHidden": true,
+      "id": "mogan",
+      "path": "/",
+      "progress": "0",
+      "state": "沿着山径慢慢走"
+    },
+    {
+      "case": "walking-return-pauses",
+      "focus": "route-mogan",
+      "state": "停下来看看"
+    },
+    {
+      "case": "inline-start",
+      "coverHidden": true,
+      "id": "changping",
+      "path": "/",
+      "state": "沿着山径慢慢走"
+    },
+    {
+      "case": "inline-start",
+      "coverHidden": true,
+      "id": "westlake",
+      "path": "/",
+      "state": "沿着山径慢慢走"
+    },
+    {
+      "case": "smallest-layout",
+      "overflow": false,
+      "overlaps": [],
+      "size": [
+        318,
+        841
+      ],
+      "targets": [
+        {
+          "height": 51.99751281738281,
+          "id": "route-mogan",
+          "width": 100.99431610107422,
+          "x": 183.55824279785156
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-westlake",
+          "width": 100.99431610107422,
+          "x": 183.55824279785156
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-wugong",
+          "width": 100.99431610107422,
+          "x": 105.7883529663086
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-tiger",
+          "width": 100.99431610107422,
+          "x": 33.5582389831543
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-aotai",
+          "width": 100.99431610107422,
+          "x": 114.09800720214844
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-maclehose",
+          "width": 100.99431610107422,
+          "x": 169.49574279785156
+        },
+        {
+          "height": 51.99751281738281,
+          "id": "route-changping",
+          "width": 100.99431610107422,
+          "x": 33.5582389831543
+        }
+      ]
+    },
+    {
+      "actionRect": {
+        "height": 45.99609375,
+        "width": 127.57456970214844,
+        "x": 48.117897033691406,
+        "y": 426.46484375
+      },
+      "case": "smallest-cover",
+      "focus": "overlay-title",
+      "overflow": false,
+      "size": [
+        318,
+        841
+      ],
+      "stage": "麦理浩径第二段"
+    }
+  ],
+  "console": [],
+  "keyboardHandoff": "Enter selected Mogan; focus moved to cover heading; Tab reached overlay-action; Space started the inline journey."
+}

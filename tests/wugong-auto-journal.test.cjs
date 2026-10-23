@@ -6,12 +6,12 @@ const D = require('../dist/discoveries.js');
 const J = require('../dist/journal.js');
 const { buildSync } = require('esbuild');
 const vm = require('node:vm');
-const bundled = buildSync({ entryPoints:['src/wugong-walk/scroll/camp-journal.ts'],bundle:true,write:false,format:'cjs' }).outputFiles[0].text;
+const bundled = buildSync({ entryPoints:['src/runtime/journal-store.ts'],bundle:true,write:false,format:'cjs' }).outputFiles[0].text;
 const mod = { exports:{} }; vm.runInThisContext(`(function(module,exports){${bundled}\n})`)(mod,mod.exports);
-const { storeEarnedMoment } = mod.exports;
+const { createJournalStore } = mod.exports;
 function memory() { const entry=D.item('meadow-butterfly'); return {key:'first',id:entry.id,route:'wugong',edition:3,earned:true,artVersion:4,title:entry.name,tag:entry.tag,place:entry.place,memory:'第一次的云与山',createdAt:1,icon:entry.icon}; }
 function setup(onCollected,autoCollect=true,reduced=false) {
-  const h=harness(),scenes=Runtime.createSceneManager({status:()=> 'paused',pause(){},resume(){},hidden:()=>h.document.hidden});
+  const h=harness(undefined,{initializeApp:false}),scenes=Runtime.createSceneManager({status:()=> 'paused',pause(){},resume(){},hidden:()=>h.document.hidden});
   let finish,paused=0,played=0,cancelled=0,animation;
   h.$(autoCollect?'reward-overlay':'reward-dialog').animate=(frames,timing)=>{animation={frames,timing};return {finished:new Promise(resolve=>{finish=resolve;}),cancel(){cancelled++;},pause(){paused++;},play(){played++;}};};
   const reward=Runtime.createRewardController({dom:Runtime.createDom(h.document),scenes,catalog:D,audio:{},reduced,autoCollect,gameKind:()=> 'cloud',refresh(){},stopLoop(){},onCollected});
@@ -47,8 +47,8 @@ test('reduced motion still shows the automatically earned memory before a short 
 });
 test('automatic persistence preserves the first artwork, text and date when replayed',()=>{
   const storage={value:null,getItem(){return this.value;},setItem(_,value){this.value=value;}};
-  const first=memory();assert.equal(storeEarnedMoment(D,J,storage,first).kind,'stored');
-  const before=storage.value;const replay=storeEarnedMoment(D,J,storage,{...first,key:'second',createdAt:2,memory:'第二次文字'});
-  assert.deepEqual(replay,{kind:'stored',existing:true});assert.equal(storage.value,before);assert.equal(D.loadMoments(storage)[0].createdAt,1);
-  assert.equal(storeEarnedMoment(D,J,storage,{...first,earned:false}).kind,'error');assert.equal(storage.value,before);
+  const first=memory();assert.equal(createJournalStore({catalog:D,data:J,storage}).save(first).kind,'stored');
+  const before=storage.value;const replay=createJournalStore({catalog:D,data:J,storage}).save({...first,key:'second',createdAt:2,memory:'第二次文字'});
+  assert.equal(replay.kind,'stored');assert.equal(replay.existing,true);assert.equal(storage.value,before);assert.equal(D.loadMoments(storage)[0].createdAt,1);
+  assert.equal(createJournalStore({catalog:D,data:J,storage}).save({...first,earned:false}).kind,'error');assert.equal(storage.value,before);
 });

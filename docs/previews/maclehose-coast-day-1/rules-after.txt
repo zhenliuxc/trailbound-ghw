@@ -1,0 +1,287 @@
+✖ all 24 researched landscapes have unique label names, actual local SVG art and route evidence (5.545875ms)
+✖ only a completed landscape interaction earns its corresponding label, never a photo or a partial attempt (2.328291ms)
+✔ old journal titles, places, text and atlas art are not rewritten when an internal scene ID changes (140.385333ms)
+✔ repeated and unfinished historical records collapse to one completed picture and memory (22.408917ms)
+✖ a quiet cloud wait can earn a label, while a quiet tea glance stays a memory, and early skipping earns neither (18.994292ms)
+✖ earned labels use their researched place note, and pictures do not auto-create labels (37.724583ms)
+✔ watercolor bindings are explicit, route-correct, hashed and do not reinterpret old edition-3 records (132.540459ms)
+✔ one daylight journey reaches Pak Tam Au after the three photographs and four separate discoveries (5.501125ms)
+✔ skipping discoveries still reaches the finish without inventing collected badges (2.345125ms)
+✔ a stale close cannot consume a different discovery or award it later (0.648084ms)
+✔ browsing an arrived photograph preserves pause, walking and finished states (1.980083ms)
+✔ waiting without input never exits or earns any of the four coastal games (0.532959ms)
+✔ players can still complete each direct interaction after taking time to read (0.691166ms)
+✔ all four completed memories use circular badge assets and retain the first journal entry on replay (0.785208ms)
+✔ six Nine Creeks candidates yield three geographically ordered encounters and avoid repeating a full recent set (1.986125ms)
+✔ one tap or drag changes the memory, validates coordinates and completes on a bounded scene clock (0.560583ms)
+✖ a close look freezes journey progress, completes once and resumes the previous walking state (175.14825ms)
+✖ completed mobile drag persists while an incomplete quiet look adds no record (98.22225ms)
+✖ skipping, changing routes and backgrounding do not leave active interactions or advance a hidden clock (124.621458ms)
+✖ reduced motion and denied storage still allow a complete optional close look (109.661541ms)
+✖ page caching hides the micro-moment clock and restoring the page preserves an intentional pause (84.796ms)
+✖ Nine Creeks recorded layers change continuously by progress, use local samples once and stop when muted (3.18925ms)
+✔ sample fetch failures and late completion after a route change cannot resurrect an old soundscape (1.593041ms)
+✔ all recorded materials are lightweight, traceable and explicitly licensed (41.220292ms)
+✖ each journey has three genuinely different play types, including every Westlake candidate combination (0.651375ms)
+✔ footprints and a guided leaf require visiting targets in order; an arbitrary swipe cannot finish them (0.513ms)
+✔ drawing in sand needs a stroke and a released hand before the tide takes it away (98.399958ms)
+✔ shells turn sideways, clouds need a broad sweep, and a leaf must be placed in its stone hollow (0.146292ms)
+✔ stillness reveals the goat and reflection, while movement disturbs the water again (0.131917ms)
+✔ listening uses three sound depths without counting a synthesized duplicate click; brewing waits for leaves to open (0.130417ms)
+✖ a moving lens shows magnified detail; all new renderers are bounded, finite and reduced-motion safe (409.05675ms)
+✖ keyboard and switch activations can participate in every mechanic; success and a partial attempt keep truthful memories (0.81175ms)
+✖ mobile dragging, pointer cancellation, keyboard moves and background resume keep one journal entry and one earned tag (59.17175ms)
+✔ rain taps and stone echoes have position-based tones with the existing sound consent and cleanup (2.708916ms)
+✔ completed Wugong artwork saves automatically once and closes after the memory fades (75.966291ms)
+✔ unfinished artwork cannot enter automatic collection (16.71775ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (21.975459ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (22.238084ms)
+✔ other routes retain manual reward collection by default (16.410166ms)
+✔ reduced motion still shows the automatically earned memory before a short fade (18.847292ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.637708ms)
+ℹ tests 41
+ℹ suites 0
+ℹ pass 27
+ℹ fail 14
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 718.589292
+
+✖ failing tests:
+
+test at tests/landscape-tags.test.cjs:5:1
+✖ all 24 researched landscapes have unique label names, actual local SVG art and route evidence (5.545875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  40 !== 29
+  
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/landscape-tags.test.cjs:6:68)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 40,
+    expected: 29,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/landscape-tags.test.cjs:9:1
+✖ only a completed landscape interaction earns its corresponding label, never a photo or a partial attempt (2.328291ms)
+  AssertionError [ERR_ASSERTION]: tiger-bell-first
+  
+  false !== true
+  
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/landscape-tags.test.cjs:10:56)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/landscape-tags.test.cjs:18:1
+✖ a quiet cloud wait can earn a label, while a quiet tea glance stays a memory, and early skipping earns neither (18.994292ms)
+  ReferenceError: location is not defined
+      at apply (app.js:1203:7)
+      at app.js:1376:55
+      at Element.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:19:90)
+      at Object.click (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:70:365)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/landscape-tags.test.cjs:19:342)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at tests/landscape-tags.test.cjs:21:1
+✖ earned labels use their researched place note, and pictures do not auto-create labels (37.724583ms)
+  ReferenceError: location is not defined
+      at apply (app.js:1203:7)
+      at app.js:1376:55
+      at Element.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:19:90)
+      at Object.click (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:70:365)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/landscape-tags.test.cjs:22:496)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at tests/micro-moments.test.cjs:15:1
+✖ a close look freezes journey progress, completes once and resumes the previous walking state (175.14825ms)
+  TypeError: storyPanel.classList.remove is not a function
+      at Object.destroy (/Users/liuxucheng/code/trailbound/dist/runtime.js:1131:30)
+      at app.js:1441:22
+      at Object.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:54:1085)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/micro-moments.test.cjs:16:826)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/micro-moments.test.cjs:18:1
+✖ completed mobile drag persists while an incomplete quiet look adds no record (98.22225ms)
+  TypeError: storyPanel.classList.remove is not a function
+      at Object.destroy (/Users/liuxucheng/code/trailbound/dist/runtime.js:1131:30)
+      at app.js:1441:22
+      at Object.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:54:1085)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/micro-moments.test.cjs:19:946)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/micro-moments.test.cjs:21:1
+✖ skipping, changing routes and backgrounding do not leave active interactions or advance a hidden clock (124.621458ms)
+  TypeError: storyPanel.classList.remove is not a function
+      at Object.destroy (/Users/liuxucheng/code/trailbound/dist/runtime.js:1131:30)
+      at app.js:1441:22
+      at Object.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:54:1085)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/micro-moments.test.cjs:22:872)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/micro-moments.test.cjs:24:1
+✖ reduced motion and denied storage still allow a complete optional close look (109.661541ms)
+  TypeError: storyPanel.classList.remove is not a function
+      at Object.destroy (/Users/liuxucheng/code/trailbound/dist/runtime.js:1131:30)
+      at app.js:1441:22
+      at Object.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:54:1085)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/micro-moments.test.cjs:25:384)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/micro-moments.test.cjs:27:1
+✖ page caching hides the micro-moment clock and restoring the page preserves an intentional pause (84.796ms)
+  TypeError: storyPanel.classList.remove is not a function
+      at Object.destroy (/Users/liuxucheng/code/trailbound/dist/runtime.js:1131:30)
+      at app.js:1441:22
+      at Object.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:54:1085)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/micro-moments.test.cjs:28:409)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/micro-moments.test.cjs:30:1
+✖ Nine Creeks recorded layers change continuously by progress, use local samples once and stop when muted (3.18925ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Set(9) {
+  +   'audio/mini-drop-v1.mp3',
+  +   'audio/mini-paper-v1.mp3',
+  - Set(3) {
+      'audio/westlake-creek-v1.mp3',
+      'audio/westlake-drips-v1.mp3',
+      'audio/westlake-leaves-v1.mp3',
+  +   'audio/wugong-click-v1.mp3',
+  +   'audio/wugong-step-1-v1.mp3',
+  +   'audio/wugong-step-2-v1.mp3',
+  +   'audio/wugong-step-3-v1.mp3'
+    }
+  
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/micro-moments.test.cjs:38:69)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Set(9) { 'audio/wugong-click-v1.mp3', 'audio/wugong-step-1-v1.mp3', 'audio/westlake-creek-v1.mp3', 'audio/westlake-leaves-v1.mp3', 'audio/wugong-step-2-v1.mp3', 'audio/wugong-step-3-v1.mp3', 'audio/mini-paper-v1.mp3', 'audio/mini-drop-v1.mp3', 'audio/westlake-drips-v1.mp3' },
+    expected: Set(3) { 'audio/westlake-creek-v1.mp3', 'audio/westlake-leaves-v1.mp3', 'audio/westlake-drips-v1.mp3' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/regional-effects.test.cjs:7:1
+✖ each journey has three genuinely different play types, including every Westlake candidate combination (0.651375ms)
+  AssertionError [ERR_ASSERTION]: wugong
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/regional-effects.test.cjs:8:215)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/regional-effects.test.cjs:29:1
+✖ a moving lens shows magnified detail; all new renderers are bounded, finite and reduced-motion safe (409.05675ms)
+  AssertionError [ERR_ASSERTION]: tiger-halfway-view-v1
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/regional-effects.test.cjs:30:355)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/regional-effects.test.cjs:33:1
+✖ keyboard and switch activations can participate in every mechanic; success and a partial attempt keep truthful memories (0.81175ms)
+  AssertionError [ERR_ASSERTION]: tiger-bell-first
+  
+  false !== true
+  
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/regional-effects.test.cjs:34:260)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/regional-effects.test.cjs:36:1
+✖ mobile dragging, pointer cancellation, keyboard moves and background resume keep one journal entry and one earned tag (59.17175ms)
+  TypeError: storyPanel.classList.remove is not a function
+      at Object.destroy (/Users/liuxucheng/code/trailbound/dist/runtime.js:1131:30)
+      at app.js:1441:22
+      at Object.emit (/Users/liuxucheng/code/trailbound/tests/dom-harness.cjs:54:1085)
+      at TestContext.<anonymous> (/Users/liuxucheng/code/trailbound/tests/regional-effects.test.cjs:37:1023)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

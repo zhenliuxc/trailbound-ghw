@@ -1,0 +1,79 @@
+[
+  {
+    "id": "longke",
+    "name": "浪茄",
+    "file": "photos/maclehose-longke-place-v8.webp",
+    "width": 1600,
+    "height": 907,
+    "format": "webp",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Long_Ke_Wan_3.jpg",
+    "position": "78% 63%"
+  },
+  {
+    "id": "saiwanShan",
+    "name": "西湾山",
+    "file": "photos/maclehose-saiwan-shan-place-v8.webp",
+    "width": 1600,
+    "height": 1200,
+    "format": "webp",
+    "license": "CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E6%B5%AA%E6%B9%BE_-_Tai_Long_Wan_-_2015.01_-_panoramio.jpg",
+    "position": "50% 55%"
+  },
+  {
+    "id": "saiwan",
+    "name": "西湾",
+    "file": "photos/maclehose-saiwan.webp",
+    "width": 960,
+    "height": 720,
+    "format": "webp",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sai_Wan.jpg",
+    "position": "50% 50%"
+  },
+  {
+    "id": "hamtin",
+    "name": "咸田湾",
+    "file": "photos/maclehose-hamtin.webp",
+    "width": 960,
+    "height": 720,
+    "format": "webp",
+    "license": "CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:Ham_Tin_Wan_beach.jpg",
+    "position": "50% 50%"
+  },
+  {
+    "id": "taiLongAu",
+    "name": "大浪坳",
+    "file": "photos/maclehose-tailongau-m040-v8.webp",
+    "width": 1600,
+    "height": 900,
+    "format": "webp",
+    "license": "CC BY-SA 2.0",
+    "source": "https://www.flickr.com/photos/erictse2005/31766789434/",
+    "position": "50% 50%"
+  },
+  {
+    "id": "chekKeng",
+    "name": "赤径",
+    "file": "photos/maclehose-chekkeng-pier-v2.webp",
+    "width": 1600,
+    "height": 1190,
+    "format": "webp",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Chek_Keng_Pier_2010.jpg",
+    "position": "50% 50%"
+  },
+  {
+    "id": "pakTamAu",
+    "name": "北潭凹",
+    "file": "photos/maclehose-paktamau-place-v8.webp",
+    "width": 1600,
+    "height": 1200,
+    "format": "webp",
+    "license": "CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Pak_Tam_Au_29-06-2022.jpg",
+    "position": "50% 50%"
+  }
+]

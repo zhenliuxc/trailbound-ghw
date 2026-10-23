@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-20",
+  "tool": "built-in image_gen",
+  "master": "art/maclehose-saiwan-shoulder-v12/concept-master-v2.png",
+  "referenceCredits": "art/maclehose-saiwan-shoulder-v12/sources.json",
+  "assets": [
+    {
+      "name": "panorama",
+      "file": "panorama.png",
+      "generated": "/Users/liuxucheng/.codex/generated_images/01a14aaf-d3f3-7650-af38-8fa8f63e55b9/exec-3ee3fa69-33b5-4db2-a9c1-147c4b6b2a95.png",
+      "prompt": "panorama-prompt.txt",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "clearPixels": 0,
+      "solidPixels": 1573352,
+      "sha256": "16e2abc320038991867c1e42d2b1501f99975dc483a73a0d29e39fcddee08e29"
+    },
+    {
+      "name": "terrain",
+      "file": "terrain.png",
+      "generated": "/Users/liuxucheng/.codex/generated_images/01a14aaf-d3f3-7650-af38-8fa8f63e55b9/exec-9f6e0d7e-c784-48a8-8c89-2ec8ce34c44f.png",
+      "prompt": "terrain-prompt.txt",
+      "width": 1672,
+      "height": 941,
+      "alpha": true,
+      "clearPixels": 850958,
+      "solidPixels": 674151,
+      "sha256": "f70dfb64943f54d425a30b8748a87f09a067a142167e7d553862b19f4b0c70ae"
+    },
+    {
+      "name": "shoulder",
+      "file": "shoulder.png",
+      "generated": "/Users/liuxucheng/.codex/generated_images/01a14aaf-d3f3-7650-af38-8fa8f63e55b9/exec-83475e14-09be-4971-815d-ad6e64b0e22d.png",
+      "prompt": "shoulder-prompt.txt",
+      "width": 1672,
+      "height": 941,
+      "alpha": true,
+      "clearPixels": 1195484,
+      "solidPixels": 340203,
+      "sha256": "0869d9c059d291a4a227bdd517beb0747e605ec5fc95737fd8e5db706b252978"
+    },
+    {
+      "name": "blue-poses",
+      "file": "blue-poses.png",
+      "generated": "/Users/liuxucheng/.codex/generated_images/01a14aaf-d3f3-7650-af38-8fa8f63e55b9/exec-e886993a-c9b8-4bfb-919b-98baa9eb24f4.png",
+      "prompt": "blue-poses-prompt.txt",
+      "width": 1774,
+      "height": 887,
+      "alpha": true,
+      "clearPixels": 934858,
+      "solidPixels": 544899,
+      "sha256": "0bf7de1d1aba0e7d84c3eb93ccb3187ae052eeb6e5903a79e5c2a3efe95cb7f6"
+    },
+    {
+      "name": "braids-poses",
+      "file": "braids-poses.png",
+      "generated": "/Users/liuxucheng/.codex/generated_images/01a14aaf-d3f3-7650-af38-8fa8f63e55b9/exec-88ae3c75-7fae-461b-8eb7-348aa0a8df11.png",
+      "prompt": "braids-poses-prompt.txt",
+      "width": 1774,
+      "height": 887,
+      "alpha": true,
+      "clearPixels": 981555,
+      "solidPixels": 486045,
+      "sha256": "44d067ba14e2a47d5f366acfd201777cf807cdda120d0309db4d2d6ab8898855"
+    }
+  ]
+}

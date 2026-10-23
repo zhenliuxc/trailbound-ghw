@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "photo",
+    "name": "浪茄",
+    "loaded": true
+  },
+  {
+    "kind": "game",
+    "id": "coast-sand",
+    "completed": "已收进手帐"
+  },
+  {
+    "kind": "photo",
+    "name": "西湾山",
+    "loaded": true
+  },
+  {
+    "kind": "photo",
+    "name": "西湾",
+    "loaded": true
+  },
+  {
+    "kind": "game",
+    "id": "maclehose-sideways-crab",
+    "completed": "已收进手帐",
+    "blockedUntilThirdLog": true
+  },
+  {
+    "kind": "photo",
+    "name": "咸田湾",
+    "loaded": true
+  },
+  {
+    "kind": "game",
+    "id": "coast-shell",
+    "completed": "已收进手帐",
+    "missingVisibleControls": true
+  },
+  {
+    "kind": "game",
+    "id": "maclehose-woodland-echo",
+    "completed": "已收进手帐",
+    "replayUsed": true,
+    "pointerAnswers": 5
+  },
+  {
+    "kind": "photo",
+    "name": "大浪坳",
+    "loaded": true
+  },
+  {
+    "kind": "photo",
+    "name": "北潭凹",
+    "loaded": true
+  },
+  {
+    "kind": "game",
+    "id": "coast-pier",
+    "completed": "已收进手帐",
+    "separateReplay": true,
+    "dockingAloneDidNotAward": true,
+    "wrongRopeDropDidNotAward": true
+  },
+  {
+    "stage": "chekKeng-photo",
+    "result": "loaded 1600px direct-place photograph with CC BY-SA 4.0 attribution"
+  },
+  {
+    "stage": "journal",
+    "result": "filtered MacLehose collection shows five unique badges"
+  }
+]

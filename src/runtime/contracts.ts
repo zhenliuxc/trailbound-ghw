@@ -6,6 +6,7 @@ export type GameKind = 'wind' | 'creek' | 'rain' | 'footsteps' | 'clouds' | 'gre
 export type AssetState = 'queued' | 'loading' | 'ready' | 'error' | 'cancelled';
 
 export interface RouteSummary { id: RouteId; name: string }
+export interface JournalArtPresentation { src: string; original?: string }
 export interface Moment {
   key: string;
   id: string;
@@ -141,6 +142,9 @@ export interface MiniOutcome {
 }
 export type SvgFactory = (tag: string, attributes: Record<string, string | number | boolean>, parent?: Element) => SVGElement;
 export interface MiniApi {
+  /** New adapters opt into direct input without borrowing a legacy game's identity. */
+  input?: 'direct';
+  soundTheme?: GameKind;
   create(entry: MomentEntry, options: { reduced: boolean; weather?: string }): MiniState;
   act(state: MiniState, input: MiniInput): MiniState;
   move(state: MiniState, input: MiniInput): MiniState;

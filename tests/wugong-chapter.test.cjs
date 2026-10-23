@@ -22,7 +22,7 @@ test('loaded cloud, photography and jigsaw automatically collect exactly once on
   else if(id==='wugong-wind-hiker'){h.click('wugong-primary');h.click('wugong-primary');pointer(h,{x:.55,y:.47});h.click('wugong-primary');assert.match(h.$('wugong-primary').textContent,/给她/);h.click('wugong-primary');h.click('wugong-primary');h.advance(5);}
   else{for(let i=0;i<6;i++){host.emit('keydown',{key:String(i+1)});pointer(h,A.slotPoint(i));}h.advance(3);}
   assert.equal(h.$('micro-panel').hidden,true,id);assert.equal(h.$('reward-overlay').hidden,true,id);assert.equal(h.$('reward-continue').hidden,true);h.click('reward-continue');h.click('reward-continue');assert.equal(D.loadMoments(records).filter(m=>m.earned).length,1);
-  assert.equal(h.messages.filter(item=>item.message.type==='trailbound-wugong-art-collected').length,1);
+  assert.equal(h.messages.filter(item=>item.message.protocol==='trailbound.art.v1'&&item.message.type==='collected').length,1);
  }
 });
 
@@ -43,8 +43,8 @@ test('a finished painting is already saved when its display closes',async()=>{
  for(const point of S.cloudSeeds)pointer(h,point);h.advance(5);
  assert.equal(h.$('reward-overlay').hidden,true);h.key('Escape');
  assert.equal(D.loadMoments(records).length,1);
- assert.equal(h.messages.filter(item=>item.message.type==='trailbound-wugong-art-collected').length,1);
- assert.ok(h.messages.some(item=>item.message.type==='trailbound-wugong-art-close'&&item.message.collected===1));
+ assert.equal(h.messages.filter(item=>item.message.protocol==='trailbound.art.v1'&&item.message.type==='collected').length,1);
+ assert.ok(h.messages.some(item=>item.message.protocol==='trailbound.art.v1'&&item.message.type==='close'&&item.message.collected===1));
 });
 
 test('replaying the current art page keeps the first saved artwork, date and memory',async()=>{
@@ -56,10 +56,10 @@ test('replaying the current art page keeps the first saved artwork, date and mem
  assert.deepEqual(D.loadMoments(records),[first]);
 });
 
-test('a newly collected memory names the place actually visited on this itinerary',async()=>{
- const records={value:null,getItem(){return this.value;},setItem(k,v){this.value=v;}},h=harness(records,{miniGames:true,autoImages:true,artEntry:'meadow-butterfly',artPlace:'武功山 · 吊马桩'});await h.readyArt();
+test('a newly collected memory uses its itinerary place even if the URL supplies a different name',async()=>{
+ const records={value:null,getItem(){return this.value;},setItem(k,v){this.value=v;}},h=harness(records,{miniGames:true,autoImages:true,artEntry:'meadow-butterfly',artPlace:'武功山 · 金顶'});await h.readyArt();
  for(const point of S.cloudSeeds)pointer(h,point);h.advance(5);h.click('reward-continue');
- const [saved]=D.loadMoments(records);assert.equal(saved.place,'武功山 · 吊马桩');assert.match(saved.memory,/^武功山 · 吊马桩，/);assert.doesNotMatch(saved.memory,/金顶山脊/);
+ const [saved]=D.loadMoments(records);assert.equal(saved.place,'武功山 · 吊马桩山脊');assert.match(saved.memory,/^武功山 · 吊马桩山脊，/);assert.doesNotMatch(saved.memory,/金顶/);
 });
 
 test('wind artwork loading and failure block blind controls, permit retry, and do not leak a reward',async()=>{

@@ -4,6 +4,7 @@
   "private": true,
   "description": "A browser hiking journey with illustrated scenery and PixiJS rendering",
   "scripts": {
+    "build:route-map": "node scripts/generate-route-map.mjs",
     "build": "node scripts/build-runtime.mjs",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.cjs",
@@ -23,6 +24,7 @@
     "@gltf-transform/functions": "4.5.1",
     "@types/matter-js": "0.20.2",
     "@types/three": "0.186.0",
+    "d3-geo": "3.1.1",
     "esbuild": "0.25.12",
     "sharp": "0.35.5",
     "typescript": "5.9.3"

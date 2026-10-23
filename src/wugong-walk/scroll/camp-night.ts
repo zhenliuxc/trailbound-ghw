@@ -1,8 +1,8 @@
 import { CAMP_NIGHT_ART, CAMP_STARS, CAMP_STAR_LINKS, CampStars, type StarFeedback, type StarLink } from './camp-stars';
 import type { CampSaveResult } from './camp-journal';
-import { circularBadge } from '../badge-art';
+import { circularBadge } from '../../runtime/journal-badge';
 import type { EnvironmentFrame } from '../environment';
-import { enterDialog, leaveDialog, type CancelMotion } from '../visible-motion';
+import { enterDialog, leaveDialog, type CancelMotion } from '../../journey/visible-motion';
 
 interface CampNightOptions {
   readonly signal: AbortSignal;

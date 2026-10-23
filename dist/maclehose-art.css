@@ -1,0 +1,45 @@
+.coast-art-page{--accent:#668b7f;--accent-soft:#dce9df;display:flex;flex-direction:column;height:100dvh;min-height:320px;margin:0;overflow:hidden}
+.coast-art-page .art-page-header{flex:none;padding:10px 72px 10px clamp(12px,2vw,28px);gap:12px}
+.coast-art-page .art-page-header h1{font-size:19px;line-height:1.35;margin:2px 0}
+.coast-art-page .art-page-header small{font-size:11px}
+.coast-art-page #app-main{flex:1;min-height:0;width:100%;max-width:none;margin:0;padding:10px clamp(8px,1.4vw,22px);overflow:auto}
+.coast-art-page #journey-stage{height:100%;min-height:0}
+.coast-art-page #micro-panel{--play-padding:10px;position:relative;inset:auto;transform:none;display:grid;width:100%;height:100%;min-height:250px;max-height:none;margin:0;padding:var(--play-padding);gap:7px 12px;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto minmax(100px,1fr) 3px auto;grid-template-areas:"heading heading" "scene scene" "progress progress" "result controls";align-content:stretch;align-items:start;overflow:hidden}
+.coast-art-page #micro-panel .micro-heading{grid-area:heading;position:static;display:flex;align-items:center;min-height:40px;gap:10px;margin:0;background:none}
+.coast-art-page #micro-panel .micro-heading>div{min-width:0}
+.coast-art-page #micro-panel .micro-heading h2{font-size:clamp(16px,1.5vw,22px);line-height:1.4;margin:0;overflow-wrap:anywhere}
+.coast-art-page #micro-panel .micro-heading button{min-height:44px;flex:none;padding:6px 10px;font-size:12px;border:0;background:transparent}
+.coast-art-page #micro-panel .micro-surface{grid-area:scene;position:relative;align-self:stretch;justify-self:stretch;width:100%;height:100%;min-height:0;max-width:none;max-height:none;aspect-ratio:auto;border-radius:12px;overflow:hidden;background:#eeeddf;isolation:isolate;padding:0}
+.coast-art-page #micro-panel #micro-art{display:block;width:100%;height:100%;max-height:none;aspect-ratio:auto}
+.coast-art-page #micro-panel[data-coast-memory] #micro-art{visibility:hidden;position:absolute;inset:0}
+.coast-art-page #micro-panel[data-coast-memory=tide] .micro-surface{cursor:crosshair;touch-action:none}
+.coast-art-page #micro-panel .micro-progress{grid-area:progress;height:3px;margin:0}
+.coast-art-page #micro-panel .micro-result{grid-area:result;align-self:center;position:static;min-height:0;width:auto;height:auto;max-width:none;margin:0;padding:0;font-size:13px;line-height:1.55;white-space:normal;clip-path:none;overflow:visible;text-align:left}
+.coast-art-page #micro-panel .mini-controls{grid-area:controls;align-self:center;display:flex;justify-content:flex-end;flex-wrap:wrap;gap:4px;margin:0}
+.coast-art-page #micro-panel .mini-controls button{min-height:44px;padding:6px 10px;font:inherit;font-size:12px;background:transparent;border-color:transparent}
+.coast-art-page #micro-instruction{position:absolute;width:1px;height:1px;min-height:0;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.coast-memory-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;pointer-events:none}
+.coast-echo-repeat{color:#53654e;cursor:pointer}
+.coast-echo-repeat:focus-visible{outline:2px solid #547866;outline-offset:3px}
+.coast-echo-repeat:disabled{opacity:.55;cursor:default}
+@media(max-width:600px) and (orientation:portrait){
+  .coast-art-page .art-page-header{padding:8px 62px 8px 12px;gap:8px}
+  .coast-art-page .art-page-header h1{font-size:17px}
+  .coast-art-page .art-page-header button{padding:6px 10px;font-size:12px}
+  .coast-art-page #app-main{padding:6px}
+  .coast-art-page #micro-panel{--play-padding:8px;gap:6px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(100px,1fr) 3px auto auto;grid-template-areas:"heading" "scene" "progress" "result" "controls"}
+  .coast-art-page #micro-panel .micro-result{font-size:12px}
+  .coast-art-page #micro-panel .mini-controls{justify-content:flex-end;gap:2px}
+}
+@media(max-height:500px) and (orientation:landscape){
+  .coast-art-page .art-page-header{padding-top:4px;padding-bottom:4px}
+  .coast-art-page .art-page-header>div{display:flex;align-items:baseline;gap:12px}
+  .coast-art-page .art-page-header h1{font-size:16px}
+  .coast-art-page #app-main{padding:5px 8px}
+  .coast-art-page #micro-panel{--play-padding:6px;gap:4px 10px}
+  .coast-art-page #micro-panel{grid-template-columns:minmax(0,1fr) 140px;grid-template-areas:"heading controls" "scene controls" "progress controls" "result controls"}
+  .coast-art-page #micro-panel .mini-controls{align-self:start;flex-direction:column;align-items:stretch;padding-top:4px}
+  .coast-art-page #micro-panel .micro-heading{min-height:32px}
+  .coast-art-page #micro-panel .micro-heading button{min-height:36px}
+  .coast-art-page #micro-panel .micro-result{font-size:11px}
+}

@@ -1,0 +1,11 @@
+Use case: precise-object-edit.
+Edit target: image 1, the Sai Wan Shan watercolor concept master.
+Identity reference only: image 2, the established blue-clothed chibi traveler.
+
+Make ONE targeted correction: reduce and reposition the single hiker. Keep the entire landscape, camera framing, coastline, pointed distant Sharp Peak, sky, colors, stone steps, overlook platform and vegetation unchanged.
+
+The hiker in image 1 is currently approximately 29 percent of image height and is too large. Remove that large figure cleanly, restoring the occluded stone and plants. Paint the SAME single hiker much smaller, only 12 to 14 percent of total canvas height, on the UPPER part of the stone stair path as it meets the LEFT edge of the overlook platform. In a 1672x940 rendering, the new hiker should be around 115 to 130 pixels tall, feet near x=600,y=665. Scale the entire person, backpack and hat proportionally, do not shrink only the head. Preserve image 2's face, large eyes, hat, jacket, red scarf, moss-green backpack, tan trousers, boots and hand-painted watercolor texture.
+
+Show a modest, believable final uphill step: one boot planted flat on the stone tread just below the platform and the other lifting toward the next shallow step; body weight over the supporting boot, slightly leaning uphill, looking rightward toward the view. Let the bay and mountain panorama clearly dominate the image.
+
+Only ONE character. No duplicate, ghost, outline or sticker edge. Natural contact shadow under the planted boot. Do not change or repaint the landscape composition. No text, badges, arrows or interface. Preserve the landscape aspect ratio and the highest available native resolution.

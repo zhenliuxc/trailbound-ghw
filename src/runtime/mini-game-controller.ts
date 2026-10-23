@@ -50,6 +50,8 @@ export function createMiniGameController(options: MiniOptions) {
   // The view reads the currently selected adapter, including explicitly registered new games.
   const view = createMiniGameView({ dom, api: { ...options.api, status: state => api.status(state) }, platform: games, sound: options.sound });
   const surface = $('micro-surface');
+  const soundTheme = () => api.soundTheme ?? current?.game;
+  const directInput = () => api.input === 'direct' || !!refs?.directInput;
 
   function interactive() { return !!current && scenes.isTop(session) && !scenes.background && !dom.document.hidden; }
   function paint() { if (current && refs) api.paint(refs, current, options.reduced); }
@@ -57,10 +59,11 @@ export function createMiniGameController(options: MiniOptions) {
     if (!current || !refs) return;
     view.update(current, refs);
     api.present?.(current, refs);
-    if (current.game) {
+    const theme = soundTheme();
+    if (theme) {
       if (current.game === 'wind' && games && !refs.directInput) options.audio.wind?.(games.flow(current).energy, current.play.complete);
       for (const event of current.events || []) if (event.serial > soundSerial) {
-        options.audio.mini?.(current.game, event.type, { x: event.x, index: event.index ?? (current.caught || current.gates) });
+        options.audio.mini?.(theme, event.type, { x: event.x, index: event.index ?? (current.caught || current.gates) });
         soundSerial = event.serial;
       }
     }
@@ -87,7 +90,7 @@ export function createMiniGameController(options: MiniOptions) {
     const next = api.act(current, input);
     if (next === current) return;
     current = next;
-    if (!current.game) {
+    if (!current.game && !directInput()) {
       paint();
       options.audio.interact?.(current.kind, { x: current.x, icon: D.item(current.id).icon, playType: current.play.type });
     }
@@ -103,6 +106,7 @@ export function createMiniGameController(options: MiniOptions) {
     soundSerial = 0; genericCompletionSound = false; pendingPoint = null; view.reset();
     $<HTMLButtonElement>('mini-retry').disabled = false;
     $('micro-art').replaceChildren(); refs = api.draw(options.svg, $('micro-art'), entry);
+    if (api.input === 'direct') refs.directInput = true;
     refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || refs.tiger || refs.directInput || current.game === 'wind');
     if (refs.waitsForArt) refs.contentState = 'loading';
     surface.setAttribute('aria-busy', String(refs.waitsForArt)); paint();
@@ -113,10 +117,11 @@ export function createMiniGameController(options: MiniOptions) {
     $('micro-panel').setAttribute('data-mogan', String(!!refs.mogan));
     $('micro-panel').setAttribute('data-art-game', String(!!refs.art));
     $('micro-panel').setAttribute('data-game', current.game || '');
+    $('micro-panel').setAttribute('data-direct', String(directInput()));
     $('wind-hud').hidden = !current.game || !!refs.art || !!refs.mogan || !!refs.tiger || !!refs.directInput;
     const labels = { wind: '武功山 · 借风', clouds: '武功山 · 拨云见山', altar: '武功山 · 金顶石语', greet: '武功山 · 风口相遇', creek: '九溪 · 推叶', rain: '莫干山 · 接雨' };
     $('mini-place-label').textContent = current.game && current.game in labels ? labels[current.game as keyof typeof labels] : '';
-    $('mini-controls').hidden = !current.game;
+    $('mini-controls').hidden = !current.game && !directInput();
     options.cache?.request(entry.artV5 || entry.artV4 || entry.badge, 'high');
     text('micro-place', entry.place + ' · ' + entry.condition); text('micro-title', entry.name);
     text('micro-instruction', api.instruction(entry));
@@ -156,13 +161,15 @@ export function createMiniGameController(options: MiniOptions) {
   function finish(record = true, resume = true) {
     if (!current || !currentEntry || !refs || !session) return;
     const finished = current, closingRefs = refs, closing = session, entry = currentEntry;
-    pause(); current = null; currentEntry = null; refs = null; session = null;
+    pause();
+    const outcome = record && finished.play.complete === true ? api.outcome(finished, entry) : null;
+    current = null; currentEntry = null; refs = null; session = null;
     try { if (api.dispose) api.dispose(closingRefs); else games?.dispose(closingRefs); }
     catch { /* Renderer cleanup must not trap the player in an exiting scene. */ }
     closingRefs.disposed = true;
     $('micro-panel').hidden = true; options.stopLoop();
     let rewardShown = false;
-    if (record && finished.play.complete === true) rewardShown = options.onFinished({ state: finished, entry, outcome: api.outcome(finished, entry), returnStatus: closing.returnStatus });
+    if (outcome) rewardShown = options.onFinished({ state: finished, entry, outcome, returnStatus: closing.returnStatus });
     scenes.leave(closing, resume && !rewardShown);
     options.onClosed?.(finished.id, finished.play.complete === true, resume);
     options.refresh();
@@ -173,7 +180,7 @@ export function createMiniGameController(options: MiniOptions) {
     if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== 'ready') { updateStatus(); paint(); return; }
     if (pendingPoint) { current = api.move(current, pendingPoint); pendingPoint = null; }
     current = api.tick(current, dt);
-    if (!current.game && current.play.complete && !genericCompletionSound) { genericCompletionSound = true; options.audio.mini?.('memory', 'complete'); }
+    if (!soundTheme() && current.play.complete && !genericCompletionSound) { genericCompletionSound = true; options.audio.mini?.('memory', 'complete'); }
     updateStatus(); paint();
     if (current.done) finish(true);
   }
@@ -201,7 +208,7 @@ export function createMiniGameController(options: MiniOptions) {
   function cancelGesture() { pause(); paint(); updateStatus(); }
   function keydown(event: KeyboardEvent) {
     if (!interactive() || !current || !refs) return;
-    if (current.game && event.key.toLowerCase() === 'r') { event.preventDefault(); retry(); return; }
+    if ((current.game || directInput()) && event.key.toLowerCase() === 'r') { event.preventDefault(); retry(); return; }
     if (event.ctrlKey || event.altKey || event.metaKey) return;
     const arrows: Record<string, [number, number]> = { ArrowLeft: [-.08, 0], ArrowRight: [.08, 0], ArrowUp: [0, -.1], ArrowDown: [0, .1] };
     if (api.key) {
@@ -249,7 +256,7 @@ export function createMiniGameController(options: MiniOptions) {
       if (!inputReady() || pointer || event.isPrimary === false || event.button !== undefined && event.button !== 0 || !current) return;
       event.stopPropagation?.(); pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, drag: false };
       surface.setPointerCapture?.(event.pointerId);
-      if (current.game) perform({ ...point(event), ...(refs?.art || refs?.mogan || refs?.tiger || refs?.directInput || current.game === 'clouds' ? { phase: 'press' as const } : {}) });
+      if (current.game || directInput()) perform({ ...point(event), ...(refs?.art || refs?.mogan || refs?.tiger || directInput() || current.game === 'clouds' ? { phase: 'press' as const } : {}) });
     });
     bindings.listen(surface, 'pointermove', event => {
       if (!interactive() || !current) return;
@@ -265,7 +272,7 @@ export function createMiniGameController(options: MiniOptions) {
       if (Math.hypot(event.clientX - pointer.x, event.clientY - pointer.y) > 8) pointer.drag = true;
       if (!pointer.drag) return;
       const input = { ...point(event), gesture: 'drag' as const };
-      if (current.game) { pendingPoint = input; options.ensureLoop(); return; }
+      if (current.game || directInput()) { pendingPoint = input; options.ensureLoop(); return; }
       if (!current.acted) {
         const rect = surface.getBoundingClientRect();
         perform({ x: (pointer.x - rect.left) / rect.width, y: (pointer.y - rect.top) / rect.height, gesture: 'drag' });
@@ -316,6 +323,7 @@ export function createMiniGameController(options: MiniOptions) {
   return {
     get state() { return current; },
     get active() { return current !== null; },
+    get soundTheme() { return soundTheme(); },
     begin, finish, update, pause, retry, action,
     /** New typed adapters can be installed without adding a dispatch branch to app.js. */
     registerGame(ids: readonly string[], adapter: MiniApi) { for (const id of ids) registered.set(id, adapter); },

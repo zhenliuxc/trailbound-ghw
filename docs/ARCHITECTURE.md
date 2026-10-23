@@ -1,34 +1,70 @@
 # 山径的运行架构与 TypeScript 迁移
 
-本轮从 GitHub `codex/recover-site` 的 `b292790` 开始，该提交对应版本 40。下面描述重构后的源码架构；**已完成集中验证并推送 Git，随后用户批准原站点整合发布**。验证记录见 [runtime-refactor-verification.md](runtime-refactor-verification.md)，后续发布准备见 [audio-runtime-release.md](audio-runtime-release.md)。
+当前入口为首页选线、七个独立旅程页与共用手绘游戏页。长坪沟、莫干山和九溪龙井共用 `day-walk/` 宿主、`journey/day-route.ts` 状态机与 `templates/day-walk.html`，路线内容和照片集中在 `content/day-routes.ts`、`day-photos.ts`。初版迁移与照片缺口记录见 [remaining-routes-1.md](remaining-routes-1.md)，各轮检查以对应实现记录为准。
+
+首页全国地图由 `runtime/route-map-picker.ts` 管理，短名、地域与地景图标配置在 `content/route-atlas.ts`。构建脚本 `generate-route-map.mjs` 将 `assets/maps/` 的轮廓、自然地理区域、水系与路线经纬度统一投影为本地几何；地图组件复用地景图标和标签避让，原入口继续管理选线、封面和出发。详见 [全国地图细化](national-atlas-2.md)。
+
+此前四条新路线的共用组件整理及验证见 [shared-components-refactor.md](shared-components-refactor.md)；地图高度、人物大小与镜头专项检查见 [shared-map-camera-2.md](shared-map-camera-2.md)。这些历史结果不代表本批三条路线已经验收。
+
+七条现行 2D 旅程共用 `journey/landmark-symbol.ts` 的地景图标与 `landmark-layer.ts` 标记组件。图标固定于场景投影点，名称由 `landmark-label.ts` 就近避让；`landmark-name-layer.ts` 将次要地名纳入同一占用空间。路线只配置图标、名称、锚点与可用状态，仍自行处理照片和行进。接入方法见 [landmark-library-1.md](landmark-library-1.md)，实际尺寸、密集地点策略与最新检查见 [landmark-library-2.md](landmark-library-2.md)。
+
+日间地图由 `day-walk/landscape.ts` 按路线注册绘制。`landscape/primitives.ts` 复用山形、树木和溪水等绘制基础，`landscape/ground.ts` 复用坡面延展、林丛、路径留白、石块与踏石。`bamboo.ts` 统一竹竿、竹节、细叶与可落滴的叶尖坐标。各路线分别维护地形构图，不持有旅程、镜头或收藏状态。
+
+需要水纹等动态细节时，绘制器可返回 `LandscapeEffects`。`DayScene` 传入旅程时钟、当前天气和减少动态效果设置，所有节点随地图世界释放，不另建定时器。`stream-motion.ts` 沿实际溪流曲线计算快慢水纹，莫干山与九溪共用；九溪保留原有水道与浅潭参数。莫干山的石阶、湿痕与斑光在 `mogan-path.ts`，近景竹影、滴水和天气渐变在 `mogan-weather.ts`；九溪坡面与茶垄在 `westlake-tea.ts`。路线、踏石与路旁细节均从同一个 `DayTrail` 取坐标。先前检查见 [两条江南地图细化](southern-maps-6.md)，后续实现状态见 [九溪茶坡与溪流](westlake-map-flow-4.md) 和 [莫干山雨后竹林](mogan-bamboo-weather-7.md)。
+
+下文也保留最初从 GitHub `codex/recover-site` 的 `b292790`（版本 40）开始的迁移记录。那一批集中验证见 [runtime-refactor-verification.md](runtime-refactor-verification.md)，发布准备见 [audio-runtime-release.md](audio-runtime-release.md)；历史结论不能作为本批验证证据。
 
 ## 源码与发布目录
 
 ```text
 src/
   app.js                          浏览器入口：组装模块、旅程和地图显示
+  content/                        独立旅程入口、封面、事件身份与地点文案
+  journey/                        共用镜头与人物缩放、照片弹窗、游戏页与会话通信、发现过渡、尺寸观察
+  templates/                      首页、日间旅程与小游戏共用的 HTML 源模板
+  day-walk/                       三条日间路线共用的宿主、2D 地形、人物与音效
+    landscape/                    通用绘制基础、地面细节及各路线地形构图
+  {wugong,tiger,aotai,maclehose}-walk/  路线状态、地形、照片、环境声；武功山主入口在 scroll/
   runtime/
     contracts.ts                  路线、手帐、小游戏、素材、音效的共享类型
     dom.ts                        DOM 边界和可释放的事件绑定
     scene-manager.ts              场景栈、暂停、返回、后台状态
     frame-loop.ts                 唯一动画时钟及取消
+    projection.ts                 场景/视口坐标换算与等比图片取景
     map-viewport.ts               桌面概览画幅；等比路线投影和 GPU/SVG 共用取景
+    route-map-picker.ts           首页全国地图、地点按钮、排布与选择状态
+    route-map-geometry.generated.ts  由地图源数据生成的轮廓、水系、地形及锚点
     mini-game-controller.ts       小游戏进入、输入、更新、重试、退出
     mini-game-view.ts             各类小游戏的工具栏、提示和进度显示
     hint-art.ts                   共用水彩引导、SVG/Pixi 保留节点及铅笔降级
     hint-asset.ts                 原创提示素材尺寸与实际箭尖锚点（打包生成）
     reward-controller.ts          纪念画展开、收起、焦点、收藏过渡
-    journal-controller.ts         标签墙、图文详情、翻页与自动保存
+    journal-controller.ts         标签墙、图文详情、翻页与保存反馈
+    journal-route-filter.ts       共用路线页签、收藏计数与横向焦点可见性
+    journal-store.ts              读取最新记录、合并、去重及保存失败结果
+    journal-badge.ts              圆形徽章与旧手帐展示兼容
+    badge-paper.ts                可复用的圆形画心、米白纸边与捕获编码
+    tiger-badge.ts                虎跳峡旧画与玩家捕获的圆形展示，原件不改写
     music-layer.ts                武功山/莫干山免费主题、流式切换与暂停清理
     mogan/                        莫干山注册适配器、规则和共用水彩场景描述
     index.ts                      公共入口及类型导出
 scripts/
   build-runtime.mjs               TypeScript 编译、浏览器打包
+  build-pages.mjs                 从模板生成首页
+  build-wugong-art.mjs            从共享片段生成七个小游戏页
+  build-day-pages.mjs             从日间路线数据生成三个地图页与素材来源页
+  build-landmark-library.mjs      从共享图标源生成 SVG、地图标记 CSS 和图标总览
 dist/
   runtime.js                      从 src/runtime/ 生成，请勿直接编辑
   app.js                          从 src/app.js 生成，请勿直接编辑
   hint-art.js                     从 src/runtime/hint-art.ts 生成，供旧场景复用
-  index.html / *.css              现有页面和水彩风格
+  index.html / *-art.html         从 src/templates/ 生成，请勿直接编辑
+  {changping,mogan,westlake}-walk.html   从 day-walk.html 模板生成，请勿直接编辑
+  其他 *-walk.html / *.css         尚未迁移的地图页面及水彩风格源码
+  journey-map.css                 七条独立旅程共用的地图高度与横竖屏规则
+  landmark-markers.css            从 src/journey/landmark-markers.css 和尺寸常量生成，请勿直接编辑
+  landmark-library.html           从 src/templates/landmark-library.html 生成
+  icons/landmarks/*.svg           从 src/journey/landmark-symbol.ts 生成
   journey.js / journal.js / …     暂时保留的 JavaScript 规则与画面模块
   vendor/ / scenes/ / sprites/ …  原有 PixiJS、图片、声音与许可
 ```
@@ -89,6 +125,7 @@ flowchart TD
 | `draw` / `paint` | 创建和更新画面 |
 | `instruction` / `status` | 返回操作提示和即时反馈 |
 | `outcome` | 返回真实完成结果 |
+| 可选 `input: 'direct'` / `soundTheme` | 显式输入能力与声音主题，独立于旧玩法身份 |
 | 可选 `assets` / `mount` / `dispose` | 供新适配器接管素材和渲染器生命周期 |
 
 控制器统一处理鼠标、触摸、键盘、取消拖动、重试、声音事件去重、素材加载状态与旧异步结果失效。现有玩法通过原适配层接入，保留拼图正向放置、拨云、拍照、接雨、推叶、消除和弹射规则。

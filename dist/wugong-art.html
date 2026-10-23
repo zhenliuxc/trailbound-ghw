@@ -1,7 +1,7 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>武功山 · 手绘与旅行手帐</title>
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="art-games.css"><link rel="stylesheet" href="game-layout.css"><link rel="stylesheet" href="wugong-art.css?v=tiger-schematic-1">
+<link rel="stylesheet" href="style.css?v=journal-route-tabs-1"><link rel="stylesheet" href="art-games.css"><link rel="stylesheet" href="game-layout.css?v=direct-input-2"><link rel="stylesheet" href="wugong-art.css?v=tiger-schematic-1">
 <script defer src="vendor/pixi-8.22.0.min.js"></script>
-<script defer src="route-moments.js"></script>
+<script defer src="route-moments.js?v=changping-autumn-4"></script>
 <script defer src="route-scenes.js"></script>
 <script defer src="discoveries.js?v=auto-journal-8"></script>
 <script defer src="journal.js"></script>
@@ -21,7 +21,7 @@
 <script defer src="mini-games.js"></script>
 <script defer src="audio-scenes.js"></script>
 <script defer src="audio.js"></script>
-<script defer src="wugong-art.js?v=climb-stroll-3"></script></head><body class="wugong-art-page " data-route="wugong">
+<script defer src="wugong-art.js?v=journal-route-tabs-1"></script></head><body class="wugong-art-page " data-route="wugong">
 <header class="art-page-header"><div><small>山径 · 武功山</small><h1 id="art-page-title">山间手绘</h1></div><button id="walk-toggle" type="button">返回山路 ×</button></header>
 <main id="app-main"><section id="journey-stage"><section id="micro-panel" class="micro-panel" hidden aria-labelledby="micro-title">
 <div class="micro-heading"><div><small id="micro-place"></small><h2 id="micro-title"></h2></div><button id="micro-skip" type="button">继续走 →</button></div>
@@ -44,9 +44,12 @@
 </section>
 </section><section id="art-journal-wall"><section class="field-journal journal-notebook" aria-labelledby="journal-title">
   <header class="journal-heading"><div><p class="eyebrow">FIELD NOTES / 把山野留在纸上</p><h2 id="journal-title">旅行手帐</h2></div><span id="journal-count">0个瞬间</span></header>
-  <p class="journal-intro">把走过的山野，一枚一枚收好。点开手绘，慢慢翻看。</p>
+  <p class="journal-intro">点开一枚徽章，翻看沿途回忆。</p>
   <p id="discovery-status" role="status" aria-live="polite"></p>
-  <div class="journal-toolbar"><div class="journal-route-picker"><label for="journal-route">按路线翻看</label><select id="journal-route"><option value="all">全部路线</option></select></div><span id="trip-count">本次记下0个瞬间</span></div>
+  <div class="journal-toolbar">
+    <div class="journal-toolbar-heading"><span id="journal-route-label">按路线翻看</span><span class="journal-route-scroll-hint" aria-hidden="true">左右滑动</span><span id="trip-count">本次记下0个瞬间</span></div>
+    <div id="journal-route" class="journal-route-picker" role="radiogroup" aria-labelledby="journal-route-label"></div>
+  </div>
   <p id="journal-filter-count" class="journal-note" role="status" aria-live="polite"></p>
   <ol id="journal-list" class="journal-list"></ol>
   <button id="journal-more" type="button" class="journal-more" hidden>继续翻阅 ↓</button>
@@ -62,4 +65,4 @@
     <button id="journal-detail-next" type="button" aria-controls="journal-detail-page">下一枚 <span aria-hidden="true">→</span></button>
   </footer>
   <p id="journal-detail-announcement" class="journal-announcement" role="status" aria-live="polite" aria-atomic="true"></p>
-</dialog><div id="reward-overlay" class="reward-overlay" hidden><section id="reward-dialog" class="reward-dialog" role="dialog" aria-modal="true" aria-labelledby="reward-title" aria-describedby="reward-copy"><p class="eyebrow">A MOMENT TO KEEP · 山野赠礼</p><div class="reward-art-wrap"><span class="reward-glow" aria-hidden="true"></span><img id="reward-art" class="reward-art" alt=""><span class="reward-spark reward-spark-one" aria-hidden="true">✧</span><span class="reward-spark reward-spark-two" aria-hidden="true">✧</span></div><p id="reward-loading" role="status" hidden>正在展开手绘纪念…</p><small id="reward-place"></small><h2 id="reward-title"></h2><p id="reward-copy"></p><p class="reward-note">这枚手绘徽章，和这一刻一起收进手帐。</p><button id="reward-continue" class="primary-button" type="button">收好徽章 →</button></section></div><div id="wind-keepsake" class="wind-keepsake" hidden aria-hidden="true"><span>✧</span><small>山径手帐</small></div><footer class="art-page-credits"><a href="wugong-credits.html" target="_blank" rel="noopener">致谢</a></footer></body></html>
+</dialog><div id="reward-overlay" class="reward-overlay" hidden><section id="reward-dialog" class="reward-dialog" role="dialog" aria-modal="true" aria-labelledby="reward-title" aria-describedby="reward-copy"><p class="eyebrow">A MOMENT TO KEEP · 山野赠礼</p><div class="reward-art-wrap"><span class="reward-glow" aria-hidden="true"></span><img id="reward-art" class="reward-art" alt=""><span class="reward-spark reward-spark-one" aria-hidden="true">✧</span><span class="reward-spark reward-spark-two" aria-hidden="true">✧</span></div><p id="reward-loading" role="status" hidden>正在展开手绘纪念…</p><small id="reward-place"></small><h2 id="reward-title"></h2><p id="reward-copy"></p><p class="reward-note">这枚手绘徽章，和这一刻一起收进手帐。</p><button id="reward-continue" class="primary-button" type="button">收好徽章 →</button></section></div><div id="wind-keepsake" class="wind-keepsake" hidden aria-hidden="true"><span>✧</span><small>山径手帐</small></div></body></html>

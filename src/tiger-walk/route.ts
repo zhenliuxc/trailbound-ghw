@@ -1,14 +1,15 @@
+export { EVENTS } from '../content/tiger';
+import type { LandmarkSymbol } from '../journey/landmark-symbol';
 import { clamp, curve, distance, mix, type Point } from '../wugong-walk/model';
-import type { MemoryId } from '../runtime/tiger-memories/model';
 
 export const TIGER_WORLD = { width: 3600, height: 1900 };
 export type CheckpointId = 'start' | 'bends' | 'halfway' | 'waterfall' | 'tinas' | 'river';
 export type PlaceId = CheckpointId | 'naxi' | 'tea' | 'teacher';
-export type EventId = 'climb' | 'inn-pairs' | 'waterfall-paint' | 'river-frame';
+export type { TigerEventId as EventId } from '../content/tiger';
 export const CHECKPOINT_IDS: readonly CheckpointId[] = ['start', 'bends', 'halfway', 'waterfall', 'tinas', 'river'];
 export const isCheckpoint = (id: PlaceId): id is CheckpointId => id === 'start' || id === 'bends' || id === 'halfway' || id === 'waterfall' || id === 'tinas' || id === 'river';
 export type Leg = 'high' | 'down' | 'return';
-export interface Place { readonly id: PlaceId; readonly name: string; readonly at: number; readonly leg: 'high' | 'down'; readonly point: Point; readonly icon: 'house' | 'steps' | 'peak' | 'bed' | 'water' | 'flag' | 'river'; readonly labelSide: 'above' | 'below' | 'left' | 'right' }
+export interface Place { readonly id: PlaceId; readonly name: string; readonly at: number; readonly leg: 'high' | 'down'; readonly point: Point; readonly symbol: LandmarkSymbol; readonly labelSide: 'above' | 'below' | 'left' | 'right' }
 
 /** Art-directed positions preserve the high road and the same-path river return, not GPS scale. */
 export class TigerPath {
@@ -47,20 +48,20 @@ export const riverCourse = curve([
   [-400, 1940], [200, 1770], [750, 1670], [1250, 1580], [1750, 1500], [2210, 1470], [2680, 1460], [3090, 1445], [3520, 1240], [4100, 930],
 ].map(([x, y]) => ({ x, y })), 10);
 
-const site = (id: PlaceId, name: string, leg: 'high' | 'down', x: number, y: number, icon: Place['icon'], labelSide: Place['labelSide'] = 'below'): Place => {
+const site = (id: PlaceId, name: string, leg: 'high' | 'down', x: number, y: number, symbol: Place['symbol'], labelSide: Place['labelSide'] = 'below'): Place => {
   const path = leg === 'high' ? highRoad : riverBranch, at = path.nearest({ x, y });
-  return { id, name, leg, at, point: path.sample(at), icon, labelSide };
+  return { id, name, leg, at, point: path.sample(at), symbol, labelSide };
 };
 export const PLACES: readonly Place[] = [
-  site('start', '桥头', 'high', 190, 1440, 'flag', 'below'),
-  site('naxi', '纳西雅阁', 'high', 570, 1190, 'house', 'above'),
-  site('bends', '二十八道拐', 'high', 1100, 625, 'steps', 'above'),
-  site('tea', '茶马客栈', 'high', 1550, 810, 'house'),
-  site('halfway', '中途客栈', 'high', 1990, 710, 'bed', 'above'),
-  site('waterfall', '龙洞瀑布', 'high', 2490, 760, 'water', 'above'),
-  site('tinas', '中峡客栈', 'high', 2880, 1000, 'flag', 'left'),
-  site('teacher', '张老师小路', 'down', 3100, 1030, 'steps', 'right'),
-  site('river', '中虎跳 · 江边', 'down', 3210, 1250, 'river'),
+  site('start', '桥头', 'high', 190, 1440, 'village', 'below'),
+  site('naxi', '纳西雅阁', 'high', 570, 1190, 'inn', 'above'),
+  site('bends', '二十八道拐', 'high', 1100, 625, 'switchbacks', 'above'),
+  site('tea', '茶马客栈', 'high', 1550, 810, 'inn'),
+  site('halfway', '中途客栈', 'high', 1990, 710, 'inn', 'above'),
+  site('waterfall', '龙洞瀑布', 'high', 2490, 760, 'waterfall', 'above'),
+  site('tinas', '中峡客栈', 'high', 2880, 1000, 'inn', 'left'),
+  site('teacher', '张老师小路', 'down', 3100, 1030, 'trailhead', 'right'),
+  site('river', '中虎跳 · 江边', 'down', 3210, 1250, 'rapids'),
 ];
 export function place(id: PlaceId): Place { const found = PLACES.find(p => p.id === id); if (!found) throw new Error(`虎跳峡地点缺失：${id}`); return found; }
 export const CLIMB_START = highRoad.nearest({ x: 800, y: 1060 });
@@ -68,9 +69,3 @@ export const CLIMB_END = place('bends').at;
 export const RIVER_PHOTO_AT = riverBranch.length - 55;
 export const WATERFALL_GAME_AT = place('waterfall').at + 135;
 
-export const EVENTS = {
-  climb: { entry: 'tiger-bends-puzzle-v4', place: '虎跳峡 · 二十八道拐', line: '山径在岩壁边弯成一个 S，江声从谷底传来。', motif: '<path d="M6 44h10V33h10V22h10V11h9M4 36l12-20 9 8 9-18 12 23"/>' },
-  'inn-pairs': { entry: 'tiger-inn-pairs-v4', place: '虎跳峡 · 中途客栈', line: '暮色落进峡谷，桌上留着几张小画片。', motif: '<path d="M5 12h18v25H5ZM28 17h18v25H28ZM10 31l5-9 5 9M33 34h8V24h-8Z"/>' },
-  'waterfall-paint': { entry: 'tiger-waterfall-paint-v4', place: '虎跳峡 · 龙洞瀑布', line: '水声落在身后，纸上还留着两处山色。', motif: '<path d="M10 4q-4 11 0 22M19 4q-4 11 0 22M4 34q7-5 13 0t13 0M29 46l4-12L45 8l5 3-15 28Z"/>' },
-  'river-frame': { entry: 'tiger-river-roundframe-v4', place: '虎跳峡 · 中虎跳江边', line: '白浪擦过巨石，远处的江声已经来到眼前。', motif: '<path d="M2 18q7-8 15 0t15 0t15 0M2 32q7-8 15 0t15 0t15 0M18 41l4-9 8 1 5 8Z"/>' },
-} satisfies Record<EventId, { entry: MemoryId; place: string; line: string; motif: string }>;

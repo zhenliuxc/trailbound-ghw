@@ -3,6 +3,8 @@ import { CHARACTERS, DEFAULT_CHARACTER, characterId, readCharacterId, type Chara
 import { badgeFile, sceneFile, clamp, type MemoryKind, type MemoryState, type Point, type Rect } from './model';
 import { coverage, frameCenter, frameFits, layout, PAINT_REGIONS, PALETTE, riverImageRect, roadFromStage, roadToStage } from './layout';
 import { ROAD_LENGTH, ROAD_POINTS, ROAD_STATIONS, roadAt, roadWalk, roadWalkingProgress } from './road';
+import { TIGER_BADGE_ART } from '../../content/tiger-badges';
+import { composePaperBadge, encodePaperBadge, paintBadgeImage } from '../badge-paper';
 
 type Ctx = CanvasRenderingContext2D;
 function polygon(ctx: Ctx, points: readonly Point[], r: Rect): void {
@@ -272,20 +274,26 @@ export class MemoryView implements MiniViewRefs {
   private captureImage: HTMLImageElement | null = null;
   capture(s: MemoryState): string | null {
     if (!this.images || this.disposed) return null;
-    const canvas = this.doc.createElement('canvas'); canvas.width = canvas.height = 576;
-    const ctx = canvas.getContext('2d'); if (!ctx) return null;
-    ctx.drawImage(this.images.badge, 0, 0, 576, 576);
-    if (s.session.kind === 'waterfall') {
-      ctx.save(); ctx.beginPath(); ctx.arc(288, 288, 249, 0, 7); ctx.clip();
-      this.paintedScene(ctx, s, { x: -88, y: -6, width: 752, height: 564 }); ctx.restore();
-    } else if (s.session.kind === 'river' && s.session.shot) {
-      const l = layout(s), at = s.session.shot.center;
-      ctx.save(); ctx.beginPath(); ctx.arc(288, 288, 249, 0, 7); ctx.clip(); ctx.translate(288, 288); ctx.scale(249 / l.radius, 249 / l.radius); ctx.translate(-at.x, -at.y); this.river(ctx, s, s.session.shot.wave); ctx.restore();
-    }
-    try {
-      for (const quality of [.88, .78, .65]) { const url = canvas.toDataURL('image/webp', quality); if (url.startsWith('data:image/webp;base64,') && url.length < 400000) { this.captureImage = new Image(); this.captureImage.src = url; return url; } }
-    } catch { return null; }
-    return null;
+    const badge = this.images.badge;
+    const canvas = composePaperBadge(this.doc, (ctx, art) => {
+      if (s.session.kind === 'waterfall') {
+        // Preserve the exact original painted composition; only the paper frame changes.
+        const scale = art.radius / 249;
+        ctx.translate(art.x, art.y); ctx.scale(scale, scale); ctx.translate(-288, -288);
+        this.paintedScene(ctx, s, { x: -88, y: -6, width: 752, height: 564 });
+      } else if (s.session.kind === 'river' && s.session.shot) {
+        const l = layout(s), at = s.session.shot.center;
+        ctx.translate(art.x, art.y); ctx.scale(art.radius / l.radius, art.radius / l.radius); ctx.translate(-at.x, -at.y);
+        this.river(ctx, s, s.session.shot.wave);
+      } else {
+        const source = TIGER_BADGE_ART[s.kind];
+        paintBadgeImage(ctx, badge, { x: badge.naturalWidth * source.x, y: badge.naturalHeight * source.y,
+          radius: Math.min(badge.naturalWidth, badge.naturalHeight) * source.radius }, art);
+      }
+    });
+    const url = canvas && encodePaperBadge(canvas, 400000);
+    if (url) { this.captureImage = new Image(); this.captureImage.src = url; }
+    return url;
   }
   reset(): void { this.paintedStrokes = this.paintedPoints = -1; this.captureImage = null; }
   dispose(): void { this.disposed = true; this.observer?.disconnect(); this.observer = null; this.canvas.remove(); this.images = null; this.state = null; this.captureImage = null; this.canvas.width = this.canvas.height = this.brushCanvas.width = this.brushCanvas.height = 1; }

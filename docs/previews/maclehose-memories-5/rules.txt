@@ -1,0 +1,28 @@
+✔ one daylight journey reaches Pak Tam Au after the three photographs and four separate discoveries (5.803375ms)
+✔ skipping discoveries still reaches the finish without inventing collected badges (3.084708ms)
+✔ a stale close cannot consume a different discovery or award it later (0.956166ms)
+✔ browsing an arrived photograph preserves pause, walking and finished states (4.744958ms)
+✔ waiting without input never exits or earns any of the four coastal games (1.714083ms)
+✔ players can still complete each direct interaction after taking time to read (2.867833ms)
+✔ all four completed memories use circular badge assets and retain the first journal entry on replay (1.058917ms)
+✔ the crab stops before remaining driftwood and only passes after the actual corridor is clear (0.686959ms)
+✔ a fast driftwood drag cannot jump through another piece or enter the sea (0.125792ms)
+✔ parking is not a reward; the visible rope must be carried onto the pier post (0.228792ms)
+✔ a cancelled rope gesture and a tap on empty water cannot award the memory later (0.333ms)
+✔ cancelling a boat drag near the pier does not count as releasing it to dock (0.077667ms)
+✔ reduced motion preserves the same completion rules and keyboard interaction works without pointer coordinates (1.644958ms)
+✔ completed Wugong artwork saves automatically once and closes after the memory fades (69.890041ms)
+✔ unfinished artwork cannot enter automatic collection (17.034459ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (16.585625ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (20.380625ms)
+✔ other routes retain manual reward collection by default (15.902709ms)
+✔ reduced motion still shows the automatically earned memory before a short fade (15.265125ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.617292ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 274.106916

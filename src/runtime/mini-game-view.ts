@@ -98,7 +98,7 @@ export function createMiniGameView({ dom, api, platform: games, sound }: ViewOpt
     else if (s.game && games?.wugongAssets[s.game]) wugong(s, refs);
     else if (s.game === 'wind') wind(s, refs);
     else if (s.game) water(s);
-    if (s.game) {
+    if (s.game || refs.directInput) {
       $<HTMLButtonElement>('mini-retry').disabled = s.play.complete;
       text('mini-sound', sound() ? '声音 · 开' : '声音 · 点击开启'); $('mini-sound').setAttribute('aria-pressed', String(sound()));
     }

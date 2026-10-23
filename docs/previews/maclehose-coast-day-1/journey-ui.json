@@ -1,0 +1,196 @@
+[
+  {
+    "stage": "西湾实拍",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\n1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html\n\t2 text 请使用支持 Canvas 的浏览器。\n\t3 container 西湾, ID: co-photo\n\t\t4 button Description: 关闭照片，停在山径, ID: co-photo-close\n\t\t5 image Description: 西湾白色沙滩、海浪和绿色岬角, ID: co-photo-image\n\t\t6 text 西湾沙滩、海浪与岬角\n\t\t7 heading 西湾, Value: 2, ID: co-photo-title\n\t\t\t8 text 西湾\n\t\t9 container\n\t\t\t10 link Description: Smallpei, Help: Sai Wan.jpg, Value: commons.wikimedia.org/wiki/File:Sai_Wan.jpg, ID: co-photo-source\n\t\t\t11 text  · \n\t\t\t12 link Description: CC BY-SA 4.0, Value: creativecommons.org/licenses/by-sa/4.0/, ID: co-photo-license\n\t\t13 button 继续走 →, ID: co-photo-continue\n\nThe focused UI element is 4 button Description: 关闭照片，停在山径, ID: co-photo-close",
+    "image": {
+      "display": {
+        "bottom": 591.6193084716797,
+        "height": 397.8338012695313,
+        "left": 17.569246292114258,
+        "right": 466.5216693878174,
+        "top": 193.78550720214844,
+        "width": 448.9524230957031,
+        "x": 17.569246292114258,
+        "y": 193.78550720214844
+      },
+      "fit": "cover",
+      "height": 720,
+      "src": "photos/maclehose-saiwan.webp",
+      "width": 960
+    }
+  },
+  {
+    "stage": "西湾螃蟹小游戏",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 16 button Description: 从左到右点亮沙地上的三个落脚处，远远陪螃蟹横着走回岸边。, ID: micro-surface"
+  },
+  {
+    "stage": "螃蟹徽章自动入帐",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\n1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html\n\t2 text 请使用支持 Canvas 的浏览器。\n\t3 container Description: 麦理浩径手绘互动与旅行手帐, ID: co-art\n\t\t4 button Description: 关闭手绘，回到山径, ID: co-art-close\n\t\t5 container Description: 麦理浩径手绘互动与旅行手帐, ID: co-art-frame\n\t\t\t6 AXWebArea 麦理浩径 · 手绘与旅行手帐, URL: 127.0.0.1:8000/maclehose-art.html?entry=maclehose-sideways-crab&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E8%A5%BF%E6%B9%BE%E6%B2%99%E6%BB%A9&character=braids&v=coast-day-2\n\t\t\t\t7 container\n\t\t\t\t\t8 text 山径 · 麦理浩径\n\t\t\t\t\t9 heading 山间手绘, Value: 1, ID: art-page-title\n\t\t\t\t\t\t10 text 山间手绘\n\t\t\t\t\t11 button 返回山路 ×, ID: walk-toggle\n\t\t\t\t21 container 横着也能到, ID: reward-dialog\n\t\t\t\t\t22 image Description: 横着也能到 · 手绘水彩徽章, ID: reward-art\n\t\t\t\t\t23 heading 横着也能到, Value: 2, ID: reward-title\n\t\t\t\t\t\t24 text 横着也能到\n\t\t\t\t\t25 text 已收进手帐\n\t\t\t\t20 link Description: 致谢, Value: 127.0.0.1:8000/maclehose-credits.html\n\nThe focused UI element is 21 container 横着也能到, ID: reward-dialog"
+  },
+  {
+    "stage": "咸田湾实拍",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\n1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html\n\t2 text 请使用支持 Canvas 的浏览器。\n\t3 container 咸田湾, ID: co-photo\n\t\t4 button Description: 关闭照片，停在山径, ID: co-photo-close\n\t\t5 image Description: 咸田湾沙滩和开阔海湾, ID: co-photo-image\n\t\t6 text 咸田湾海滩实拍\n\t\t7 heading 咸田湾, Value: 2, ID: co-photo-title\n\t\t\t8 text 咸田湾\n\t\t9 container\n\t\t\t10 link Description: Kaldari, Help: Ham Tin Wan beach.jpg, Value: commons.wikimedia.org/wiki/File:Ham_Tin_Wan_beach.jpg, ID: co-photo-source\n\t\t\t11 text  · \n\t\t\t12 link Description: CC0, Value: creativecommons.org/publicdomain/zero/1.0/, ID: co-photo-license\n\t\t13 button 继续走 →, ID: co-photo-continue\n\nThe focused UI element is 4 button Description: 关闭照片，停在山径, ID: co-photo-close",
+    "image": {
+      "fit": "cover",
+      "height": 720,
+      "src": "photos/maclehose-hamtin.webp",
+      "width": 960
+    }
+  },
+  {
+    "stage": "咸田湾湿沙小游戏",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 16 button Description: 在湿沙上画一笔，松手后等潮水把它带走。, ID: micro-surface"
+  },
+  {
+    "stage": "潮汐收笔自动入帐",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\n1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html\n\t2 text 请使用支持 Canvas 的浏览器。\n\t3 container Description: 麦理浩径手绘互动与旅行手帐, ID: co-art\n\t\t4 button Description: 关闭手绘，回到山径, ID: co-art-close\n\t\t5 container Description: 麦理浩径手绘互动与旅行手帐, ID: co-art-frame\n\t\t\t6 AXWebArea 麦理浩径 · 手绘与旅行手帐, URL: 127.0.0.1:8000/maclehose-art.html?entry=coast-shell&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E5%92%B8%E7%94%B0%E6%B9%BE%E6%B2%99%E6%BB%A9&character=braids&v=coast-day-2\n\t\t\t\t7 container\n\t\t\t\t\t8 text 山径 · 麦理浩径\n\t\t\t\t\t9 heading 山间手绘, Value: 1, ID: art-page-title\n\t\t\t\t\t\t10 text 山间手绘\n\t\t\t\t\t11 button 返回山路 ×, ID: walk-toggle\n\t\t\t\t21 container 潮汐收笔, ID: reward-dialog\n\t\t\t\t\t22 image Description: 潮汐收笔 · 手绘水彩徽章, ID: reward-art\n\t\t\t\t\t23 heading 潮汐收笔, Value: 2, ID: reward-title\n\t\t\t\t\t\t24 text 潮汐收笔\n\t\t\t\t\t25 text 已收进手帐\n\t\t\t\t20 link Description: 致谢, Value: 127.0.0.1:8000/maclehose-credits.html\n\nThe focused UI element is 21 container 潮汐收笔, ID: reward-dialog"
+  },
+  {
+    "stage": "赤径实拍",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\n1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html\n\t2 text 请使用支持 Canvas 的浏览器。\n\t3 container 赤径, ID: co-photo\n\t\t4 button Description: 关闭照片，停在山径, ID: co-photo-close\n\t\t5 image Description: 赤径村落附近的小渡头与平静海湾, ID: co-photo-image\n\t\t6 text 赤径村附近的渡头与内湾\n\t\t7 heading 赤径, Value: 2, ID: co-photo-title\n\t\t\t8 text 赤径\n\t\t9 container\n\t\t\t10 link Description: 山民主義, Help: ChekKeng3.JPG, Value: commons.wikimedia.org/wiki/File:ChekKeng3.JPG, ID: co-photo-source\n\t\t\t11 text  · \n\t\t\t12 link Description: CC BY-SA 4.0, Value: creativecommons.org/licenses/by-sa/4.0/, ID: co-photo-license\n\t\t13 button 继续走 →, ID: co-photo-continue\n\nThe focused UI element is 4 button Description: 关闭照片，停在山径, ID: co-photo-close",
+    "image": {
+      "fit": "cover",
+      "height": 416,
+      "src": "photos/maclehose-chekkeng.webp",
+      "width": 624
+    }
+  },
+  {
+    "stage": "赤径发现过渡",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 13, 19, 25-26\n+\t\t30 text 14:45 · 午后微光\n+\t\t\t31 text 赤径 → 北潭凹\n+\t\t\t32 text 走进内湾，渡头和村落落在安静的水面上。\n~\t\t27 button (disabled) 停留片刻, ID: co-walk\nThe focused UI element is 1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html"
+  },
+  {
+    "stage": "赤径慢潮静候不发奖",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 16 button Description: 轻碰水面，再停一会儿，等村落倒影慢慢平静。, ID: micro-surface"
+  },
+  {
+    "stage": "赤径慢潮自动入帐",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\n1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html\n\t2 text 请使用支持 Canvas 的浏览器。\n\t3 container Description: 麦理浩径手绘互动与旅行手帐, ID: co-art\n\t\t4 button Description: 关闭手绘，回到山径, ID: co-art-close\n\t\t5 container Description: 麦理浩径手绘互动与旅行手帐, ID: co-art-frame\n\t\t\t6 AXWebArea 麦理浩径 · 手绘与旅行手帐, URL: 127.0.0.1:8000/maclehose-art.html?entry=coast-pier&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E8%B5%A4%E5%BE%84%E6%B8%A1%E5%A4%B4&character=braids&v=coast-day-2\n\t\t\t\t7 container\n\t\t\t\t\t8 text 山径 · 麦理浩径\n\t\t\t\t\t9 heading 山间手绘, Value: 1, ID: art-page-title\n\t\t\t\t\t\t10 text 山间手绘\n\t\t\t\t\t11 button 返回山路 ×, ID: walk-toggle\n\t\t\t\t21 container 赤径慢潮, ID: reward-dialog\n\t\t\t\t\t22 image Description: 赤径慢潮 · 手绘水彩徽章, ID: reward-art\n\t\t\t\t\t23 heading 赤径慢潮, Value: 2, ID: reward-title\n\t\t\t\t\t\t24 text 赤径慢潮\n\t\t\t\t\t25 text 已收进手帐\n\t\t\t\t20 link Description: 致谢, Value: 127.0.0.1:8000/maclehose-credits.html\n\nThe focused UI element is 21 container 赤径慢潮, ID: reward-dialog"
+  },
+  {
+    "stage": "北潭凹完整抵达",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n+\t\t\t\t35 button 赤径 · 实景打卡\nThe focused UI element is 1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html"
+  },
+  {
+    "stage": "四枚实际保存的手帐",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 4 button Description: 关闭手绘，回到山径, ID: co-art-close",
+    "images": [
+      {
+        "alt": "",
+        "height": 384,
+        "src": "badges/maclehose-chek-keng-v4.webp",
+        "width": 384
+      },
+      {
+        "alt": "",
+        "height": 384,
+        "src": "badges/maclehose-tide-drawing-v4.webp",
+        "width": 384
+      },
+      {
+        "alt": "",
+        "height": 384,
+        "src": "badges/maclehose-sideways-crab-v4.webp",
+        "width": 384
+      },
+      {
+        "alt": "",
+        "height": 384,
+        "src": "badges/maclehose-bay-reveal-v4.webp",
+        "width": 384
+      }
+    ]
+  },
+  {
+    "stage": "海湾徽章详情",
+    "state": "Browser tab: 50, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 11 button Description: 关闭回忆，回到标签墙, Help: 关闭回忆 · Esc, ID: journal-detail-close"
+  },
+  {
+    "stage": "未完成退出返回地图",
+    "state": "Browser tab: 51, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html"
+  },
+  {
+    "stage": "暂停重看照片修正",
+    "state": "Browser tab: 51, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\n1 AXWebArea 麦理浩径 · 一日海岸 / 山径, URL: 127.0.0.1:8000/maclehose-walk.html\n\t2 text 请使用支持 Canvas 的浏览器。\n\t3 container 西湾, ID: co-photo\n\t\t4 button Description: 关闭照片，停在山径, ID: co-photo-close\n\t\t5 image Description: 西湾白色沙滩、海浪和绿色岬角, ID: co-photo-image\n\t\t14 text 西湾沙滩、海浪与岬角\n\t\t7 heading 西湾, Value: 2, ID: co-photo-title\n\t\t\t15 text 西湾\n\t\t9 container\n\t\t\t10 link Description: Smallpei, Help: Sai Wan.jpg, Value: commons.wikimedia.org/wiki/File:Sai_Wan.jpg, ID: co-photo-source\n\t\t\t11 text  · \n\t\t\t12 link Description: CC BY-SA 4.0, Value: creativecommons.org/licenses/by-sa/4.0/, ID: co-photo-license\n\t\t13 button 回到山径, ID: co-photo-continue\n\nThe focused UI element is 4 button Description: 关闭照片，停在山径, ID: co-photo-close"
+  },
+  {
+    "stage": "重玩后保持四枚与首次日期",
+    "state": "Browser tab: 51, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 11 button Description: 关闭回忆，回到标签墙, Help: 关闭回忆 · Esc, ID: journal-detail-close"
+  },
+  {
+    "stage": "桌面手绘布局修正",
+    "layout": {
+      "inside": true,
+      "instruction": {
+        "bottom": 672.5230655670166,
+        "height": 24.04119300842285,
+        "left": 364.7372131347656,
+        "right": 793.7322387695312,
+        "top": 648.4818725585938,
+        "width": 428.9950256347656,
+        "x": 364.7372131347656,
+        "y": 648.4818725585938
+      },
+      "panel": {
+        "bottom": 724.0855407714844,
+        "height": 593.1551513671875,
+        "left": 340.1722412109375,
+        "right": 1089.35546875,
+        "top": 130.93038940429688,
+        "width": 749.1832275390625,
+        "x": 340.1722412109375,
+        "y": 130.93038940429688
+      },
+      "result": {
+        "bottom": 699.5205917358398,
+        "height": 21.999290466308594,
+        "left": 364.7372131347656,
+        "right": 1064.790496826172,
+        "top": 677.5213012695312,
+        "width": 700.0532836914062,
+        "x": 364.7372131347656,
+        "y": 677.5213012695312
+      },
+      "viewport": {
+        "height": 793,
+        "width": 1429
+      }
+    }
+  },
+  {
+    "stage": "窄屏手绘与可见足迹",
+    "layout": {
+      "height": 959,
+      "instruction": {
+        "bottom": 456.3387641906738,
+        "height": 22.203479766845703,
+        "left": 24.564985275268555,
+        "right": 418.616834640503,
+        "top": 434.1352844238281,
+        "width": 394.0518493652344,
+        "x": 24.564985275268555,
+        "y": 434.1352844238281
+      },
+      "overflow": false,
+      "panel": {
+        "bottom": 499.90232849121094,
+        "height": 399.3696594238281,
+        "left": 7.998934745788574,
+        "right": 435.1828947067261,
+        "top": 100.5326690673828,
+        "width": 427.1839599609375,
+        "x": 7.998934745788574,
+        "y": 100.5326690673828
+      },
+      "width": 443
+    }
+  },
+  {
+    "stage": "足迹提示修正后完成与自动收藏",
+    "state": "Browser tab: 52, Title: \"麦理浩径 · 手绘与旅行手帐\", URL: \"http://127.0.0.1:8000/maclehose-art.html?entry=maclehose-sideways-crab&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E8%A5%BF%E6%B9%BE%E6%B2%99%E6%BB%A9&character=braids&v=coast-cues-3\".\n0 AXWebArea 麦理浩径 · 手绘与旅行手帐, URL: 127.0.0.1:8000/maclehose-art.html?entry=maclehose-sideways-crab&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E8%A5%BF%E6%B9%BE%E6%B2%99%E6%BB%A9&character=braids&v=coast-cues-3\n\t1 container\n\t\t2 text 山径 · 麦理浩径\n\t\t3 heading 山间手绘, Value: 1, ID: art-page-title\n\t\t\t4 text 山间手绘\n\t\t5 button 返回山路 ×, ID: walk-toggle\n\t15 container 横着也能到, ID: reward-dialog\n\t\t16 image Description: 横着也能到 · 手绘水彩徽章, ID: reward-art\n\t\t17 heading 横着也能到, Value: 2, ID: reward-title\n\t\t\t18 text 横着也能到\n\t\t19 text 已收进手帐\n\t14 link Description: 致谢, Value: 127.0.0.1:8000/maclehose-credits.html\n\nThe focused UI element is 15 container 横着也能到, ID: reward-dialog"
+  },
+  {
+    "stage": "最终预览默认跟随",
+    "state": "Browser tab: 52, Title: \"麦理浩径 · 一日海岸 / 山径\", URL: \"http://127.0.0.1:8000/maclehose-walk.html\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 35, 41\n+\t\t\t\t49 text 浪茄\n+\t\t\t\t50 text 起点\nThe focused UI element is 22 checkbox 跟随, Value: 1, ID: co-follow"
+  }
+]

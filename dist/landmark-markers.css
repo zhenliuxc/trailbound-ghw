@@ -1,0 +1,23 @@
+/* Generated from src/journey/landmark-{symbol.ts,markers.css}. */
+:root{--landmark-follow:30px;--landmark-overview:26px;--landmark-compact:24px;--landmark-hit:44px;--landmark-label-gap:18px}
+.trail-landmark{position:absolute;z-index:5;display:block;width:var(--landmark-hit);height:var(--landmark-hit);min-width:var(--landmark-hit);min-height:var(--landmark-hit);margin:0;padding:0;border:0;border-radius:50%;transform:translate(-50%,-50%);background:transparent;color:#365747;box-shadow:none;touch-action:manipulation;pointer-events:auto}
+.trail-landmark:disabled{opacity:1;cursor:default}
+.trail-landmark>.trail-landmark-symbol{position:absolute;left:50%;top:50%;width:var(--landmark-follow);height:var(--landmark-follow);transform:translate(-50%,-50%);padding:0;border:0;background:transparent;filter:drop-shadow(0 1px 2px #475a3d20);pointer-events:none}
+.trail-landmark>.trail-landmark-name{position:absolute;left:50%;top:calc(50% + var(--landmark-label-gap));width:max-content;max-width:130px;transform:translateX(-50%);font:13px/1.5 var(--serif,Georgia,serif);text-align:center;text-shadow:0 1px 3px #faf8e9,1px 0 3px #faf8e9,-1px 0 3px #faf8e9,0 -1px 3px #faf8e9;white-space:normal;pointer-events:auto}
+.trail-landmark-name>small{display:block;margin:1px 0 0;font:9px/1.3 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;letter-spacing:.4px;color:#718067}
+.trail-landmark[data-label-side=above]>.trail-landmark-name{top:auto;bottom:calc(50% + var(--landmark-label-gap))}
+.trail-landmark[data-label-side=left]>.trail-landmark-name{left:auto;right:calc(50% + var(--landmark-label-gap));top:50%;bottom:auto;transform:translateY(-50%)}
+.trail-landmark[data-label-side=right]>.trail-landmark-name{left:calc(50% + var(--landmark-label-gap));top:50%;bottom:auto;transform:translateY(-50%)}
+[data-landmark-view=overview] .trail-landmark>.trail-landmark-symbol{width:var(--landmark-overview);height:var(--landmark-overview)}
+[data-landmark-view=overview][data-landmark-compact=true] .trail-landmark>.trail-landmark-symbol{width:var(--landmark-compact);height:var(--landmark-compact)}
+[data-landmark-view=overview] .trail-landmark>.trail-landmark-name{font-size:12px}
+.trail-landmark[data-visited=true] .trail-landmark-rim{fill:#edf1e2;stroke:#879c78}
+.trail-landmark[data-visited=true]:not(:disabled) .trail-landmark-rim{fill:#edf1df;stroke:#58734f;stroke-width:1.8}
+.trail-landmark[data-symbol-visible=false]>.trail-landmark-symbol{display:none}
+.trail-landmark[data-symbol-visible=false],.trail-landmark[data-symbol-visible=false]>.trail-landmark-name{pointer-events:none}
+.trail-map-name{position:absolute;z-index:4;width:max-content;max-width:112px;font:11px/1.5 var(--serif,Georgia,serif);color:#526a56;text-align:center;text-shadow:0 1px 3px #faf8e9,1px 0 3px #faf8e9,-1px 0 3px #faf8e9,0 -1px 3px #faf8e9;pointer-events:none}
+.trail-map-name>small{display:block;font:9px/1.4 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#718067}
+[data-landmark-view=overview] .trail-map-name{font-size:10px}
+.trail-landmark:not(:disabled):hover .trail-landmark-rim{fill:#fffdf4;stroke:#718963}
+.trail-landmark:focus-visible{outline:2px solid #718963;outline-offset:2px}
+@media(max-width:700px){.trail-landmark>.trail-landmark-name,[data-landmark-view=overview] .trail-landmark>.trail-landmark-name{font-size:11px;max-width:100px}.trail-landmark-name>small{font-size:8px}}

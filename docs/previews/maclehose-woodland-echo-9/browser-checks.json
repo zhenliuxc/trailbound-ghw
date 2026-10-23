@@ -1,0 +1,263 @@
+{
+  "checks": [
+    {
+      "test": "unfinished_exit",
+      "journalBefore": 20
+    },
+    {
+      "test": "phone_pointer_completion",
+      "progressSteps": [
+        19,
+        38,
+        94
+      ],
+      "soundEnabled": true
+    },
+    {
+      "test": "automatic_save",
+      "journalAfter": 21
+    },
+    {
+      "test": "phone_final_layout",
+      "frameWidth": 430,
+      "frameHeight": 946,
+      "scrollHeight": 946,
+      "footerBottom": 946.023,
+      "sceneHeight": 621.023
+    },
+    {
+      "test": "route_trigger",
+      "place": "大浪坳上坡林缘",
+      "after": "咸田湾沙画",
+      "before": "大浪坳照片"
+    },
+    {
+      "test": "earned_badge_overlay",
+      "title": "山坳回声",
+      "copy": "已收进手帐"
+    },
+    {
+      "test": "desktop_layout",
+      "frame": [
+        1429,
+        998
+      ],
+      "scene": [
+        1049.458,
+        699.982
+      ]
+    },
+    {
+      "test": "route_finish",
+      "place": "北潭凹",
+      "time": "15:30",
+      "visitedCount": 7,
+      "completedThisTrip": 1,
+      "unchangedGamesSkipped": 4
+    },
+    {
+      "test": "replay_deduplication",
+      "journalTotal": 21,
+      "firstDate": "2026年10月20日 20:12"
+    }
+  ],
+  "routeObservations": [
+    {
+      "art": false,
+      "disabled": true,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-longke-place-v8.webp"
+      },
+      "photo": true,
+      "title": "浪茄",
+      "walk": "停留片刻"
+    },
+    {
+      "art": false,
+      "disabled": false,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-longke-place-v8.webp"
+      },
+      "photo": false,
+      "title": "浪茄",
+      "walk": "停下来看看"
+    },
+    {
+      "art": false,
+      "disabled": true,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-saiwan-shan-place-v8.webp"
+      },
+      "photo": true,
+      "title": "西湾山",
+      "walk": "停留片刻"
+    },
+    {
+      "art": true,
+      "disabled": true,
+      "frame": "maclehose-art.html?entry=coast-sand&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E8%A5%BF%E6%B9%BE%E5%B1%B1%E4%B8%8B%E5%9D%A1&character=blue&v=woodland-phone-10",
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-saiwan-shan-place-v8.webp"
+      },
+      "photo": false,
+      "title": "西湾山",
+      "walk": "停留片刻"
+    },
+    {
+      "art": false,
+      "disabled": false,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-saiwan-shan-place-v8.webp"
+      },
+      "photo": false,
+      "title": "西湾山",
+      "walk": "继续走 →"
+    },
+    {
+      "art": false,
+      "disabled": true,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-saiwan.webp"
+      },
+      "photo": true,
+      "title": "西湾",
+      "walk": "停留片刻"
+    },
+    {
+      "art": true,
+      "disabled": true,
+      "frame": "maclehose-art.html?entry=maclehose-sideways-crab&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E8%A5%BF%E6%B9%BE%E6%B2%99%E6%BB%A9&character=blue&v=woodland-phone-10",
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-saiwan.webp"
+      },
+      "photo": false,
+      "title": "西湾",
+      "walk": "停留片刻"
+    },
+    {
+      "art": false,
+      "disabled": false,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-saiwan.webp"
+      },
+      "photo": false,
+      "title": "西湾",
+      "walk": "继续走 →"
+    },
+    {
+      "art": false,
+      "disabled": true,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-hamtin.webp"
+      },
+      "photo": true,
+      "title": "咸田湾",
+      "walk": "停留片刻"
+    },
+    {
+      "art": true,
+      "disabled": true,
+      "frame": "maclehose-art.html?entry=coast-shell&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E5%92%B8%E7%94%B0%E6%B9%BE%E6%B2%99%E6%BB%A9&character=blue&v=woodland-phone-10",
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-hamtin.webp"
+      },
+      "photo": false,
+      "title": "咸田湾",
+      "walk": "停留片刻"
+    },
+    {
+      "art": false,
+      "disabled": false,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-hamtin.webp"
+      },
+      "photo": false,
+      "title": "咸田湾",
+      "walk": "继续走 →"
+    },
+    {
+      "art": true,
+      "disabled": true,
+      "frame": "maclehose-art.html?entry=maclehose-woodland-echo&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E5%A4%A7%E6%B5%AA%E5%9D%B3%E4%B8%8A%E5%9D%A1%E6%9E%97%E7%BC%98&character=blue&v=woodland-phone-10",
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-hamtin.webp"
+      },
+      "photo": false,
+      "title": "咸田湾",
+      "walk": "停留片刻"
+    },
+    {
+      "art": false,
+      "disabled": true,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-chekkeng-pier-v2.webp"
+      },
+      "photo": true,
+      "title": "赤径",
+      "walk": "停留片刻"
+    },
+    {
+      "art": true,
+      "disabled": true,
+      "frame": "maclehose-art.html?entry=coast-pier&place=%E9%BA%A6%E7%90%86%E6%B5%A9%E5%BE%84+%C2%B7+%E8%B5%A4%E5%BE%84%E6%B8%A1%E5%A4%B4&character=blue&v=woodland-phone-10",
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-chekkeng-pier-v2.webp"
+      },
+      "photo": false,
+      "title": "赤径",
+      "walk": "停留片刻"
+    },
+    {
+      "art": false,
+      "disabled": false,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-chekkeng-pier-v2.webp"
+      },
+      "photo": false,
+      "title": "赤径",
+      "walk": "继续走 →"
+    },
+    {
+      "art": false,
+      "disabled": true,
+      "frame": null,
+      "image": {
+        "ready": true,
+        "src": "photos/maclehose-paktamau-place-v8.webp"
+      },
+      "photo": true,
+      "title": "北潭凹",
+      "walk": "停留片刻"
+    }
+  ],
+  "limitations": [
+    "窄屏为桌面浏览器尺寸模拟，未使用实体手机",
+    "声音开关可用且无浏览器错误；未进行人工听感验收",
+    "本轮实际行进中完成新增关，四个未修改的旧关跳过；其完成规则在相关自动检查中覆盖"
+  ]
+}

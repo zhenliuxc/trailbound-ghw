@@ -1,7 +1,17 @@
 import { clamp, curve, distance, mix, type Point } from '../model';
+import type { LandmarkSymbol } from '../../journey/landmark-symbol';
 
 export const SCROLL = { width: 3400, height: 1900 };
 export type ScrollStopId = 'start' | 'slope' | 'meadow' | 'camp' | 'horse' | 'summit' | 'end';
+export const PLACE_MARKERS = {
+  start: { name: '东江村', symbol: 'village', caption: '起点' },
+  slope: { name: '绝望坡', symbol: 'switchbacks', caption: '' },
+  meadow: { name: '高山草甸', symbol: 'alpine-meadow', caption: '' },
+  camp: { name: '观音宕营地', symbol: 'camp', caption: '过夜' },
+  horse: { name: '吊马桩', symbol: 'pass', caption: '' },
+  summit: { name: '金顶', symbol: 'summit', caption: '' },
+  end: { name: '景区大门', symbol: 'gate', caption: '终点' },
+} satisfies Record<ScrollStopId, { name: string; symbol: LandmarkSymbol; caption: string }>;
 export type ScrollStage = 'village' | 'forest' | 'slope' | 'meadow' | 'camp' | 'ridge' | 'summit' | 'descent' | 'valley' | 'temple' | 'end';
 export interface ScrollStop {
   readonly id: ScrollStopId; readonly name: string; readonly day: 1 | 2;

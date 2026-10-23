@@ -27,6 +27,8 @@
   let trip = D.create(state.routeId), natureId = null, natureNode = null, naturePoint = null, natureArt = null, natureLabel = null, lifeActors = [], footprints = [], actionStarted = -Infinity;
   const photoCache = /* @__PURE__ */ new Map();
   const Runtime = window.TrailRuntime;
+  let entranceVisible = false;
+  let routeMapPicker = null;
   const mapHeading = Runtime.createMapHeading();
   const mapGait = Runtime.createMapGait();
   let visualRoute = null, visualRouteId = null;
@@ -43,14 +45,33 @@
   }, resume: () => {
     state = J.resume(state);
   }, hidden: () => document.hidden });
-  const rewardController = Runtime.createRewardController({ dom, scenes, catalog: D, cache: artCache, audio: audioPlayer, reduced: motionReduced, gameKind: miniGameKind, refresh: refreshRuntime, stopLoop: cancelLoop });
+  const rewardController = Runtime.createRewardController({
+    dom,
+    scenes,
+    catalog: D,
+    cache: artCache,
+    audio: audioPlayer,
+    reduced: motionReduced,
+    gameKind: miniGameKind,
+    refresh: refreshRuntime,
+    stopLoop: cancelLoop,
+    presentArt: Runtime.tigerJournalArt,
+    onCollected(moment) {
+      const result = journalController.remember(moment);
+      if (result.kind === "error") {
+        $("reward-copy").textContent = result.message;
+        return false;
+      }
+      return true;
+    }
+  });
   const journalController = Runtime.createJournalController({
     presentArt: Runtime.roundJournalArt,
     dom,
     scenes,
     catalog: D,
     data: window.TrailJournal,
-    routes: G.ROUTES,
+    routes: Runtime.ROUTE_SUMMARIES,
     weather: G.WEATHER,
     storage,
     reduced: motionReduced,
@@ -97,7 +118,6 @@
         return false;
       }
       trip = next;
-      journalController.remember(moment);
       return rewardController.show(moment, finished.returnStatus);
     },
     onClosed: (id, earned, resume) => closeTigerStage(id, earned, resume)
@@ -806,20 +826,24 @@
     credit.setAttribute("target", "_blank");
     credit.setAttribute("rel", "noopener noreferrer");
     credit.hidden = r.id === "wugong";
-    for (const r2 of G.ROUTES) $(`route-${r2.id}`).setAttribute("aria-pressed", r2.id === state.routeId);
+    routeMapPicker?.setSelected(entranceVisible ? state.routeId : null);
   }
   function drawPicker() {
-    for (const r of G.ROUTES) {
-      const b = html("button", null, $("route-cards"), `route-card theme-${r.theme}`);
-      b.id = `route-${r.id}`;
-      b.setAttribute("type", "button");
-      b.setAttribute("aria-pressed", r.id === state.routeId);
-      html("strong", r.name, b);
-      html("small", r.id === "wugong" ? "东江村反穿 · 草甸与手帐" : r.id === "westlake" ? "溪水、茶叶与小遇见" : { snow: "风雪与山脊", gorge: "江声与山径", meadow: "草甸与云海", coast: "海湾与潮声", forest: "森林与溪谷", bamboo: "竹林与石阶", tea: "溪谷与茶园" }[r.theme], b);
-      const art = svg("svg", { viewBox: "0 0 720 600", class: "route-mini", "aria-hidden": "true" }, b), p = fitProjection(r.geo.line, 720, 600, 85);
-      svg("path", { d: routeDrawing(r, p).path, fill: "none", stroke: "#52764f", "stroke-width": 18, "stroke-linecap": "round", "stroke-linejoin": "round" }, art);
-      b.addEventListener("click", () => selectRoute(r.id));
-    }
+    routeMapPicker = Runtime.createRouteMapPicker({
+      root: $("route-atlas"),
+      routes: G.ROUTES,
+      selected: null,
+      onChoose(id) {
+        entranceVisible = true;
+        $("journey-stage").hidden = false;
+        document.body.classList.remove("choosing-route");
+        selectRoute(id);
+        requestAnimationFrame(() => {
+          $("journey-stage").scrollIntoView({ behavior: motionReduced ? "auto" : "smooth", block: "start" });
+          $("overlay-title").focus({ preventScroll: true });
+        });
+      }
+    });
   }
   function position() {
     return visualRoute.sample(state.progress);
@@ -1053,11 +1077,16 @@
     $("map").setAttribute("preserveAspectRatio", state.routeId === "wugong" || overview || motionReduced || state.status === "ready" ? "xMidYMid meet" : "xMidYMid slice");
     renderDiscovery();
     const r = J.routeOf(state), walking = state.status === "walking";
+    $("back-to-route-map").disabled = miniController.active || rewardController.open || !!photoId;
     $("journey-stage").classList.toggle("walking", walking);
     $("map-frame").classList.toggle("active", walking);
     $("journey-state").textContent = { ready: "约2–3分钟", walking: "沿着山径慢慢走", paused: "停下来看看", encounter: "在路上停一停", finished: "今天的旅程", retreated: "平安结束" }[state.status];
     if (r.id === "wugong" && state.status === "ready") $("journey-state").textContent = "东江村反穿 · 2天1夜";
     if (r.id === "aotai" && state.status === "ready") $("journey-state").textContent = "塘口 → 汤峪方向";
+    if (r.id === "changping" && state.status === "ready") $("journey-state").textContent = "长坪沟 · 喇嘛寺至木骡子";
+    if (r.id === "mogan" && state.status === "ready") $("journey-state").textContent = "浙江 · 德清 · 古道选段";
+    if (r.id === "westlake" && state.status === "ready") $("journey-state").textContent = "浙江 · 杭州 · 溪谷至茶村";
+    if (r.id === "maclehose" && state.status === "ready") $("journey-state").textContent = "一日海岸 · 浪茄至北潭凹";
     if (tigerJourney) $("journey-state").textContent = state.status === "ready" ? "高路 · 江边往返" : { high: "沿高路行进", junction: "已到高路终点", connector: "准备进入江边支线", river: "中虎跳江边", riverside: "江边目的地 · 待返回", returning: state.status === "paused" ? "回程歇脚" : "沿原小路返回", complete: "旅程结束" }[tigerJourney.phase];
     $("journey-progress").setAttribute("aria-label", tigerJourney ? "高路进度" : "旅程进度");
     $("journey-progress").setAttribute("aria-valuenow", Math.round(state.progress * 100));
@@ -1066,14 +1095,13 @@
     $("thought").textContent = echo && state.elapsed < echoUntil ? echo : state.status === "paused" && !photoFromAlbum ? K.moment(state.routeId, state.progress)?.look || J.thought(state) : J.thought(state);
     if (r.id === "wugong" && state.status === "ready") $("thought").textContent = "穿过林间和草甸，在观音宕歇一夜，把沿途的手绘收进手帐。";
     $("feeling").textContent = J.feeling(state);
-    $("walk-toggle").disabled = !(["walking", "paused"].includes(state.status) || ["wugong", "tiger", "aotai"].includes(r.id) && state.status === "ready") || !!photoFromAlbum || !!miniController.state || !!rewardController.current;
-    $("walk-toggle").textContent = state.status === "ready" && r.id === "tiger" ? "从桥头出发 →" : r.id === "wugong" && state.status === "ready" ? "从东江村出发 →" : r.id === "aotai" && state.status === "ready" ? "走进秦岭 →" : state.status === "paused" ? "继续走 →" : "停下来看看";
-    const wugongWalkPreview = $("wugong-walk-preview");
-    if (wugongWalkPreview) wugongWalkPreview.hidden = r.id !== "wugong";
-    const tigerWalkPreview = $("tiger-walk-preview");
-    if (tigerWalkPreview) tigerWalkPreview.hidden = r.id !== "tiger";
-    const aotaiWalkPreview = $("aotai-walk-preview");
-    if (aotaiWalkPreview) aotaiWalkPreview.hidden = r.id !== "aotai";
+    $("walk-toggle").disabled = !(["walking", "paused"].includes(state.status) || !!Runtime.chapterFor(r.id) && state.status === "ready") || !!photoFromAlbum || !!miniController.state || !!rewardController.current;
+    $("walk-toggle").textContent = state.status === "ready" ? Runtime.chapterFor(r.id)?.cover.action ?? "出发，走一走 →" : walking ? "停下来看看" : "继续走 →";
+    for (const chapter of Runtime.CHAPTERS) {
+      const preview = $(chapter.id + "-walk-preview");
+      preview.hidden = r.id !== chapter.id;
+      preview.href = chapter.mapPage + "?walk=1";
+    }
     if (tigerJourney && !["high", "returning"].includes(tigerJourney.phase)) $("walk-toggle").disabled = true;
     if (tigerJourney?.phase === "returning") $("walk-toggle").textContent = state.status === "paused" ? "继续返回 →" : "在回程歇一会儿";
     if (tigerJourney && tigerJourney.phase !== "high") {
@@ -1112,23 +1140,26 @@
         flake.style.animationDuration = `${weather === "rain" ? 1.2 : 2.5 + i % 3}s`;
       }
     }
-    const wugongEntry = r.id === "wugong" && state.status === "ready";
-    const tigerEntry = r.id === "tiger" && state.status === "ready";
-    const aotaiEntry = r.id === "aotai" && state.status === "ready";
-    $("map-frame").classList.toggle("wugong-entry", wugongEntry);
-    $("map-frame").classList.toggle("tiger-entry", tigerEntry);
-    $("map-frame").classList.toggle("aotai-entry", aotaiEntry);
-    $("overlay").classList.toggle("wugong-entry-cover", wugongEntry);
-    $("overlay").classList.toggle("tiger-entry-cover", tigerEntry);
-    $("overlay").classList.toggle("aotai-entry-cover", aotaiEntry);
+    const entryChapter = state.status === "ready" ? Runtime.chapterFor(r.id) : null;
+    const illustratedEntry = ["changping", "mogan", "westlake"].includes(r.id) && state.status === "ready";
+    for (const chapter of Runtime.CHAPTERS) {
+      const selected = entryChapter?.id === chapter.id;
+      $("map-frame").classList.toggle(chapter.id + "-entry", selected);
+      $("overlay").classList.toggle(chapter.id + "-entry-cover", selected);
+    }
+    $("map-frame").classList.toggle("illustrated-entry", illustratedEntry);
+    $("overlay").classList.toggle("illustrated-entry-cover", illustratedEntry);
+    if (illustratedEntry) $("overlay").style.setProperty("--route-cover", `url("scenes/day-route-v2/${r.id}.webp")`);
+    else $("overlay").style.removeProperty("--route-cover");
     $("overlay").hidden = state.status !== "ready" || miniController.active || rewardController.open || !!photoId;
     if (state.status === "ready") {
       const story = J.storyOf(state);
-      $("overlay-kicker").textContent = r.id === "wugong" ? "东江村经典反穿 · 两天一夜" : tigerEntry ? "虎跳峡高路 · 两天一夜" : aotaiEntry ? "鳌太线 · 冬季历史路线" : "THE TRAIL IS WAITING";
-      $("overlay-title").textContent = r.id === "wugong" ? "沿着草甸，把山野收进手帐。" : aotaiEntry ? "循着山脊，走进云与石之间。" : story.openingTitle;
-      $("overlay-copy").textContent = r.id === "wugong" ? "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。" : tigerEntry ? "从桥头越过二十八道拐，在中途客栈住一晚。清晨经龙洞瀑布走到中峡客栈，也可沿小路下到中虎跳江边，再循原路返回。" : aotaiEntry ? "从塘口村上鳌山，翻过飞机梁、金字塔与太白梁，走向大爷海和拔仙台。沿历史路线上下山，在途中歇脚过夜，把山野相遇收进手帐，最后经下板寺向汤峪方向离山。" : story.opening;
-      $("overlay-action").textContent = r.id === "wugong" ? "从东江村出发 →" : tigerEntry ? "从桥头出发 →" : aotaiEntry ? "走进秦岭 →" : "出发，走一走 →";
-      $("overlay-hint").textContent = r.id === "wugong" ? "跟随山路 · 沿途实景 · 手绘互动与旅行手帐" : r.id === "tiger" ? "中途客栈过夜 · 沿途实景 · 手绘收藏" : aotaiEntry ? "历史路线示意 · 多程过夜 · 手绘收藏" : r.id === "westlake" ? "约2–3分钟 · 路边的小动静，值得停一下" : "约2–3分钟 · 自动行走 · 随时停下";
+      const cover = entryChapter?.cover;
+      $("overlay-kicker").textContent = cover?.kicker ?? "THE TRAIL IS WAITING";
+      $("overlay-title").textContent = cover?.title ?? story.openingTitle;
+      $("overlay-copy").textContent = cover?.copy ?? story.opening;
+      $("overlay-action").textContent = cover?.action ?? "出发，走一走 →";
+      $("overlay-hint").textContent = cover?.hint ?? (r.id === "westlake" ? "约2–3分钟 · 路边的小动静，值得停一下" : "约2–3分钟 · 自动行走 · 随时停下");
     }
     $("story-panel").hidden = state.pending?.kind !== "choice";
     if (state.pending?.kind === "choice") {
@@ -1185,16 +1216,9 @@
     syncAudio();
   }
   function apply(next) {
-    if (state.routeId === "aotai" && state.status === "ready" && next.status !== "ready") {
-      location.assign($("aotai-walk-preview").href);
-      return;
-    }
-    if (state.routeId === "tiger" && state.status === "ready" && next.status !== "ready") {
-      location.assign($("tiger-walk-preview").href);
-      return;
-    }
-    if (state.routeId === "wugong" && state.status === "ready" && next.status !== "ready") {
-      location.assign($("wugong-walk-preview").href);
+    const chapter = Runtime.chapterFor(state.routeId);
+    if (chapter && state.status === "ready" && next.status !== "ready") {
+      location.assign(chapter.mapPage + "?walk=1");
       return;
     }
     const previous = state;
@@ -1368,7 +1392,7 @@
     render();
   });
   $("overlay-action").addEventListener("click", () => apply(J.start(state)));
-  $("walk-toggle").addEventListener("click", () => apply(["wugong", "tiger", "aotai"].includes(state.routeId) && state.status === "ready" ? J.start(state) : state.status === "paused" ? J.resume(state) : J.pause(state)));
+  $("walk-toggle").addEventListener("click", () => apply(!!Runtime.chapterFor(state.routeId) && state.status === "ready" ? J.start(state) : state.status === "paused" ? J.resume(state) : J.pause(state)));
   $("photo-continue").addEventListener("click", closePhoto);
   $("photo-close").addEventListener("click", closePhoto);
   $("replay").addEventListener("click", () => {
@@ -1383,6 +1407,15 @@
     updatePosition(0, true);
   });
   $("sound-toggle").addEventListener("click", toggleSound);
+  $("back-to-route-map").addEventListener("click", () => {
+    if (state.status === "walking") apply(J.pause(state));
+    entranceVisible = false;
+    $("journey-stage").hidden = true;
+    document.body.classList.add("choosing-route");
+    routeMapPicker?.setSelected(null);
+    $("route-picker").scrollIntoView({ behavior: motionReduced ? "auto" : "smooth", block: "start" });
+    $(`route-${state.routeId}`).focus({ preventScroll: true });
+  });
   $("observe-button").addEventListener("click", () => {
     const active = discovery();
     if (active) captureDiscovery(active.id);
@@ -1427,6 +1460,7 @@
   window.addEventListener("pagehide", (event) => {
     backgroundPause();
     if (!event.persisted) {
+      routeMapPicker?.destroy();
       miniController.destroy();
       moganGames?.destroy();
       tigerGames.destroy();

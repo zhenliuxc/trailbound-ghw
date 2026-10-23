@@ -9,3 +9,18 @@
 .tiger-art-page #micro-panel[data-trail-game=tiger-climb] .tiger-actions:empty{display:none}
 @media(max-width:600px){.tiger-art-page #micro-panel[data-trail=true]{--play-chrome:310px}.tiger-art-page .tiger-tools{gap:7px}.tiger-art-page #micro-panel[data-trail=true] #micro-instruction{font-size:12px}.tiger-art-page .tiger-actions button{font-size:11px;padding:9px 13px}.tiger-art-page .tiger-frame{width:65px;height:50px}}
 @media(max-width:600px){.tiger-art-page #micro-panel[data-trail-game=tiger-climb]{--play-chrome:250px}}
+@media(max-width:960px){.tiger-art-page[data-embedded=true] .journal-detail-bar{padding-right:64px}}
+@media(orientation:landscape) and (max-height:500px){
+ .tiger-art-page .journal-detail{height:calc(100dvh - 24px)}
+ .tiger-art-page .journal-detail-bar{padding-block:8px}
+ .tiger-art-page .journal-detail-nav{padding-block:8px}
+ .tiger-art-page .journal-detail .journal-spread{grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:20px;padding:12px 20px;align-content:start}
+ .tiger-art-page .journal-illustration{position:sticky;top:0;align-self:start;padding:0 8px;border-bottom:0;border-right:1px solid #e7e4d4}
+ .tiger-art-page .journal-illustration .journal-badge-art{width:clamp(96px,calc(100dvh - 242px),220px)}
+ .tiger-art-page .journal-art-view:has(.journal-original-toggle) .journal-badge-art{width:clamp(64px,calc(100dvh - 290px),180px)}
+ .tiger-art-page .journal-art-caption{margin-top:6px;font-size:10px}
+ .tiger-art-page .journal-copy{align-self:start;padding:0}
+ .tiger-art-page .journal-copy .journal-entry-title{font-size:21px;margin-bottom:8px}
+ .tiger-art-page .journal-copy .journal-memory{font-size:14px;line-height:1.8}
+ .tiger-art-page .journal-entry-meta{margin-top:12px;padding-top:8px}
+}

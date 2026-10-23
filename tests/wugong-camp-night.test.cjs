@@ -41,12 +41,14 @@ test('the same shape can be joined in either direction, undone and completed exa
 
 test('the camp memory persists the earned watercolor and keeps its first date and words on replay', () => {
   const storage = new MemoryStorage();
-  assert.deepEqual(rememberCampStars(catalog, journal, storage, art, 1000), { kind: 'stored', existing: false });
+  const saved = rememberCampStars(catalog, journal, storage, art, 1000);
+  assert.equal(saved.kind, 'stored'); assert.equal(saved.existing, false);
   const original = storage.value, first = catalog.loadMoments(storage);
   assert.equal(first.length, 1); assert.equal(first[0].id, CAMP_STARS_ID);
   assert.equal(first[0].place, '武功山 · 观音宕／星空营地'); assert.equal(first[0].earned, true);
   assert.equal(catalog.tagArt(first[0]), art);
-  assert.deepEqual(rememberCampStars(catalog, journal, storage, art, 5000), { kind: 'stored', existing: true });
+  const replay = rememberCampStars(catalog, journal, storage, art, 5000);
+  assert.equal(replay.kind, 'stored'); assert.equal(replay.existing, true);
   assert.equal(storage.value, original); assert.equal(catalog.loadMoments(storage)[0].createdAt, 1000);
   assert.equal(journal.page(catalog.loadMoments(storage), 'wugong').entries.length, 1);
 });
