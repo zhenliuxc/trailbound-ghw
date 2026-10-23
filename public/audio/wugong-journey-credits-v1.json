@@ -1,0 +1,48 @@
+{
+  "scope": "Wugong map only",
+  "cost": 0,
+  "entries": [
+    {
+      "file": "audio/wugong-woodland-v1.m4a",
+      "bytes": 262317,
+      "sha256": "58e6a7f9716914e49f57fc9b2d4e5043e7d2865bddd66fac5835da35266ca736",
+      "sourceFileSha256": "e14873c3430334075ba3a5274fb92672dc85896089ac94f1ef12154412ed2630",
+      "sourceHashScope": "Complete downloaded source MP3",
+      "author": "Joseph SARDIN",
+      "title": "Wind in a Tree",
+      "source": "https://bigsoundbank.com/wind-in-a-tree-s0659.html",
+      "download": "https://bigsoundbank.com/UPLOAD/mp3/0659.mp3",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "changes": "Excerpt 3–35 seconds, mono 32kHz AAC 64kbps, one-second endpoint fades. Runtime gain follows the map weather. Not recorded at Wugong Mountain."
+    },
+    {
+      "file": "audio/wugong-rain-v1.m4a",
+      "bytes": 269074,
+      "sha256": "190e04e9b6e1f5b63d23bf64ca2a5b9016eb6b540acb56142b07d1d32a1464ac",
+      "sourceFileSha256": "aa5a6824c92440431ec38b3de692a941b61fdfa3c29c69b14307651000269360",
+      "sourceHashScope": "Complete downloaded source MP3",
+      "author": "Joseph SARDIN",
+      "title": "Rain on Puddle",
+      "source": "https://bigsoundbank.com/rain-on-puddle-s1290.html",
+      "download": "https://bigsoundbank.com/UPLOAD/mp3/1290.mp3",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "changes": "Excerpt 3–35 seconds, mono 32kHz AAC 64kbps, one-second endpoint fades. Runtime gain follows the map weather. Not recorded at Wugong Mountain."
+    },
+    {
+      "file": "audio/wugong-wind-v1.m4a",
+      "bytes": 131563,
+      "sha256": "6cde5ee532b18e89fab11356c8b5b452e12f4688fa55a075eea01e3c7856ebca",
+      "sourceFileSha256": "4fe7ab14b77ef1a4c1b4c9d53a1ec8122ab70d4aa28ad94aea7adee6452bea6a",
+      "sourceHashScope": "Decoded source range 3–19 seconds, WAV header rewritten; source acquired as an HTTP prefix",
+      "author": "Thimras",
+      "title": "Park ambiences / open field wind",
+      "source": "https://opengameart.org/content/park-ambiences",
+      "download": "https://opengameart.org/sites/default/files/park_ambience_wind.wav",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "changes": "Excerpt 3–19 seconds, mono 32kHz AAC 64kbps, one-second endpoint fades. Runtime gain follows the map weather. Not recorded at Wugong Mountain."
+    }
+  ]
+}

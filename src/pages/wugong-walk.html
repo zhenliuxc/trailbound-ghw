@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4f2e7">
+  <title>武功山 · 山路漫游 / 山径</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="wugong-walk.css?v=landmarks-2">
+  <link rel="stylesheet" href="wugong-camp-night.css?v=discovery-fade-10">
+  <link rel="stylesheet" href="wugong-keepsakes.css?v=discovery-fade-10">
+  <link rel="stylesheet" href="wugong-transitions.css?v=discovery-fade-10">
+  <link rel="stylesheet" href="character-picker.css?v=character-choice-1">
+  <link rel="preload" as="image" href="characters/trailbound-walk-v2.webp">
+  <link rel="prefetch" as="image" href="scenes/wugong-camp-night-v1/night-v1.webp">
+  <script defer src="route-moments.js"></script>
+  <script defer src="discoveries.js?v=auto-journal-8"></script>
+  <script defer src="journal.js"></script>
+  <script defer src="wugong-walk.js?v=landmarks-2"></script>
+<link rel="stylesheet" href="journey-map.css?v=shared-camera-2"><link rel="stylesheet" href="landmark-markers.css?v=landmarks-2"></head>
+<body class="ww-scroll">
+  <main class="ww-page">
+    <header class="ww-header">
+      <a class="ww-brand" href="./" aria-label="山径，回到旅程"><img src="icon.svg" alt="" width="30" height="30"><span>山径<small>TRAILBOUND</small></span></a>
+      <a class="ww-return" href="./">回到旅程 <span aria-hidden="true">↗</span></a>
+    </header>
+    <section class="ww-journey" aria-labelledby="ww-title">
+      <header class="ww-heading">
+        <div><p id="ww-trip-day" class="ww-eyebrow">武功山 · 东江村经典反穿 / 第一天 · 向营地</p><h1 id="ww-title">沿着山路，慢慢走。</h1><p id="ww-subtitle" class="ww-subtitle">东江村 → 观音宕过夜 → 金顶 → 景区大门</p></div>
+        <div class="ww-heading-tools"><button id="ww-character" type="button" disabled>角色</button><button id="ww-journal" type="button">旅行手帐</button><button id="ww-sound" type="button" aria-pressed="false">声音 · 关</button></div>
+      </header>
+      <div id="ww-conditions" class="ww-conditions" data-weather="clear">
+        <p class="ww-environment-status"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="ww-weather-sun"><circle cx="12" cy="12" r="4"/><path d="M12 4V2m0 20v-2M4 12H2m20 0h-2M6.3 6.3 4.9 4.9m14.2 14.2-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></g><path class="ww-weather-cloud" d="M9 24c-5-1-3-8 2-8 1-6 10-7 13-1 7-1 9 9 2 9Z"/><path class="ww-weather-rain" d="m12 27-1 3m8-3-1 3m8-3-1 3"/><path class="ww-weather-moon" d="M23 5A11 11 0 1 0 27 22C16 24 10 13 23 5Z"/></svg><span id="ww-environment-label">第一天 08:00 · 晴</span><small>旅程天气</small></p>
+        <details class="ww-environment-options"><summary>景象</summary><div><label for="ww-time-setting">光照<select id="ww-time-setting"><option value="journey">随旅程变化</option><option value="dawn">晨光</option><option value="day">白天</option><option value="dusk">黄昏</option><option value="night">星夜</option></select></label><label for="ww-weather-setting">天气<select id="ww-weather-setting"><option value="journey">随旅程变化</option><option value="clear">晴</option><option value="cloud">多云</option><option value="mist">薄雾</option><option value="drizzle">小雨</option></select></label><p>游戏内的山间景象，可随旅程变化，也可选一种光照与天气慢慢看。</p></div></details>
+      </div>
+      <div class="ww-map journey-map" id="ww-map" data-view="follow" aria-label="武功山东江村反穿两天一夜 2D 路线示意图，观音宕过夜，经吊马桩、金顶，步行下到景区大门，可切换随行视角与全图">
+        <canvas id="ww-canvas" aria-label="点山路行走，空格暂停或继续，方向键辅助行走" tabindex="0">请使用支持 Canvas 的浏览器展开山路。</canvas>
+        <div class="ww-markers" id="ww-markers" aria-label="实景打卡地点与名称"></div>
+        <p id="ww-chapter" class="ww-chapter">第一天 / 东江村出发</p>
+        <div id="ww-night" class="ww-night" role="status" aria-live="polite" hidden><span aria-hidden="true">☾</span><h2 id="ww-night-title">在观音宕，住一晚</h2><p id="ww-night-copy">住进帐篷，听山风慢慢安静下来。</p></div>
+        <div class="ww-view-switch" role="group" aria-label="地图视角"><button id="ww-view-follow" type="button" aria-controls="ww-canvas" aria-pressed="true" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3"/><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/></svg>跟随</button><button id="ww-view-overview" type="button" aria-controls="ww-canvas" aria-pressed="false" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m2 5 5-2 6 2 5-2v12l-5 2-6-2-5 2V5Zm5-2v12m6-10v12"/></svg>全图</button></div>
+        <div id="ww-detail-hint" class="ww-detail-hint" role="status" aria-live="polite" hidden></div>
+        <div class="ww-loading" id="ww-loading" role="status"><span class="ww-loading-leaf" aria-hidden="true">◇</span><p id="ww-loading-text">山路正在展开…</p><button id="ww-retry" type="button" hidden>重新展开山路</button></div>
+      </div>
+      <div class="ww-walk-bar">
+        <div><p id="ww-note" class="ww-note" role="status" aria-live="polite">第一天走到观音宕过夜，第二天经金顶下到景区大门。</p></div>
+        <div class="ww-actions"><button id="ww-reopen" type="button" hidden>再看实景照片</button><button id="ww-reset" type="button" hidden>重新出发</button><button id="ww-walk" class="ww-primary" type="button" disabled>从东江村出发 <span aria-hidden="true">→</span></button></div>
+      </div>
+    </section>
+
+    <footer class="ww-footer"><span>山风很长，慢慢走。</span><a href="wugong-credits.html" target="_blank" rel="noopener">致谢</a></footer>
+  </main>
+  <dialog id="ww-visit" class="ww-visit" aria-labelledby="ww-visit-title">
+    <button id="ww-visit-close" class="ww-visit-close" type="button" aria-label="关闭景点照片，回到山路"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+    <div class="ww-visit-layout">
+      <figure class="ww-visit-figure"><div class="ww-visit-picture"><div id="ww-visit-media" class="ww-visit-media"></div><div class="ww-photo-message"><p id="ww-photo-status" role="status">实景照片正在展开…</p><button id="ww-photo-retry" type="button" hidden>重新加载照片</button></div></div><figcaption id="ww-photo-caption"></figcaption></figure>
+      <div class="ww-visit-copy"><h2 id="ww-visit-title"></h2><div class="ww-photo-credit"><a id="ww-photo-source" target="_blank" rel="noopener noreferrer"></a><span aria-hidden="true"> · </span><a id="ww-photo-license" target="_blank" rel="noopener noreferrer"></a></div><button id="ww-visit-proceed" class="ww-visit-proceed" type="button" autofocus>继续走 →</button></div>
+    </div>
+  </dialog>
+  <dialog id="ww-art" aria-label="武功山手绘与旅行手帐"><button id="ww-art-close" type="button" aria-label="关闭手绘，回到山路">×</button><p id="ww-art-state" role="status">手绘正在展开…</p><iframe id="ww-art-frame" title="武功山手绘互动与旅行手帐" hidden></iframe></dialog>
+</body>
+</html>

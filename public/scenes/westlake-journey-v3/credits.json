@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-22",
+  "tool": "Built-in OpenAI image_gen",
+  "reference": "art/day-route-redesign-v2/westlake.png",
+  "identity": "Generated watercolor game illustrations. Not location photography.",
+  "modifications": "Original PNG encoded to WebP; runtime cover crop and separate interactive props.",
+  "assets": [
+    {
+      "file": "forest-pool.webp",
+      "source": "art/westlake-journey-v3/forest-pool.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 949100,
+      "sourceSha256": "9d4d09a7884ed37b983b6dfdf842f3103ef0e01c4ba3d5b65e7455141cd30a2d",
+      "prompt": "Create a new companion view to the reference watercolor landscape, for the Jiuxi / Nine Creeks spring hiking game. The reference is style and brushwork guidance, not the desired composition. Produce ONE complete edge-to-edge landscape image, aspect ratio 3:2, at the highest available resolution. Fine traditional watercolor on lightly textured ivory paper, nuanced foliage and moss, olive spring greens, cool shallow turquoise water, natural sunlight, matching the reference quality. Scene: INSIDE the shady creek valley, before tea plantations or village are visible. Large broadleaf trees and interlocking spring canopy occupy the upper 38% and both upper corners, framing a quiet recess of woods. A little worn stone path is partly visible at the far LEFT edge. No tea terraces, no houses, no mountains opening across the horizon. Crucial game layout: the lower 55% and middle of the canvas is a continuous calm pool with translucent shallow water, subtle pebbles under water, a few low moss stones near the extreme banks. Keep a gently diagonal WATER-ONLY passage from 24% width / 77% height to 77% width / 52% height completely clear of exposed rocks, trunks, plants or foreground objects. A small floating leaf will be added by code, so DO NOT paint a prominent leaf, any person, stepping stones across the water, UI, lettering or symbols. A little soft sunlight lands on the pool while the framing foliage stays darker. This composition must read as an enclosed forest creek in both full landscape and a central 9:16 crop, with clear water throughout the lower central area. No blur, no photorealism, no flat vectors, no ornate borders."
+    },
+    {
+      "file": "village-tea.webp",
+      "source": "art/westlake-journey-v3/village-tea.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 844684,
+      "sourceSha256": "d3381d77cfc0e2626b1ba6c48ea310bfba27a88afbbbfc43a784b162b381b764",
+      "prompt": "Create a new companion view to the reference watercolor landscape, the final scene of a Jiuxi to Longjing Village spring walking game. The reference is for brushwork, paper texture and color harmony, not a layout to duplicate. ONE complete edge-to-edge landscape illustration, 3:2 aspect ratio, highest available resolution. Fine layered hand-painted watercolor, ivory paper grain, warm wood, spring olive greens, grey tile and white plaster, muted natural sunlight. View from a SMALL VILLAGE TEA REST under an eave, looking out toward a narrow stone lane, close white-plaster houses with dark grey tile roofs in the center and right, and a gently terraced tea slope farther behind. Roof eave and a modest wooden post at the very upper and left margins create an intimate arrival, not a giant frame. Crucial game layout: an EMPTY large aged wooden tabletop fills the lower 48% of the picture, top plane beginning around y=55%, reaching all the way to the bottom with gentle perspective and refined wood grain. The central area x=30%-70%, y=52%-85% must be clear, quietly lit wood where a single small transparent teacup will later be composited. No cup, teapot, utensil, hands, person, UI, lettering, sign, logo, foreground leaf or steam. No stream through the table, no mountain panorama taking over the village. The roofs, lane and table must remain unmistakable in a center-cropped mobile portrait view. Light canopy dapple near the side edges only; keep the operation area unobstructed. Fine watercolor not photorealistic, no flat geometric graphics, no heavy outlines."
+    }
+  ]
+}

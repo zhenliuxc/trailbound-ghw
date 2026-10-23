@@ -1,5 +1,6 @@
-import { clamp, mix, smooth, type Point } from '../model';
-import { ScrollTrail, type ScrollStopId } from './route';
+import { clamp, mix, smooth, type Point } from '../../journey/geometry';
+import { ScrollTrail } from './route';
+import type { ScrollStopId } from '../../content/wugong-map';
 import { trailEvents, type TrailEvent, type TrailEventId } from './events';
 
 type CampKind = 'arriving' | 'unpacking' | 'sitting' | 'resting' | 'sleeping' | 'waking' | 'standing' | 'packing' | 'summit' | 'finished';

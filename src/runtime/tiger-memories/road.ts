@@ -1,5 +1,5 @@
 import { clamp, distance, type Point, type RoadPhase } from './model';
-import { curve } from '../../wugong-walk/model';
+import { curve } from '../../journey/geometry';
 
 /** A single S follows the two broad bends already painted into the mountain. */
 export const ROAD_POINTS = curve([[178, 479], [252, 461], [331, 436], [398, 416], [430, 395], [399, 380], [332, 365], [255, 347], [180, 328], [130, 307], [127, 289], [193, 273], [299, 256], [388, 233]].map(([x, y]) => ({ x: x * 1000 / 724, y: y * 750 / 543 })), 8);

@@ -11,15 +11,16 @@ let stopping = false;
 let debounce;
 
 function snapshot() {
-  const files = ['tsconfig.json', 'scripts/build-runtime.mjs', 'scripts/build-wugong-art.mjs', 'scripts/build-pages.mjs', 'scripts/build-day-pages.mjs', 'scripts/build-landmark-library.mjs'];
-  function visit(relative) {
+  const files = ['tsconfig.json', 'scripts/build-runtime.mjs', 'scripts/build-content.mjs', 'scripts/build-static.mjs', 'scripts/build-wugong-art.mjs', 'scripts/build-pages.mjs', 'scripts/build-day-pages.mjs', 'scripts/build-landmark-library.mjs'];
+  function visit(relative, all = false) {
     for (const entry of readdirSync(join(project, relative), { withFileTypes: true })) {
       const file = join(relative, entry.name);
-      if (entry.isDirectory()) visit(file);
-      else if (/\.(?:js|ts|html|css)$/.test(entry.name)) files.push(file);
+      if (entry.isDirectory()) visit(file, all);
+      else if (all || /\.(?:js|ts|html|css)$/.test(entry.name)) files.push(file);
     }
   }
   visit('src');
+  visit('public', true);
   return files.sort().map(file => {
     try {
       const stat = statSync(join(project, file), { bigint: true });
@@ -48,7 +49,7 @@ function build() {
 }
 
 let previous = snapshot();
-console.log('Watching src/, tsconfig.json and build scripts; no automatic browser reload.');
+console.log('Watching src/, public/, tsconfig.json and build scripts; no automatic browser reload.');
 build();
 const poll = setInterval(() => {
   try {

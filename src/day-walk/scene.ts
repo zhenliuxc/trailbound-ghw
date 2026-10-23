@@ -1,9 +1,10 @@
-import { Application, Container, Graphics } from 'pixi.js';
+import { Application, Container, Graphics, Rectangle } from 'pixi.js';
+import type { PhotoFrame } from '../content/look-here';
 import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../characters/pixi';
 import { DEFAULT_CHARACTER, type CharacterId } from '../characters/catalog';
 import { MapCamera, mapCharacterScale, type MapProjection, type MapView } from '../journey/map-camera';
 import { WalkingTurn } from '../journey/walking-turn';
-import { clamp } from '../wugong-walk/model';
+import { clamp } from '../journey/geometry';
 import type { DayJourney, DayTrail } from '../journey/day-route';
 import { drawLandscape, noise } from './landscape';
 import type { LandscapeEffects } from './landscape/effects';
@@ -51,6 +52,15 @@ export class DayScene {
   resize(width: number, height: number): void {
     this.width = width; this.height = height; this.camera.resize(width, height);
     if (this.initialized) { this.app.renderer.resolution = Math.min(2, devicePixelRatio || 1, Math.sqrt(2800000 / Math.max(1, width * height))); this.app.renderer.resize(width, height); }
+  }
+  capture(frame: PhotoFrame): Promise<string> {
+    if (!this.initialized || this.disposed) return Promise.reject(new Error('山径尚未准备好'));
+    const walkerVisible = this.walker.renderable;
+    this.walker.renderable = false;
+    try {
+      // Pixi extracts the canvas synchronously, before its asynchronous image encoding.
+      return this.app.renderer.extract.base64({ target: this.world, frame: new Rectangle(frame.x, frame.y, frame.width, frame.height), resolution: 1200 / frame.width, format: 'webp', quality: .9, antialias: true, clearColor: '#d0d9bf' });
+    } finally { this.walker.renderable = walkerVisible; }
   }
   paint(journey: DayJourney, dt: number, reduced: boolean): MapProjection {
     const { width, height } = this.trail.route.world, at = journey.point;

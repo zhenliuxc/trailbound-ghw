@@ -1,4 +1,0 @@
-PASS: selected photograph, original title, author, license, and location evidence retained.
-PASS: all six local photographs decode as JPEG and match credited SHA-256; Longdong is 960 x 1280.
-PASS: built runtime uses the new photograph, updated cache URLs, dedicated framing, and current attribution.
-PASS: retained old cached photograph keeps a matching SHA-256, original author, and accessible license record.

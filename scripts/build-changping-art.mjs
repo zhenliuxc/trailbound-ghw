@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { build } from 'esbuild';
 
 const root = new URL('../', import.meta.url);
-const output = new URL('dist/scenes/changping-autumn-v1/', root);
+const output = new URL('public/scenes/changping-autumn-v1/', root);
 for (const file of ['horse-rest', 'props', 'valley']) {
   await sharp(new URL(`art/changping-autumn-v1/${file}.png`, root).pathname).webp({ quality: 94, alphaQuality: 100 }).toFile(new URL(`${file}.webp`, output).pathname);
 }
@@ -25,7 +25,7 @@ for (const [id, file, prop] of [
   }
   const art = await sharp(new URL(file, output).pathname).resize(640, 640, { fit: 'cover' }).composite(layers).png().toBuffer();
   const circle = await sharp(art).ensureAlpha().composite([{ input: mask, blend: 'dest-in' }]).png().toBuffer();
-  await sharp(circle).composite([{ input: frame }]).webp({ quality: 90 }).toFile(new URL(`dist/badges/changping-${id}-v1.webp`, root).pathname);
+  await sharp(circle).composite([{ input: frame }]).webp({ quality: 90 }).toFile(new URL(`public/badges/changping-${id}-v1.webp`, root).pathname);
 }
 await writeFile(new URL('credits.json', output), JSON.stringify({
   chapter: '长坪沟 · 十月彩林一日往返',

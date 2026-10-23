@@ -1,13 +1,14 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { buildSync } = require('esbuild');
+const { Container } = require('pixi.js');
 
 const code = buildSync({
   stdin: { contents: 'export { drawLandscape } from "./src/day-walk/landscape"; export { DayTrail } from "./src/journey/day-route"; export { DAY_ROUTES } from "./src/content/day-routes";', resolveDir: process.cwd() },
   bundle: true, write: false, format: 'cjs', external: ['pixi.js'],
 }).outputFiles[0].text;
 
-class Graphics {
+class Graphics extends Container {
   strokes = []; path = [];
   moveTo(x, y) { this.path = [{ x, y }]; return this; }
   lineTo(x, y) { this.path.push({ x, y }); return this; }
@@ -23,7 +24,7 @@ class Graphics {
 }
 const box = { exports: {} };
 new Function('module', 'exports', 'require', code)(box, box.exports, id => {
-  assert.equal(id, 'pixi.js'); return { Graphics };
+  assert.equal(id, 'pixi.js'); return { Graphics, Container };
 });
 const { drawLandscape, DayTrail, DAY_ROUTES } = box.exports;
 
@@ -38,9 +39,10 @@ function intersectionAt(a, b, c, d) {
 
 for (const [id, crossingKnots] of [['mogan', [13]], ['westlake', [5, 7]]]) {
   test(`${id}: streams cross the walked trail only at its paved stepping stones`, () => {
-    const layers = [], trail = new DayTrail(DAY_ROUTES[id]);
-    drawLandscape({ addChild(...items) { layers.push(...items); } }, trail.route, trail);
-    const channels = layers.flatMap(layer => layer.strokes).filter(stroke => stroke.color === '#8caeaa');
+    const world = new Container(), trail = new DayTrail(DAY_ROUTES[id]);
+    drawLandscape(world, trail.route, trail);
+    const strokes = node => [...(node.strokes || []), ...node.children.flatMap(strokes)];
+    const channels = strokes(world).filter(stroke => stroke.color === '#8caeaa');
     const crossings = [];
     for (const channel of channels) {
       for (let i = 1; i < trail.points.length; i++) for (let j = 1; j < channel.points.length; j++) {

@@ -3,7 +3,7 @@ import type { PlacePhoto } from './photo-dialog';
 import type { DiscoveryCue } from './discovery-transition';
 import type { LandmarkSymbol } from './landmark-symbol';
 import type { LandmarkLabelSide } from './landmark-label';
-import { clamp, curve, distance, mix } from '../wugong-walk/model';
+import { clamp, curve, distance, mix } from './geometry';
 
 export type DayRouteId = 'changping' | 'mogan' | 'westlake';
 export type Feature = 'gate' | 'temple' | 'forest' | 'water' | 'redrock' | 'meadow' | 'bamboo' | 'ridge' | 'tea' | 'village';

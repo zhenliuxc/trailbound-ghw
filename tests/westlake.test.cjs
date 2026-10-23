@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs');
-const G=require('../dist/game'),D=require('../dist/discoveries'),S=require('../dist/scenery'),A=require('../dist/audio'),{harness}=require('./dom-harness.cjs'),evidence=require('../docs/westlake-route-evidence.json');
+const G=require('../dist/game'),D=require('../dist/discoveries'),S=require('../dist/scenery'),A=require('../dist/audio'),{harness}=require('./dom-harness.cjs'),evidence=require('./fixtures/westlake-route-evidence.json');
 test('Westlake follows original connected Nine Creeks footway and Longjing village-road nodes',()=>{
  const r=G.getRoute('westlake');assert.equal(r.name,'西湖·九溪龙井');assert.equal(r.geo.line.length,154);assert.deepEqual(r.geo.line[0],[120.1082817,30.2049691,null]);assert.deepEqual(r.geo.line.at(-1),[120.1019892,30.220395,null]);assert.deepEqual(r.geo.source.wayIds,[981902545,981902551,981902549,286073376,1415410525,1415410524]);assert.ok(r.geo.distanceKm>2.1&&r.geo.distanceKm<2.3);
  for(let i=1;i<evidence.nodeIds.length;i++){const a=evidence.nodeIds[i-1],b=evidence.nodeIds[i];assert.ok(evidence.ways.some(w=>w.nodeIds.some((n,j)=>j>0&&((n===a&&w.nodeIds[j-1]===b)||(n===b&&w.nodeIds[j-1]===a)))),'every step is a real original OSM edge');}

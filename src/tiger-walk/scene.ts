@@ -2,9 +2,10 @@ import { MapCamera, mapCharacterScale, type MapProjection, type MapView } from '
 import { Application, Container, Graphics } from 'pixi.js';
 import { DEFAULT_CHARACTER, type CharacterId } from '../characters/catalog';
 import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../characters/pixi';
-import { clamp, mix } from '../wugong-walk/model';
+import { clamp, mix } from '../journey/geometry';
 import type { TigerJourney } from './journey';
-import { riverCourse, TIGER_WORLD } from './route';
+import { riverCourse } from './route';
+import { TIGER_WORLD } from '../content/tiger-map';
 import { drawTigerLandscape, INN_LIGHTS, noise, WATERFALL } from './terrain';
 
 export type View = MapView;

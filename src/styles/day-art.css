@@ -1,0 +1,34 @@
+/* The three day chapters share the responsive painting frame and journal shell. */
+.day-art-page { --day-header:80px; }
+.day-art-page #app-main { max-width:none; padding:10px clamp(8px,2vw,24px); }
+.day-art-page .art-page-header { min-height:var(--day-header); padding-top:10px; padding-bottom:10px; }
+.day-art-page #micro-panel {
+  height:calc(100dvh - var(--day-header) - 20px);
+  min-height:310px;
+  --play-chrome:150px;
+  --play-extra:0px;
+  padding:12px;
+  gap:8px 14px;
+}
+.day-art-page #micro-panel .micro-surface { min-height:120px; }
+.day-art-page #micro-panel[data-direct=true] #micro-art { background:#d7e3cc; }
+.day-art-page #micro-panel[data-direct=true] .micro-result { font-size:13px; line-height:1.65; }
+.day-memory-canvas { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.day-art-page #micro-panel[data-day-memory=true] .micro-instruction { display:none; }
+.day-art-page #micro-panel[data-day-memory=true] .micro-result { display:block; margin:0; min-height:1.65em; color:#596c51; }
+.day-art-page #micro-panel[data-mogan=true] .mogan-tools { background:transparent; border:0; padding:0; }
+.day-art-page #micro-panel[data-mogan=true] .mogan-caption { margin:0; }
+.day-art-page #micro-panel[data-mogan=true] #mogan-cue { margin:0; font-size:12px; }
+@media(max-width:700px) {
+  .day-art-page { --day-header:66px; }
+  .day-art-page #app-main { padding:6px; }
+  .day-art-page #micro-panel { height:calc(100dvh - var(--day-header) - 12px); min-height:340px; padding:8px; gap:6px; --play-chrome:190px; }
+  .day-art-page #micro-panel .micro-heading h2 { font-size:18px; }
+  .day-art-page #micro-panel .mini-controls button { min-height:44px; }
+}
+@media(max-height:520px) and (orientation:landscape) {
+  .day-art-page { --day-header:50px; }
+  .day-art-page .art-page-header small { display:none; }
+  .day-art-page #micro-panel { min-height:220px; height:calc(100dvh - 62px); --play-chrome:110px; }
+  .day-art-page #app-main { padding:6px; }
+}

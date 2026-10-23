@@ -1,0 +1,61 @@
+[
+  {
+    "stop": "summit",
+    "file": "wugong-jinding-marker-v3.jpg",
+    "title": "Wugongshan， Jiangxi, China, 武功山金顶，中国",
+    "author": "cattan2011",
+    "source": "https://www.flickr.com/photos/68166820@N08/50835558058",
+    "download": "https://live.staticflickr.com/65535/50835558058_ef71cb7487_b.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "locationEvidence": "金顶石碑实拍，原页标题与公开地理标注一致。",
+    "publicGeo": {
+      "latitude": 27.455241,
+      "longitude": 114.173316
+    },
+    "modification": "原样复制作者提供的 1024px JPEG；不裁剪、不去除水印。",
+    "downloadedAt": "2026-10-18"
+  },
+  {
+    "stop": "end",
+    "file": "wugong-valley-v3.jpg",
+    "title": "Wugongshan valley, Jiangxi, China",
+    "author": "cattan2011",
+    "source": "https://www.flickr.com/photos/68166820@N08/50833400457",
+    "download": "https://live.staticflickr.com/65535/50833400457_4e41fe8436_b.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "locationEvidence": "武功山山谷溪水实拍，非景区大门。",
+    "publicGeo": {
+      "latitude": 27.498463,
+      "longitude": 114.094483
+    },
+    "modification": "原样复制作者提供的 1024px JPEG；不裁剪、不去除水印。",
+    "downloadedAt": "2026-10-18"
+  },
+  {
+    "stop": "start",
+    "file": "wugong-village-v3.jpg",
+    "title": "Wugongshan, China",
+    "author": "cattan2011",
+    "source": "https://www.flickr.com/photos/68166820@N08/50770556203",
+    "download": "https://live.staticflickr.com/65535/50770556203_b298cef1e9_b.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "locationEvidence": "武功山山脚村落实拍，作者未标注东江村，不能当作东江村村口定点照片。",
+    "publicGeo": {},
+    "modification": "原样复制作者提供的 1024px JPEG；不裁剪、不去除水印。",
+    "downloadedAt": "2026-10-18"
+  },
+  {
+    "stop": "camp",
+    "file": "wugong-grass-saddle-v3.jpg",
+    "title": "Wugong Mountains, 17 June 2018, Picture10.jpg",
+    "author": "Huangdan2060",
+    "source": "https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture10.jpg",
+    "license": "CC0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "locationEvidence": "武功山草甸区域实景，未证实为观音宕定点；替换季节不符的冬季云海。",
+    "modification": "沿用原 960px JPEG，未裁剪。"
+  }
+]

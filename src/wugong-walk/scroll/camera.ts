@@ -1,5 +1,5 @@
-import { clamp } from '../model';
-import { SCROLL } from './route';
+import { clamp } from '../../journey/geometry';
+import { SCROLL } from '../../content/wugong-map';
 import type { ScrollJourney } from './journey';
 import { MapCamera, type MapProjection, type MapView } from '../../journey/map-camera';
 

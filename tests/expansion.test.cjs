@@ -7,7 +7,7 @@ test('all named journeys retain distinct landscapes and local photographs',()=>{
  for(const id of added){const r=G.getRoute(id);assert.equal(J.storyOf(id).events.length,2);assert.equal(D.create(id,7).slots.filter(s=>!D.item(s.id).bonus).length,3);for(const cp of r.checkpoints)assert.ok(fs.statSync(require.resolve('../dist/'+cp.photo.file)).size<110000);}
 });
 test('added geography preserves official GPX endpoints and connected OSM node sequences',()=>{
- const evidence=require('../docs/expanded-route-evidence.json'),mac=G.getRoute('maclehose').geo;
+ const evidence=require('./fixtures/expanded-route-evidence.json'),mac=G.getRoute('maclehose').geo;
  assert.equal(mac.source.type,'Official GPX');assert.equal(mac.rawPointCount,7879);assert.deepEqual(mac.line[0],[114.3731365005,22.37193906,90]);assert.deepEqual(mac.line.at(-1),[114.3318230408,22.4206881086,144]);assert.equal(mac.pointCount,evidence.maclehose.retainedPoints);
  for(const id of ['changping','mogan']){const geo=G.getRoute(id).geo;assert.deepEqual(geo.source.wayIds,evidence[id].wayIds);assert.equal(geo.line.length,evidence[id].nodeIds.length);assert.equal(evidence[id].nodeIds[0],evidence[id].startNode);assert.equal(evidence[id].nodeIds.at(-1),evidence[id].endNode);assert.ok(geo.line.every(p=>p[2]===null),'OSM paths do not invent elevation');}
  assert.ok(evidence.changping.endpointDistanceToMuluoziMeters<30);

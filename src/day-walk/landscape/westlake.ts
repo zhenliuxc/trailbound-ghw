@@ -1,7 +1,7 @@
 import { type Container, Graphics } from 'pixi.js';
 import type { Point2D } from '../../runtime/projection';
 import type { DayTrail } from '../../journey/day-route';
-import { curve } from '../../wugong-walk/model';
+import { curve } from '../../journey/geometry';
 import { line, noise, polygon, roundedLand } from './primitives';
 import { crossingStones, grove, landscapeLayers, points, ridge, rock, trailPoint, walkingPath, watercourse, waystone } from './ground';
 import type { LandscapeEffects } from './effects';

@@ -1,0 +1,23 @@
+{
+  "created": "2026-10-19",
+  "technique": "Built-in image_gen, existing sharp for atlas encoding and thumbnails; PixiJS for display. No external paid API, CLI generation or purchased model.",
+  "blue": {
+    "name": "蓝衣旅人",
+    "walking": "characters/trailbound-walk-v2.webp",
+    "actions": "scenes/wugong-camp-night-v1/actions-q-v1.webp",
+    "preview": "characters/blue-hiker-preview-v1.webp",
+    "originalRecord": "art/characters/walk-v2.md",
+    "use": "Existing character and poses retained; the preview is cropped from its existing walk sheet."
+  },
+  "braids": {
+    "name": "双辫旅人",
+    "atlas": "characters/braided-hiker-v1.webp",
+    "preview": "characters/braided-hiker-preview-v1.webp",
+    "source": "art/characters/braided-source-v1.png",
+    "reference": "art/characters/braided-reference-v1.png",
+    "prompt": "art/characters/braided-v1-prompt.txt",
+    "metadata": "art/characters/braided-v1.json",
+    "sourceSha256": "44ed1c3c6700284696f1d6687db2a7e0026620de14f6e85f1ddc514640ff0bc5",
+    "use": "Identity reference supplied by user. Twelve generated poses: eight walk frames and four camp poses. Original alpha retained; atlas is WebP-encoded, preview is a crop and resize. Generated art is not a real photograph."
+  }
+}

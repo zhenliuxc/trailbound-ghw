@@ -1,12 +1,13 @@
 import { observeMapSize } from '../../journey/viewport';
 import { createFrameLoop } from '../../runtime/frame-loop';
-import { clamp, distance } from '../model';
+import { clamp, distance } from '../../journey/geometry';
 import { ArtOverlay } from '../../journey/art-overlay';
 import { VisitView } from '../visits';
 import { parseTimeSetting, parseWeatherSetting, SceneEnvironment } from '../environment';
 import { ScrollJourney } from './journey';
 import { ScrollScene } from './scene';
-import { STAGES, PLACE_MARKERS, ScrollTrail, type ScrollStopId } from './route';
+import { ScrollTrail } from './route';
+import { STAGES, PLACE_MARKERS, type ScrollStopId } from '../../content/wugong-map';
 import { LandmarkLayer } from '../../journey/landmark-layer';
 import type { ScrollProjection, ScrollView } from './camera';
 import type { TrailEventId } from './events';

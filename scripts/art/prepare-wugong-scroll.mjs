@@ -11,7 +11,7 @@ const sources = {
   props: 'exec-ff02a397-d11d-4c2c-9689-b83ecac1e6cc.png',
 };
 const sourceDir = path.join(root, 'art/wugong-scroll');
-const outputDir = path.join(root, 'dist/scenes/wugong-scroll-v1');
+const outputDir = path.join(root, 'public/scenes/wugong-scroll-v1');
 await mkdir(sourceDir, { recursive: true });
 await mkdir(outputDir, { recursive: true });
 for (const [name, file] of Object.entries(sources)) {

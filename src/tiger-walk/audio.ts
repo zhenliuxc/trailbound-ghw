@@ -1,4 +1,4 @@
-import { clamp, mix } from '../wugong-walk/model';
+import { clamp, mix } from '../journey/geometry';
 import type { TigerJourney } from './journey';
 import { place } from './route';
 

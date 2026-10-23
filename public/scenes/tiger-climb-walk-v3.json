@@ -1,0 +1,14 @@
+{
+  "title": "二十八道拐 · 山路慢行",
+  "file": "scenes/tiger-climb-walk-v3.webp",
+  "sourceFile": "art/tiger-climb-v3/scene-source.png",
+  "promptFile": "art/tiger-climb-v3/prompt.txt",
+  "generatedOn": "2026-10-18",
+  "generator": "内置 image_gen 工具，未指定或宣称外部 Imagen 模型",
+  "use": "虎跳峡小游戏手绘背景，艺术化表现山路与峡谷，非地点实拍或导航图",
+  "width": 1478,
+  "height": 1064,
+  "processing": "由原始 PNG 转为 WebP，sharp quality 89，保留原图",
+  "geometry": "src/runtime/tiger-trail/geometry.ts，按该画面的小径中心布置足底轨迹",
+  "prompt": "Use case: illustration-story.\nAsset type: production background for a 2D hiking game, Tiger Leaping Gorge Twenty-eight Bends scene. Original fine watercolor travel-journal illustration, landscape composition, approximately 1000:720 aspect ratio, high resolution. No text or UI.\nPrimary request: let a small cute watercolor hiker (added separately by game code, do not draw any people) actually walk a believable continuous climbing mountain path. The painting must clearly show ONE narrow dusty gray footpath carved into the LEFT slope with three broad rounded switchbacks, and an increasingly open majestic view of the deep gorge on the RIGHT.\nComposition: Lower left starts with path at about 14% width, 88% height. It travels right toward 42%,76%, rounds gently left toward 18%,63%, traverses right toward 46%,50%, rounds back toward 24%,37%, then rises to an open small shoulder about 45%,24%. These are art directions, do not draw coordinates or dots. The path is irregular natural stone-and-earth hiking trail, about 1.5% image width, not a paved road, staircase, geometric zigzag, board game, or marked route overlay. All segments connect physically on the same mountain surface with clear ground underfoot, no suspension or floating. No railings are required.\nOn the left, close warm gray layered rock, sparse olive scrub and dry grasses, small lichens, subtle footworn ledges. Mid-right immense layered blue-gray gorge cliffs and the far snow-tipped Yulong massif; a thin muted turquoise-gray Jinsha river very far below in the lower right, deep mountain height separation. Pale ivory sky with a few airy clouds, soft morning light. Foreground rock gently frames the bottom-left but does not obscure the trail.\nStyle/medium: detailed traditional transparent watercolor and fine pencil on warm textured paper, soft granular pigments, controlled natural olive greens, blue-gray rock, cream highlights. Calm, inviting, delicate enough to accompany a cute watercolor chibi backpack hiker. Landscape is the subject; no dramatic neon glow, no 3D rendering, no low-poly facets, no photographic composite, no text labels, no icons, no markers, no borders or watermarks. Do NOT draw the hiker, tents, animals, cables or buildings."
+}

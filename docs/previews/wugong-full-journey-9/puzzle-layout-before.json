@@ -1,7 +1,0 @@
-{
-  "panelBottom": 798.7393341064453,
-  "playChrome": "210px",
-  "playHeight": "max(160px, calc(100dvh - calc(210px + clamp(8px, .65vw, 14px) * 2 + max(clamp(6px, .7vw, 12px), 0px, 0px) * 2 + 0px)))",
-  "toolsBottom": 780.4154605865479,
-  "viewport": 789
-}

@@ -1,0 +1,12 @@
+{
+  "file": "sprites/wugong-swallow-kite-v1.webp",
+  "generator": "OpenAI ImageGen",
+  "source": "/workspace/generated_images/exec-08b244e1-a209-4607-a47b-d4b564b58b80.png",
+  "source_sha256": "c9d42ad3ab56f8e573a53d812786cae47a6449de6d99ecdb0d15ec610ca79b15",
+  "sha256": "81fe13acf2b894651f00122c8cf1f899641bf6f1cab91805183e4231e0925ce3",
+  "width": 640,
+  "height": 427,
+  "bytes": 78066,
+  "processing": "Proportional resize and WebP encoding only; alpha preserved",
+  "purpose": "Original watercolor swallow-kite game sprite; fictional meadow encounter, no new reward edition"
+}

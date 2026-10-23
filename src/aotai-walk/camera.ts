@@ -1,4 +1,4 @@
-import { OVERVIEW_BOUNDS } from './geography';
+import { OVERVIEW_BOUNDS } from '../content/aotai-map';
 export interface OverviewCamera { readonly scaleX: number; readonly scaleY: number; readonly center: { readonly x: number; readonly y: number } }
 export function overviewCamera(width: number, height: number): OverviewCamera {
   const b = OVERVIEW_BOUNDS, margin = width < 700 ? 38 : 55;

@@ -41,7 +41,7 @@
   const dom = Runtime.createDom(document);
   const mapCharacter = Runtime.createProceduralMapCharacter(document);
   const sceneCharacter = Runtime.createSceneCharacter(document);
-  const miniGameKind = (id) => Runtime.TRAIL_GAMES?.[id] || Runtime.TIGER_GAMES[id] || window.TrailArtGames && Runtime.MOGAN_GAMES[id] || window.TrailMiniGames?.kinds[id];
+  const miniGameKind = (id) => legacyGames.kindFor(id);
   const scenes = Runtime.createSceneManager({ status: () => state.status, pause: () => {
     state = J.pause(state);
   }, resume: () => {
@@ -112,12 +112,7 @@
     },
     onClosed: (id, earned, resume) => closeTigerStage(id, earned, resume)
   });
-  const moganGames = window.TrailMiniGames && window.TrailArtGames ? Runtime.createMoganGames({ dom, legacy: window.TrailArtGames, onAction: (name, value) => miniController.action(name, value) }) : null;
-  if (moganGames) miniController.registerGame(Object.keys(Runtime.MOGAN_GAMES), moganGames.adapter);
-  const tigerGames = Runtime.createTigerGames({ dom, onAction: (name, value) => miniController.action(name, value) });
-  miniController.registerGame(Object.keys(Runtime.TIGER_GAMES), tigerGames.adapter);
-  const tigerTrailGames = Runtime.createTigerTrailGames?.({ dom, onAction: (name, value) => miniController.action(name, value) });
-  if (tigerTrailGames) miniController.registerGame(Object.keys(Runtime.TRAIL_GAMES), tigerTrailGames.adapter);
+  const legacyGames = Runtime.installLegacyHomeGames({ mini: miniController, dom, platform: window.TrailMiniGames, legacy: window.TrailArtGames });
   const loop = Runtime.createFrameLoop({ request: (callback) => window.requestAnimationFrame(callback), cancel: (id) => window.cancelAnimationFrame(id), active: () => scenes.canAnimate(miniController.active), update: frame });
   function refreshRuntime() {
     uiKey = "";
@@ -136,7 +131,7 @@
   }
   function beginTigerStage(id, returnStatus = "walking") {
     const entry = D.item(id);
-    if (!tigerJourney || !entry || !tigerTrailGames || miniController.active || rewardController.open) return false;
+    if (!tigerJourney || !entry || !legacyGames.has(id) || miniController.active || rewardController.open) return false;
     tigerJourney.activeStage = id;
     tigerJourney.handled.add(id);
     tigerJourney.nextStage = null;
@@ -1388,9 +1383,7 @@
     if (!event.persisted) {
       routeMapPicker?.destroy();
       miniController.destroy();
-      moganGames?.destroy();
-      tigerGames.destroy();
-      tigerTrailGames?.destroy();
+      legacyGames.destroy();
       mapCharacter.destroy();
       sceneCharacter.destroy();
       mapObserver?.disconnect();

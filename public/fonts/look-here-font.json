@@ -1,0 +1,9 @@
+{
+  "font": "LXGW WenKai Regular",
+  "source": "https://raw.githubusercontent.com/lxgw/LxgwWenKai/7ebd0771fda4285299670f83c398f32f32c7bef8/fonts/TTF/LXGWWenKai-Regular.ttf",
+  "revision": "7ebd0771fda4285299670f83c398f32f32c7bef8",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "LXGWWenKai-OFL.txt",
+  "modifications": "Web-only WOFF2 subset for fixed interface headings; no glyph changes",
+  "sha256": "8ce4617abc132c366d4fca2dc8a3fe7ccf98d4b7c369a076f5c226fd14e36372"
+}

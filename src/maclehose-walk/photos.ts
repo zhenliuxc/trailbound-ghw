@@ -1,5 +1,5 @@
 import type { PlacePhoto } from '../journey/photo-dialog';
-import type { CheckpointId } from './route';
+import type { CheckpointId } from '../content/maclehose-map';
 import { LANDMARK_PHOTOS } from './landmark-photos';
 
 type CoastPhoto = PlacePhoto & { readonly name: string; readonly position: string };

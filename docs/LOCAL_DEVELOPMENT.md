@@ -1,65 +1,74 @@
-# 本机开发 · ~/code/trailbound
+# 本地开发
 
-当前工程：`/Users/liuxucheng/code/trailbound`，位于用户自己的 Mac。
+下列命令均从仓库根目录执行。源码职责见 [架构与源码边界](ARCHITECTURE.md)。
 
-从终端启动完整开发环境：
+## 启动与构建
+
+要求 Node.js 18+、npm，以及本地静态服务使用的 Python 3。使用锁文件安装依赖：
 
 ```sh
-cd ~/code/trailbound
+npm ci
 ./trailbound-local.command dev
 ```
 
-本地地址为 `http://127.0.0.1:8000/`，仅绑定本机。源码变化后会重新构建，浏览器需手动刷新。若迁移恢复的同工程服务仍在运行，`dev` 会复用它并启动源码监听，避免重复占用端口；此时 Ctrl-C 只停止本次监听。正常新开的完整开发会话 Ctrl-C 会停止该会话。
-
-其他入口：
+开发助手启动构建监听和本地服务，默认地址为 [http://127.0.0.1:8000/](http://127.0.0.1:8000/)。源码或素材变化后重新构建，浏览器需手动刷新；Ctrl-C 结束本次会话。同一工程已有服务时会复用，退出监听不关闭先前服务。
 
 ```sh
-./trailbound-local.command build    # 只构建
-./trailbound-local.command watch    # 只监听源码并构建
-./trailbound-local.command serve    # 只提供 dist/ 本地服务
-./trailbound-local.command install  # 有必要时按锁文件重装依赖
-./trailbound-local.command blender --version
+./trailbound-local.command install   # 使用锁文件和本地 npm 缓存安装
+./trailbound-local.command build     # 构建 dist/
+./trailbound-local.command watch     # 只监听构建
+./trailbound-local.command serve     # 只提供 dist/ 本地服务
+PORT=8001 ./trailbound-local.command dev
 ```
 
-迁移保留了 `node_modules`，无需为了迁移重新安装。离线 npm 缓存现在位于 `.local/npm-cache/`。启动脚本会使用现有 shell 的 Node，或本机已安装的 nvm Node 24.19.0。它从自身位置定位项目，不再依赖旧 Codex 任务目录。
+助手优先使用当前 shell 的 Node，也支持本机 nvm 环境。服务只绑定 `127.0.0.1`，不对外发布。
 
-## Tripo
+## 修改对应源码
 
-私有配置现在位于：
+| 内容 | 编辑位置 |
+| --- | --- |
+| 路线身份、封面、入口、地图短名与事件列表 | `src/content/catalog.ts` 及对应路线内容模块 |
+| 手绘页小游戏接入 | `src/journey/game-registry.ts` |
+| 首页保留模块的小游戏接入 | `src/runtime/legacy-game-registry.ts` |
+| JavaScript 规则与场景 | `src/legacy/` |
+| 站点样式 | `src/styles/` |
+| 非模板页面 | `src/pages/` |
+| 首页、日间旅程与共享界面 | `src/templates/` |
+| 站点素材、静态数据及许可 | `public/` |
 
-`/Users/liuxucheng/code/trailbound/.local/tripo.env`
+`public/scenes/example.webp` 输出为站点的 `scenes/example.webp`，引用不加 `public/`。`dist/` 是生成结果，继续参与版本管理，不能直接编辑。构建成功后只删除上次构建清单中失效的输出，未知文件不动。
 
-在本机文件中填写 `TRIPO_API_KEY=`，不要将密钥发送到聊天、Git 或网页。原有配置逐字节保留，迁移过程没有展示其内容；`.local/` 已被 Git 忽略。Tripo 工具仍从自身脚本定位仓库根，因此自动使用新配置路径。此轮迁移没有调用 Tripo、提交生成任务或消耗 credits。
+不同输入不能争用同一个输出路径。遇到 `Duplicate site output`，应确定正确来源，移除重复所有者。监听器覆盖 `src/` 中的 JS、TS、HTML、CSS、`public/`、TypeScript 配置和站点构建脚本。
 
-## Blender 与素材
-
-Blender 4.5.14 LTS 的本机副本位于 `.local/tools/blender/Blender.app`，通过 `./trailbound-local.command blender` 启动。原始安装记录保留在 `.local/tools/blender/INSTALLATION-ORIGINAL.md`。
-
-制作场景时，从本工程根目录调用：
+## 独立输出与存储隔离
 
 ```sh
-./trailbound-local.command blender \
-  --background --python scripts/art/build-mountain-slice.py -- \
-  --character .local/tripo/assets/实际人物.glb \
-  --rock .local/tripo/assets/实际岩壁.glb
+npm run build -- --outdir=.build/site
+python3 -m http.server 8001 --bind 127.0.0.1 --directory .build/site
 ```
 
-示例模型名须替换为真实输入；迁移没有生成或精修新模型。原任务目录的 `generated_images/` 已完整保留到本工程 `.local/source-images/`，供查阅历史文档中的原始素材引用。
+独立输出只允许位于 `.build/` 下，不能覆盖 `.build/typescript/` 编译中间目录。构建不读取旧 `dist/` 作为输入。
 
-## 旧目录和历史记录
+不同端口对应不同浏览器存储来源，适合隔离验证。手帐使用 `trailbound.field-journal.v1`；本地照片使用 IndexedDB `trailbound-private-photos-v1`。不要清理真实用户存档来准备测试，旧格式读取与去重规则属于兼容契约。
 
-原工程目录保留为带时间的备份，实际位置见 [迁移记录](migration-to-code.md)，未删除。旧任务目录的启动助手转发到这里，不会再启动备份工程。
+## 验证
 
-历史构建日志、旧提交和进程记录保留当时的原路径。当前开发和配置路径以本文为准。迁移只核对文件、Git 与本地服务；没有运行集中游戏测试、重新生成模型、推送或发布。
+按 [协作约定](../AGENTS.md) 取得测试授权后，集中运行本轮受影响检查：
 
-## 武功山 2D 主入口
+```sh
+npm run typecheck
+npm run check
+npm test
+```
 
-首页选择武功山，点击“从东江村出发”或“走进山路”，进入 <http://127.0.0.1:8000/wugong-walk.html?walk=1&scene=geography-events-5>。当前包含完整两天一夜：东江村、绝望坡、草甸、观音宕过夜，第二天经吊马桩、金顶，沿景区山路步行下到大门。背景为 PixiJS 程序化 2D 示意图，人物沿用指定的大眼睛 Q 版，默认跟随，右上角可主动切全图。
+可用 `node --test tests/文件名.test.cjs` 选择相关测试。`tests/` 包含规则、地图、注册、会话、存储及 DOM 模拟检查；模拟通过不能代替真实浏览器和听感验收。电脑和手机检查覆盖主要流程与基本布局，不反复穷举相邻尺寸。
 
-当前地图按北坡山群重排，景区下山经福星谷、中庵回到前景山脚。圆形图标是实景打卡，纸签图标是独立的小游戏邂逅；照片卡片只返回山路，完成游戏并收好才保存手绘。实现与检查记录见 `docs/wugong-geography-events-5.md`。
+构建、自动检查、浏览器体验、音频试听与发布分别汇报，不以构建成功替代其他结果。临时日志、截图和制作审阅输出保存在 `.local/`，不追加到 `docs/`。
 
-打卡点实际抵达后打开真实照片与介绍；草甸、营地、吊马桩和金顶可进入四个现有手绘小游戏，完成后收进同一本旅行手帐。照片注明区域实景与定点照片的区别。地图行走为本页会话，手帐继续自动保存。实现与验收边界见 [两天一夜 2D 行程](wugong-two-day-schematic.md)。最初样段记录见 [2D 示意地图与地点事件](wugong-schematic-map.md)。归档 2D 源码和实验素材仍保留，不从旧入口覆盖新行程。
+## 素材制作
 
-## 武功山 3D 实验预览
+`art/` 保存原图与生成来源，`assets/` 保存地图源数据，素材脚本将可分发结果写入 `public/`。生成来源见 `art/provenance/` 与各素材目录，署名和许可清单随站点分发。细则见 [素材追溯](PROVENANCE.md)。
 
-2026-10-18 的项目主线已确认为 2D 行走、地点手绘事件与旅途手帐收集，见 [游戏理念与设计美学约定](game-design-charter.md)。`http://127.0.0.1:8000/wugong-3d.html` 和原草甸预览 URL 仅保留为归档实验，不进入主流程，也不代表当前产品方向。完整技术记录见 [全程 3D 地图](wugong-3d-full-map.md)。
+日常构建只复制既有素材，不调用图像生成、照片下载或音频制作。修改原图后先运行对应制作脚本，再构建站点。全国地图源数据更新使用 `npm run build:route-map`。
+
+站点发布使用既有配置与访问范围，需单独授权；凭据保留在本地忽略配置中，不写入源码或文档。

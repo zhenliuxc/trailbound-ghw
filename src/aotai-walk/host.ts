@@ -10,7 +10,7 @@ import type { AotaiGameId } from '../runtime/aotai-games/model';
 import { AotaiAudio } from './audio';
 import { AotaiJourney, CHECKPOINTS, CHECKPOINT_IDS, CUES, path, type CheckpointId } from './chapter';
 import { PHOTOS } from './photos';
-import { CAMP_IDS, MAIN_ORDER, PLACES, type PlaceId } from './geography';
+import { CAMP_IDS, MAIN_ORDER, PLACES, type PlaceId } from '../content/aotai-map';
 import { AotaiScene, type AotaiView, type Projection } from './scene';
 
 export function mountAotaiChapter() {

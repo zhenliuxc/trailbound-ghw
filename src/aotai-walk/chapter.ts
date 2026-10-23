@@ -1,10 +1,11 @@
 export { CUES } from '../content/aotai';
 import type { LandmarkSymbol } from '../journey/landmark-symbol';
-import { clamp, mix, type Point } from '../wugong-walk/model';
+import { clamp, mix, type Point } from '../journey/geometry';
 import type { AotaiGameId } from '../runtime/aotai-games/model';
 
 export { path } from './geography';
-import { CAMP_IDS, path, type PlaceId } from './geography';
+import { path } from './geography';
+import { CAMP_IDS, type PlaceId } from '../content/aotai-map';
 
 export const CHECKPOINTS = {
   aoshan: { name: '白起庙', place: 'baiqi', symbol: 'temple' },

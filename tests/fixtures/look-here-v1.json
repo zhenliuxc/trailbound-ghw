@@ -1,0 +1,11 @@
+{
+  "database": "trailbound-private-photos-v1",
+  "databaseVersion": 1,
+  "store": "photos",
+  "preferencesKey": "trailbound-glimpse-local-v1",
+  "preferences": { "solitude": false, "hidden": ["jx-tea"] },
+  "photos": [
+    { "id": "fixture-v1-creek", "kind": "private-local", "route": "westlake", "point": "jx-creek", "sceneVersion": "jiuxi-spring-map-1", "createdAt": 1792620000000, "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jA1sAAAAASUVORK5CYII=", "body": "", "anchor": 0, "zoom": 1, "attribution": { "kind": "anonymous" } },
+    { "id": "fixture-v1-tea", "kind": "private-local", "route": "westlake", "point": "jx-tea", "sceneVersion": "historical-scene-must-not-be-rebuilt", "createdAt": 1792620300000, "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jA1sAAAAASUVORK5CYII=", "body": "旧照片的茶坡。\n保留原来的文字。", "anchor": 2, "zoom": 1.2, "attribution": { "kind": "pen-name", "name": "茶山客" } }
+  ]
+}

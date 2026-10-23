@@ -44,7 +44,7 @@ export function createJournalRouteFilter({ dom, routes, onChange }: RouteFilterO
   });
 
   return {
-    render(selected: JournalRoute, moments: readonly Moment[]) {
+    render(selected: JournalRoute, moments: readonly Pick<Moment, 'route'>[]) {
       const counts = new Map<JournalRoute, number>([['all', moments.length]]);
       for (const moment of moments) counts.set(moment.route, (counts.get(moment.route) ?? 0) + 1);
       for (const tab of tabs) {

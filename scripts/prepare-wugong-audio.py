@@ -14,7 +14,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CACHE = pathlib.Path(sys.argv[1])
-OUT = ROOT / 'dist/audio'
+OUT = ROOT / 'public/audio'
 MUSIC_MIRROR = 'https://raw.githubusercontent.com/shuangboxu/alpenruhe/9b0c29f82764159630ce875537f9fa70e3d538ab/public/assets/audio/music/sb_reverie.mp3'
 FOLEY_MIRROR = 'https://raw.githubusercontent.com/Zcrafting34/telefono-descompuesto/b2a42938a39c7ac6901dd94fa9fa66240b552db5/src/assets/kenney_rpg-audio/Audio/'
 

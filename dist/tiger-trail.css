@@ -29,17 +29,7 @@
 #map-frame[data-tiger-leg="river"] > .weather-badge,
 #map-frame[data-tiger-leg="river"] > #map-toggle { visibility: hidden; }
 .tiger-route-attribution { font-size: 10px; color: #7d8873; }
-#micro-panel[data-mountain="true"] .micro-surface { cursor: grab; background: #e8e9dc; }
-#micro-panel[data-mountain="true"] .tiger-layered-canvas { animation: tiger-paint-unfold .55s ease-out both; }
-@keyframes tiger-paint-unfold { from { opacity: 0; } to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { #micro-panel[data-mountain="true"] .tiger-layered-canvas { animation: none; } }
-#micro-panel[data-mountain="true"] .tiger-actions button { touch-action: manipulation; }
-#micro-panel[data-mountain="true"] .tiger-frame-strip { justify-content: flex-start; }
-.mountain-photograph { display: flex; align-items: center; gap: 10px; margin: 0; color: #71816c; font-size: 11px; }
-.mountain-photograph img { width: 92px; height: 56px; object-fit: cover; padding: 3px; background: #fffbed; border: 1px solid #c3c9b0; border-radius: 4px 7px 5px 3px; }
-#mountain-walk-entry { display: block; margin: 12px auto 0; padding: 9px 16px; min-height: 44px; border: 1px solid #b5bfa4; border-radius: 12px 9px 11px 8px; background: #f4f2e3; color: #526c55; font: inherit; font-size: 13px; cursor: pointer; }
 .walk-bar-actions { display: flex; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-#mountain-walk-resume { border-color: #a8b89c; border-radius: 10px 8px 11px 9px; background: #edf1e3; }
 @media (max-width: 700px) {
   .walk-bar-actions { flex-direction: column; align-items: stretch; }
   .walk-bar-actions button { margin-top: 0; }

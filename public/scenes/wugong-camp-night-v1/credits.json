@@ -1,0 +1,10 @@
+{
+  "created": "2026-10-18",
+  "tool": "Built-in image_gen",
+  "files": ["night-v1.webp", "actions-q-v1.webp"],
+  "description": "Trailbound Wugongshan Guanyindang camp watercolor and matching Q hiker actions, generated using the user-provided camp composition and existing character reference.",
+  "type": "Game illustrations, not real location photographs",
+  "preparation": "scripts/art/prepare-wugong-camp.mjs",
+  "prompts": "art/wugong-camp-night/prompts.md",
+  "audio": "Reuses Scott Buckley Reverie CC BY 4.0 and existing paper sound assets. No new audio was downloaded."
+}

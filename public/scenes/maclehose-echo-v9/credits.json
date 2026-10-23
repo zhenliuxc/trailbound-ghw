@@ -1,0 +1,44 @@
+{
+  "tool": "imagegen built-in",
+  "source": "art/maclehose-echo-v9/generation.json",
+  "description": "原创虚构林缘插画、三只虚构小鸟与圆形徽章，不是定点照片或鸟类辨认资料。",
+  "processing": "保持透明通道；仅等比缩放及 WebP 编码。鸟图层由运行时按原图区域绘制。",
+  "assets": [
+    {
+      "file": "scenes/maclehose-echo-v9/forest.webp",
+      "width": 1536,
+      "height": 1024,
+      "alpha": false,
+      "bytes": 761162,
+      "sha256": "9d6643f2cd25fe7702cd7dbbc83d6290421a791b060e2cc77ff8c2af6643b7e1",
+      "sourceSha256": "284cb4580561a85cd24bda18f0718c17f89425cc385fb1147758eebde39308d8"
+    },
+    {
+      "file": "scenes/maclehose-echo-v9/forest-phone.webp",
+      "width": 1024,
+      "height": 1536,
+      "alpha": false,
+      "bytes": 787504,
+      "sha256": "0c811f152d7a649e1ca20b497817151590262373f31743aead2f71be64a0fc12",
+      "sourceSha256": "675284efc37995c8efde7819c8afe23b9bbcb9109a6a876f159fc25dfe6c0251"
+    },
+    {
+      "file": "scenes/maclehose-echo-v9/birds.webp",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "bytes": 184074,
+      "sha256": "cc2bbce2bf2913be564474c8f25c63fd0b8ddd9a7de8e1d7ac210a746b394ff2",
+      "sourceSha256": "23584f04078fb5b103d5f22c48fdb4e8fc7a2b4977423be6dac7558994bdadfc"
+    },
+    {
+      "file": "badges/maclehose-woodland-echo-v9.webp",
+      "width": 384,
+      "height": 384,
+      "alpha": true,
+      "bytes": 75674,
+      "sha256": "31eb62ee95de91da5aa2a92681a9eabd5e60e235d6c33a515e7d9ecc7036bd6f",
+      "sourceSha256": "640872195e3c4495322a0127aabe8500cc008406a6d7b47fd46dd35c260bfaa2"
+    }
+  ]
+}

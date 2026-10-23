@@ -1,0 +1,26 @@
+.tiger-art-page #app-main { max-width: none; }
+.tiger-art-page #micro-panel[data-memory] { --play-chrome: 175px; width: 100%; max-width: none; height: max(450px,calc(100dvh - 148px)); max-height: none; grid-template-columns: minmax(0,1fr) auto; grid-template-rows: auto minmax(180px,1fr) 0 auto auto auto; grid-template-areas: "heading heading" "scene scene" "progress progress" "instruction instruction" "result controls" "tools tools"; gap: 8px 16px; }
+.tiger-art-page #micro-panel[data-memory] #micro-surface { position: relative; min-height: 180px; overflow: hidden; touch-action: none; background: #ede9da; }
+.tiger-art-page #micro-panel[data-memory] #micro-art { opacity: 0; pointer-events: none; }
+.tiger-art-page #micro-panel[data-memory] .tiger-memory-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; animation: tiger-memory-unfold .65s ease-out both; }
+.tiger-art-page #micro-panel[data-memory] #micro-instruction { grid-area: instruction; position: static; width: auto; height: auto; min-height: 22px; margin: 0; padding: 0 3px; overflow: visible; clip-path: none; white-space: normal; text-align: left; font-size: 13px; line-height: 1.7; color: #6b7e64; transition: opacity .5s; }
+.tiger-art-page #micro-panel[data-memory][data-memory-acted=true] #micro-instruction { opacity: .48; }
+.tiger-art-page #micro-panel[data-memory] #micro-result { grid-area: result; position: static; width: auto; height: auto; min-height: 0; padding: 0; margin: 0; overflow: visible; clip-path: none; white-space: normal; color: #88927b; font-size: 11px; line-height: 1.7; }
+.tiger-art-page #micro-panel[data-memory] .micro-progress { opacity: 0; pointer-events: none; }
+.tiger-art-page #micro-panel[data-memory] #tiger-tools { grid-area: tools; }
+.tiger-art-page #micro-panel[data-memory] #tiger-count, .tiger-art-page #micro-panel[data-memory] #tiger-key-hint, .tiger-art-page #micro-panel[data-memory] .tiger-caption { display: none; }
+.tiger-art-page #micro-panel[data-memory] .mini-controls { flex-wrap: wrap; }
+.tiger-art-page #micro-panel[data-memory] .micro-heading small { display: none; }
+.tiger-art-page #micro-panel[data-memory] .micro-heading h2 { font-size: 18px; }
+@keyframes tiger-memory-unfold { from { opacity: 0; } to { opacity: 1; } }
+@media(max-width:600px) { .tiger-art-page #micro-panel[data-memory] { --play-chrome: 200px; height: max(520px,calc(100dvh - 118px)); grid-template-columns: minmax(0,1fr); grid-template-rows: auto minmax(210px,1fr) 0 auto auto auto auto; grid-template-areas: "heading" "scene" "progress" "instruction" "result" "controls" "tools"; gap: 5px; } .tiger-art-page #micro-panel[data-memory] #micro-surface { min-height: clamp(340px,calc((100vw - 48px)*1.13),600px); } .tiger-art-page #micro-panel[data-memory] #micro-instruction { font-size: 12px; } .tiger-art-page #micro-panel[data-memory] #micro-result { font-size: 10px; } }
+@media(prefers-reduced-motion:reduce) { .tiger-art-page #micro-panel[data-memory] .tiger-memory-canvas { animation: none; } .tiger-art-page #micro-panel[data-memory] #micro-instruction { transition: none; } }
+@media(max-width:600px) { .tiger-art-page #micro-panel[data-memory=bends] #micro-surface { min-height: clamp(310px,calc((100vw - 48px)*1.04),500px); } }
+.tiger-art-page #micro-panel[data-road-phase=walking] #micro-instruction, .tiger-art-page #micro-panel[data-road-phase=river] #micro-instruction { display: none; }
+
+.tiger-art-page #micro-panel[data-memory=bends] { height: auto; grid-template-rows: auto auto 0 auto auto auto; }
+.tiger-art-page #micro-panel[data-memory=bends] #micro-surface { height: auto; min-height: 280px; aspect-ratio: 2 / 1; }
+@media(max-width:600px) {
+  .tiger-art-page #micro-panel[data-memory=bends] { grid-template-rows: auto auto 0 auto auto auto auto; }
+  .tiger-art-page #micro-panel[data-memory=bends] #micro-surface { min-height: 310px; aspect-ratio: 4 / 5; }
+}

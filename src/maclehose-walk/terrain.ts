@@ -1,6 +1,7 @@
 import { Container, Graphics, GraphicsPath } from 'pixi.js';
-import { path, PLACE_ORDER, PLACES, WORLD } from './route';
-import type { Point } from '../wugong-walk/model';
+import { path } from './route';
+import { PLACE_ORDER, PLACES, WORLD } from '../content/maclehose-map';
+import type { Point } from '../journey/geometry';
 
 export const noise=(i:number):number=>{const n=Math.sin(i*127.1+311.7)*43758.5453;return n-Math.floor(n);};
 const COAST='M-2000 -2000H-400C-40-800 190-200 240 0C255 65 252 115 294 144C316 176 351 179 381 154C404 135 421 105 414 75C406 33 426 22 490 0C520-160 650-700 900-2000H1000C1090-650 1140 60 930 291C949 317 892 354 841 347C802 341 782 333 768 349C758 367 772 395 813 414C847 430 875 443 887 471C899 498 829 545 785 542C740 539 724 512 695 513C680 529 696 553 743 578C780 599 824 612 829 642C837 671 784 701 788 729C792 758 785 765 753 779C733 789 724 811 743 838C790 1020 650 1230 730 1800H-2000Z';

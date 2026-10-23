@@ -1,0 +1,189 @@
+{
+  "version": 4,
+  "items": [
+    {
+      "id": "wugong-wind-hiker",
+      "route": "wugong",
+      "name": "吊带追风",
+      "season": "暖季绿色草甸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-6b2d428f-9ca9-456c-8369-6a7214da51fb.png",
+      "reused": true
+    },
+    {
+      "id": "tiger-bell-first",
+      "route": "tiger",
+      "name": "铃声先到",
+      "season": "暖季峡谷",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-4bc9bf9f-9870-4079-ae78-cdad132675da.png",
+      "reused": true
+    },
+    {
+      "id": "aotai-takin-first",
+      "route": "aotai",
+      "name": "牛牛先请",
+      "season": "秦岭风雪季",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-05e57d9e-d3fb-4c31-936e-930dfbb5b6d0.png",
+      "reused": true
+    },
+    {
+      "id": "maclehose-sideways-crab",
+      "route": "maclehose",
+      "name": "横着也能到",
+      "season": "暖季绿色海岸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-c47d19d5-a459-42f3-8da9-aaffc6f327c2.png",
+      "reused": true
+    },
+    {
+      "id": "changping-tree-double",
+      "route": "changping",
+      "name": "树的另一个自己",
+      "season": "暖季绿林溪谷·远峰积雪",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-0ba6f96a-4ce1-40ac-ba2d-f1d7dc6e604c.png",
+      "reused": true
+    },
+    {
+      "id": "mogan-bamboo-reply",
+      "route": "mogan",
+      "name": "竹林接了句话",
+      "season": "湿润绿竹林",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-d5d80638-4273-4bd1-b58c-f65402b8c991.png",
+      "reused": true
+    },
+    {
+      "id": "westlake-five-more-minutes",
+      "route": "westlake",
+      "name": "再坐五分钟",
+      "season": "春日绿意·茶村歇脚",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-c88b4f46-2008-4624-bdaa-92ba1cc72251.png",
+      "reused": true
+    },
+    {
+      "id": "wugong-grass-letter",
+      "route": "wugong",
+      "name": "草浪来信",
+      "season": "暖季绿色草甸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-d299f00c-430a-47d0-8316-67866237bc97.png",
+      "reused": false
+    },
+    {
+      "id": "wugong-cloud-island",
+      "route": "wugong",
+      "name": "云海浮岛",
+      "season": "暖季绿色草甸·云海片刻",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-d3730d87-d75c-45bf-b9f3-a654ba6d9f15.png",
+      "reused": false
+    },
+    {
+      "id": "wugong-stone-altar",
+      "route": "wugong",
+      "name": "金顶石语",
+      "season": "暖季绿色草甸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-229fc16d-c5a7-4510-939f-71f9c3e19ee0.png",
+      "reused": false
+    },
+    {
+      "id": "tiger-river-below",
+      "route": "tiger",
+      "name": "江在脚下",
+      "season": "暖季峡谷·雨后通透",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-39542901-893a-4efc-94b2-0f231ddd1928.png",
+      "reused": false
+    },
+    {
+      "id": "tiger-halfway-rest",
+      "route": "tiger",
+      "name": "半山歇脚",
+      "season": "暖季峡谷·客栈歇脚",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-7e206d1d-c02c-4aec-9337-3dbe9675b96c.png",
+      "reused": false
+    },
+    {
+      "id": "tiger-longdong-waterfall",
+      "route": "tiger",
+      "name": "龙洞水帘",
+      "season": "暖季峡谷·水雾片刻",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-1f62582d-003f-43b8-8f2e-168a37aff5bc.png",
+      "reused": false
+    },
+    {
+      "id": "aotai-rock-facets",
+      "route": "aotai",
+      "name": "石海棱光",
+      "season": "秦岭风雪季",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-e72134de-67ae-463d-86ac-57c15280ce58.png",
+      "reused": false
+    },
+    {
+      "id": "aotai-ridgeline",
+      "route": "aotai",
+      "name": "秦岭脊线",
+      "season": "秦岭风雪季",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-f3a15749-011f-41be-853a-757b3de51bcf.png",
+      "reused": false
+    },
+    {
+      "id": "maclehose-bay-reveal",
+      "route": "maclehose",
+      "name": "转角见海",
+      "season": "暖季绿色海岸",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-5cdf803c-ca98-44b5-9a90-9541f72a5665.png",
+      "reused": false
+    },
+    {
+      "id": "maclehose-tide-drawing",
+      "route": "maclehose",
+      "name": "潮汐收笔",
+      "season": "暖季海岸·潮线片刻",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-cade9c50-2491-450e-8e66-3d5401c30b4b.png",
+      "reused": false
+    },
+    {
+      "id": "maclehose-chek-keng",
+      "route": "maclehose",
+      "name": "赤径慢潮",
+      "season": "暖季绿色海岸·静潮",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-7d3e74d9-4bad-4fc8-9ef0-aabed4da4847.png",
+      "reused": false
+    },
+    {
+      "id": "changping-red-stone",
+      "route": "changping",
+      "name": "红石微光",
+      "season": "绿林溪谷·暖季",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-b3df327b-fe91-4839-9b3e-01eb65855a13.png",
+      "reused": false
+    },
+    {
+      "id": "changping-muluozi",
+      "route": "changping",
+      "name": "木骡子开阔",
+      "season": "暖季绿林草甸·远峰积雪",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-f0262377-6d80-4123-801f-8a7e415179f8.png",
+      "reused": false
+    },
+    {
+      "id": "mogan-old-stone-path",
+      "route": "mogan",
+      "name": "古道留痕",
+      "season": "湿润绿竹林·雨后",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-000ba6ab-c389-4436-9033-76fd666721a0.png",
+      "reused": false
+    },
+    {
+      "id": "westlake-creek-stones",
+      "route": "westlake",
+      "name": "九溪踏石",
+      "season": "春日绿意·浅溪",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-41f18166-7e49-4de2-91ba-d463f77e5270.png",
+      "reused": false
+    },
+    {
+      "id": "westlake-longjing-bud",
+      "route": "westlake",
+      "name": "龙井春芽",
+      "season": "春日茶园·新芽",
+      "source": "/workspace/scratch/5d8bb4c67851/generated_images/exec-1bf901bc-e350-4309-b143-e1faec692073.png",
+      "reused": false
+    }
+  ]
+}

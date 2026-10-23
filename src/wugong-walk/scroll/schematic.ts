@@ -1,7 +1,8 @@
 import { Container, FillGradient, Graphics } from 'pixi.js';
-import { clamp, curve, type Point } from '../model';
+import { clamp, curve, type Point } from '../../journey/geometry';
 import type { EnvironmentFrame } from '../environment';
-import { SCROLL, type ScrollTrail } from './route';
+import type { ScrollTrail } from './route';
+import { SCROLL } from '../../content/wugong-map';
 import type { ScrollJourney } from './journey';
 
 type Coordinate = readonly [number, number];

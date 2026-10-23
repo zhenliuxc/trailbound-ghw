@@ -1,51 +1,33 @@
-# 真实照片来源与授权
+# 地点照片与授权
 
-照片由原摄影者拍摄，均来自Wikimedia Commons；不是生成图片。打包图片文件只做等比缩小与WebP格式转换，不裁切、不改写画面。v0.11.1的弹窗采用等比覆盖显示，视口边缘会按弹窗比例裁剪，原文件仍完整，来源链接可查看原图。每张照片仍按下表原许可分发；CC BY-SA派生图片保留相同许可。下载包中保留署名表，游戏照片下方显示作者、来源与许可链接。获取/核对日期：2026-10-14。
+地点照片使用第三方摄影作品，照片弹窗保留作者、原始来源和许可链接。程序示意地图、生成手绘与真实摄影分开标识。图片可按展示容器等比裁切，不能改写景物后继续声称是未经改变的地点实拍。
 
-| 文件 | 摄影者 | 授权 | 来源 |
-| --- | --- | --- | --- |
-| `photos/wugong-ridge.webp` | Doctoroftcm | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Wugongshan 8350.jpg](https://commons.wikimedia.org/wiki/File:Wugongshan_8350.jpg) |
-| `photos/wugong-clouds.webp` | Leeinm | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [武功山的云海.jpg](https://commons.wikimedia.org/wiki/File:%E6%AD%A6%E5%8A%9F%E5%B1%B1%E7%9A%84%E4%BA%91%E6%B5%B7.jpg) |
-| `photos/wugong-meadow.webp` | Huangdan2060 | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Wugong Mountains, 17 June 2018, Picture12.jpg](https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture12.jpg) |
-| `photos/tiger-trail.webp` | BrokenSphere | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Tiger Leaping Gorge trail 08.JPG](https://commons.wikimedia.org/wiki/File:Tiger_Leaping_Gorge_trail_08.JPG) |
-| `photos/tiger-gorge.webp` | Jo Schmaltz | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) | [Hiking the Tiger Leaping Gorge.jpg](https://commons.wikimedia.org/wiki/File:Hiking_the_Tiger_Leaping_Gorge.jpg) |
-| `photos/tiger-halfway.webp` | BrokenSphere | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Tiger Leaping Gorge trail 36.JPG](https://commons.wikimedia.org/wiki/File:Tiger_Leaping_Gorge_trail_36.JPG) |
-| `photos/aotai-aoshan.webp` | 江工坊jumperhomes.com | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) | [鳌山白起庙 - panoramio.jpg](https://commons.wikimedia.org/wiki/File:%E9%B3%8C%E5%B1%B1%E7%99%BD%E8%B5%B7%E5%BA%99_-_panoramio.jpg) |
-| `photos/aotai-ridge.webp` | Wenmingxing | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Mountain Taibai No.1.jpg](https://commons.wikimedia.org/wiki/File:Mountain_Taibai_No.1.jpg) |
-| `photos/aotai-taibai.webp` | Wenmingxing | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Mountain Taibai No.2.jpg](https://commons.wikimedia.org/wiki/File:Mountain_Taibai_No.2.jpg) |
+照片的当前引用以对应源码表为准。下列文件提供运行时标题、说明、作者、原始链接、许可与本地路径，避免在文档中再维护一份会失同步的完整素材表。
 
-## 地点准确性
+| 路线 | 当前照片目录 | 地点与使用边界 |
+| --- | --- | --- |
+| 武功山 | `src/wugong-walk/visits.ts` | 东江村采用山脚村落区域配图；绝望坡、草甸、观音宕和吊马桩采用武功山区域实拍；金顶使用远眺风景实拍；终点用山脚溪谷回望配图。未核准定点的照片在说明中明确标识 |
+| 虎跳峡 | `src/tiger-walk/photos.ts` | 桥头高路起点一带、二十八道拐入口、中途客栈、龙洞瀑布、中峡客栈与中虎跳江段的历史实拍 |
+| 鳌太线 | `src/aotai-walk/photos.ts` | 白起庙为定点历史实拍；太白梁与拔仙台使用太白山区域配图。照片季节与冬季游戏场景不同 |
+| 麦理浩径 | `src/maclehose-walk/photos.ts`、`landmark-photos.ts` | 浪茄、西湾山、西湾、咸田湾、大浪坳、赤径与北潭凹。各点说明保留原始拍摄对象与历史年份 |
+| 长坪沟 | `src/content/day-photos.ts` | 森林、溪谷和草甸区域实拍，未核准枯树滩、红石阵或木骡子精确机位 |
+| 莫干山 | `src/content/day-photos.ts` | 竹林、木制步道和山溪区域实拍；木制步道不标称为莫干岭石阶 |
+| 九溪龙井 | `src/content/day-photos.ts` | 九溪溪流、九溪十八涧石径、龙井村与周围茶园 |
 
-- **武功山山脊，远处最高峰为金顶**：武功山山脊实拍，远处最高峰为金顶。2011年照片，属于沿线区域景观，不是人物所在位置的即时画面。
-- **武功山观景平台看到的云海**：2024年在武功山观景平台拍摄的云海。云海打卡站是游戏展示位置，不标记照片的精确拍摄平台。
-- **武功山绿色山脊草甸和步道**：2018年武功山的山脊与草甸实拍。用于展示本路线所在区域的草甸风景。
-- **虎跳峡高路上的山径**：2008年虎跳峡山径实拍。来源记录为出桥头约45分钟的路段；卡通位置为近似展示。
-- **从徒步路线上俯瞰虎跳峡与金沙江**：2008年虎跳峡徒步沿途实景，展现峡谷与江流；不代表打卡点的精确拍摄位置。
-- **虎跳峡徒步路线上的Halfway路标**：2008年虎跳峡徒步路线的中途路标实拍。游戏按沿途顺序近似布置，不表示当前路标仍在原处。
-- **鳌山白起庙实拍**：鳌山白起庙的历史实景照片。打卡点参考鳌山段近似布置，照片不代表鳌山山顶，也不是当前通行信息。
-- **太白山的秦岭山脊实景**：2016年太白山区域山脊实拍，用于展示秦岭山地环境；不是太白梁这一精确位置的照片。
-- **太白山区域山景实拍**：2016年太白山区域实景。历史轨迹末点不延伸到拔仙台；照片展示周边山景，不冒充轨迹终点现场。
+## 可分发的来源记录
 
+照片原文件位于 `public/photos/`。目录内的 `credits.json` 与各主题 `*-credits.json` 保存作者、来源、许可、下载和处理信息，构建后随照片分发。维护时保留这些明细，不能因为文件名带有版本号而将其当作过期文档删除。
 
-## 新增路线区域照片（2026-10-14）
+主要摄影来源是 Wikimedia Commons 与 Flickr。来源页面只提供候选线索时，不等于图片已经接入。现行源码引用和分发文件应同时存在，才记为已使用。每张照片按自身许可保留署名；CC BY-SA 素材的派生处理按相应许可记录。
 
-照片均来自原摄影者在 Wikimedia Commons 的授权素材，压缩为本地 WebP；只做等比缩放和编码，未生成或改写景物。照片展示所在区域，不冒充游戏站点的精确摄影机位。图片来源折叠在照片下方。
+虎跳峡当前定点素材包括 Chen Zhao 的中途客栈与龙洞瀑布照片、Yun Huang Yong 的二十八道拐入口照片，以及 BrokenSphere、zhanyoun、ogwen 的起点、客栈与江段照片。具体来源和许可见 `src/tiger-walk/photos.ts`，不将它们宣传为当日景况。
 
-- 西湾沙滩：[Sai Wan.jpg](https://commons.wikimedia.org/wiki/File:Sai_Wan.jpg)，摄影 Smallpei，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/maclehose-saiwan.webp`。
-- 咸田海湾：[Ham Tin Wan beach.jpg](https://commons.wikimedia.org/wiki/File:Ham_Tin_Wan_beach.jpg)，摄影 Kaldari，[CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en)；`dist/photos/maclehose-hamtin.webp`。
-- 赤径村落：[ChekKeng3.JPG](https://commons.wikimedia.org/wiki/File:ChekKeng3.JPG)，摄影 山民主義，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/maclehose-chekkeng.webp`。
-- 苔木森林：[Xiaojin, Aba, Sichuan, China - panoramio (42).jpg](https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(42).jpg)，摄影 jetsun，[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0)；`dist/photos/changping-forest.webp`。
-- 溪谷云雾：[Xiaojin, Aba, Sichuan, China - panoramio (52).jpg](https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(52).jpg)，摄影 jetsun，[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0)；`dist/photos/changping-valley.webp`。
-- 草甸远眺：[Xiaojin, Aba, Sichuan, China - panoramio (57).jpg](https://commons.wikimedia.org/wiki/File:Xiaojin,_Aba,_Sichuan,_China_-_panoramio_(57).jpg)，摄影 jetsun，[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0)；`dist/photos/changping-meadow.webp`。
-- 竹林深处：[Mount Mogan bamboo forest.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_bamboo_forest.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-bamboo.webp`。
-- 山间步道：[Mount Mogan Path3.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_Path3.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-path.webp`。
-- 山泉小溪：[Mount Mogan River.jpg](https://commons.wikimedia.org/wiki/File:Mount_Mogan_River.jpg)，摄影 Walter Grassroot，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/mogan-stream.webp`。
+## 接入约定
 
+1. 核对画面实际对象、拍摄地点与目标打卡点；未证实精确机位时标明区域配图。
+2. 同时保存作者、原始页面、许可链接、本地文件和处理说明。许可不明确的候选不进入分发目录。
+3. 保留清晰的原图比例，根据实际显示尺寸生成分发图，并用构图参数保护主体。
+4. 照片加载失败时仍显示地点、文字与来源，提供重试或返回。
+5. 更新照片同步修改源码表和素材清单，不改变地点身份或已有手帐存档。
 
-## 西湖九溪龙井照片
-
-三张真实照片只做等比缩放和 WebP 编码，保留各自原许可。图片来源折叠在图片下方；没有历史说明覆盖图像。
-
-- 九溪溪谷：[Jiuxi 20161004.jpg](https://commons.wikimedia.org/wiki/File:Jiuxi_20161004.jpg)，摄影 Tyg728，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-creek.webp`。
-- 十八涧石径：[九溪十八涧.jpg](https://commons.wikimedia.org/wiki/File:%E4%B9%9D%E6%BA%AA%E5%8D%81%E5%85%AB%E6%B6%A7.jpg)，摄影 三猎，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-path.webp`。
-- 龙井茶村：[Longjing tea village Hangzhou.jpg](https://commons.wikimedia.org/wiki/File:Longjing_tea_village_Hangzhou.jpg)，摄影 Niklas Dougherty，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)；`dist/photos/westlake-tea.webp`。
+用户在“你看这里”保存的游戏取景是独立本地记录，见 [你看这里](look-here.md)，不属于上述第三方地点照片目录。

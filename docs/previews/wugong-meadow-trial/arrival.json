@@ -1,8 +1,0 @@
-{
-  "button": "再走一遍",
-  "progress": "width: 100%;",
-  "stage": "finished",
-  "status": "到达营地 · 看风吹过草甸",
-  "url": "http://127.0.0.1:8000/wugong-meadow.html?walk=1&scene=meadow-trial-1",
-  "walking": "false"
-}

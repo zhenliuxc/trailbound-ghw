@@ -47,7 +47,7 @@ for index, (name, box) in enumerate(regions):
             if xs:
                 tip = {'x': sum(xs)/len(xs)/crop.width, 'y': y/crop.height}
                 break
-output = ROOT/'dist/sprites/mogan-props-v1.webp'
+output = ROOT/'public/sprites/mogan-props-v1.webp'
 atlas.save(output, 'WEBP', quality=92, method=6)
 runtime = {'file': 'sprites/mogan-props-v1.webp', 'width': atlas.width, 'height': atlas.height,
            'frames': [{k: f[k] for k in ('name', 'x', 'y', 'w', 'h')} for f in frames], 'tip': tip}
@@ -56,8 +56,8 @@ manifest = {**runtime, 'generator': 'OpenAI ImageGen', 'source': str(args.source
             'sha256': hashlib.sha256(output.read_bytes()).hexdigest(), 'bytes': output.stat().st_size,
             'processing': 'Extract explicit non-overlapping source regions; crop transparent margins; uniform resize; WebP encoding. Original alpha retained, no repainting.',
             'sourceFrames': frames}
-(ROOT/'dist/sprites/mogan-props-v1.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n')
-shared = json.loads((ROOT/'dist/sprites/art-play-props-v1.json').read_text())
+(ROOT/'public/sprites/mogan-props-v1.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n')
+shared = json.loads((ROOT/'public/sprites/art-play-props-v1.json').read_text())
 shared = {key: shared[key] for key in ('file', 'width', 'height', 'frames')}
 code = '// Generated asset coordinates. Recreate with scripts/package-mogan-assets.py.\n'
 code += 'export const MOGAN_PROPS = '+json.dumps(runtime, ensure_ascii=False, indent=2)+' as const;\n'

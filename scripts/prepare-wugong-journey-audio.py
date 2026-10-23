@@ -12,7 +12,7 @@ import wave
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CACHE = ROOT / '.local/audio-source'
-OUT = ROOT / 'dist/audio'
+OUT = ROOT / 'public/audio'
 SOURCES = [
     ('woodland', 'woodland.mp3', 'Joseph SARDIN', 'Wind in a Tree', 'https://bigsoundbank.com/wind-in-a-tree-s0659.html', 'https://bigsoundbank.com/UPLOAD/mp3/0659.mp3'),
     ('rain', 'rain.mp3', 'Joseph SARDIN', 'Rain on Puddle', 'https://bigsoundbank.com/rain-on-puddle-s1290.html', 'https://bigsoundbank.com/UPLOAD/mp3/1290.mp3'),

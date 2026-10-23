@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
-const output = new URL('dist/scenes/westlake-journey-v3/', root);
+const output = new URL('public/scenes/westlake-journey-v3/', root);
 await mkdir(output, { recursive: true });
 const prompts = JSON.parse(await readFile(new URL('art/westlake-journey-v3/prompts.json', root), 'utf8'));
 const assets = [];

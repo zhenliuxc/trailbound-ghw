@@ -1,0 +1,132 @@
+{
+  "version": 4,
+  "generator": "built-in imagegen",
+  "commonPrompt": "Use case: illustration-story. Asset: ONE premium hand-painted circular travel-journal collectible badge for the gentle hiking game Trailbound. The provided approved woman-hiker badge is a STYLE AND FRAME reference only. Match its refined naturalistic watercolor/gouache, delicate textured brushwork, subtle paper grain, rich soft depth, warm ivory botanical ring and fine gold decoration. Do not copy its woman, mountains, clothing or pose. Exactly ONE circular scene per square canvas, never a grid, collage, contact sheet or multiple variants.\nComposition: a complete round badge with a little genuinely transparent alpha margin outside the full rim. Keep the distinctive primary subject large and immediately legible at 96px UI size. Each badge has its own composition and scale: intimate objects and natural forms, not repeated generic mountain panoramas. Detailed organic textures, believable anatomy/geography, gentle warm storybook feeling; lighting and vegetation MUST follow the specified season, never apply a universal golden-summer filter.\nNo text, labels, Chinese characters, letters, numbers, speech bubbles, logos, watermark or UI. No flat SVG/vector/clipart, emoji, photorealistic photograph, plastic 3D or anime. Transparency outside the circle must be real alpha, no white square and no baked checkerboard.",
+  "styleReference": "approved warm-season Wugong hiker preview",
+  "notes": [
+    "秦岭为风雪季；其他路线按当前地图植被与场景确定美术时节，不宣称代码已设置具体月份。",
+    "图案不含文字，标签名和说明置于图案外。",
+    "素材为艺术演绎，不作为实际拍摄位置、日期或动物必遇承诺。"
+  ],
+  "items": [
+    {
+      "id": "wugong-grass-letter",
+      "route": "wugong",
+      "name": "草浪来信",
+      "season": "暖季绿色草甸",
+      "prompt": "Main subject: an intimate close-up of a beautifully layered fan of fresh Wugong mountain meadow grasses, bent by one passing breeze in a shared direction. Three large arcs of fine lush green grass blades and a few delicate pale-green immature heads create a clearly readable wind-swept silhouette. Tiny dew drops cling to a few grass tips. Low viewpoint, the grass fan fills 80 percent of the badge; only a narrow softly painted hint of rounded green hills and pale cloud gives context. This is a botanical detail badge, not a broad landscape. Seasonal environment: warm growing season, fresh sage, emerald and spring-green foliage, cool blue-green shadows, fresh natural sun with restrained honey glints. No ripe golden autumn meadow, no towering silvery pampas plumes, no straw-yellow grass, no snow. No bird, butterfly, people, buildings or extra subjects."
+    },
+    {
+      "id": "wugong-cloud-island",
+      "route": "wugong",
+      "name": "云海浮岛",
+      "season": "暖季绿色草甸·云海片刻",
+      "prompt": "Main subject: a low softly rounded GREEN grassy Wugong ridgeline emerging like a small island from a broad dense white sea of clouds. Composition differs from an ordinary mountain postcard: the flowing white cloud forms dominate the center and lower two thirds, wrapping around one slender curved grass-green ridge, giving a strong pale flowing silhouette. Seen from a high quiet viewpoint; a small foreground fringe of fresh green grass at the very bottom. Subtle cool pearly shadows reveal cloud folds, airy pale blue sky, gentle bright sun after rain. Warm growing season: fresh grass-green exposed ridge, no frozen vegetation, no snow on peaks; white forms are clearly atmospheric cloud rather than snow-covered ground. No majestic jagged snowy mountains, sun symbol, people, tents, buildings, birds or letter/envelope motifs."
+    },
+    {
+      "id": "wugong-stone-altar",
+      "route": "wugong",
+      "name": "金顶石语",
+      "season": "暖季绿色草甸",
+      "prompt": "Main subject: one small authentic-feeling Wugong Golden Summit ancient STONE ALTAR BUILDING, a low compact grey dry-stone structure, irregular weathered granite blocks forming a rounded corbelled/vaulted roof and a dark arched doorway, no wooden roof. A distinctive chunky architectural silhouette in close three-quarter view occupies 75 percent of the badge. Show carefully fitted worn stones, lichen traces, deep tiny joints and warm light on rough granite. Fresh short green mountain grasses grow beside its base, with a very restrained rounded grassy ridge and pale summer sky behind. Warm growing season consistent with green Wugong map. Quiet human history; naturalistic miniature architecture painting, not a fantasy ruined castle. No red Chinese temple, pagoda, gold temple roof, snow, signs, writing, inscriptions, people, statues or invented ceremonial decoration."
+    },
+    {
+      "id": "tiger-river-below",
+      "route": "tiger",
+      "name": "江在脚下",
+      "season": "暖季峡谷·雨后通透",
+      "prompt": "Main subject: the deep vertical geometry of Tiger Leaping Gorge, with two dramatic layered stone gorge walls forming a strong tall V around a thin distant ribbon of turbulent blue-green Jinsha River FAR below. Look down from a high stable mountainside viewpoint, emphasizing huge depth and layered rock faces, never a broad bay. Steep slate, grey-brown and olive cliffs dominate 80 percent of the badge, with a small foreground rock ledge and sparse green shrubs. The river is a narrow pale jade line with small white rapids at the bottom of the depth, not a lake. Green growing-season foliage on ledges, slightly damp dark rock after rain, cool clear air, restrained soft daylight. No snow at the hiker's elevation, no autumn red leaves, no figures, wildlife, bridge, buildings or waterfall as main subject."
+    },
+    {
+      "id": "tiger-halfway-rest",
+      "route": "tiger",
+      "name": "半山歇脚",
+      "season": "暖季峡谷·客栈歇脚",
+      "prompt": "Main subject: ONE inviting weathered wooden chair next to a simple timber inn-terrace railing along the Tiger Leaping Gorge high trail. Intimate eye-level still life: chair and sunlit rail fill the foreground and middle 75 percent, with carefully painted worn wood grain, a few rounded nail heads and a soft shaded seat. Through the railing is a quiet distant glimpse of a towering blue-grey mountain with a little high summit snow, while the low terrace surroundings remain GREEN and mild. The scene conveys someone has paused here to listen, no tourist in view and no drink required. Growing season, soft daylight after passing rain, gentle damp foliage nearby. Distant high-altitude snow is allowed, but no snow or frost on the chair, rail, inn or plants. No generic snowy winter inn, signage, text, giant panorama dominating the chair, extra furniture crowd, people or animals."
+    },
+    {
+      "id": "tiger-longdong-waterfall",
+      "route": "tiger",
+      "name": "龙洞水帘",
+      "season": "暖季峡谷·水雾片刻",
+      "prompt": "Main subject: a narrow vertical Longdong waterfall descending across a dark cliff beside the Tiger Leaping Gorge high path. Close view of a slender white water curtain and translucent spray occupying the central 70 percent of the badge; a small stone-and-earth ledge path is visible safely passing alongside the waterfall near its base. A few dark wet rock layers, lush green vines and tiny fresh green cliff plants frame the moving water. Water drops sparkle softly; painterly foam, mist and transparent running sheets create a distinctive tall flowing silhouette. Warm growing season after rainfall, moist greens, soft cool daylight, a very tiny distant gorge glimpse only. No wide alpine lake, stone bridge, snowy slope, winter ice, frozen waterfall, tourists, wildlife, rainbow icon, music symbols, text or invented large architecture."
+    },
+    {
+      "id": "aotai-rock-facets",
+      "route": "aotai",
+      "name": "石海棱光",
+      "season": "秦岭风雪季",
+      "prompt": "Main subject: an intimate close view of a Qinling high-elevation blockfield, a few large angular grey granite boulders stacked with clearly differentiated sharp facets, cracks and overlapping edges. One big faceted rock is the focal point, surrounded by smaller angular blocks; strong geometric natural rock silhouette, no generic mountain panorama. Seasonal environment MUST match the game's COLD SNOW-SEASON: white snow lies in crevices and on sheltered upper faces, exposed wind-scoured stone remains graphite-grey and cool brown, a few sparse dry straw grass stems at the bottom, cool pale winter sky barely visible. Silvery blue-grey diffuse daylight and a subtle pale sunbreak reveal facet planes; no warm green meadow or lush ferns. Natural granite texture, fine mineral grains and thin ice edges as painterly details. No rock cairn constructed by people, no carved inscriptions, people, animals, tents, footprints or equipment."
+    },
+    {
+      "id": "aotai-ridgeline",
+      "route": "aotai",
+      "name": "秦岭脊线",
+      "season": "秦岭风雪季",
+      "prompt": "Main subject: a distinct continuous sharp Qinling knife-edge rocky ridge in side profile, with several angular rises and dips forming a strong graphic zigzag contour, painted as a refined naturalistic miniature rather than a vector. The long diagonal ridge itself dominates the whole circular composition, clear silhouette against pale cold winter mist. Seasonal environment MUST match the game's COLD SNOW-SEASON: wind-scoured dark grey rock on exposed faces, delicate uneven white snow accumulated along lee-side gullies and crests, faint powder drifting in cold air, a restrained lower hint of distant evergreen tree line. Cool desaturated blue-grey, slate and white with only a subtle warm light edge, not a golden sunset or lush green high meadow. No giant symmetrical Himalayan pyramid, no generic rows of identical mountains, no clear-summer clouds, people, animals, tents, flag, footsteps, trail markers or lettering."
+    },
+    {
+      "id": "maclehose-bay-reveal",
+      "route": "maclehose",
+      "name": "转角见海",
+      "season": "暖季绿色海岸",
+      "prompt": "Main subject: the distinctive curved meeting of brilliant jade/turquoise sea and a clean crescent of pale sand on the Sai Kung coast seen from the MacLehose Section 2 hillside. A fresh green grassy headland in the near foreground curves away and reveals the bay; the large clean crescent shoreline and translucent shallow water form the recognizable main silhouette. A couple of rounded low green coastal hills softly enclose the far water. Composition is a broad COASTAL panorama, ocean and bay filling 75 percent, landforms low and green with no snow. Warm green growing-season coastline, clear fresh sea air, pale summer light and gentle white wave edges, restrained honey glints not golden dry grass. No boats, piers, village, people, wildlife, shells, text, alpine mountains or tropical palm-tree resort."
+    },
+    {
+      "id": "maclehose-tide-drawing",
+      "route": "maclehose",
+      "name": "潮汐收笔",
+      "season": "暖季海岸·潮线片刻",
+      "prompt": "Main subject: an intimate near top-down view of one delicate finger-drawn curved line in damp golden-beige beach sand, being gently ERASED by the scalloped edge of an incoming wave. The half-erased sand groove and the beautiful white lace of sea foam form the large clear subject; the surviving line is simple and abstract, not text, letters, numbers or a heart. Transparent jade water at one side, smooth damp sand at the other, fine granular texture, a few tiny ripple marks under shallow water. Composition occupies almost the full circle with only sand, wave and trace, no horizon or panorama. Warm-season MacLehose Section 2 beach, soft bright natural daylight, fresh turquoise, ivory and sandy beige. No crab, shell as hero, people, hands, writing tool, footprints, snowy ground, palm trees, symbols or written words."
+    },
+    {
+      "id": "maclehose-chek-keng",
+      "route": "maclehose",
+      "name": "赤径慢潮",
+      "season": "暖季绿色海岸·静潮",
+      "prompt": "Main subject: a small simple weathered concrete landing/jetty at Chek Keng, Sai Kung, extending gently into calm muted jade inlet water, with two modest village houses and lush low green coastal woodland along the nearby shore. Keep the jetty and clear reflected house silhouettes the main readable forms. Low intimate shoreline viewpoint, the little landing enters the lower foreground and leads to the quiet shore; the water occupies about half the circle and holds soft nearly settled reflections with a few small concentric ripples. Ordinary old coastal village atmosphere, worn concrete and painted pale walls, simple dark tile roofs, no resort architecture or grand ornamental pavilion. Green warm-season coast, soft diffuse daylight and quiet damp air; no dry autumn hills or snow. No tourists, boats crowding the scene, giant piers, futuristic harbour, fishing gear foreground, characters, signs or text."
+    },
+    {
+      "id": "changping-red-stone",
+      "route": "changping",
+      "name": "红石微光",
+      "season": "绿林溪谷·暖季",
+      "prompt": "Main subject: a close almost macro view of ONE distinctive rounded rough GRANITE BOULDER coated in dense textured rust-red/orange RED ALGAE, inspired by Changping Valley's red-stone landscape. It is genuinely mineral rock covered in a fine tiny living red surface, not a red flower, fruit, leaf, painted stone or glowing crystal. The large broad rusty-red rock dominates 80 percent of the badge, one edge reveals pale granular granite under the reddish coating; show microscopic velvety mottling, tiny fissures, moisture and grazing soft daylight. A restrained strip of clear cool stream water and dark fresh green forest plants along the base link it to Changping Valley. Seasonal setting matches a green growing-season forest map: nearby moss and leaves green, flowing water, no ground snow or orange autumn canopy. No huge snowy mountain panorama, people, insects, wildlife, bridge, text or cartoon magnifier overlay.",
+      "refinement": {
+        "generator": "built-in imagegen",
+        "reason": "细化红色藻层，减少花瓣状纹理",
+        "parentGeneratedFile": "exec-61ee35c2-eff8-4e24-af1e-aa7cde69eee7.png",
+        "selectedGeneratedFile": "exec-b3df327b-fe91-4839-9b3e-01eb65855a13.png",
+        "prompt": "Use case: precise-object-edit. Edit ONLY the surface microtexture of the red algae coating on the large granite boulder in the provided circular hand-painted badge.\nPreserve the boulder's shape and position, the stream, granite cracks and exposed pale mineral grains, surrounding fresh green warm-season forest plants, lighting, composition, exquisite watercolor/gouache style and complete ivory-and-gold botanical rim exactly. Keep real transparent alpha outside the circle. No text.\nCorrection: the existing red-orange growth currently resembles tiny petals, rosettes or leaf-shaped lichens. Replace ALL of those visible flower/leaf/rosette shapes with a dense continuous very fine granular, velvety, slightly powdery rust-red to burnt-orange terrestrial RED ALGAE film, like a thin living red patina coating rough granite. Preserve the underlying stone's jagged granular mineral topography and irregular cracks through the coating. Red coating should be flat to the rock at macro scale, microscopically finely stippled and mottled, without individually identifiable leaves, branching leafy fronds, petals or blossoms. Dense natural red algal pigment on grey granite, not a red garden, carpet of flowers, spongy coral, bright painted stone or glowing gemstone. A few irregular pale exposed granite patches should remain visible. It must still read clearly as a distinctive large RED STONE at small badge size.\nExactly one badge. Do not change anything else, do not add other subjects, labels, symbols, insects, people, watermark or typography."
+      }
+    },
+    {
+      "id": "changping-muluozi",
+      "route": "changping",
+      "name": "木骡子开阔",
+      "season": "暖季绿林草甸·远峰积雪",
+      "prompt": "Main subject: the opening of the Changping Valley forest into Muluozi's broad lush alpine meadow, with ONE graceful winding shallow stream as the main leading shape and dark evergreen forest framing the edges. A distant Siguniang mountain ridge with a restrained white snow cap sits high at the back; the GREEN meadow and clear stream dominate the foreground and middle 75 percent, not just a snowy peak postcard. Compose as a soft wide bowl-shaped clearing seen from the forest edge, intimate meadow depth with small fresh grass tufts, subtle stream stones and clear water glints. Seasonal match: green growing-season grass and conifers, open flowing stream, snow confined to the distant high summits; no autumn-orange forest, golden dry meadow, winter ground snow or frozen stream. Soft fresh daylight after mist, sage and emerald green, cool turquoise water, pale blue distance. No cattle, horses, tents, buildings, people, fence, bridge, lettering or UI."
+    },
+    {
+      "id": "mogan-old-stone-path",
+      "route": "mogan",
+      "name": "古道留痕",
+      "season": "湿润绿竹林·雨后",
+      "prompt": "Main subject: a close view of three or four old gently ascending STONE-PAVED STEPS on a Mogan Mountain ancient path, with irregular worn granite surfaces polished by many footsteps, tiny cracks and vivid fresh moss growing ONLY in sheltered joints and edges. The low close composition makes the old stone stair pattern dominate 80 percent of the badge. A few slender green bamboo culms and narrow bamboo leaves frame the upper edges and dissolve into a softly shaded bamboo grove; no far mountains. Show silvery damp stone sheen after a light rain, subtle tiny water drops, detailed pale green moss cushions and rounded worn edges. Seasonal environment matches a lush green humid bamboo map: green leafy bamboo, fresh moss, soft cool shade with small warm sun patches, no autumn leaf carpet, dry yellow bamboo, winter snow or frost. No shrine, bridge, cup, people, animals, carved text, inscriptions, invented footprints or cartoon magnifying glass."
+    },
+    {
+      "id": "westlake-creek-stones",
+      "route": "westlake",
+      "name": "九溪踏石",
+      "season": "春日绿意·浅溪",
+      "prompt": "Main subject: a few low irregular stepping stones crossing the shallow clear water of Hangzhou Jiuxi creek, seen from an intimate downward angle so WATER CURLING AROUND THE STONES is clearly visible. Four or five smooth pale grey rounded flat-topped creek stones form a playful offset diagonal through the circle; stones occupy about half the composition, transparent fresh jade water and ripple arcs fill the rest. Fine brown and amber pebbles visible under clear water, a little bright spring moss on shaded edges, a few fresh green creekside leaves at the border. Seasonal match: spring green Jiuxi/Longjing map, flowing shallow water with gentle spring daylight, fresh leaf color, no golden autumn foliage, fallen orange leaves, winter snow or summer tropical jungle. No large constructed bridge, beach, sea foam, teacup, birds, animals, people, feet, textual trail markers or typography."
+    },
+    {
+      "id": "westlake-longjing-bud",
+      "route": "westlake",
+      "name": "龙井春芽",
+      "season": "春日茶园·新芽",
+      "prompt": "Main subject: ONE living Longjing tea shoot growing on its plant, with an elegant central tender bud and two fresh young leaves forming a distinctive large slender botanical silhouette. Intimate carefully painted botanical macro; pale spring-green new growth, translucent fine leaf veins, gently serrated edges, a tiny dew bead and a subtle warm rim of sunlight. The bud-and-two-leaves fill 80 percent of the circular badge. Just a very soft low hint of curved green tea rows in the distant background, not a panoramic landscape. Seasonal match: fresh SPRING new growth in Hangzhou's Longjing tea gardens, soft spring sunlight and cool green shadows, no autumn-brown mature leaves, flowers, ripe seeds, snow, frost or dry summer yellow foliage. Leaves stay attached to a small natural stem: not plucked, floating in water or laid on a table. No human hand, scissors, basket, teapot, mug, bamboo, generic maple leaf, inscriptions, lettering or graphic icons."
+    }
+  ]
+}

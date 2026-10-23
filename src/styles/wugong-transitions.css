@@ -1,0 +1,20 @@
+.ww-discovery{position:absolute;inset:0;z-index:9;display:grid;align-content:end;justify-items:center;padding:36px 24px 48px;isolation:isolate;background:linear-gradient(transparent 38%,#f5f2e4b8);color:#425b46;pointer-events:auto}
+.ww-discovery[hidden]{display:none}
+.ww-discovery p{margin:0;max-width:34em;text-align:center;font:17px/2 "Songti SC",STSong,Georgia,serif;letter-spacing:.08em;text-shadow:0 2px 12px #fffdf0,0 0 25px #fffdf0}
+.ww-discovery-motif{position:absolute;left:var(--discovery-x,50%);top:var(--discovery-y,45%);width:48px;height:55px;transform:translate(-50%,-50%);color:#657f50;filter:drop-shadow(0 2px 7px #ffffe4);animation:ww-found-drift 2.6s ease-in-out both}
+.ww-discovery-motif svg{width:100%;height:100%;fill:#ebefd6a6;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.ww-discovery[data-scene=stars]{background:linear-gradient(transparent 30%,#173044ab);color:#f7ecd2}
+.ww-discovery[data-scene=stars] p{text-shadow:0 2px 14px #173044}
+.ww-discovery[data-scene=stars] .ww-discovery-motif{color:#f1da9c;filter:drop-shadow(0 0 6px #e6d9b264)}
+.ww-discovery[data-scene=stars] svg{fill:none}
+.ww-discovery[data-scene=clouds] .ww-discovery-motif{color:#738d8a}
+.ww-discovery[data-scene=stones] .ww-discovery-motif{color:#a18a63}
+[data-dissolve=enter]::backdrop{animation:ww-shade-in var(--ww-fade-duration,650ms) ease-out both}
+[data-dissolve=memory]::backdrop,[data-dissolve=leave]::backdrop{animation:ww-shade-out var(--ww-fade-tail,950ms) var(--ww-fade-hold,0ms) ease-in-out both}
+[data-motion-paused=true]::backdrop,[data-motion-paused=true] *{animation-play-state:paused!important}
+@keyframes ww-found-drift{from{transform:translate(-65%,-75%) rotate(-10deg)}to{transform:translate(-35%,-25%) rotate(8deg)}}
+@keyframes ww-shade-in{from{opacity:0;backdrop-filter:blur(0)}to{opacity:1;backdrop-filter:blur(5px)}}
+@keyframes ww-shade-out{from{opacity:1;backdrop-filter:blur(5px)}to{opacity:0;backdrop-filter:blur(0)}}
+@media(max-width:600px){.ww-discovery{padding:22px 20px 34px}.ww-discovery p{font-size:15px;max-width:20em}.ww-discovery-motif{width:40px;height:46px}}
+@media(prefers-reduced-motion:reduce){.ww-discovery-motif{animation:none}}
+.ww-discovery[data-reduced=true] .ww-discovery-motif{animation:none}

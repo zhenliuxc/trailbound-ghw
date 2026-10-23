@@ -1,4 +1,4 @@
-import { mix } from '../wugong-walk/model';
+import { mix } from '../journey/geometry';
 import type { AotaiJourney } from './chapter';
 
 export class AotaiAudio {

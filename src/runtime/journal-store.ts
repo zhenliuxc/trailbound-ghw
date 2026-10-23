@@ -1,4 +1,6 @@
 import type { JournalData, Moment, MomentCatalog } from './contracts';
+export { createPrivatePhotoStore, PRIVATE_PHOTO_CHANGED } from './private-photo-store';
+export type { PrivatePhoto, PhotoAttribution, PrivatePhotoStore } from './private-photo-store';
 
 export type JournalSaveResult =
   | { kind: 'stored'; existing: boolean; change: 'added' | 'upgraded' | 'unchanged'; moments: Moment[] }

@@ -1,4 +1,4 @@
-// Generated from src/runtime/hint-art.ts by npm run build.
+// Generated from src/runtime/hint-art.ts. Edit src/, then run npm run build.
 "use strict";
 var TrailHintArt = (() => {
   var __defProp = Object.defineProperty;

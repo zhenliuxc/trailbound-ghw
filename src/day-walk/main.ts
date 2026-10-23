@@ -10,6 +10,7 @@ import type { MapProjection, MapView } from '../journey/map-camera';
 import { createFrameLoop } from '../runtime/frame-loop';
 import { createCharacterPicker } from '../characters/picker';
 import { LandmarkLayer } from '../journey/landmark-layer';
+import { createGlimpseController } from '../journey/look-here/controller';
 
 function mountDay(route: DayRoute) {
   const node = (id: string): HTMLElement => { const element = document.getElementById(`day-${id}`); if (!element) throw new Error(`山径界面缺少 ${id}`); return element; };
@@ -45,19 +46,26 @@ function mountDay(route: DayRoute) {
     })),
     onSelect(id) { const place = route.places.find(place => place.id === id); if (place && !blocked()) { journey.openPhoto(place); sync(); } },
   });
-  function blocked(): boolean { return !ready || disposed || art.open || photo.open || characters.open || discovery.pending || journey.phase.kind === 'game'; }
+  const glimpse = route.id === 'westlake' ? createGlimpseController({
+    map, trail, signal, ready: () => ready, reduced: () => reduced, following: () => scene.mode === 'follow',
+    available: () => !blocked(), capture: frame => scene.capture(frame),
+    beforeOpen() { clock.stop(); audio.cue(); },
+    afterClose() { if (disposed) return; resize(); sync(); clock.stop(); clock.ensure(); resumeAudio(); },
+  }) : null;
+  function blocked(): boolean { return !ready || disposed || art.open || photo.open || characters.open || !!glimpse?.open || discovery.pending || journey.phase.kind === 'game'; }
   const clock = createFrameLoop({ request: callback => requestAnimationFrame(callback), cancel: id => cancelAnimationFrame(id), maxDelta: .05,
-    active: () => ready && !disposed && !document.hidden && !art.open && !photo.open && !characters.open,
-    update(dt) { journey.tick(dt); audio.update(journey); position(scene.paint(journey, dt, reduced)); sync(); },
+    active: () => ready && !disposed && !document.hidden && !art.open && !photo.open && !characters.open && !glimpse?.open,
+    update(dt) { journey.tick(dt); audio.update(journey); position(scene.paint(journey, dt, reduced), dt); sync(); },
   });
   function resumeAudio(): void { if (sound && !blocked() && !document.hidden) audio.resume(); }
   function openJournal(): void { if (blocked()) return; overlay = { kind: 'journal' }; clock.stop(); audio.pause(); art.show(undefined, undefined, scene.character); }
-  function position(projection: MapProjection): void {
+  function position(projection: MapProjection, dt = 0): void {
     discovery.position(projection.toScreen(journey.point), projection.width, projection.height);
     markers.update(projection, scene.mode, place => ({
       visible: scene.mode === 'overview' || Math.hypot(place.point.x - journey.point.x, place.point.y - journey.point.y) < 950,
       enabled: journey.visited.has(place.id), visited: journey.visited.has(place.id),
     }));
+    glimpse?.update(journey, projection, dt, !blocked() && !document.hidden && document.hasFocus() && journey.phase.kind === 'walking');
   }
 
   function showPhoto(place: DayPlace): void {
@@ -90,7 +98,8 @@ function mountDay(route: DayRoute) {
     }
   }
   function resize(): void { const rect = map.getBoundingClientRect(); scene.resize(rect.width, rect.height); if (ready) position(scene.paint(journey, 0, reduced)); }
-  walk.addEventListener('click', () => { if (journey.phase.kind === 'finished') openJournal(); else journey.toggle(); sync(); clock.ensure(); resumeAudio(); }, { signal });
+  if (glimpse) window.addEventListener('blur', () => { journey.pause(); sync(); }, { signal });
+  walk.addEventListener('click', () => { if (blocked()) return; if (journey.phase.kind === 'finished') openJournal(); else journey.toggle(); sync(); clock.ensure(); resumeAudio(); }, { signal });
   button('journal').addEventListener('click', openJournal, { signal }); button('finish-journal').addEventListener('click', openJournal, { signal });
   for (const mode of ['follow', 'overview'] satisfies MapView[]) button(mode).addEventListener('click', () => { scene.mode = mode; sync(); clock.ensure(); }, { signal });
   button('retry').addEventListener('click', () => location.reload(), { signal });
@@ -120,7 +129,7 @@ function mountDay(route: DayRoute) {
   return {
     background() { clock.stop(); audio.pause(); journey.pause(); sync(); },
     foreground() { if (disposed) return; clock.stop(); if (autostart && ready && journey.phase.kind === 'ready') { autostart = false; journey.toggle(); } sync(); clock.ensure(); resumeAudio(); },
-    dispose() { if (disposed) return; disposed = true; soundToken++; clock.stop(); lifecycle.abort(); discovery.cancel(); art.dispose(); photo.dispose(); scene.destroy(); audio.destroy(); },
+    dispose() { if (disposed) return; disposed = true; soundToken++; clock.stop(); lifecycle.abort(); glimpse?.dispose(); discovery.cancel(); art.dispose(); photo.dispose(); scene.destroy(); audio.destroy(); },
   };
 }
 const route = dayRouteFor(document.body.dataset.route);

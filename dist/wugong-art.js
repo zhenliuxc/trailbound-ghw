@@ -1,4 +1,4 @@
-// Generated from src/journey/art-page.ts. Reuses existing mini-game, reward and journal controllers.
+// Generated from src/journey/art-page.ts. Edit src/, then run npm run build.
 "use strict";
 (() => {
   var __create = Object.create;
@@ -5098,55 +5098,6 @@
     }
   };
 
-  // .build/typescript/content/catalog.js
-  var CHAPTERS = [
-    { id: "wugong", name: "武功山", mapPage: "wugong-walk.html", artPage: "wugong-art.html", cover: {
-      kicker: "东江村经典反穿 · 两天一夜",
-      title: "沿着草甸，把山野收进手帐。",
-      copy: "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。",
-      action: "从东江村出发 →",
-      hint: "跟随山路 · 沿途实景 · 手绘互动与旅行手帐"
-    } },
-    { id: "tiger", name: "虎跳峡", mapPage: "tiger-walk.html", artPage: "tiger-art.html", cover: {
-      kicker: "虎跳峡高路 · 两天一夜",
-      title: "从高路，走到金沙江边。",
-      copy: "从桥头越过二十八道拐，在中途客栈住一晚。清晨经龙洞瀑布走到中峡客栈，也可沿小路下到中虎跳江边，再循原路返回。",
-      action: "从桥头出发 →",
-      hint: "中途客栈过夜 · 沿途实景 · 手绘收藏"
-    } },
-    { id: "aotai", name: "鳌太线", mapPage: "aotai-walk.html", artPage: "aotai-art.html", cover: {
-      kicker: "鳌太线 · 冬季历史路线",
-      title: "循着山脊，走进云与石之间。",
-      copy: "从塘口村上鳌山，翻过飞机梁、金字塔与太白梁，走向大爷海和拔仙台。沿历史路线上下山，在途中歇脚过夜，把山野相遇收进手帐，最后经下板寺向汤峪方向离山。",
-      action: "走进秦岭 →",
-      hint: "历史路线示意 · 多程过夜 · 手绘收藏"
-    } },
-    { id: "maclehose", name: "麦理浩径", mapPage: "maclehose-walk.html", artPage: "maclehose-art.html", cover: {
-      kicker: "麦理浩径第二段 · 一日海岸",
-      title: "翻过山，海就在那里。",
-      copy: "从浪茄翻过西湾山，走过西湾与咸田湾的沙岸。越过大浪坳，在赤径的潮水边歇脚，再沿林间山径走到北潭凹。",
-      action: "从浪茄出发 →",
-      hint: "浪茄 → 北潭凹 · 海岸实景 · 手绘收藏"
-    } },
-    ...Object.values(DAY_ROUTES).map((route) => ({
-      id: route.id,
-      name: route.name,
-      mapPage: `${route.id}-walk.html`,
-      artPage: `${route.id}-art.html`,
-      cover: {
-        kicker: `${route.region} · ${route.id === "changping" ? "十月彩林 · 一日往返" : route.id === "mogan" ? "古道选段" : "溪谷与茶园"}`,
-        title: route.title,
-        copy: `${route.subtitle}。${route.note}`,
-        action: `从${route.places[0].name}出发 →`,
-        hint: "沿途实景 · 手绘互动 · 旅行手帐"
-      }
-    }))
-  ];
-  function chapterFor(id2) {
-    return CHAPTERS.find((chapter2) => chapter2.id === id2) ?? null;
-  }
-  var ROUTE_SUMMARIES = CHAPTERS.map(({ id: id2, name }) => ({ id: id2, name }));
-
   // .build/typescript/content/wugong.js
   var WUGONG_EVENTS = {
     leaves: {
@@ -5246,16 +5197,103 @@
     "coast-pier": { entry: "coast-pier", place: "麦理浩径 · 赤径渡头", line: "渡头旁，一只小木船随着缓流轻轻晃着。", motif: '<path d="M5 27h38M12 27v15M34 27v15M7 19h21M9 19v8M26 19v8M5 47q9-5 18 0t18 0"/>' }
   };
 
-  // .build/typescript/content/art-events.js
-  var ART_EVENTS = {
-    wugong: [WUGONG_EVENTS.kite, WUGONG_EVENTS.encounter, WUGONG_EVENTS.clouds, WUGONG_EVENTS.stones],
-    tiger: Object.values(EVENTS),
-    aotai: Object.values(CUES),
-    maclehose: Object.values(CUES2),
-    changping: DAY_ROUTES.changping.events,
-    mogan: DAY_ROUTES.mogan.events,
-    westlake: DAY_ROUTES.westlake.events
+  // .build/typescript/content/catalog.js
+  var DAY_PRESENTATION = {
+    changping: { name: "四姑娘山", symbol: "summit", art: { title: "四姑娘山长坪沟", className: "day-art-page", styles: ["day-art.css?v=remaining-routes-1"] } },
+    mogan: { name: "莫干山", symbol: "bamboo", art: { title: "莫干山", className: "day-art-page", styles: ["mogan-games.css", "day-art.css?v=remaining-routes-1"] } },
+    westlake: { name: "九溪龙井", symbol: "tea", art: { title: "九溪龙井", className: "day-art-page", styles: ["day-art.css?v=remaining-routes-1"] } }
   };
+  var CHAPTERS = [
+    {
+      id: "wugong",
+      name: "武功山",
+      mapPage: "wugong-walk.html",
+      artPage: "wugong-art.html",
+      mapEntry: "src/wugong-walk/scroll/main.ts",
+      atlas: { name: "武功山", region: "江西 · 萍乡", symbol: "alpine-meadow" },
+      events: [WUGONG_EVENTS.kite, WUGONG_EVENTS.encounter, WUGONG_EVENTS.clouds, WUGONG_EVENTS.stones],
+      artPresentation: { title: "武功山", className: "", styles: [] },
+      cover: {
+        kicker: "东江村经典反穿 · 两天一夜",
+        title: "沿着草甸，把山野收进手帐。",
+        copy: "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。",
+        action: "从东江村出发 →",
+        hint: "跟随山路 · 沿途实景 · 手绘互动与旅行手帐"
+      }
+    },
+    {
+      id: "tiger",
+      name: "虎跳峡",
+      mapPage: "tiger-walk.html",
+      artPage: "tiger-art.html",
+      mapEntry: "src/tiger-walk/main.ts",
+      atlas: { name: "虎跳峡", region: "云南 · 迪庆", symbol: "rapids" },
+      events: Object.values(EVENTS),
+      artPresentation: { title: "虎跳峡", className: "tiger-art-page", styles: ["tiger-trail.css", "tiger-art.css?v=tiger-paper-badges-2", "tiger-memories.css?v=trip-photos-8"] },
+      cover: {
+        kicker: "虎跳峡高路 · 两天一夜",
+        title: "从高路，走到金沙江边。",
+        copy: "从桥头越过二十八道拐，在中途客栈住一晚。清晨经龙洞瀑布走到中峡客栈，也可沿小路下到中虎跳江边，再循原路返回。",
+        action: "从桥头出发 →",
+        hint: "中途客栈过夜 · 沿途实景 · 手绘收藏"
+      }
+    },
+    {
+      id: "aotai",
+      name: "鳌太线",
+      mapPage: "aotai-walk.html",
+      artPage: "aotai-art.html",
+      mapEntry: "src/aotai-walk/main.ts",
+      atlas: { name: "鳌太线", region: "陕西 · 秦岭", symbol: "ridge" },
+      events: Object.values(CUES),
+      artPresentation: { title: "鳌太线", className: "aotai-art-page", styles: ["aotai-art.css?v=shared-components-1"] },
+      cover: {
+        kicker: "鳌太线 · 冬季历史路线",
+        title: "循着山脊，走进云与石之间。",
+        copy: "从塘口村上鳌山，翻过飞机梁、金字塔与太白梁，走向大爷海和拔仙台。沿历史路线上下山，在途中歇脚过夜，把山野相遇收进手帐，最后经下板寺向汤峪方向离山。",
+        action: "走进秦岭 →",
+        hint: "历史路线示意 · 多程过夜 · 手绘收藏"
+      }
+    },
+    {
+      id: "maclehose",
+      name: "麦理浩径",
+      mapPage: "maclehose-walk.html",
+      artPage: "maclehose-art.html",
+      mapEntry: "src/maclehose-walk/main.ts",
+      atlas: { name: "麦理浩径", region: "香港 · 西贡", symbol: "beach" },
+      events: Object.values(CUES2),
+      artPresentation: { title: "麦理浩径", className: "coast-art-page", styles: ["maclehose-art.css?v=sand-brush-18"] },
+      cover: {
+        kicker: "麦理浩径第二段 · 一日海岸",
+        title: "翻过山，海就在那里。",
+        copy: "从浪茄翻过西湾山，走过西湾与咸田湾的沙岸。越过大浪坳，在赤径的潮水边歇脚，再沿林间山径走到北潭凹。",
+        action: "从浪茄出发 →",
+        hint: "浪茄 → 北潭凹 · 海岸实景 · 手绘收藏"
+      }
+    },
+    ...Object.values(DAY_ROUTES).map((route) => ({
+      id: route.id,
+      name: route.name,
+      mapPage: `${route.id}-walk.html`,
+      artPage: `${route.id}-art.html`,
+      mapEntry: "src/day-walk/main.ts",
+      atlas: { name: DAY_PRESENTATION[route.id].name, region: route.region, symbol: DAY_PRESENTATION[route.id].symbol },
+      events: route.events,
+      artPresentation: DAY_PRESENTATION[route.id].art,
+      cover: {
+        kicker: `${route.region} · ${route.id === "changping" ? "十月彩林 · 一日往返" : route.id === "mogan" ? "古道选段" : "溪谷与茶园"}`,
+        title: route.title,
+        copy: `${route.subtitle}。${route.note}`,
+        action: `从${route.places[0].name}出发 →`,
+        hint: "沿途实景 · 手绘互动 · 旅行手帐"
+      }
+    }))
+  ];
+  function chapterFor(id2) {
+    return CHAPTERS.find((chapter2) => chapter2.id === id2) ?? null;
+  }
+  var ROUTE_SUMMARIES = CHAPTERS.map(({ id: id2, name }) => ({ id: id2, name }));
 
   // .build/typescript/runtime/dom.js
   function createDom(document2) {
@@ -5349,6 +5387,110 @@
     };
   }
 
+  // .build/typescript/runtime/private-photo.js
+  function isPhotoPointId(value) {
+    return value === "jx-creek" || value === "jx-tea";
+  }
+  var PEN_NAMES = ["松间客", "溪边客", "茶山客", "听雨人", "望云人", "寻叶人"];
+  function isPenName(value) {
+    return PEN_NAMES.some((name) => name === value);
+  }
+  function parsePrivatePhoto(value) {
+    if (!value || typeof value !== "object" || !("kind" in value) || value.kind !== "private-local" || !("id" in value) || typeof value.id !== "string" || !value.id || !("route" in value) || value.route !== "westlake" || !("point" in value) || typeof value.point !== "string" || !("sceneVersion" in value) || typeof value.sceneVersion !== "string" || !("createdAt" in value) || typeof value.createdAt !== "number" || !Number.isFinite(value.createdAt) || !("image" in value) || typeof value.image !== "string" || !/^data:image\/(webp|png);base64,[A-Za-z0-9+/=]+$/.test(value.image) || !("body" in value) || typeof value.body !== "string" || !("anchor" in value) || typeof value.anchor !== "number" || !Number.isInteger(value.anchor) || value.anchor < 0 || value.anchor > 2 || !("zoom" in value) || typeof value.zoom !== "number" || !Number.isFinite(value.zoom) || value.zoom < 1 || value.zoom > 1.3 || !("attribution" in value) || !value.attribution || typeof value.attribution !== "object" || !("kind" in value.attribution))
+      return null;
+    if (!isPhotoPointId(value.point))
+      return null;
+    let attribution;
+    if (value.attribution.kind === "anonymous")
+      attribution = { kind: "anonymous" };
+    else if (value.attribution.kind === "pen-name" && "name" in value.attribution && isPenName(value.attribution.name))
+      attribution = { kind: "pen-name", name: value.attribution.name };
+    else
+      return null;
+    return { id: value.id, kind: "private-local", route: "westlake", point: value.point, sceneVersion: value.sceneVersion, createdAt: value.createdAt, image: value.image, body: value.body, anchor: value.anchor, zoom: value.zoom, attribution };
+  }
+
+  // .build/typescript/runtime/private-photo-store.js
+  var PRIVATE_PHOTO_DB = "trailbound-private-photos-v1";
+  var PRIVATE_PHOTO_DB_VERSION = 1;
+  var PRIVATE_PHOTO_CHANGED = "trailbound-private-photo-saved";
+  function createPrivatePhotoStore(factory) {
+    let opening = null;
+    function open() {
+      if (opening)
+        return opening;
+      opening = new Promise((resolve, reject) => {
+        if (!factory) {
+          reject(new Error("浏览器未提供本地照片存储"));
+          return;
+        }
+        const request = factory.open(PRIVATE_PHOTO_DB, PRIVATE_PHOTO_DB_VERSION);
+        request.onupgradeneeded = () => {
+          request.result.createObjectStore("photos", { keyPath: "id" });
+        };
+        request.onsuccess = () => {
+          request.result.onversionchange = () => {
+            request.result.close();
+            opening = null;
+          };
+          resolve(request.result);
+        };
+        request.onerror = () => reject(request.error);
+        request.onblocked = () => reject(new Error("请合上其他旧版本页面后重试"));
+      });
+      opening.catch(() => {
+        opening = null;
+      });
+      return opening;
+    }
+    return {
+      async read() {
+        try {
+          const db = await open();
+          const photos = await new Promise((resolve, reject) => {
+            const request = db.transaction("photos", "readonly").objectStore("photos").getAll();
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+              const rows = request.result;
+              resolve(Array.isArray(rows) ? rows.map(parsePrivatePhoto).filter((photo) => photo !== null).sort((a, b) => b.createdAt - a.createdAt) : []);
+            };
+          });
+          return { kind: "loaded", photos };
+        } catch {
+          return { kind: "error", message: "本机私藏暂时无法读取，原有照片没有被删除。可以重试。" };
+        }
+      },
+      async save(photo) {
+        const snapshot = parsePrivatePhoto(photo);
+        if (!snapshot)
+          return { kind: "error", message: "这张照片还没准备好，请重新拍下这一眼。" };
+        try {
+          const db = await open();
+          await new Promise((resolve, reject) => {
+            const tx = db.transaction("photos", "readwrite");
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+            tx.onabort = () => reject(tx.error);
+            tx.objectStore("photos").put(snapshot);
+          });
+          return { kind: "stored", photo: snapshot };
+        } catch {
+          return { kind: "error", message: "这张照片还没保存成功，请腾出空间后重试。编辑内容仍留在这里。" };
+        }
+      },
+      async close() {
+        const pending2 = opening;
+        opening = null;
+        if (pending2) {
+          try {
+            (await pending2).close();
+          } catch {
+          }
+        }
+      }
+    };
+  }
+
   // .build/typescript/runtime/journal-store.js
   function createJournalStore({ catalog: catalog2, data, storage: storage2 }) {
     const read = () => catalog2.loadMoments(storage2);
@@ -5365,6 +5507,35 @@
       return { kind: "stored", existing: result.status === "unchanged", change: result.status, moments: result.moments };
     }
     return { read, save };
+  }
+
+  // .build/typescript/content/look-here.js
+  var GLIMPSE_POINTS = [
+    {
+      id: "jx-creek",
+      name: "九溪 · 溪林停步处",
+      zone: [2, 5.7],
+      paper: { x: 1455, y: 1435 },
+      bounds: { x: 1060, y: 1190, width: 760, height: 570 },
+      anchors: [{ x: 1380, y: 1190, width: 440, height: 330 }, { x: 1435, y: 1255, width: 360, height: 270 }, { x: 1300, y: 1370, width: 480, height: 360 }],
+      labels: ["溪弯与树影", "石边的水纹", "树下的水岸"],
+      recommendations: ["溪水在石头旁拐了一个小弯。", "树影落在水边，颜色又深了一层。", "先停一停，听听石头之间的水声。"],
+      caption: "溪水在石头旁拐了一个小弯。你也看见了吗？"
+    },
+    {
+      id: "jx-tea",
+      name: "九溪 · 茶坡转角",
+      zone: [9, 12.8],
+      paper: { x: 2250, y: 825 },
+      bounds: { x: 1850, y: 610, width: 720, height: 540 },
+      anchors: [{ x: 1850, y: 785, width: 440, height: 330 }, { x: 1930, y: 690, width: 400, height: 300 }, { x: 1850, y: 740, width: 520, height: 390 }],
+      labels: ["转角与茶坡", "沿径望坡", "溪岸望茶垄"],
+      recommendations: ["茶垄顺着山坡，一层一层弯过去。", "转过这个弯，眼前的绿又换了一种。", "把这一坡的春色，留在午前的光里。"],
+      caption: "茶垄顺着山坡，一层一层弯过去。"
+    }
+  ];
+  function glimpsePoint(id2) {
+    return GLIMPSE_POINTS.find((point2) => point2.id === id2);
   }
 
   // .build/typescript/content/tiger-badges.js
@@ -5603,6 +5774,13 @@
     const bindings = new EventBindings();
     const pictures = /* @__PURE__ */ new Map();
     const store = createJournalStore({ catalog: D, data, storage: options.storage });
+    let photoFactory = null;
+    try {
+      photoFactory = dom2.document.defaultView?.indexedDB ?? null;
+    } catch {
+    }
+    const photoStore = createPrivatePhotoStore(photoFactory);
+    let privatePhotos = [], photoReadGeneration = 0, destroyed = false;
     let records = store.read();
     let tripMoments = [];
     let route = "all";
@@ -5721,24 +5899,56 @@
     }
     function render(append = false) {
       const list = $2("journal-list");
-      const book = data.page(records, route, pageSize);
-      routeFilter.render(route, data.page(records, "all", D.MAX_MOMENTS).entries);
-      $2("journal-count").textContent = `${book.totalAll}个瞬间`;
+      const moments = data.page(records, "all", D.MAX_MOMENTS).entries;
+      const all = [...moments.map((value) => ({ kind: "moment", value })), ...privatePhotos.map((value) => ({ kind: "private", value }))];
+      all.sort((a, b) => (b.value.createdAt ?? 0) - (a.value.createdAt ?? 0));
+      const filtered = all.filter((item) => route === "all" || item.value.route === route);
+      const visible = filtered.slice(0, pageSize), remaining = filtered.length - visible.length;
+      routeFilter.render(route, all.map((item) => item.value));
+      $2("journal-count").textContent = `${all.length}个瞬间`;
+      const intro = dom2.document.querySelector(".journal-intro");
+      if (intro)
+        intro.textContent = privatePhotos.length ? "点开一页手帐，翻看沿途回忆。" : "点开一枚徽章，翻看沿途回忆。";
       $2("trip-count").textContent = `本次记下${options.tripCount()}个瞬间`;
       const routeName = options.routes.find((r) => r.id === route)?.name || "全部路线";
-      $2("journal-filter-count").textContent = book.total ? `${routeName} · ${book.total}段回忆${book.remaining ? `，已展示${book.entries.length}段` : ""}` : `${routeName} · 等待新的回忆`;
-      $2("journal-more").hidden = book.remaining === 0;
-      $2("journal-more").textContent = `再翻${Math.min(data.PAGE_SIZE, book.remaining)}段回忆 ↓`;
+      $2("journal-filter-count").textContent = filtered.length ? `${routeName} · ${filtered.length}段回忆${remaining ? `，已展示${visible.length}段` : ""}` : `${routeName} · 等待新的回忆`;
+      $2("journal-more").hidden = remaining === 0;
+      $2("journal-more").textContent = `再翻${Math.min(data.PAGE_SIZE, remaining)}段回忆 ↓`;
       const offset = append ? list.children.length : 0;
       if (!append)
         list.replaceChildren();
-      if (!book.total) {
+      if (!filtered.length) {
         const empty = html("li", null, list, "journal-empty");
         html("strong", "这一页，留给下一次相遇", empty);
         html("p", "一阵风、一片落叶，或一段安静的水声。沿途收下的手绘和回忆，会一起留在这里。", empty);
         return;
       }
-      for (const moment of book.entries.slice(offset)) {
+      for (const item of visible.slice(offset)) {
+        if (item.kind === "private") {
+          const photo = item.value, name = glimpsePoint(photo.point)?.name ?? "九溪私藏";
+          const li2 = html("li", null, list, "journal-entry found");
+          li2.dataset.route = photo.route;
+          li2.dataset.kind = "private-photo";
+          const button2 = html("button", null, li2, "journal-wall-button");
+          button2.type = "button";
+          button2.setAttribute("aria-label", `翻看私藏照片 · ${name}`);
+          button2.setAttribute("aria-haspopup", "dialog");
+          button2.setAttribute("aria-controls", "journal-detail");
+          const image = html("img", null, button2, "journal-private-image");
+          image.alt = name + "的游戏场景私藏";
+          image.loading = "lazy";
+          image.src = photo.image;
+          image.onerror = () => {
+            image.hidden = true;
+            html("span", "照片暂未展开，文字仍可阅读", button2);
+          };
+          html("strong", name.replace("九溪 · ", ""), button2, "journal-wall-title");
+          html("small", "九溪龙井 · 仅本机私藏", button2, "journal-wall-place");
+          html("span", "翻看私藏 ↗", button2, "journal-wall-hint").setAttribute("aria-hidden", "true");
+          button2.addEventListener("click", () => openPrivate(photo, button2));
+          continue;
+        }
+        const moment = item.value;
         const li = html("li", null, list, "journal-entry found");
         li.setAttribute("data-route", moment.route);
         li.setAttribute("data-moment", moment.key);
@@ -5752,6 +5962,51 @@
         html("span", "翻看回忆 ↗", button, "journal-wall-hint").setAttribute("aria-hidden", "true");
         button.addEventListener("click", () => open(moment, button));
       }
+    }
+    function openPrivate(photo, button) {
+      if (session2 || options.rewardOpen())
+        return;
+      entries = [];
+      index = 0;
+      const name = glimpsePoint(photo.point)?.name ?? "九溪私藏", page = $2("journal-detail-page");
+      page.replaceChildren();
+      const art = html("div", null, page, "journal-illustration");
+      const image = html("img", null, art, "journal-private-detail-image");
+      image.alt = name + "的游戏场景私藏";
+      image.src = photo.image;
+      image.onerror = () => {
+        image.hidden = true;
+        html("p", "照片暂未展开，文字仍可阅读。", art);
+      };
+      const copy2 = html("div", null, page, "journal-copy");
+      html("p", name, copy2, "journal-location");
+      html("h3", "我的这一眼", copy2, "journal-entry-title").id = "journal-detail-title";
+      if (photo.body)
+        html("p", photo.body, copy2, "journal-memory");
+      html("p", "只保存在这台设备，尚未公开。", copy2, "journal-entry-meta");
+      if (photo.attribution.kind === "pen-name")
+        html("p", `留笺人：${photo.attribution.name}`, copy2, "journal-entry-meta");
+      const date = new Date(photo.createdAt), time = html("time", date.toLocaleString("zh-CN"), copy2, "journal-time");
+      time.dateTime = date.toISOString();
+      $2("journal-detail-route").textContent = "九溪龙井";
+      $2("journal-detail-position").textContent = "私藏";
+      $2("journal-detail-announcement").textContent = name + " · 本机私藏";
+      $2("journal-detail-hint").textContent = "这一眼，只留给自己";
+      for (const id2 of ["journal-detail-prev", "journal-detail-next"]) {
+        $2(id2).hidden = true;
+        $2(id2).setAttribute("aria-disabled", "true");
+      }
+      $2("journal-detail").setAttribute("aria-modal", "true");
+      $2("journal-detail").showModal();
+      session2 = scenes2.enter("journal");
+      trigger = button;
+      button.setAttribute("aria-expanded", "true");
+      bodyOverflow = dom2.document.body.style.overflow || "";
+      dom2.document.body.style.overflow = "hidden";
+      options.pauseInteraction();
+      options.stopLoop();
+      options.refresh();
+      $2("journal-detail-close").focus({ preventScroll: true });
     }
     function renderDetail(direction = 0) {
       const moment = entries[index];
@@ -5802,6 +6057,7 @@
       const previous = entries[index - 1], next = entries[index + 1];
       const controls = [["journal-detail-prev", previous, "上一枚"], ["journal-detail-next", next, "下一枚"]];
       for (const [id2, entry, label] of controls) {
+        $2(id2).hidden = false;
         $2(id2).setAttribute("aria-disabled", String(!entry));
         $2(id2).setAttribute("aria-label", entry ? label + "：" + entry.title : label === "上一枚" ? "已是第一枚" : "已是最后一枚");
       }
@@ -5955,9 +6211,30 @@
         $2("journal-list").children[previous]?.querySelector("button")?.focus();
       });
     }
+    function reloadPhotos() {
+      if (!photoFactory)
+        return;
+      const token = ++photoReadGeneration;
+      void photoStore.read().then((result) => {
+        if (destroyed || token !== photoReadGeneration)
+          return;
+        if (result.kind === "loaded") {
+          const unchanged = result.photos.length === privatePhotos.length && result.photos.every((photo, i) => {
+            const previous = privatePhotos[i];
+            return previous && photo.id === previous.id && photo.createdAt === previous.createdAt && photo.point === previous.point && photo.image === previous.image && photo.body === previous.body && photo.anchor === previous.anchor && photo.zoom === previous.zoom && photo.attribution.kind === previous.attribution.kind && (photo.attribution.kind === "anonymous" || previous.attribution.kind === "pen-name" && photo.attribution.name === previous.attribution.name);
+          });
+          if (unchanged)
+            return;
+          privatePhotos = result.photos;
+          render();
+        } else
+          $2("journal-storage").textContent = result.message;
+      });
+    }
     function reload() {
       records = store.read();
       render();
+      reloadPhotos();
     }
     const browser = dom2.document.defaultView;
     const storageChanged = (event) => {
@@ -5965,7 +6242,10 @@
         reload();
     };
     browser?.addEventListener("storage", storageChanged);
+    browser?.addEventListener(PRIVATE_PHOTO_CHANGED, reloadPhotos);
+    browser?.addEventListener("focus", reloadPhotos);
     bind();
+    reloadPhotos();
     return {
       get open() {
         return session2 !== null;
@@ -5985,10 +6265,15 @@
         return records.filter((moment) => moment.route === routeId2).slice(-3).map((moment) => moment.id);
       },
       destroy() {
+        destroyed = true;
+        photoReadGeneration++;
         close(false);
         routeFilter.destroy();
         bindings.destroy();
         browser?.removeEventListener("storage", storageChanged);
+        browser?.removeEventListener(PRIVATE_PHOTO_CHANGED, reloadPhotos);
+        browser?.removeEventListener("focus", reloadPhotos);
+        void photoStore.close();
       }
     };
   }
@@ -7291,7 +7576,23 @@
     return canvas ? { src: canvas.toDataURL("image/webp", 0.88) } : null;
   }
 
-  // .build/typescript/wugong-walk/model.js
+  // .build/typescript/journey/art-session.js
+  var PROTOCOL = "trailbound.art.v1";
+  function artMessage(session2, type, collected2 = 0) {
+    return type === "ready" || type === "dispose" ? { ...session2, protocol: PROTOCOL, type } : { ...session2, protocol: PROTOCOL, type, collected: collected2 };
+  }
+  function readArtMessage(value, current) {
+    if (!current || !value || typeof value !== "object" || !("protocol" in value) || value.protocol !== PROTOCOL || !("session" in value) || value.session !== current.session || !("entry" in value) || value.entry !== current.entry || !("type" in value))
+      return null;
+    if (value.type === "ready" || value.type === "dispose")
+      return artMessage(current, value.type);
+    if ((value.type === "collected" || value.type === "close") && "collected" in value && typeof value.collected === "number" && Number.isSafeInteger(value.collected) && value.collected >= 0 && value.collected <= 1) {
+      return artMessage(current, value.type, value.collected);
+    }
+    return null;
+  }
+
+  // .build/typescript/journey/geometry.js
   function curve(knots, subdivisions = 15) {
     if (knots.length < 2)
       return [...knots];
@@ -13442,22 +13743,6 @@
     };
   }
 
-  // .build/typescript/journey/art-session.js
-  var PROTOCOL = "trailbound.art.v1";
-  function artMessage(session2, type, collected2 = 0) {
-    return type === "ready" || type === "dispose" ? { ...session2, protocol: PROTOCOL, type } : { ...session2, protocol: PROTOCOL, type, collected: collected2 };
-  }
-  function readArtMessage(value, current) {
-    if (!current || !value || typeof value !== "object" || !("protocol" in value) || value.protocol !== PROTOCOL || !("session" in value) || value.session !== current.session || !("entry" in value) || value.entry !== current.entry || !("type" in value))
-      return null;
-    if (value.type === "ready" || value.type === "dispose")
-      return artMessage(current, value.type);
-    if ((value.type === "collected" || value.type === "close") && "collected" in value && typeof value.collected === "number" && Number.isSafeInteger(value.collected) && value.collected >= 0 && value.collected <= 1) {
-      return artMessage(current, value.type, value.collected);
-    }
-    return null;
-  }
-
   // .build/typescript/runtime/day-memories/model.js
   var DAY_MEMORIES = {
     "valley-moss": { kind: "reflection", title: "把枝影留在水里", prompt: "轻拖水中的倒影，让岸上的枯树与枝影相接。", memory: "我把错开的枝影轻轻合上，清水里又长出一棵树。" },
@@ -15010,6 +15295,96 @@
     };
   }
 
+  // .build/typescript/journey/game-registry.js
+  var DEFAULT_GAMES = {
+    registrations: () => [],
+    extraEntries: [],
+    kindFor: (entryId, legacyKinds) => legacyKinds[entryId],
+    titleFor: () => null
+  };
+  var DAY_GAMES = {
+    ...DEFAULT_GAMES,
+    registrations: ({ dom: dom2, audio: audio2 }) => [
+      { ids: Object.keys(DAY_MEMORIES), create: () => ({ adapter: createDayMemories(dom2, audio2) }) }
+    ]
+  };
+  var ROUTE_GAMES = {
+    wugong: DEFAULT_GAMES,
+    tiger: {
+      ...DEFAULT_GAMES,
+      registrations: ({ dom: dom2, onAction }) => [
+        { ids: Object.keys(TRAIL_GAMES), create: () => createTigerTrailGames({ dom: dom2, riverArrived: true, onAction }) },
+        { ids: MEMORY_IDS, create: () => createTigerMemoryGames(dom2, onAction) }
+      ],
+      extraEntries: Object.keys(TRAIL_GAMES),
+      kindFor: (entryId) => memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId]
+    },
+    aotai: {
+      ...DEFAULT_GAMES,
+      registrations: ({ dom: dom2 }) => [
+        { ids: AOTAI_IDS, create: () => ({ adapter: createAotaiGames(dom2) }) }
+      ],
+      kindFor: (entryId) => aotaiGameId(entryId) ? AOTAI_GAMES[entryId].game : void 0
+    },
+    maclehose: {
+      ...DEFAULT_GAMES,
+      registrations: ({ dom: dom2, onAction }) => [
+        { ids: COAST_MEMORY_IDS, create: () => ({ adapter: createCoastMemories(dom2, onAction) }) },
+        { ids: ["coast-sand"], create: () => ({ adapter: createSaiwanShoulder(dom2) }) },
+        { ids: ["coast-shell"], create: () => ({ adapter: createTide(dom2) }) }
+      ],
+      kindFor: (entryId, legacyKinds) => entryId === "coast-sand" ? "footsteps" : coastMemoryId(entryId) ? COAST_MEMORIES[entryId].game : legacyKinds[entryId],
+      titleFor: (entryId) => entryId === "coast-sand" ? "转角见海" : "海岸手绘"
+    },
+    changping: {
+      ...DAY_GAMES,
+      registrations: (context) => [
+        ...DAY_GAMES.registrations(context),
+        { ids: CHANGPING_MEMORY_IDS, create: () => ({ adapter: createChangpingMemories(context.dom, context.audio) }) }
+      ]
+    },
+    mogan: DAY_GAMES,
+    westlake: DAY_GAMES
+  };
+  function installRegistrations(mini2, registrations) {
+    const cleanups = [];
+    for (const registration of registrations) {
+      const owner = registration.create();
+      mini2.registerGame(registration.ids, owner.adapter);
+      if (owner.destroy)
+        cleanups.push(() => owner.destroy?.());
+    }
+    return {
+      // The host destroys mini first; adapter.dispose owns active scene resources.
+      destroy() {
+        for (const cleanup of cleanups.splice(0))
+          cleanup();
+      }
+    };
+  }
+  function artMusic(state3, base) {
+    const phase = state3 instanceof MemoryState && state3.session.kind === "bends" ? state3.session.phase : null;
+    return {
+      ...base,
+      momentGame: phase?.kind === "river" ? "tiger-river" : base.momentGame,
+      ...phase ? { gorgeOpenness: roadWalk(phase), riverApproach: phase.kind === "river" ? Math.min(1, phase.elapsed) : 0 } : {},
+      ...state3 instanceof ShoulderState ? { coastOpenness: state3.cameraProgress } : {}
+    };
+  }
+  function installRouteGames(options) {
+    const { chapter: chapter2, mini: mini2, dom: dom2, audio: audio2, platform } = options, definition = ROUTE_GAMES[chapter2.id];
+    const allowed = /* @__PURE__ */ new Set([...chapter2.events.map((event) => event.entry), ...definition.extraEntries]);
+    const installed = installRegistrations(mini2, definition.registrations({ dom: dom2, audio: audio2, onAction: mini2.action }));
+    return {
+      allows: (entryId) => allowed.has(entryId),
+      kindFor: (entryId) => definition.kindFor(entryId, platform.kinds),
+      titleFor: definition.titleFor,
+      musicFor: artMusic,
+      musicChanges: (state3) => state3 instanceof ShoulderState || state3 instanceof MemoryState && state3.session.kind === "bends",
+      destroy: installed.destroy
+    };
+  }
+
   // .build/typescript/runtime/frame-loop.js
   function createFrameLoop(options) {
     let pending2 = null;
@@ -15065,8 +15440,7 @@
     throw new Error("无法读取这段旅程");
   var routeId = chapter.id;
   var mapPage = chapter.mapPage;
-  var events = ART_EVENTS[routeId];
-  var allowed = /* @__PURE__ */ new Set([...events.map((event) => event.entry), ...routeId === "tiger" ? Object.keys(TRAIL_GAMES) : []]);
+  var events = chapter.events;
   var place = events.find((event) => event.entry === id)?.place ?? null;
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var disposed = false;
@@ -15099,8 +15473,7 @@
     clock.ensure();
   }
   function audioScene() {
-    const current = mini.state, phase = current instanceof MemoryState && current.session.kind === "bends" ? current.session.phase : null;
-    return { routeId, mode: reward.open ? "reward" : mini.active ? "moment" : "silent", momentId: current?.id ?? pending?.id, momentGame: phase?.kind === "river" ? "tiger-river" : mini.soundTheme ?? null, ...phase ? { gorgeOpenness: roadWalk(phase), riverApproach: phase.kind === "river" ? Math.min(1, phase.elapsed) : 0 } : {}, ...current instanceof ShoulderState ? { coastOpenness: current.cameraProgress } : {} };
+    return routeGames.musicFor(mini.state, { routeId, mode: reward.open ? "reward" : mini.active ? "moment" : "silent", momentId: mini.state?.id ?? pending?.id, momentGame: mini.soundTheme ?? null });
   }
   function refresh() {
     if (disposed)
@@ -15126,7 +15499,7 @@
     reduced,
     autoCollect: true,
     presentArt: roundJournalArt,
-    gameKind: (entryId) => routeId === "aotai" ? aotaiGameId(entryId) ? AOTAI_GAMES[entryId].game : void 0 : routeId === "tiger" ? memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId] : routeId === "maclehose" && entryId === "coast-sand" ? "footsteps" : routeId === "maclehose" && coastMemoryId(entryId) ? COAST_MEMORIES[entryId].game : games.kinds[entryId],
+    gameKind: (entryId) => routeGames.kindFor(entryId),
     refresh,
     stopLoop,
     onCollected(moment) {
@@ -15194,7 +15567,7 @@
     refresh,
     onFinished(finished) {
       const outcome = finished.outcome, entry = finished.entry;
-      if (!allowed.has(entry.id) || outcome.id !== entry.id || outcome.edition !== 3 || !outcome.earned)
+      if (!routeGames.allows(entry.id) || outcome.id !== entry.id || outcome.edition !== 3 || !outcome.earned)
         return false;
       const captureArt = outcome.captureArt ? catalog.safeCaptureArt(outcome.captureArt) : null;
       if (outcome.captureArt && !captureArt)
@@ -15221,29 +15594,13 @@
       closing = true;
     }
   });
-  var tigerGames = routeId === "tiger" ? createTigerTrailGames({ dom, riverArrived: true, onAction: (name, value) => mini.action(name, value) }) : null;
-  if (tigerGames)
-    mini.registerGame(Object.keys(TRAIL_GAMES), tigerGames.adapter);
-  var tigerMemories = routeId === "tiger" ? createTigerMemoryGames(dom, (name) => mini.action(name)) : null;
-  if (tigerMemories)
-    mini.registerGame(MEMORY_IDS, tigerMemories.adapter);
-  if (routeId === "aotai")
-    mini.registerGame(AOTAI_IDS, createAotaiGames(dom));
-  if (routeId === "maclehose") {
-    mini.registerGame(COAST_MEMORY_IDS, createCoastMemories(dom, (name) => mini.action(name)));
-    mini.registerGame(["coast-sand"], createSaiwanShoulder(dom));
-    mini.registerGame(["coast-shell"], createTide(dom));
-  }
-  if (routeId === "changping" || routeId === "mogan" || routeId === "westlake")
-    mini.registerGame(Object.keys(DAY_MEMORIES), createDayMemories(dom, audio));
-  if (routeId === "changping")
-    mini.registerGame(CHANGPING_MEMORY_IDS, createChangpingMemories(dom, audio));
+  var routeGames = installRouteGames({ chapter, mini, dom, audio, platform: games });
   var clock = createFrameLoop({ request: (callback) => requestAnimationFrame(callback), cancel: (id2) => cancelAnimationFrame(id2), maxDelta: 0.05, active: () => !disposed && !document.hidden && mini.active, update: frame });
   var soundElapsed = 0;
   function frame(dt) {
     mini.update(dt);
     soundElapsed += dt;
-    if (soundElapsed > 0.18 && (mini.state instanceof ShoulderState || mini.state instanceof MemoryState && mini.state.session.kind === "bends")) {
+    if (soundElapsed > 0.18 && routeGames.musicChanges(mini.state)) {
       audio.setScene(audioScene());
       soundElapsed = 0;
     }
@@ -15254,8 +15611,7 @@
     disposed = true;
     stopLoop();
     mini.destroy();
-    tigerGames?.destroy();
-    tigerMemories?.destroy();
+    routeGames.destroy();
     reward.destroy();
     journal.destroy();
     audio.destroy();
@@ -15292,9 +15648,10 @@
   });
   window.addEventListener("pagehide", destroy);
   journal.render();
-  if (id && allowed.has(id)) {
-    if (routeId === "maclehose")
-      $("art-page-title").textContent = id === "coast-sand" ? "转角见海" : "海岸手绘";
+  if (id && routeGames.allows(id)) {
+    const title = routeGames.titleFor(id);
+    if (title)
+      $("art-page-title").textContent = title;
     $("art-journal-wall").hidden = true;
     const original = catalog.item(id), currentPlace = place;
     mini.begin(currentPlace ? { ...original, place: currentPlace, memory: original.memory.replace(original.place, currentPlace) } : original, "paused");

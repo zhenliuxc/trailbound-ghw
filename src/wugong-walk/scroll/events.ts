@@ -1,7 +1,7 @@
 import { WUGONG_EVENTS } from '../../content/wugong';
 export type { WugongEventId as TrailEventId } from '../../content/wugong';
 import type { WugongEventId as TrailEventId } from '../../content/wugong';
-import type { Point } from '../model';
+import type { Point } from '../../journey/geometry';
 import type { ScrollTrail } from './route';
 
 export interface TrailEvent {

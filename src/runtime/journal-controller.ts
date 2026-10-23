@@ -2,11 +2,13 @@ import type { JournalArtPresentation, JournalData, Moment, MomentCatalog, RouteI
 import type { GameDom } from './dom';
 import { EventBindings } from './dom';
 import type { SceneManager, SceneSession } from './scene-manager';
-import { createJournalStore, type JournalSaveResult } from './journal-store';
+import { createJournalStore, createPrivatePhotoStore, PRIVATE_PHOTO_CHANGED, type PrivatePhoto, type JournalSaveResult } from './journal-store';
+import { glimpsePoint } from '../content/look-here';
 import { tigerLegacyBadgeFile } from './tiger-badge';
 import { createJournalRouteFilter, type JournalRoute } from './journal-route-filter';
 
 interface PlaceSource { name: string; url: string }
+type WallItem = { kind: 'moment'; value: Moment } | { kind: 'private'; value: PrivatePhoto };
 interface JournalOptions {
   dom: GameDom;
   catalog: MomentCatalog;
@@ -35,6 +37,10 @@ export function createJournalController(options: JournalOptions) {
   const bindings = new EventBindings();
   const pictures = new Map<string, HTMLElement>();
   const store = createJournalStore({ catalog: D, data, storage: options.storage });
+  let photoFactory: IDBFactory | null = null;
+  try { photoFactory = dom.document.defaultView?.indexedDB ?? null; } catch { /* Storage may be disabled. */ }
+  const photoStore = createPrivatePhotoStore(photoFactory);
+  let privatePhotos: PrivatePhoto[] = [], photoReadGeneration = 0, destroyed = false;
   let records = store.read();
   let tripMoments: Moment[] = [];
   let route: JournalRoute = 'all';
@@ -129,23 +135,41 @@ export function createJournalController(options: JournalOptions) {
   }
   function render(append = false) {
     const list = $('journal-list');
-    const book = data.page(records, route, pageSize);
-    routeFilter.render(route, data.page(records, 'all', D.MAX_MOMENTS).entries);
-    $('journal-count').textContent = `${book.totalAll}个瞬间`;
+    const moments = data.page(records, 'all', D.MAX_MOMENTS).entries;
+    const all: WallItem[] = [...moments.map((value): WallItem => ({ kind: 'moment', value })), ...privatePhotos.map((value): WallItem => ({ kind: 'private', value }))];
+    all.sort((a, b) => (b.value.createdAt ?? 0) - (a.value.createdAt ?? 0));
+    const filtered = all.filter(item => route === 'all' || item.value.route === route);
+    const visible = filtered.slice(0, pageSize), remaining = filtered.length - visible.length;
+    routeFilter.render(route, all.map(item => item.value));
+    $('journal-count').textContent = `${all.length}个瞬间`;
+    const intro = dom.document.querySelector('.journal-intro');
+    if (intro) intro.textContent = privatePhotos.length ? '点开一页手帐，翻看沿途回忆。' : '点开一枚徽章，翻看沿途回忆。';
     $('trip-count').textContent = `本次记下${options.tripCount()}个瞬间`;
     const routeName = options.routes.find(r => r.id === route)?.name || '全部路线';
-    $('journal-filter-count').textContent = book.total ? `${routeName} · ${book.total}段回忆${book.remaining ? `，已展示${book.entries.length}段` : ''}` : `${routeName} · 等待新的回忆`;
-    $('journal-more').hidden = book.remaining === 0;
-    $('journal-more').textContent = `再翻${Math.min(data.PAGE_SIZE, book.remaining)}段回忆 ↓`;
+    $('journal-filter-count').textContent = filtered.length ? `${routeName} · ${filtered.length}段回忆${remaining ? `，已展示${visible.length}段` : ''}` : `${routeName} · 等待新的回忆`;
+    $('journal-more').hidden = remaining === 0;
+    $('journal-more').textContent = `再翻${Math.min(data.PAGE_SIZE, remaining)}段回忆 ↓`;
     const offset = append ? list.children.length : 0;
     if (!append) list.replaceChildren();
-    if (!book.total) {
+    if (!filtered.length) {
       const empty = html('li', null, list, 'journal-empty');
       html('strong', '这一页，留给下一次相遇', empty);
       html('p', '一阵风、一片落叶，或一段安静的水声。沿途收下的手绘和回忆，会一起留在这里。', empty);
       return;
     }
-    for (const moment of book.entries.slice(offset)) {
+    for (const item of visible.slice(offset)) {
+      if (item.kind === 'private') {
+        const photo = item.value, name = glimpsePoint(photo.point)?.name ?? '九溪私藏';
+        const li = html('li', null, list, 'journal-entry found'); li.dataset.route = photo.route; li.dataset.kind = 'private-photo';
+        const button = html('button', null, li, 'journal-wall-button'); button.type = 'button';
+        button.setAttribute('aria-label', `翻看私藏照片 · ${name}`); button.setAttribute('aria-haspopup', 'dialog'); button.setAttribute('aria-controls', 'journal-detail');
+        const image = html('img', null, button, 'journal-private-image'); image.alt = name + '的游戏场景私藏'; image.loading = 'lazy'; image.src = photo.image;
+        image.onerror = () => { image.hidden = true; html('span', '照片暂未展开，文字仍可阅读', button); };
+        html('strong', name.replace('九溪 · ', ''), button, 'journal-wall-title'); html('small', '九溪龙井 · 仅本机私藏', button, 'journal-wall-place');
+        html('span', '翻看私藏 ↗', button, 'journal-wall-hint').setAttribute('aria-hidden', 'true');
+        button.addEventListener('click', () => openPrivate(photo, button)); continue;
+      }
+      const moment = item.value;
       const li = html('li', null, list, 'journal-entry found');
       li.setAttribute('data-route', moment.route); li.setAttribute('data-moment', moment.key);
       li.setAttribute('data-kind', D.hasTag(moment) ? 'tag' : 'note');
@@ -158,6 +182,27 @@ export function createJournalController(options: JournalOptions) {
       // Wall nodes are replaced on filtering, so their listeners have the same lifetime.
       button.addEventListener('click', () => open(moment, button));
     }
+  }
+  function openPrivate(photo: PrivatePhoto, button: HTMLButtonElement) {
+    if (session || options.rewardOpen()) return;
+    entries = []; index = 0;
+    const name = glimpsePoint(photo.point)?.name ?? '九溪私藏', page = $('journal-detail-page'); page.replaceChildren();
+    const art = html('div', null, page, 'journal-illustration');
+    const image = html('img', null, art, 'journal-private-detail-image'); image.alt = name + '的游戏场景私藏'; image.src = photo.image;
+    image.onerror = () => { image.hidden = true; html('p', '照片暂未展开，文字仍可阅读。', art); };
+    const copy = html('div', null, page, 'journal-copy'); html('p', name, copy, 'journal-location');
+    html('h3', '我的这一眼', copy, 'journal-entry-title').id = 'journal-detail-title';
+    if (photo.body) html('p', photo.body, copy, 'journal-memory');
+    html('p', '只保存在这台设备，尚未公开。', copy, 'journal-entry-meta');
+    if (photo.attribution.kind === 'pen-name') html('p', `留笺人：${photo.attribution.name}`, copy, 'journal-entry-meta');
+    const date = new Date(photo.createdAt), time = html('time', date.toLocaleString('zh-CN'), copy, 'journal-time'); time.dateTime = date.toISOString();
+    $('journal-detail-route').textContent = '九溪龙井'; $('journal-detail-position').textContent = '私藏';
+    $('journal-detail-announcement').textContent = name + ' · 本机私藏'; $('journal-detail-hint').textContent = '这一眼，只留给自己';
+    for (const id of ['journal-detail-prev', 'journal-detail-next']) { $(id).hidden = true; $(id).setAttribute('aria-disabled', 'true'); }
+    $('journal-detail').setAttribute('aria-modal', 'true'); $<HTMLDialogElement>('journal-detail').showModal();
+    session = scenes.enter('journal'); trigger = button; button.setAttribute('aria-expanded', 'true');
+    bodyOverflow = dom.document.body.style.overflow || ''; dom.document.body.style.overflow = 'hidden';
+    options.pauseInteraction(); options.stopLoop(); options.refresh(); $('journal-detail-close').focus({ preventScroll: true });
   }
   function renderDetail(direction = 0) {
     const moment = entries[index];
@@ -197,6 +242,7 @@ export function createJournalController(options: JournalOptions) {
     const previous = entries[index - 1], next = entries[index + 1];
     const controls = [['journal-detail-prev', previous, '上一枚'], ['journal-detail-next', next, '下一枚']] as const;
     for (const [id, entry, label] of controls) {
+      $(id).hidden = false;
       $(id).setAttribute('aria-disabled', String(!entry));
       $(id).setAttribute('aria-label', entry ? label + '：' + entry.title : label === '上一枚' ? '已是第一枚' : '已是最后一枚');
     }
@@ -301,11 +347,33 @@ export function createJournalController(options: JournalOptions) {
       $('journal-list').children[previous]?.querySelector('button')?.focus();
     });
   }
-  function reload() { records = store.read(); render(); }
+  function reloadPhotos() {
+    if (!photoFactory) return;
+    const token = ++photoReadGeneration;
+    void photoStore.read().then(result => {
+      if (destroyed || token !== photoReadGeneration) return;
+      if (result.kind === 'loaded') {
+        const unchanged = result.photos.length === privatePhotos.length && result.photos.every((photo, i) => {
+          const previous = privatePhotos[i];
+          return previous && photo.id === previous.id && photo.createdAt === previous.createdAt && photo.point === previous.point
+            && photo.image === previous.image && photo.body === previous.body && photo.anchor === previous.anchor && photo.zoom === previous.zoom
+            && photo.attribution.kind === previous.attribution.kind
+            && (photo.attribution.kind === 'anonymous' || previous.attribution.kind === 'pen-name' && photo.attribution.name === previous.attribution.name);
+        });
+        if (unchanged) return;
+        privatePhotos = result.photos; render();
+      }
+      else $('journal-storage').textContent = result.message;
+    });
+  }
+  function reload() { records = store.read(); render(); reloadPhotos(); }
   const browser = dom.document.defaultView;
   const storageChanged = (event: StorageEvent) => { if (event.storageArea === options.storage) reload(); };
   browser?.addEventListener('storage', storageChanged);
+  browser?.addEventListener(PRIVATE_PHOTO_CHANGED, reloadPhotos);
+  browser?.addEventListener('focus', reloadPhotos);
   bind();
+  reloadPhotos();
   return {
     get open() { return session !== null; },
     get records(): readonly Moment[] { return records; },
@@ -313,6 +381,6 @@ export function createJournalController(options: JournalOptions) {
     reload,
     resetTrip() { tripMoments = []; },
     recent(routeId: RouteId) { return records.filter(moment => moment.route === routeId).slice(-3).map(moment => moment.id); },
-    destroy() { close(false); routeFilter.destroy(); bindings.destroy(); browser?.removeEventListener('storage', storageChanged); },
+    destroy() { destroyed = true; photoReadGeneration++; close(false); routeFilter.destroy(); bindings.destroy(); browser?.removeEventListener('storage', storageChanged); browser?.removeEventListener(PRIVATE_PHOTO_CHANGED, reloadPhotos); browser?.removeEventListener('focus', reloadPhotos); void photoStore.close(); },
   };
 }

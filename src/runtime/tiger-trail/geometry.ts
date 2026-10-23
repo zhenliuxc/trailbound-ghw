@@ -1,5 +1,5 @@
 /** Scene-space geometry, deliberately not a geographic track or route coordinate source. */
-import { curve } from '../../wugong-walk/model';
+import { curve } from '../../journey/geometry';
 export interface Point { x: number; y: number }
 export interface TrailGeometry {
   points: readonly Point[];

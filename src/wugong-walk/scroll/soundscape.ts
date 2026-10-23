@@ -1,7 +1,7 @@
-import { clamp, mix } from '../model';
+import { clamp, mix } from '../../journey/geometry';
 import type { EnvironmentFrame } from '../environment';
 import type { ScrollJourney } from './journey';
-import type { ScrollStage } from './route';
+import type { ScrollStage } from '../../content/wugong-map';
 
 export function trailMix(stage: ScrollStage, e: EnvironmentFrame) {
   const forest = stage === 'forest' || stage === 'temple' || stage === 'valley' || stage === 'village' || stage === 'end';

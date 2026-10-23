@@ -8,7 +8,9 @@ import { createFrameLoop } from '../runtime/frame-loop';
 import { TigerAudio } from './audio';
 import { TigerJourney } from './journey';
 import { PHOTOS } from './photos';
-import { CHECKPOINT_IDS, EVENTS, PLACES, isCheckpoint, place, type CheckpointId, type EventId } from './route';
+import { PLACES, isCheckpoint, place } from './route';
+import { CHECKPOINT_IDS, type CheckpointId } from '../content/tiger-map';
+import { EVENTS, type TigerEventId as EventId } from '../content/tiger';
 import { TigerScene, type Projection, type View } from './scene';
 import { createCharacterPicker } from '../characters/picker';
 

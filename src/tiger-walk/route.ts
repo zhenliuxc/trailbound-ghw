@@ -1,14 +1,12 @@
 export { EVENTS } from '../content/tiger';
 import type { LandmarkSymbol } from '../journey/landmark-symbol';
-import { clamp, curve, distance, mix, type Point } from '../wugong-walk/model';
+import { HIGH_ROAD_KNOTS, RIVER_BRANCH_KNOTS, RIVER_COURSE_KNOTS, TIGER_SITES, CLIMB_START_POINT, type CheckpointId, type PlaceId } from '../content/tiger-map';
+export { TIGER_WORLD, CHECKPOINT_IDS } from '../content/tiger-map';
+export type { CheckpointId, PlaceId, Leg } from '../content/tiger-map';
+import { clamp, curve, distance, mix, type Point } from '../journey/geometry';
 
-export const TIGER_WORLD = { width: 3600, height: 1900 };
-export type CheckpointId = 'start' | 'bends' | 'halfway' | 'waterfall' | 'tinas' | 'river';
-export type PlaceId = CheckpointId | 'naxi' | 'tea' | 'teacher';
 export type { TigerEventId as EventId } from '../content/tiger';
-export const CHECKPOINT_IDS: readonly CheckpointId[] = ['start', 'bends', 'halfway', 'waterfall', 'tinas', 'river'];
 export const isCheckpoint = (id: PlaceId): id is CheckpointId => id === 'start' || id === 'bends' || id === 'halfway' || id === 'waterfall' || id === 'tinas' || id === 'river';
-export type Leg = 'high' | 'down' | 'return';
 export interface Place { readonly id: PlaceId; readonly name: string; readonly at: number; readonly leg: 'high' | 'down'; readonly point: Point; readonly symbol: LandmarkSymbol; readonly labelSide: 'above' | 'below' | 'left' | 'right' }
 
 /** Art-directed positions preserve the high road and the same-path river return, not GPS scale. */
@@ -35,36 +33,17 @@ export class TigerPath {
   }
 }
 
-export const highRoad = new TigerPath([
-  [190, 1440], [320, 1350], [465, 1290], [570, 1190], [690, 1110],
-  [800, 1060], [875, 965], [780, 935], [940, 855], [855, 815], [1020, 740], [940, 700], [1100, 625],
-  [1210, 650], [1300, 720], [1430, 800], [1550, 810], [1690, 770], [1830, 710], [1990, 710],
-  [2110, 735], [2250, 705], [2380, 750], [2490, 760], [2580, 820], [2690, 855], [2790, 945], [2880, 1000],
-]);
-export const riverBranch = new TigerPath([
-  [2880, 1000], [3000, 995], [3100, 1030], [3140, 1080], [3045, 1115], [3180, 1165], [3090, 1200], [3210, 1250],
-]);
-export const riverCourse = curve([
-  [-400, 1940], [200, 1770], [750, 1670], [1250, 1580], [1750, 1500], [2210, 1470], [2680, 1460], [3090, 1445], [3520, 1240], [4100, 930],
-].map(([x, y]) => ({ x, y })), 10);
+export const highRoad = new TigerPath(HIGH_ROAD_KNOTS);
+export const riverBranch = new TigerPath(RIVER_BRANCH_KNOTS);
+export const riverCourse = curve(RIVER_COURSE_KNOTS.map(([x, y]) => ({ x, y })), 10);
 
 const site = (id: PlaceId, name: string, leg: 'high' | 'down', x: number, y: number, symbol: Place['symbol'], labelSide: Place['labelSide'] = 'below'): Place => {
   const path = leg === 'high' ? highRoad : riverBranch, at = path.nearest({ x, y });
   return { id, name, leg, at, point: path.sample(at), symbol, labelSide };
 };
-export const PLACES: readonly Place[] = [
-  site('start', '桥头', 'high', 190, 1440, 'village', 'below'),
-  site('naxi', '纳西雅阁', 'high', 570, 1190, 'inn', 'above'),
-  site('bends', '二十八道拐', 'high', 1100, 625, 'switchbacks', 'above'),
-  site('tea', '茶马客栈', 'high', 1550, 810, 'inn'),
-  site('halfway', '中途客栈', 'high', 1990, 710, 'inn', 'above'),
-  site('waterfall', '龙洞瀑布', 'high', 2490, 760, 'waterfall', 'above'),
-  site('tinas', '中峡客栈', 'high', 2880, 1000, 'inn', 'left'),
-  site('teacher', '张老师小路', 'down', 3100, 1030, 'trailhead', 'right'),
-  site('river', '中虎跳 · 江边', 'down', 3210, 1250, 'rapids'),
-];
+export const PLACES: readonly Place[] = TIGER_SITES.map(spec => site(...spec));
 export function place(id: PlaceId): Place { const found = PLACES.find(p => p.id === id); if (!found) throw new Error(`虎跳峡地点缺失：${id}`); return found; }
-export const CLIMB_START = highRoad.nearest({ x: 800, y: 1060 });
+export const CLIMB_START = highRoad.nearest(CLIMB_START_POINT);
 export const CLIMB_END = place('bends').at;
 export const RIVER_PHOTO_AT = riverBranch.length - 55;
 export const WATERFALL_GAME_AT = place('waterfall').at + 135;

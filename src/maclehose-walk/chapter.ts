@@ -1,5 +1,7 @@
-import { clamp, mix, type Point } from '../wugong-walk/model';
-import { path, SAIWAN_SHOULDER, WOODLAND_REST, type CheckpointId, type EventId } from './route';
+import { clamp, mix, type Point } from '../journey/geometry';
+import { path } from './route';
+import { SAIWAN_SHOULDER, WOODLAND_REST, type CheckpointId } from '../content/maclehose-map';
+import type { CoastEventId as EventId } from '../content/maclehose';
 
 type RestingPhase = {kind:'ready'|'walking'|'paused'|'finished'};
 type Stop = {readonly at:number}&({readonly kind:'photo';readonly id:CheckpointId}|{readonly kind:'game';readonly id:EventId}|{readonly kind:'finish'});

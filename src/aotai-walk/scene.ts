@@ -2,9 +2,10 @@ import { MapCamera, mapCharacterScale, type MapProjection, type MapView } from '
 import { Application, Container, Graphics } from 'pixi.js';
 import { DEFAULT_CHARACTER, type CharacterId } from '../characters/catalog';
 import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../characters/pixi';
-import { clamp } from '../wugong-walk/model';
+import { clamp } from '../journey/geometry';
 import type { AotaiJourney } from './chapter';
-import { PLACES, path } from './geography';
+import { path } from './geography';
+import { PLACES } from '../content/aotai-map';
 import { landscape } from './terrain';
 import { overviewCamera } from './camera';
 

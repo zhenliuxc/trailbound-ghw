@@ -1,6 +1,7 @@
 import { Graphics, Text, type Container } from 'pixi.js';
-import { curve, distance, mix, type Point } from '../wugong-walk/model';
-import { highRoad, place, riverBranch, riverCourse, type PlaceId } from './route';
+import { curve, distance, mix, type Point } from '../journey/geometry';
+import { highRoad, place, riverBranch, riverCourse } from './route';
+import type { PlaceId } from '../content/tiger-map';
 
 export const noise = (seed: number): number => {
   const value = Math.sin(seed * 12.9898 + 3.7) * 43758.5453;

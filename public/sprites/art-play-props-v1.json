@@ -1,0 +1,71 @@
+{
+  "file": "sprites/art-play-props-v1.webp",
+  "columns": 4,
+  "rows": 2,
+  "width": 1536,
+  "height": 768,
+  "frames": [
+    {
+      "name": "closed-tea-bud",
+      "x": 99,
+      "y": 26,
+      "w": 169,
+      "h": 350
+    },
+    {
+      "name": "paired-tea-leaves",
+      "x": 393,
+      "y": 75,
+      "w": 367,
+      "h": 282
+    },
+    {
+      "name": "broad-tea-leaf",
+      "x": 810,
+      "y": 80,
+      "w": 317,
+      "h": 274
+    },
+    {
+      "name": "three-leaf-fan",
+      "x": 1161,
+      "y": 34,
+      "w": 352,
+      "h": 333
+    },
+    {
+      "name": "bamboo-fork",
+      "x": 82,
+      "y": 399,
+      "w": 241,
+      "h": 339
+    },
+    {
+      "name": "paper-leaf",
+      "x": 447,
+      "y": 457,
+      "w": 269,
+      "h": 246
+    },
+    {
+      "name": "bamboo-stalk",
+      "x": 918,
+      "y": 393,
+      "w": 86,
+      "h": 353
+    },
+    {
+      "name": "mountain-paper-label",
+      "x": 1253,
+      "y": 398,
+      "w": 170,
+      "h": 326
+    }
+  ],
+  "generator": "OpenAI ImageGen",
+  "source": "/workspace/generated_images/exec-7d922569-40ff-42b3-84f4-a467a276b4bb.png",
+  "source_sha256": "d7dff387a5d85a8ca53c0ef8a3fa7f92fbb2ff918ac8e11b018961f2eed08968",
+  "sha256": "2bbfbceae00f6fedb722eafb12514be06e1290f15e870b261f2305a54084549a",
+  "bytes": 270838,
+  "processing": "Proportional resize and WebP encoding; frame rectangles use the dominant alpha component plus an eight-pixel margin. Original PNG retained."
+}

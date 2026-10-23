@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import sharp from 'sharp';
 
-const root=new URL('../../',import.meta.url), source=new URL('art/aotai-painterly-v1/',root), output=new URL('dist/scenes/aotai-painterly-v1/',root);
+const root=new URL('../../',import.meta.url), source=new URL('art/aotai-painterly-v1/',root), output=new URL('public/scenes/aotai-painterly-v1/',root);
 await fs.mkdir(output,{recursive:true});
 for(const name of ['stone-sea','ridge','winter-encounter','winter-slope','props-atlas']){
  await sharp(await fs.readFile(new URL(`${name}.png`,source))).webp({quality:91,alphaQuality:100}).toFile(new URL(`${name}.webp`,output).pathname);

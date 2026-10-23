@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-18",
+  "generator": "Built-in image_gen",
+  "usage": "Original game illustrations; not local photographs or surveyed viewpoints",
+  "processing": "Extracted the four equal atlas quadrants and encoded WebP; original PNGs and alpha retained. No repainting or upscaling.",
+  "references": [
+    "badges/tiger-bell-first-v4.webp",
+    "badges/tiger-river-below-v4.webp",
+    "scenes/tiger-climb-walk-v3.webp"
+  ],
+  "prompts": {
+    "landscapes": "Use case: stylized-concept\nAsset type: ONE cohesive art-direction contact sheet for the 2D hiking game Trailbound, containing FOUR finished landscape paintings in an exact two-column, two-row grid. Output a landscape sheet about 2400 x 1800, each panel 4:3. Panels meet at the midlines, no gutters, no outer frame, no title, no labels, no typography.\nInput images: Image 1 (existing round mule badge) and Image 2 (existing round gorge badge) are references for fine watercolor-and-colored-pencil rendering ONLY, not edit targets. Image 3 is a previous mountain-path painting for regional rock, scrub, and canyon atmosphere, not an edit target. Make four NEW landscape compositions, not circular badges in this output.\nPrimary request: a coherent original set of hand-painted Tiger Leaping Gorge hiking memory scenes, a dramatic Yunnan canyon, modest olive shrubs, weathered warm gray rock, blue-gray mountains, restrained warm light, visible fine paper and pigment texture. Detailed watercolor storybook paintings, not photographs or 3D. The main subject is ALWAYS the scenery, not an interface or foreground objects.\nTOP LEFT: Twenty-eight Bends / a narrow natural stony hiking path with three broad organic switchbacks climbing a sloping rocky mountain shoulder in the left half. Clear contiguous ground under the whole path. A deep blue-gray canyon opens in the right half, a thin muted gray-green river far BELOW, distant pale ridges and a subtle snowy horizon. Warm clear daytime. Enough spatial readability to later split this painting into a very simple landscape puzzle. No railways, no tiled stairs, no road floating over a void.\nTOP RIGHT: A quiet mountainside inn terrace at dusk, an artistic memory impression of the high-route Halfway stop, NOT an architectural reconstruction. A modest rough wooden railing and a corner of old timber-and-stone eave with just two softly glowing amber windows occupy the lower-left edge. Open canyon and cool receding mountains fill at least two thirds. An EMPTY broad corner of wood tabletop in the lower foreground can later hold four small picture cards. No cards or game objects painted in now. Peach-gray evening fading toward blue, no fantasy village.\nBOTTOM LEFT: A close view of a modest thin waterfall spilling over weathered dark rock BESIDE a narrow high mountain footpath, a rocky overhang at the left and deep canyon visible beyond the right. The water is a slender falling curtain and splashes, not a giant Niagara or a round tropical pool. A few small fern tufts and olive shrubs in rock pockets, a cool damp patch of stone, soft morning light. This is an artistic high-route waterfall memory rather than a surveyed viewpoint.\nBOTTOM RIGHT: Middle Tiger Leaping Gorge viewed from a sheltered stable rocky riverbank, the fast opaque gray-green Jinsha River and white foam curling around a large natural dark angular boulder. Tall steep gorge walls rise on both sides, relatively little sky, forceful downstream motion, believable mountain scale. A ledge in the lower-left indicates a safe stationary viewpoint without walkways over the rapids. No tiger statue, no suspension bridge, no tourists.\nConstraints: all four scenes share the SAME fine watercolor and pencil medium, season, believable local rock and mountain vegetation, paper grain, restrained cream/olive/slate/ochre palette. Dense but legible landscape detail, no neon or glowing fantasy effects. No people in these base paintings; the game's existing big-eyed Q hiking character will be composited later without redesign. NO words, NO numbers, NO badges, NO HUD, NO logos or watermarks, NO paintbrushes or palettes. Each panel must fill its entire rectangular quadrant with scenery.\n",
+    "badges": "Use case: stylized-concept\nAsset type: ONE transparent PNG concept sheet containing FOUR separate round hand-painted travel-journal badges for the 2D hiking game Trailbound. Square output, ideally 1536 x 1536. Arrange exact two-column two-row grid. Circle centers at 25%,25%;75%,25%;25%,75%;75%,75%; all outer circle diameters 43% of total sheet width. Ample fully transparent space outside and between circles, no opaque sheet or drop shadows.\nInput images: Image 1 is the NEW landscape contact sheet, reference for four compositions, subjects and shared watercolor medium. Image 2 and Image 3 are the game's existing round badges, references for circular shape, ivory-and-gold rim, detailed watercolor rendering, and scale. They are not edit targets. Create four NEW matching badges.\nPrimary request: the same four Tiger Leaping Gorge scenes, thoughtfully recomposed to FILL each round picture right up to the inside edge, legible even at journal thumbnail size. Do not put a rectangular image or miniature postcard inside any circle. A common warm ivory narrow paper rim, fine restrained double gold lines and tiny subdued cardinal-point ornaments match the existing badges. This is fine watercolor and colored pencil with granular pigment and paper fibers, NOT enamel metal pins, NOT vector pictograms, NOT shiny 3D medallions.\nTOP LEFT badge: a warm gray rocky mountain shoulder with a continuous natural switchback hiking path climbing upward, small olive shrubs and golden dry grasses, deep blue-gray gorge and narrow river below at the right. Main motif: a clearly readable mountain BEND leading into the canyon view. No human.\nTOP RIGHT badge: a modest dark timber mountain inn corner, two warmly lit windows and a short rail at lower left, blue-violet gorge and distant pale mountain silhouette under a narrow peach dusk sky. Main motif: a small amber lamp-like warm WINDOW against a vast cool canyon; the building must remain modest, not fill the circle or become a village. No people, no table cards.\nBOTTOM LEFT badge: a slender white waterfall descending a weathered rock edge next to a narrow high footpath, damp olive moss and small plants, canyon depth visible at the right. Main motif: elegant white falling water on gray-green stone, not a giant tropical waterfall or pool.\nBOTTOM RIGHT badge: the rushing opaque muted gray-green Jinsha River in a narrow towering gorge, a large angular dark rock dividing white foaming currents near center, a tiny bit of stable foreground riverbank at the lower edge. Main motif: rock and lively WHITEWATER filling the lower half, canyon walls above. No blue lake.\nConstraints: every badge has the SAME radius, paper rim width and gold frame design; all landscape paint fills the circular interior with no internal rectangular frame and no blank vignette. Transparent alpha everywhere beyond the circular rims, preserve fine edges. No words, letters, numbers, captions, banners, logos, watermarks, people, tiger statues, palm trees, game UI, gemstones, excessive glowing effects or oversaturated candy colors. Each scene is an artistic regional memory, not a literal location photo.\n"
+  },
+  "files": [
+    {
+      "file": "scenes/tiger-memories-v4/bends.webp",
+      "source": "art/tiger-games-design-v4/landscapes-source.png",
+      "width": 724,
+      "height": 543,
+      "bytes": 238342,
+      "sha256": "d2a8eb41027db5b38d6b56d62519936f0537806bc2b60df2d026ee598b1a2065"
+    },
+    {
+      "file": "scenes/tiger-memories-v4/inn.webp",
+      "source": "art/tiger-games-design-v4/landscapes-source.png",
+      "width": 724,
+      "height": 543,
+      "bytes": 191200,
+      "sha256": "8d89bf5cef80100d6af9edd34d9cd5184c16f795cda1a123eee2e20bc6e73da2"
+    },
+    {
+      "file": "scenes/tiger-memories-v4/waterfall.webp",
+      "source": "art/tiger-games-design-v4/landscapes-source.png",
+      "width": 724,
+      "height": 543,
+      "bytes": 243628,
+      "sha256": "ab044fd8d1791a1b4f1623b1f9024bc710cbb5b5799b6a47f3cf54c79a95703f"
+    },
+    {
+      "file": "scenes/tiger-memories-v4/river.webp",
+      "source": "art/tiger-games-design-v4/landscapes-source.png",
+      "width": 724,
+      "height": 543,
+      "bytes": 228300,
+      "sha256": "a832e19dfbf70642d64036349bf85809fb69a2defed1e4de10a0d34abf4a9be1"
+    },
+    {
+      "file": "badges/tiger-memories-v4/bends.webp",
+      "source": "art/tiger-games-design-v4/badges-source.png",
+      "width": 627,
+      "height": 627,
+      "bytes": 207638,
+      "sha256": "a3d79eafa75fa681863c5c93d3ebad41ca17c7e26baa57cdf665edf8b177ba8b"
+    },
+    {
+      "file": "badges/tiger-memories-v4/inn.webp",
+      "source": "art/tiger-games-design-v4/badges-source.png",
+      "width": 627,
+      "height": 627,
+      "bytes": 190758,
+      "sha256": "e6065158c9fe1e0cd12caa5546d0fba67d008eaba93cdd00da3e1329d2e0ff4a"
+    },
+    {
+      "file": "badges/tiger-memories-v4/waterfall.webp",
+      "source": "art/tiger-games-design-v4/badges-source.png",
+      "width": 627,
+      "height": 627,
+      "bytes": 211026,
+      "sha256": "8bc9ffd83b3733540e6c7196171a399fded4fbc8b198cc9cbbf6107dafcb4a64"
+    },
+    {
+      "file": "badges/tiger-memories-v4/river.webp",
+      "source": "art/tiger-games-design-v4/badges-source.png",
+      "width": 627,
+      "height": 627,
+      "bytes": 198050,
+      "sha256": "22705f4d6d106b78deb0d2775bc66c902c1d9aa7fc71a2dcf266d00971dc156a"
+    }
+  ]
+}

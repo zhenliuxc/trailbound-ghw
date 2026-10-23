@@ -1,4 +1,4 @@
-import { clamp, mix } from '../wugong-walk/model';
+import { clamp, mix } from './geometry';
 
 type Facing = -1 | 1;
 export interface WalkingTurnSample {

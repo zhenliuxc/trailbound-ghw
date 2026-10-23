@@ -1,5 +1,5 @@
-import { type VisitId } from './model';
-export type PhotoVisitId = VisitId | 'start';
+import type { ScrollStopId } from '../content/wugong-map';
+export type PhotoVisitId = ScrollStopId;
 
 interface VisitInfo {
   readonly title: string; readonly subtitle: string; readonly paragraphs: readonly string[];
@@ -10,7 +10,7 @@ interface VisitInfo {
 }
 const meadowSource = 'https://commons.wikimedia.org/wiki/File:Wugong_Mountains,_17_June_2018,_Picture12.jpg';
 const scenicSource = 'https://www.wugongshan.cn/act/jqgk/spots.html';
-export const chapters: Partial<Record<VisitId | 'start', { id: string; label: string; place: string }>> = {
+export const chapters: Partial<Record<PhotoVisitId, { id: string; label: string; place: string }>> = {
   meadow: { id: 'meadow-bird', label: '借一阵草甸的风', place: '武功山 · 山脊草甸' },
   camp: { id: 'wugong-wind-hiker', label: '在草甸的风里，遇见她', place: '武功山 · 观音宕草甸' },
   horse: { id: 'meadow-butterfly', label: '拨开云，看看山', place: '武功山 · 吊马桩' },

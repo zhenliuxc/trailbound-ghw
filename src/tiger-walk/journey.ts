@@ -1,5 +1,7 @@
-import { clamp, mix, type Point } from '../wugong-walk/model';
-import { CLIMB_END, CLIMB_START, highRoad, isCheckpoint, place, PLACES, RIVER_PHOTO_AT, riverBranch, WATERFALL_GAME_AT, type CheckpointId, type EventId, type Leg } from './route';
+import { clamp, mix, type Point } from '../journey/geometry';
+import { CLIMB_END, CLIMB_START, highRoad, isCheckpoint, place, PLACES, RIVER_PHOTO_AT, riverBranch, WATERFALL_GAME_AT } from './route';
+import type { CheckpointId, Leg } from '../content/tiger-map';
+import type { TigerEventId as EventId } from '../content/tiger';
 
 type LiveMode = { kind: 'ready' } | { kind: 'walking' } | { kind: 'paused' } | { kind: 'resting'; elapsed: number } | { kind: 'sleeping'; elapsed: number } | { kind: 'waking'; elapsed: number } | { kind: 'junction' } | { kind: 'finished' };
 type Arrival = { kind: 'photo'; id: CheckpointId } | { kind: 'game'; id: EventId } | { kind: 'junction' } | { kind: 'finished' };

@@ -19,6 +19,7 @@ export { createWugongRoute, wugongPhase, wugongViewport, wugongNearby } from './
 export { createWugongScene, WUGONG_MAP_ASSETS } from './wugong-scene';
 export { createWugongStops } from './wugong-stops';
 export { createMiniGameController } from './mini-game-controller';
+export { installLegacyHomeGames } from './legacy-game-registry';
 export { createRewardController } from './reward-controller';
 export { createJournalController } from './journal-controller';
 export { createJournalStore } from './journal-store';

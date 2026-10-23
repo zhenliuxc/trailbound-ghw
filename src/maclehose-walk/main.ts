@@ -8,7 +8,8 @@ import { createCharacterPicker } from '../characters/picker';
 import { CoastAudio } from './audio';
 import { CoastalJourney } from './chapter';
 import { PHOTOS } from './photos';
-import { CUES, PLACE_ORDER, PLACES, type CheckpointId, type EventId } from './route';
+import { PLACE_ORDER, PLACES, type CheckpointId } from '../content/maclehose-map';
+import { CUES, type CoastEventId as EventId } from '../content/maclehose';
 import { CoastalScene, type Projection, type View } from './scene';
 
 function mountCoast(){

@@ -1,0 +1,76 @@
+.camp-night{width:min(1440px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 24px);margin:auto;padding:0;border:1px solid #879486;border-radius:12px;background:#f6f1e3;color:#3b5351;overflow:auto;box-shadow:0 24px 100px #08192c66}
+.camp-night[open]{display:flex;flex-direction:column}
+.camp-night::backdrop{background:#142334d9;backdrop-filter:blur(5px)}
+.camp-night button{font:inherit;cursor:pointer;min-height:44px;touch-action:manipulation}
+.camp-night button:disabled{cursor:default;opacity:.55}
+.camp-night button:focus-visible{outline:2px solid #a2b4a1;outline-offset:4px}
+.camp-night [hidden]{display:none!important}
+.camp-night-scene{position:relative;isolation:isolate;overflow:hidden;flex:none;height:min(70dvh,680px);min-height:390px;background:#153451}
+.camp-night-art{position:absolute;inset:0;z-index:-3;width:100%;height:100%;object-fit:cover;object-position:center bottom;animation:camp-night-unfold 1.6s ease-out both}
+.camp-night-heading{position:absolute;left:30px;top:22px;width:min(420px,44%);color:#f0ecdc;text-shadow:0 2px 12px #0b2038b0}
+.camp-night-heading>p:first-child{font-size:11px;letter-spacing:3px;color:#d3cbaa;margin:0 0 10px}
+.camp-night-heading h2{font:500 26px/1.4 "Songti SC",STSong,serif;letter-spacing:2px;margin:0 0 12px}
+.camp-night-heading .camp-night-story{font:12px/1.9 "Songti SC",STSong,serif;max-width:300px;margin:0;color:#ced5d7}
+.camp-night-tools{position:absolute;top:18px;right:18px;display:flex;align-items:center;gap:10px;z-index:4}
+.camp-night-tools button{padding:8px 13px;border:1px solid #bac6c360;border-radius:24px;background:#1b344dba;color:#e4e5d5;font-size:11px}
+.camp-night-tools [data-camp=close]{width:44px;padding:0;font-size:24px}
+.camp-night-lamplight{position:absolute;inset:41% 71% 1% 0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 30% 65%,#ffd78325,transparent 65%);animation:camp-night-lamp 6s ease-in-out infinite}
+.camp-night-cloud{position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:0;background:linear-gradient(#243e58f5 8%,#344e65ed 32%,#50677b99 52%,#29445a0a 70%);transition:opacity 1s}
+.camp-night[data-weather=mist] .camp-night-cloud,.camp-night[data-weather=drizzle] .camp-night-cloud,.camp-night[data-weather=cloud] .camp-night-cloud{opacity:1}
+.camp-night[data-weather=drizzle] .camp-night-cloud:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 60px,#b3c4ce10 61px 62px,transparent 63px 116px);opacity:.4}
+.camp-star-note{position:absolute;top:150px;left:34px;width:190px;margin:0;padding:13px 15px 10px;background:#f0e9d9ee;border:1px solid #c7bea5;border-radius:3px 6px 4px 2px;box-shadow:0 3px 18px #11223730;transform:rotate(-3deg);color:#5f7066}
+.camp-star-note figcaption{font:12px/1.7 "Songti SC",STSong,serif;letter-spacing:1px}
+.camp-star-note svg{display:block;width:100%;height:auto;margin:10px 0 7px;overflow:visible}
+.camp-star-note path{fill:none;stroke:#728473;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.camp-star-note circle{fill:#a28c59;stroke:#f5f0e1;stroke-width:4}
+.camp-star-note small{font-size:9px;color:#8b8c77;line-height:1.5}
+.camp-star-field{position:absolute;left:45%;top:8%;width:48%;height:40%;touch-action:none;user-select:none}
+.camp-star-field>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.camp-star-lines,.camp-star-live{fill:none;stroke:#f4e7b5;stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+.camp-star-live{stroke-width:1;stroke-dasharray:5 6;opacity:.45}
+.camp-star{position:absolute;display:grid;place-items:center;width:44px;height:44px;padding:0;transform:translate(-50%,-50%);border:0;border-radius:50%;background:transparent;color:#f9edc0}
+.camp-star span{display:block;width:7px;height:7px;border-radius:50%;background:#f6edcf;box-shadow:0 0 8px #fff0b780;transition:transform .18s,box-shadow .18s}
+.camp-star:hover span,.camp-star:focus-visible span{transform:scale(1.35);box-shadow:0 0 14px #fff0b7aa}
+.camp-star[aria-pressed=true]{outline:1px solid #f4e7b550;outline-offset:-7px}
+.camp-star[aria-pressed=true] span{transform:scale(1.5);background:#fff7d8}
+.camp-star.is-linked span{background:#fff6d4;box-shadow:0 0 12px #fff0b799}
+.camp-night-keepsake{position:absolute;left:50%;top:51%;width:min(570px,69%);max-height:90%;overflow:auto;transform:translate(-50%,-50%) rotate(-1deg);padding:18px 20px 20px;border:1px solid #cbbfa0;background:#f7f0df;box-shadow:0 18px 60px #081b3250;text-align:center;border-radius:3px 7px 5px 2px;animation:camp-keepsake-in .55s ease-out both}
+.camp-night-keepsake figure{margin:0 0 13px;padding:5px;background:#ece2ce;border:1px solid #dacbae}
+.camp-night-keepsake img{display:block;width:100%;height:auto;aspect-ratio:2;object-fit:contain}
+.camp-night-keepsake small{font-size:10px;color:#92917a;letter-spacing:1px}
+.camp-night-keepsake h3{font:500 23px/1.5 "Songti SC",STSong,serif;letter-spacing:3px;margin:7px 0}
+.camp-night-keepsake p{font:12px/1.9 "Songti SC",STSong,serif;margin:0 auto;max-width:370px;color:#7d8370}
+.camp-night-fold{position:absolute;right:34px;bottom:28px;display:none;flex-direction:column;align-items:center;gap:8px;padding:16px 26px;background:#f2ead8;color:#637361;box-shadow:0 6px 20px #11223844;transform:rotate(3deg);border:1px solid #c5bea2}
+.camp-night-fold span{font:18px/1.5 "Songti SC",STSong,serif;letter-spacing:3px}.camp-night-fold small{font-size:10px}
+.camp-night[data-phase=collected] .camp-night-keepsake{pointer-events:none}
+
+.camp-night-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:19px 26px 20px;background:#f7f2e7;min-height:94px}
+.camp-night-status{font:14px/1.7 "Songti SC",STSong,serif;margin:0;color:#526a61}
+.camp-night-hint{font-size:10px;line-height:1.8;margin:4px 0 0;color:#92927d}
+.camp-night-actions{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:8px;flex-shrink:0}
+.camp-night-actions button{padding:9px 16px;font-size:12px;border:1px solid #c4c8b1;border-radius:24px;color:#6c7c69;background:#f6f1e5;white-space:nowrap}
+.camp-night-actions .camp-night-primary{background:#5d7466;border-color:#5d7466;color:#f6f0de;min-width:145px}
+.ww-scroll .ww-marker{display:grid;place-items:center}
+.ww-scroll .ww-marker-name{position:absolute;left:50%;top:42px;transform:translateX(-50%);width:max-content;max-width:110px;padding:3px 7px;border-radius:4px;background:#f7f4e8eb;color:#506852;font:11px/1.6 "Songti SC",STSong,serif;white-space:normal;box-shadow:0 1px 5px #3e584313;pointer-events:none}
+.ww-scroll .ww-marker[data-stop=start] .ww-marker-name:after{content:" · 起点";font-size:9px;color:#88947a}
+.ww-scroll .ww-marker[data-stop=end] .ww-marker-name:after{content:" · 终点";font-size:9px;color:#88947a}
+@keyframes camp-night-unfold{from{opacity:.3;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
+@keyframes camp-night-lamp{50%{opacity:.55}}
+@keyframes camp-keepsake-in{from{opacity:0;transform:translate(-50%,-45%) rotate(0)}to{opacity:1;transform:translate(-50%,-50%) rotate(-1deg)}}
+
+
+@media(max-width:760px){.camp-night{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:9px}.camp-night-scene{height:530px;min-height:480px;max-height:none;background:linear-gradient(#123252,#183650)}.camp-night-art{inset:auto auto -55px -8%;width:190%;height:auto;max-width:900px;object-fit:contain;mask-image:linear-gradient(transparent 0%,#000 14%)}.camp-night-heading{left:20px;top:20px;width:calc(100% - 95px)}.camp-night-heading>p:first-child{font-size:10px;letter-spacing:2px}.camp-night-heading h2{font-size:20px;letter-spacing:1px;margin-bottom:9px}.camp-night-heading .camp-night-story{font-size:11px;max-width:260px}.camp-night-tools{right:10px;top:12px;flex-direction:column-reverse;gap:7px}.camp-night-tools button{padding:7px 9px;font-size:10px}.camp-star-note{left:23px;top:111px;width:110px;padding:8px 9px 7px}.camp-star-note figcaption{font-size:10px}.camp-star-note svg{margin:5px 0 2px}.camp-star-note small{font-size:8px}.camp-star-field{left:50%;top:38%;width:min(84%,360px);height:22%;transform:translateX(-50%)}.camp-night[data-phase=playing] .camp-night-heading .camp-night-story{max-width:250px}.camp-night-keepsake{width:calc(100% - 34px);top:57%;padding:12px 13px 15px;max-height:76%}.camp-night-keepsake h3{font-size:21px;margin:5px 0}.camp-night-keepsake p{font-size:11px}.camp-night-footer{padding:15px 17px 17px;align-items:stretch;flex-direction:column;gap:12px}.camp-night-status{font-size:13px}.camp-night-hint{font-size:10px}.camp-night-actions{flex-shrink:1;gap:7px}.camp-night-actions button{padding:9px 12px;font-size:11px}.camp-night-actions .camp-night-primary{min-width:140px}.camp-night-lamplight{inset:45% 55% 0 0}.camp-night-fold{right:20px;bottom:25px}.ww-scroll .ww-marker-name{max-width:86px;font-size:10px;padding:2px 5px}}
+@media(max-height:620px) and (min-width:761px){.camp-night-scene{height:calc(100dvh - 120px);min-height:310px}.camp-night-heading h2{font-size:22px}.camp-star-note{top:130px;width:140px}.camp-night-footer{padding-block:11px;min-height:80px}.camp-night-keepsake{max-height:88%;width:460px}}
+@media(prefers-reduced-motion:reduce){.camp-night *{animation:none!important;transition:none!important}}
+.camp-night[data-reduced=true] *{animation:none!important;transition:none!important}
+
+.camp-night[data-media=error] .camp-night-art{visibility:hidden}
+
+@media(max-width:760px){.camp-night[data-phase=playing] .camp-night-story{display:none}.camp-star-note{left:22px;right:22px;top:106px;width:auto;height:76px;padding:9px 12px;display:flex;align-items:center;gap:10px;transform:none}.camp-star-note figcaption{flex:0 0 96px;line-height:1.7;font-size:10px}.camp-star-note svg{height:54px;width:calc(100% - 106px);max-width:210px;margin:0}.camp-star-note small{display:none}}
+
+.camp-night-story:empty,.camp-night-hint:empty{display:none}
+.camp-night-keepsake{background:none;border:0;box-shadow:none;padding:0;width:min(360px,64%);color:#fff0cd}
+.camp-night-keepsake figure{padding:0;margin:0;background:none;border:0;box-shadow:none}
+.camp-night-keepsake figure img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain}
+.camp-night-keepsake h3{font-size:20px;text-shadow:0 2px 8px #132c40}
+@media(max-width:760px){.camp-night-keepsake{width:min(280px,72%);padding:0;top:56%}.camp-night-keepsake h3{font-size:18px}.camp-night-actions .camp-night-primary{min-width:0}}

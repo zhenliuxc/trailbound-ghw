@@ -1,0 +1,425 @@
+{
+  "artVersion": 4,
+  "stage": "runtime-integrated",
+  "runtimeBound": true,
+  "generator": "built-in imagegen",
+  "format": "webp",
+  "transparent": true,
+  "entries": [
+    {
+      "id": "wugong-wind-hiker",
+      "route": "wugong",
+      "name": "吊带追风",
+      "season": "暖季绿色草甸",
+      "file": "badges/wugong-wind-hiker-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 69456,
+      "sha256": "84fee057b7d7ad5e72ee9f822830906892ea3afd72819ce6c3e69d37549a496a",
+      "sourceGeneratedFile": "exec-6b2d428f-9ca9-456c-8369-6a7214da51fb.png",
+      "sourceSha256": "e0a742769a5f62207fbdcd1c27f047023cc2ce8fd6c25fb2d2739d7f0e634a5c",
+      "reused": true,
+      "runtimeMomentIds": [
+        "wugong-wind-hiker"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "wugong-grass-letter",
+      "route": "wugong",
+      "name": "草浪来信",
+      "season": "暖季绿色草甸",
+      "file": "badges/wugong-grass-letter-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 67456,
+      "sha256": "a1afe65ac6bb4c341bc290a05ad96f628def0eec27a4f98b3a0c02d7f0050ebc",
+      "sourceGeneratedFile": "exec-d299f00c-430a-47d0-8316-67866237bc97.png",
+      "sourceSha256": "a80b6e4e35d25b7893d0d7923655249d19a3ca212858adb40f04b65bbd46f312",
+      "reused": false,
+      "runtimeMomentIds": [
+        "meadow-bird"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "wugong-cloud-island",
+      "route": "wugong",
+      "name": "云海浮岛",
+      "season": "暖季绿色草甸·云海片刻",
+      "file": "badges/wugong-cloud-island-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 58666,
+      "sha256": "bc1054b932bea91153f49f719573cefc2af850a45c028880142388a5d3f49bc9",
+      "sourceGeneratedFile": "exec-d3730d87-d75c-45bf-b9f3-a654ba6d9f15.png",
+      "sourceSha256": "545a0b970bba5e404bc287ea455a315bf2d00b14bc2ea78b1ee25c010bdf642a",
+      "reused": false,
+      "runtimeMomentIds": [
+        "meadow-butterfly"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "wugong-stone-altar",
+      "route": "wugong",
+      "name": "金顶石语",
+      "season": "暖季绿色草甸",
+      "file": "badges/wugong-stone-altar-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 75174,
+      "sha256": "bbf23916f46e5b7700c9dcfe7c0b32acd6c94d53a50965d2b13645efb13e2dbf",
+      "sourceGeneratedFile": "exec-229fc16d-c5a7-4510-939f-71f9c3e19ee0.png",
+      "sourceSha256": "6336159abf648d4ba48306ae372242d335ca19bdb4b1653ee935904b9289299b",
+      "reused": false,
+      "runtimeMomentIds": [
+        "meadow-flower"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "tiger-bell-first",
+      "route": "tiger",
+      "name": "铃声先到",
+      "season": "暖季峡谷",
+      "file": "badges/tiger-bell-first-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 76322,
+      "sha256": "569cd87f807fce4ae9c440dd00990d71c191d65f15157a63251b1948980aacff",
+      "sourceGeneratedFile": "exec-4bc9bf9f-9870-4079-ae78-cdad132675da.png",
+      "sourceSha256": "b7cf98ac0c6e1752d9eba516f662949a9995ef3f86d5625f48e1ff49f9db5431",
+      "reused": true,
+      "runtimeMomentIds": [
+        "tiger-bell-first"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "tiger-river-below",
+      "route": "tiger",
+      "name": "江在脚下",
+      "season": "暖季峡谷·雨后通透",
+      "file": "badges/tiger-river-below-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 79600,
+      "sha256": "c8fabb37daeae4c3fbb2b173f6083281be9d40bb8787bb8db3853b85cc6b39cd",
+      "sourceGeneratedFile": "exec-39542901-893a-4efc-94b2-0f231ddd1928.png",
+      "sourceSha256": "7fd32f4de44f96b02864908978fd91bd287b12842e201713f7d0faaeaaa28ca6",
+      "reused": false,
+      "runtimeMomentIds": [
+        "gorge-goat"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "tiger-halfway-rest",
+      "route": "tiger",
+      "name": "半山歇脚",
+      "season": "暖季峡谷·客栈歇脚",
+      "file": "badges/tiger-halfway-rest-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 71868,
+      "sha256": "90714e8cfe62266fd6652f566fd65247d8510513891c1b6e0d494c8d1508e012",
+      "sourceGeneratedFile": "exec-7e206d1d-c02c-4aec-9337-3dbe9675b96c.png",
+      "sourceSha256": "c19832428015e38bcf17261dae6b3edabf1bc2c7164eb929ec06625435e359df",
+      "reused": false,
+      "runtimeMomentIds": [
+        "gorge-eagle"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "tiger-longdong-waterfall",
+      "route": "tiger",
+      "name": "龙洞水帘",
+      "season": "暖季峡谷·水雾片刻",
+      "file": "badges/tiger-longdong-waterfall-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 75992,
+      "sha256": "e5c4fe47eb29e7020c671f6311f095d9c4ce0bd8049486d73046fd379930fe8a",
+      "sourceGeneratedFile": "exec-1f62582d-003f-43b8-8f2e-168a37aff5bc.png",
+      "sourceSha256": "a0e1cd0883721474f4e21a59f2a7227caf54e369d4a655afa49fd3a98eb40569",
+      "reused": false,
+      "runtimeMomentIds": [
+        "gorge-sparkle"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "aotai-takin-first",
+      "route": "aotai",
+      "name": "牛牛先请",
+      "season": "秦岭风雪季",
+      "file": "badges/aotai-takin-first-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 68442,
+      "sha256": "eba705119df414b7303c8b74bd0f44e0573306c96a844ecbe0c89667019ef265",
+      "sourceGeneratedFile": "exec-05e57d9e-d3fb-4c31-936e-930dfbb5b6d0.png",
+      "sourceSha256": "da8c7bbb449a946dfb96ce926dbc7202017eed13bbc24fd226a1437b531e0dab",
+      "reused": true,
+      "runtimeMomentIds": [
+        "aotai-takin-first"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "aotai-rock-facets",
+      "route": "aotai",
+      "name": "石海棱光",
+      "season": "秦岭风雪季",
+      "file": "badges/aotai-rock-facets-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 68524,
+      "sha256": "126d2d57b8817c4ac0258f0e4f80a0e461b0c1d3201e1778f1ce0a338a0fe35f",
+      "sourceGeneratedFile": "exec-e72134de-67ae-463d-86ac-57c15280ce58.png",
+      "sourceSha256": "1f6d62f2430186b62df23b035e50a55f16775cfe4e3cdb09f0ef04bc961d8a26",
+      "reused": false,
+      "runtimeMomentIds": [
+        "snow-tracks"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "aotai-ridgeline",
+      "route": "aotai",
+      "name": "秦岭脊线",
+      "season": "秦岭风雪季",
+      "file": "badges/aotai-ridgeline-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 62636,
+      "sha256": "3513bc0d3577f010847055165cbf1cb550561d7641604797135fa65c0b9cadec",
+      "sourceGeneratedFile": "exec-f3a15749-011f-41be-853a-757b3de51bcf.png",
+      "sourceSha256": "d4100ea05cebb99192879710b806f61b1ed33c8ef43b413334870e91b279c564",
+      "reused": false,
+      "runtimeMomentIds": [
+        "snow-lichen"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "maclehose-sideways-crab",
+      "route": "maclehose",
+      "name": "横着也能到",
+      "season": "暖季绿色海岸",
+      "file": "badges/maclehose-sideways-crab-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 68638,
+      "sha256": "55be1e5dfc970211534b8b5aa4acf2973da17cdc16d894ee809737b8bb9745f5",
+      "sourceGeneratedFile": "exec-c47d19d5-a459-42f3-8da9-aaffc6f327c2.png",
+      "sourceSha256": "0d8deabad958567d6c4ed715e0ed5970681bda8559305f7f55c65c2c5f378659",
+      "reused": true,
+      "runtimeMomentIds": [
+        "maclehose-sideways-crab"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "maclehose-bay-reveal",
+      "route": "maclehose",
+      "name": "转角见海",
+      "season": "暖季绿色海岸",
+      "file": "badges/maclehose-bay-reveal-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 71598,
+      "sha256": "737bb628970695e4dc5614b357ae41397b43d743847f17576eaac121ff2b4db3",
+      "sourceGeneratedFile": "exec-5cdf803c-ca98-44b5-9a90-9541f72a5665.png",
+      "sourceSha256": "fe1292a60927d701274be64f7b9542b977dcaee5daf3946289b2375eccd7a188",
+      "reused": false,
+      "runtimeMomentIds": [
+        "coast-sand"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "maclehose-tide-drawing",
+      "route": "maclehose",
+      "name": "潮汐收笔",
+      "season": "暖季海岸·潮线片刻",
+      "file": "badges/maclehose-tide-drawing-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 70078,
+      "sha256": "186fbc1d3823ae84b57778b724d49c5764b66894971c2ba4910f757c35e33787",
+      "sourceGeneratedFile": "exec-cade9c50-2491-450e-8e66-3d5401c30b4b.png",
+      "sourceSha256": "f53a43debe497eae026279f26a5c846c794a98b7562258f8ea9454fa9a9884f6",
+      "reused": false,
+      "runtimeMomentIds": [
+        "coast-shell"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "maclehose-chek-keng",
+      "route": "maclehose",
+      "name": "赤径慢潮",
+      "season": "暖季绿色海岸·静潮",
+      "file": "badges/maclehose-chek-keng-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 76812,
+      "sha256": "0290eb928580a04bd4ebe9f156e83b4ae93093dee587f7e379727f226c93116a",
+      "sourceGeneratedFile": "exec-7d3e74d9-4bad-4fc8-9ef0-aabed4da4847.png",
+      "sourceSha256": "69888dcbce5a27803b0ac627675c47b7f3b92904ac9050c4ae92fdf86b0e9fcf",
+      "reused": false,
+      "runtimeMomentIds": [
+        "coast-pier"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "changping-tree-double",
+      "route": "changping",
+      "name": "树的另一个自己",
+      "season": "暖季绿林溪谷·远峰积雪",
+      "file": "badges/changping-tree-double-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 77326,
+      "sha256": "b86bf1b147dd20e0067f41d4aaa8fb93fc75d4d0699258ba7084905abe255e11",
+      "sourceGeneratedFile": "exec-0ba6f96a-4ce1-40ac-ba2d-f1d7dc6e604c.png",
+      "sourceSha256": "1818d28194113c80340497f0484b6e92ff2eda52d16930849f2430089f52d1d4",
+      "reused": true,
+      "runtimeMomentIds": [
+        "valley-moss"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "changping-red-stone",
+      "route": "changping",
+      "name": "红石微光",
+      "season": "绿林溪谷·暖季",
+      "file": "badges/changping-red-stone-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 67526,
+      "sha256": "ade85df372f5c3deb0712a109705da907791243eb50d83b3e273dca2576d0f88",
+      "sourceGeneratedFile": "exec-b3df327b-fe91-4839-9b3e-01eb65855a13.png",
+      "sourceSha256": "1fb7e404deebff6f7a3477d9b0840f844a3cf0f56d07b768db0886852a4c24a5",
+      "reused": false,
+      "runtimeMomentIds": [
+        "valley-bridge"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "changping-muluozi",
+      "route": "changping",
+      "name": "木骡子开阔",
+      "season": "暖季绿林草甸·远峰积雪",
+      "file": "badges/changping-muluozi-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 75786,
+      "sha256": "b03a23cddf7c332711867c0de10838c3784c2b8a00768ac1cbee89d1c1554824",
+      "sourceGeneratedFile": "exec-f0262377-6d80-4123-801f-8a7e415179f8.png",
+      "sourceSha256": "984c34e7f48893e38bb5bc653128f9c067b99b405e4320975639f488f1f0fd17",
+      "reused": false,
+      "runtimeMomentIds": [
+        "valley-reflection"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "mogan-bamboo-reply",
+      "route": "mogan",
+      "name": "竹林接了句话",
+      "season": "湿润绿竹林",
+      "file": "badges/mogan-bamboo-reply-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 68282,
+      "sha256": "574f5f1ff2afd79ffbdfda133f74f886dc003176a56fcb04a999b16e4a1b08a0",
+      "sourceGeneratedFile": "exec-d5d80638-4273-4bd1-b58c-f65402b8c991.png",
+      "sourceSha256": "64157f88fb50353f66334e332a511e8f766f5fc64a77967e45fbfbd9b81ed717",
+      "reused": true,
+      "runtimeMomentIds": [
+        "bamboo-drop"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "mogan-old-stone-path",
+      "route": "mogan",
+      "name": "古道留痕",
+      "season": "湿润绿竹林·雨后",
+      "file": "badges/mogan-old-stone-path-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 77320,
+      "sha256": "8ab4e33078b70d2b32e64047d5f94a78603116a7caf3d5246db507390ad64168",
+      "sourceGeneratedFile": "exec-000ba6ab-c389-4436-9033-76fd666721a0.png",
+      "sourceSha256": "39cf42edbd8755c38b07b6363376204bffc9fee66d2a1015a3596473b69fbfd8",
+      "reused": false,
+      "runtimeMomentIds": [
+        "bamboo-step"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "westlake-five-more-minutes",
+      "route": "westlake",
+      "name": "再坐五分钟",
+      "season": "春日绿意·茶村歇脚",
+      "file": "badges/westlake-five-more-minutes-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 68162,
+      "sha256": "fc4483407cf4c69d248ebfd502e188a9f1c718840bdf58748547ba9b2bc7b188",
+      "sourceGeneratedFile": "exec-c88b4f46-2008-4624-bdaa-92ba1cc72251.png",
+      "sourceSha256": "dbde7cae8e94353db4596ae745b0a4e6be89956282bd9eba552c9a12a1b294ca",
+      "reused": true,
+      "runtimeMomentIds": [
+        "westlake-five-more-minutes"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "westlake-creek-stones",
+      "route": "westlake",
+      "name": "九溪踏石",
+      "season": "春日绿意·浅溪",
+      "file": "badges/westlake-creek-stones-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 82166,
+      "sha256": "f3adfb95d8393bd1e8a8e09e0f9f5fc22549f0fd7e6bc73f781e3071a3747e18",
+      "sourceGeneratedFile": "exec-41f18166-7e49-4de2-91ba-d463f77e5270.png",
+      "sourceSha256": "998ceb1f2eda088d2b10c001ee526355d4b45322b6f55ca02364c879ea94d3be",
+      "reused": false,
+      "runtimeMomentIds": [
+        "westlake-stones"
+      ],
+      "runtimeBound": true
+    },
+    {
+      "id": "westlake-longjing-bud",
+      "route": "westlake",
+      "name": "龙井春芽",
+      "season": "春日茶园·新芽",
+      "file": "badges/westlake-longjing-bud-v4.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 55246,
+      "sha256": "0471077713aeef3c093e520ac6c8c6b97f72f5d1929b41cbbcf770a87f420457",
+      "sourceGeneratedFile": "exec-1bf901bc-e350-4309-b143-e1faec692073.png",
+      "sourceSha256": "d60b7933688ad94dacaa0c5e675e927aeb0b60151633a4ce9c64817571242127",
+      "reused": false,
+      "runtimeMomentIds": [
+        "westlake-tea"
+      ],
+      "runtimeBound": true
+    }
+  ],
+  "runtimeBoundCount": 23
+}

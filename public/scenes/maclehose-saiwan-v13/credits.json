@@ -1,0 +1,60 @@
+{
+  "tool": "built-in image_gen",
+  "generation": "art/maclehose-saiwan-steps-v13/generation.json",
+  "geographicReference": {
+    "author": "rheins",
+    "title": "大浪湾 - Tai Long Wan - 2015.01 - panoramio.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E6%B5%AA%E6%B9%BE_-_Tai_Long_Wan_-_2015.01_-_panoramio.jpg",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+  },
+  "description": "艺术化西湾山山海与阶路、两位既有 Q 版旅人的上阶和停留姿态。不是实景复原。",
+  "processing": "原生尺寸 WebP 编码，保留透明通道；图集按四列两行扫描可见边界并记录落脚锚点。没有插值放大或声称原生 4K。",
+  "assets": [
+    {
+      "file": "scenes/maclehose-saiwan-v13/panorama.webp",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 593998,
+      "sha256": "83c3d8ef75db7ee42ff8b43ba57cb27970b8a1184bcaf4cd191c84b7eea8a49f",
+      "sourceSha256": "16e2abc320038991867c1e42d2b1501f99975dc483a73a0d29e39fcddee08e29"
+    },
+    {
+      "file": "scenes/maclehose-saiwan-v13/terrain.webp",
+      "width": 1672,
+      "height": 941,
+      "alpha": true,
+      "bytes": 458836,
+      "sha256": "eb5e73226eca6899f2d6cae8d0be91db2d665d954d2ade015a4f358788698e25",
+      "sourceSha256": "f70dfb64943f54d425a30b8748a87f09a067a142167e7d553862b19f4b0c70ae"
+    },
+    {
+      "file": "scenes/maclehose-saiwan-v13/shoulder.webp",
+      "width": 1672,
+      "height": 941,
+      "alpha": true,
+      "bytes": 261998,
+      "sha256": "7935a0d5ee1108dbf8c9acdb4b07188a207c8745eac6ac1b059fa2bb776dc00a",
+      "sourceSha256": "0869d9c059d291a4a227bdd517beb0747e605ec5fc95737fd8e5db706b252978"
+    },
+    {
+      "file": "scenes/maclehose-saiwan-v13/blue-poses.webp",
+      "width": 1774,
+      "height": 887,
+      "alpha": true,
+      "bytes": 429826,
+      "sha256": "17cdfe69c21bb447e1e2be19815e79d934453e0dfdc54f0ddae7c79727c499dd",
+      "sourceSha256": "0bf7de1d1aba0e7d84c3eb93ccb3187ae052eeb6e5903a79e5c2a3efe95cb7f6"
+    },
+    {
+      "file": "scenes/maclehose-saiwan-v13/braids-poses.webp",
+      "width": 1774,
+      "height": 887,
+      "alpha": true,
+      "bytes": 402512,
+      "sha256": "2ed2ab2937fd41888c1d8111f0db6cb53e41fcfa65465260de0b2b28853b6dc8",
+      "sourceSha256": "44d067ba14e2a47d5f366acfd201777cf807cdda120d0309db4d2d6ab8898855"
+    }
+  ]
+}

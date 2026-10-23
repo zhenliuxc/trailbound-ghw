@@ -1,4 +1,4 @@
-// Generated from src/runtime/*.ts by npm run build. Edit src/, not this file.
+// Generated from src/runtime/index.ts. Edit src/, then run npm run build.
 "use strict";
 var TrailRuntime = (() => {
   var __defProp = Object.defineProperty;
@@ -75,6 +75,7 @@ var TrailRuntime = (() => {
     createWugongWaypoint: () => createWugongWaypoint,
     inputMogan: () => inputMogan,
     inputTiger: () => inputTiger,
+    installLegacyHomeGames: () => installLegacyHomeGames,
     itemCells: () => itemCells,
     keyMogan: () => keyMogan,
     keyTiger: () => keyTiger,
@@ -335,41 +336,189 @@ var TrailRuntime = (() => {
     }
   };
 
+  // .build/typescript/content/wugong.js
+  var WUGONG_EVENTS = {
+    leaves: {
+      id: "leaves",
+      entry: "wugong-forest-leaves",
+      title: "林间的叶影",
+      place: "武功山 · 东江村上山林间",
+      story: "爬过一段林间石路，树影落在手帐上。歇口气，翻开纸叶，找找相同的叶形。",
+      action: "翻开叶影小画",
+      day: 1,
+      trigger: "trail"
+    },
+    kite: {
+      id: "kite",
+      entry: "meadow-bird",
+      title: "借一阵草甸的风",
+      place: "武功山 · 山脊草甸",
+      story: "转过山肩，草甸上的风正好。背包里有一只纸鸢，要不要让它飞一会儿？",
+      action: "放一会儿纸鸢",
+      day: 1,
+      trigger: "trail"
+    },
+    encounter: {
+      id: "encounter",
+      entry: "wugong-wind-hiker",
+      title: "在营地遇见她",
+      place: "武功山 · 观音宕草甸",
+      story: "坐下休息时，旁边的旅人走过来，想请你帮她拍一张草甸里的照片。",
+      action: "帮她拍张照片",
+      day: 1,
+      trigger: "archive"
+    },
+    stars: {
+      id: "stars",
+      entry: "wugong-camp-stars",
+      title: "星夜入帐",
+      place: "武功山 · 观音宕／星空营地",
+      story: "帐篷亮起暖光，坐下来，对着手帐认一认今晚的星星。",
+      action: "认一认星星",
+      day: 1,
+      trigger: "camp"
+    },
+    clouds: {
+      id: "clouds",
+      entry: "meadow-butterfly",
+      title: "山脊上的云",
+      place: "武功山 · 吊马桩山脊",
+      story: "清晨离开观音宕，往吊马桩的山脊上浮起了云。拨开近处的云，看看藏在后面的山。",
+      action: "拨云看山",
+      day: 2,
+      trigger: "trail"
+    },
+    stones: {
+      id: "stones",
+      entry: "meadow-flower",
+      title: "古祭坛边的石语",
+      place: "武功山 · 金顶古祭坛",
+      story: "看过金顶远景，沿山肩再走几步。古祭坛旁的石色与山色，正好拼成一幅小画。",
+      action: "拼好金顶石语",
+      day: 2,
+      trigger: "trail"
+    },
+    return: {
+      id: "return",
+      entry: "wugong-homeward-pages",
+      title: "把来路排进手帐",
+      place: "武功山 · 福星谷下山林间",
+      story: "从草甸下到福星谷，石阶重新走进林荫。坐在路边歇一会儿，把林间、草甸、星夜与金顶的小画按走过的顺序排好，再沿中庵方向下山。",
+      action: "整理这一程的小画",
+      day: 2,
+      trigger: "trail"
+    }
+  };
+
+  // .build/typescript/content/tiger.js
+  var EVENTS = {
+    climb: { entry: "tiger-bends-puzzle-v4", place: "虎跳峡 · 二十八道拐", line: "山径在岩壁边弯成一个 S，江声从谷底传来。", motif: '<path d="M6 44h10V33h10V22h10V11h9M4 36l12-20 9 8 9-18 12 23"/>' },
+    "inn-pairs": { entry: "tiger-inn-pairs-v4", place: "虎跳峡 · 中途客栈", line: "暮色落进峡谷，桌上留着几张小画片。", motif: '<path d="M5 12h18v25H5ZM28 17h18v25H28ZM10 31l5-9 5 9M33 34h8V24h-8Z"/>' },
+    "waterfall-paint": { entry: "tiger-waterfall-paint-v4", place: "虎跳峡 · 龙洞瀑布", line: "水声落在身后，纸上还留着两处山色。", motif: '<path d="M10 4q-4 11 0 22M19 4q-4 11 0 22M4 34q7-5 13 0t13 0M29 46l4-12L45 8l5 3-15 28Z"/>' },
+    "river-frame": { entry: "tiger-river-roundframe-v4", place: "虎跳峡 · 中虎跳江边", line: "白浪擦过巨石，远处的江声已经来到眼前。", motif: '<path d="M2 18q7-8 15 0t15 0t15 0M2 32q7-8 15 0t15 0t15 0M18 41l4-9 8 1 5 8Z"/>' }
+  };
+
+  // .build/typescript/content/aotai.js
+  var CUES = {
+    "snow-tracks": { entry: "snow-tracks", place: "鳌山 · 石海", line: "离开白起庙，石海沿着鳌山大梁铺开。", motif: '<path d="m5 31 8-19 12-5 16 12 4 19H12Z M13 12l7 15 21-8M20 27l-8 11M20 27l14 11"/>' },
+    "snow-lichen": { entry: "snow-lichen", place: "飞机梁 · 连峰", line: "爬出水窝子的谷地，一道道山梁在眼前展开。", motif: '<path d="m3 34 9-12 8 5 9-16 7 9 12-5M3 41h45"/>' },
+    "aotai-takin-first": { entry: "aotai-takin-first", place: "2800营地 · 林缘", line: "前方岩后，传来沉重的踩雪声。", motif: '<path d="M8 25q6-13 21-8l7 6v9H12ZM13 32v10M28 32v10M30 17l-2-8M36 23l8-3 3 9-11 3M43 20l1-8"/>' },
+    "aotai-camp-night": { entry: "aotai-camp-night", place: "大石河 · 雪夜营地", line: "走下石海，背风的河谷里可以歇脚了。", motif: '<path d="m5 40 19-30 20 30ZM24 10v30M10 40l14-19 15 19M3 42h44M29 27h7v9h-7Z"/>' }
+  };
+
+  // .build/typescript/content/maclehose.js
+  var CUES2 = {
+    "coast-sand": { entry: "coast-sand", place: "麦理浩径 · 西湾山山肩", line: "前面的石阶绕进山肩，海风从岩壁外吹来。", motif: '<path d="m3 29 10-15 9 10 8-16 15 25M4 40q8-6 16 0t16 0t12 0"/>' },
+    "maclehose-sideways-crab": { entry: "maclehose-sideways-crab", place: "麦理浩径 · 西湾沙滩", line: "一只小螃蟹停在漂木前，细小的脚印拐了个弯。", motif: '<path d="M15 25q10-10 20 0v10H15ZM15 27l-8-8M35 27l8-8M15 32l-9 7M35 32l9 7M20 21l-2-7M30 21l2-7"/>' },
+    "coast-shell": { entry: "coast-shell", place: "麦理浩径 · 咸田湾沙滩", line: "浪退下去，留出一小片湿润的沙。", motif: '<path d="M4 17q7-6 14 0t14 0t14 0M8 41q8-12 17-2t14-8M6 28q10-6 20 0t20 0"/>' },
+    "maclehose-woodland-echo": { entry: "maclehose-woodland-echo", place: "麦理浩径 · 大浪坳上坡林缘", line: "海浪声远了，枝叶之间传来几声清亮的回应。", motif: '<path d="M5 38q20-6 40 0M16 34q-7-18 7-19q12 0 9 13l-8 8ZM31 19l8 2-7 4M21 35v5M27 34v5M39 12q6 4 2 9"/>' },
+    "coast-pier": { entry: "coast-pier", place: "麦理浩径 · 赤径渡头", line: "渡头旁，一只小木船随着缓流轻轻晃着。", motif: '<path d="M5 27h38M12 27v15M34 27v15M7 19h21M9 19v8M26 19v8M5 47q9-5 18 0t18 0"/>' }
+  };
+
   // .build/typescript/content/catalog.js
+  var DAY_PRESENTATION = {
+    changping: { name: "四姑娘山", symbol: "summit", art: { title: "四姑娘山长坪沟", className: "day-art-page", styles: ["day-art.css?v=remaining-routes-1"] } },
+    mogan: { name: "莫干山", symbol: "bamboo", art: { title: "莫干山", className: "day-art-page", styles: ["mogan-games.css", "day-art.css?v=remaining-routes-1"] } },
+    westlake: { name: "九溪龙井", symbol: "tea", art: { title: "九溪龙井", className: "day-art-page", styles: ["day-art.css?v=remaining-routes-1"] } }
+  };
   var CHAPTERS = [
-    { id: "wugong", name: "武功山", mapPage: "wugong-walk.html", artPage: "wugong-art.html", cover: {
-      kicker: "东江村经典反穿 · 两天一夜",
-      title: "沿着草甸，把山野收进手帐。",
-      copy: "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。",
-      action: "从东江村出发 →",
-      hint: "跟随山路 · 沿途实景 · 手绘互动与旅行手帐"
-    } },
-    { id: "tiger", name: "虎跳峡", mapPage: "tiger-walk.html", artPage: "tiger-art.html", cover: {
-      kicker: "虎跳峡高路 · 两天一夜",
-      title: "从高路，走到金沙江边。",
-      copy: "从桥头越过二十八道拐，在中途客栈住一晚。清晨经龙洞瀑布走到中峡客栈，也可沿小路下到中虎跳江边，再循原路返回。",
-      action: "从桥头出发 →",
-      hint: "中途客栈过夜 · 沿途实景 · 手绘收藏"
-    } },
-    { id: "aotai", name: "鳌太线", mapPage: "aotai-walk.html", artPage: "aotai-art.html", cover: {
-      kicker: "鳌太线 · 冬季历史路线",
-      title: "循着山脊，走进云与石之间。",
-      copy: "从塘口村上鳌山，翻过飞机梁、金字塔与太白梁，走向大爷海和拔仙台。沿历史路线上下山，在途中歇脚过夜，把山野相遇收进手帐，最后经下板寺向汤峪方向离山。",
-      action: "走进秦岭 →",
-      hint: "历史路线示意 · 多程过夜 · 手绘收藏"
-    } },
-    { id: "maclehose", name: "麦理浩径", mapPage: "maclehose-walk.html", artPage: "maclehose-art.html", cover: {
-      kicker: "麦理浩径第二段 · 一日海岸",
-      title: "翻过山，海就在那里。",
-      copy: "从浪茄翻过西湾山，走过西湾与咸田湾的沙岸。越过大浪坳，在赤径的潮水边歇脚，再沿林间山径走到北潭凹。",
-      action: "从浪茄出发 →",
-      hint: "浪茄 → 北潭凹 · 海岸实景 · 手绘收藏"
-    } },
+    {
+      id: "wugong",
+      name: "武功山",
+      mapPage: "wugong-walk.html",
+      artPage: "wugong-art.html",
+      mapEntry: "src/wugong-walk/scroll/main.ts",
+      atlas: { name: "武功山", region: "江西 · 萍乡", symbol: "alpine-meadow" },
+      events: [WUGONG_EVENTS.kite, WUGONG_EVENTS.encounter, WUGONG_EVENTS.clouds, WUGONG_EVENTS.stones],
+      artPresentation: { title: "武功山", className: "", styles: [] },
+      cover: {
+        kicker: "东江村经典反穿 · 两天一夜",
+        title: "沿着草甸，把山野收进手帐。",
+        copy: "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。",
+        action: "从东江村出发 →",
+        hint: "跟随山路 · 沿途实景 · 手绘互动与旅行手帐"
+      }
+    },
+    {
+      id: "tiger",
+      name: "虎跳峡",
+      mapPage: "tiger-walk.html",
+      artPage: "tiger-art.html",
+      mapEntry: "src/tiger-walk/main.ts",
+      atlas: { name: "虎跳峡", region: "云南 · 迪庆", symbol: "rapids" },
+      events: Object.values(EVENTS),
+      artPresentation: { title: "虎跳峡", className: "tiger-art-page", styles: ["tiger-trail.css", "tiger-art.css?v=tiger-paper-badges-2", "tiger-memories.css?v=trip-photos-8"] },
+      cover: {
+        kicker: "虎跳峡高路 · 两天一夜",
+        title: "从高路，走到金沙江边。",
+        copy: "从桥头越过二十八道拐，在中途客栈住一晚。清晨经龙洞瀑布走到中峡客栈，也可沿小路下到中虎跳江边，再循原路返回。",
+        action: "从桥头出发 →",
+        hint: "中途客栈过夜 · 沿途实景 · 手绘收藏"
+      }
+    },
+    {
+      id: "aotai",
+      name: "鳌太线",
+      mapPage: "aotai-walk.html",
+      artPage: "aotai-art.html",
+      mapEntry: "src/aotai-walk/main.ts",
+      atlas: { name: "鳌太线", region: "陕西 · 秦岭", symbol: "ridge" },
+      events: Object.values(CUES),
+      artPresentation: { title: "鳌太线", className: "aotai-art-page", styles: ["aotai-art.css?v=shared-components-1"] },
+      cover: {
+        kicker: "鳌太线 · 冬季历史路线",
+        title: "循着山脊，走进云与石之间。",
+        copy: "从塘口村上鳌山，翻过飞机梁、金字塔与太白梁，走向大爷海和拔仙台。沿历史路线上下山，在途中歇脚过夜，把山野相遇收进手帐，最后经下板寺向汤峪方向离山。",
+        action: "走进秦岭 →",
+        hint: "历史路线示意 · 多程过夜 · 手绘收藏"
+      }
+    },
+    {
+      id: "maclehose",
+      name: "麦理浩径",
+      mapPage: "maclehose-walk.html",
+      artPage: "maclehose-art.html",
+      mapEntry: "src/maclehose-walk/main.ts",
+      atlas: { name: "麦理浩径", region: "香港 · 西贡", symbol: "beach" },
+      events: Object.values(CUES2),
+      artPresentation: { title: "麦理浩径", className: "coast-art-page", styles: ["maclehose-art.css?v=sand-brush-18"] },
+      cover: {
+        kicker: "麦理浩径第二段 · 一日海岸",
+        title: "翻过山，海就在那里。",
+        copy: "从浪茄翻过西湾山，走过西湾与咸田湾的沙岸。越过大浪坳，在赤径的潮水边歇脚，再沿林间山径走到北潭凹。",
+        action: "从浪茄出发 →",
+        hint: "浪茄 → 北潭凹 · 海岸实景 · 手绘收藏"
+      }
+    },
     ...Object.values(DAY_ROUTES).map((route) => ({
       id: route.id,
       name: route.name,
       mapPage: `${route.id}-walk.html`,
       artPage: `${route.id}-art.html`,
+      mapEntry: "src/day-walk/main.ts",
+      atlas: { name: DAY_PRESENTATION[route.id].name, region: route.region, symbol: DAY_PRESENTATION[route.id].symbol },
+      events: route.events,
+      artPresentation: DAY_PRESENTATION[route.id].art,
       cover: {
         kicker: `${route.region} · ${route.id === "changping" ? "十月彩林 · 一日往返" : route.id === "mogan" ? "古道选段" : "溪谷与茶园"}`,
         title: route.title,
@@ -449,17 +598,6 @@ var TrailRuntime = (() => {
     }
     return placements;
   }
-
-  // .build/typescript/content/route-atlas.js
-  var ROUTE_ATLAS = {
-    wugong: { name: "武功山", region: "江西 · 萍乡", symbol: "alpine-meadow" },
-    tiger: { name: "虎跳峡", region: "云南 · 迪庆", symbol: "rapids" },
-    aotai: { name: "鳌太线", region: "陕西 · 秦岭", symbol: "ridge" },
-    maclehose: { name: "麦理浩径", region: "香港 · 西贡", symbol: "beach" },
-    changping: { name: "四姑娘山", region: DAY_ROUTES.changping.region, symbol: "summit" },
-    mogan: { name: "莫干山", region: DAY_ROUTES.mogan.region, symbol: "bamboo" },
-    westlake: { name: "九溪龙井", region: DAY_ROUTES.westlake.region, symbol: "tea" }
-  };
 
   // .build/typescript/journey/landmark-symbol.js
   var SYMBOLS = {
@@ -585,10 +723,11 @@ var TrailRuntime = (() => {
     status.setAttribute("aria-live", "polite");
     const markers = [], ids = /* @__PURE__ */ new Set();
     for (const route of routes) {
-      if (ids.has(route.id) || !(route.id in ROUTE_ATLAS))
+      const chapter = chapterFor(route.id);
+      if (ids.has(route.id) || !chapter)
         throw new Error("路线地图目录无法读取");
       ids.add(route.id);
-      const label2 = ROUTE_ATLAS[route.id], button = doc.createElement("button");
+      const label2 = chapter.atlas, button = doc.createElement("button");
       button.type = "button";
       button.id = `route-${route.id}`;
       button.className = "atlas-place";
@@ -626,7 +765,7 @@ var TrailRuntime = (() => {
       button.addEventListener("blur", () => highlight(false), { signal });
       markers.push({ id: route.id, button, line: line2, dot });
     }
-    if (ids.size !== Object.keys(ROUTE_ATLAS).length)
+    if (ids.size !== CHAPTERS.length)
       throw new Error("路线地图缺少地点");
     root.replaceChildren(frame, status);
     function setSelected(id) {
@@ -637,7 +776,8 @@ var TrailRuntime = (() => {
         marker.line.classList.toggle("is-selected", active);
         marker.dot.classList.toggle("is-selected", active);
       }
-      status.textContent = id ? `已选 ${ROUTE_ATLAS[id].name}，旅程封面已展开。` : "点一处山野，展开这趟旅程。";
+      const chapter = id ? chapterFor(id) : null;
+      status.textContent = chapter ? `已选 ${chapter.atlas.name}，旅程封面已展开。` : "点一处山野，展开这趟旅程。";
     }
     function layout() {
       if (disposed)
@@ -3015,1312 +3155,6 @@ var TrailRuntime = (() => {
     };
   }
 
-  // .build/typescript/runtime/reward-controller.js
-  function createRewardController(options) {
-    const { dom, scenes, catalog: D } = options, { get: $ } = dom;
-    const bindings = new EventBindings();
-    let current = null;
-    let session = null;
-    let collecting = false;
-    let flight = null;
-    let bodyOverflow = "";
-    let imageEntry = null;
-    let imageListener = null;
-    function close(resume = true) {
-      if (!current)
-        return;
-      const wasMini = !!options.gameKind(current.id), closing = session;
-      current = null;
-      session = null;
-      collecting = false;
-      flight?.cancel();
-      flight = null;
-      if (imageEntry && imageEntry.onChange === imageListener)
-        imageEntry.onChange = null;
-      imageEntry = null;
-      imageListener = null;
-      $("wind-keepsake").hidden = true;
-      $("reward-overlay").hidden = true;
-      $("app-main").removeAttribute("inert");
-      dom.document.body.style.overflow = bodyOverflow;
-      scenes.leave(closing, resume);
-      options.refresh();
-      if (resume) {
-        $("walk-toggle").focus({ preventScroll: true });
-        if (wasMini && !options.reduced && !options.autoCollect)
-          $("journey-stage").animate?.([{ opacity: 0.6, transform: "scale(.985)" }, { opacity: 1, transform: "scale(1)" }], { duration: 450, easing: "ease-out" });
-      }
-    }
-    function show(moment, returnStatus) {
-      if (!D.hasTag(moment) || options.autoCollect && (!moment.earned || moment.edition !== 3))
-        return false;
-      if (current)
-        close(false);
-      current = moment;
-      collecting = false;
-      session = scenes.enter("reward", returnStatus);
-      const game = options.gameKind(moment.id);
-      $("reward-overlay").setAttribute("data-wind", String(!!game));
-      $("reward-overlay").setAttribute("data-collecting", "false");
-      $("reward-overlay").setAttribute("data-auto", String(!!options.autoCollect));
-      $("reward-continue").disabled = false;
-      $("reward-continue").hidden = !!options.autoCollect;
-      $("reward-continue").textContent = game ? "收进手帐，继续走 →" : "收好徽章 →";
-      const file = D.tagArt(moment), cached = options.cache?.request(file, "high") || null;
-      const display = () => {
-        if (current !== moment)
-          return;
-        let image = $("reward-art");
-        if (options.presentArt && current) {
-          const framed = cached?.state === "ready" ? options.presentArt(cached.image, current) : null;
-          const source2 = framed?.src || file;
-          if (source2 && image.getAttribute("src") !== source2)
-            image.setAttribute("src", source2);
-        } else if (cached?.state === "ready" && cached.image !== image) {
-          image.removeAttribute("id");
-          cached.image.id = "reward-art";
-          cached.image.setAttribute("class", "reward-art");
-          image.replaceWith(cached.image);
-          image = cached.image;
-        }
-        if (!cached && file)
-          image.setAttribute("src", file);
-        image.setAttribute("alt", (moment.tag || moment.title) + " · 手绘水彩徽章");
-        image.hidden = !!cached && cached.state !== "ready";
-        $("reward-loading").hidden = !cached || cached.state === "ready";
-        $("reward-loading").textContent = cached?.state === "error" ? "画作暂未加载，可收好后在手帐查看。" : "正在展开手绘纪念…";
-      };
-      if (cached) {
-        imageEntry = cached;
-        imageListener = display;
-        cached.onChange = display;
-      }
-      display();
-      $("reward-title").textContent = moment.tag || moment.title;
-      $("reward-place").textContent = moment.place;
-      $("reward-copy").textContent = D.item(moment.id).result;
-      $("reward-overlay").hidden = false;
-      $("app-main").setAttribute("inert", "");
-      bodyOverflow = dom.document.body.style.overflow || "";
-      dom.document.body.style.overflow = "hidden";
-      options.stopLoop();
-      options.refresh();
-      if (options.autoCollect) {
-        $("reward-dialog").setAttribute("tabindex", "-1");
-        $("reward-dialog").focus({ preventScroll: true });
-      } else
-        $("reward-continue").focus({ preventScroll: true });
-      options.audio.mini?.(game || "memory", "reveal");
-      if (options.autoCollect && !dom.document.hidden)
-        collect();
-      return true;
-    }
-    function collect() {
-      if (!current || collecting)
-        return;
-      if (options.onCollected?.(current) === false) {
-        $("reward-continue").hidden = false;
-        $("reward-continue").textContent = "重试保存";
-        $("reward-continue").focus({ preventScroll: true });
-        return;
-      }
-      if (options.autoCollect)
-        $("reward-continue").hidden = true;
-      const game = options.gameKind(current.id);
-      options.audio.mini?.(game || "memory", "collect");
-      const targetElement = $(options.autoCollect ? "reward-overlay" : "reward-dialog");
-      if (!targetElement.animate || !options.autoCollect && (!game || options.reduced)) {
-        close();
-        return;
-      }
-      collecting = true;
-      const moment = current;
-      $("reward-continue").disabled = true;
-      $("reward-overlay").setAttribute("data-collecting", "true");
-      $("wind-keepsake").hidden = !!options.autoCollect;
-      let animation;
-      try {
-        if (options.autoCollect) {
-          const hold = options.reduced ? 1200 : 1500, fade = options.reduced ? 180 : 950;
-          animation = flight = targetElement.animate([{ opacity: 1 }, { opacity: 1, offset: hold / (hold + fade) }, { opacity: 0 }], { duration: hold + fade, easing: "ease-in-out", fill: "forwards" });
-        } else {
-          const box = $("reward-dialog").getBoundingClientRect(), target = $("wind-keepsake").getBoundingClientRect();
-          const dx = target.left + target.width / 2 - box.left - box.width / 2, dy = target.top + target.height / 2 - box.top - box.height / 2;
-          animation = flight = targetElement.animate([{ transform: "translate(0,0) scale(1) rotate(0)", opacity: 1 }, { transform: "translate(0,-16px) scale(1.025) rotate(-2deg)", opacity: 1, offset: 0.2 }, { transform: `translate(${dx}px,${dy}px) scale(.08) rotate(6deg)`, opacity: 0 }], { duration: 680, easing: "cubic-bezier(.55,0,.25,1)", fill: "forwards" });
-        }
-      } catch {
-        close();
-        return;
-      }
-      const finish2 = () => {
-        if (current === moment && flight === animation)
-          close();
-      };
-      animation.finished.then(finish2, finish2);
-    }
-    bindings.listen($("reward-continue"), "click", collect);
-    function visibilityChanged() {
-      if (!options.autoCollect || !current)
-        return;
-      if (dom.document.hidden)
-        flight?.pause?.();
-      else if (flight)
-        flight.play?.();
-      else if ($("reward-continue").hidden)
-        collect();
-    }
-    if (options.autoCollect)
-      dom.document.addEventListener("visibilitychange", visibilityChanged);
-    return {
-      get current() {
-        return current;
-      },
-      get open() {
-        return current !== null;
-      },
-      show,
-      close,
-      collect,
-      handleKey(event) {
-        if (!current)
-          return false;
-        if (event.key === "Escape") {
-          event.preventDefault();
-          close();
-        } else if (event.key === "Tab") {
-          event.preventDefault();
-          $($("reward-continue").hidden ? "reward-dialog" : "reward-continue").focus({ preventScroll: true });
-        }
-        return true;
-      },
-      destroy() {
-        close(false);
-        bindings.destroy();
-        dom.document.removeEventListener("visibilitychange", visibilityChanged);
-      }
-    };
-  }
-
-  // .build/typescript/runtime/journal-store.js
-  function createJournalStore({ catalog, data, storage }) {
-    const read = () => catalog.loadMoments(storage);
-    function save(moment) {
-      if (!catalog.hasTag(moment) || moment.edition === 3 && !moment.earned) {
-        return { kind: "error", message: "完成互动后才会记入手帐。" };
-      }
-      const result = data.remember(read(), moment);
-      if (result.status === "full")
-        return { kind: "error", message: "手帐已满，原有回忆已保留。可以先留在这里看看画。" };
-      if (result.status !== "unchanged" && !catalog.saveMoments(storage, result.moments)) {
-        return { kind: "error", message: "暂时无法保存手帐，可以重试。" };
-      }
-      return { kind: "stored", existing: result.status === "unchanged", change: result.status, moments: result.moments };
-    }
-    return { read, save };
-  }
-
-  // .build/typescript/content/tiger-badges.js
-  var TIGER_BADGE_ART = {
-    bends: { file: "badges/tiger-memories-v4/bends.webp", x: 0.5, y: 0.5, radius: 0.4 },
-    inn: { file: "badges/tiger-memories-v4/inn.webp", x: 0.5, y: 0.5, radius: 0.4 },
-    waterfall: { file: "badges/tiger-memories-v4/waterfall.webp", x: 0.5, y: 0.48, radius: 0.4 },
-    river: { file: "badges/tiger-memories-v4/river.webp", x: 0.5, y: 0.48, radius: 0.4 }
-  };
-  var TIGER_BADGE_ENTRIES = {
-    "tiger-bends-puzzle-v4": TIGER_BADGE_ART.bends,
-    "tiger-inn-pairs-v4": TIGER_BADGE_ART.inn,
-    "tiger-waterfall-paint-v4": TIGER_BADGE_ART.waterfall,
-    "tiger-river-roundframe-v4": TIGER_BADGE_ART.river
-  };
-  var TIGER_LEGACY_BADGE_TILES = {
-    "gorge-goat": { column: 0, row: 1 },
-    "gorge-eagle": { column: 1, row: 1 },
-    "gorge-sparkle": { column: 2, row: 1 }
-  };
-  function tigerBadgeArt(id) {
-    switch (id) {
-      case "tiger-bends-puzzle-v4":
-        return TIGER_BADGE_ENTRIES[id];
-      case "tiger-inn-pairs-v4":
-        return TIGER_BADGE_ENTRIES[id];
-      case "tiger-waterfall-paint-v4":
-        return TIGER_BADGE_ENTRIES[id];
-      case "tiger-river-roundframe-v4":
-        return TIGER_BADGE_ENTRIES[id];
-      default:
-        return null;
-    }
-  }
-  function tigerLegacyBadgeTile(id) {
-    switch (id) {
-      case "gorge-goat":
-        return TIGER_LEGACY_BADGE_TILES[id];
-      case "gorge-eagle":
-        return TIGER_LEGACY_BADGE_TILES[id];
-      case "gorge-sparkle":
-        return TIGER_LEGACY_BADGE_TILES[id];
-      default:
-        return null;
-    }
-  }
-
-  // .build/typescript/runtime/badge-paper.js
-  var PAPER_BADGE = { size: 768, center: 384, outerRadius: 360, artRadius: 336 };
-  var PAPER_BADGE_ART = {
-    x: PAPER_BADGE.center,
-    y: PAPER_BADGE.center,
-    radius: PAPER_BADGE.artRadius
-  };
-  function circle(ctx, radius) {
-    ctx.moveTo(PAPER_BADGE.center + radius, PAPER_BADGE.center);
-    ctx.arc(PAPER_BADGE.center, PAPER_BADGE.center, radius, 0, Math.PI * 2);
-  }
-  function paintPaperEdge(ctx) {
-    const { center, outerRadius, artRadius } = PAPER_BADGE;
-    ctx.save();
-    ctx.beginPath();
-    circle(ctx, outerRadius);
-    circle(ctx, artRadius - 0.5);
-    ctx.clip("evenodd");
-    ctx.fillStyle = "#f3edda";
-    ctx.fillRect(0, 0, PAPER_BADGE.size, PAPER_BADGE.size);
-    for (let i = 0; i < 760; i++) {
-      const angle = i * 2.3999632297;
-      const radius = artRadius + i * 37 % 97 / 97 * (outerRadius - artRadius);
-      const x = center + Math.cos(angle) * radius, y = center + Math.sin(angle) * radius;
-      ctx.strokeStyle = i % 3 ? "#a58c6119" : "#ffffff75";
-      ctx.lineWidth = 0.65;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x + Math.cos(angle + 0.7) * 2, y + Math.sin(angle + 0.7) * 2);
-      ctx.stroke();
-    }
-    ctx.restore();
-    ctx.save();
-    ctx.lineCap = "round";
-    for (const line2 of [
-      { radius: outerRadius - 2.5, color: "#a58c61", width: 2.5 },
-      { radius: artRadius + 2, color: "#89947c", width: 1.35 }
-    ]) {
-      ctx.strokeStyle = line2.color;
-      ctx.lineWidth = line2.width;
-      ctx.beginPath();
-      for (let i = 0; i <= 192; i++) {
-        const angle = i / 192 * Math.PI * 2;
-        const radius = line2.radius + Math.sin(angle * 13) * 0.35 + Math.sin(angle * 29) * 0.15;
-        const x = center + Math.cos(angle) * radius, y = center + Math.sin(angle) * radius;
-        if (i)
-          ctx.lineTo(x, y);
-        else
-          ctx.moveTo(x, y);
-      }
-      ctx.closePath();
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-  function composePaperBadge(doc, paint) {
-    const canvas = doc.createElement("canvas");
-    canvas.width = canvas.height = PAPER_BADGE.size;
-    const ctx = canvas.getContext("2d");
-    if (!ctx)
-      return null;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    ctx.save();
-    ctx.beginPath();
-    circle(ctx, PAPER_BADGE.artRadius);
-    ctx.clip();
-    paint(ctx, PAPER_BADGE_ART);
-    ctx.restore();
-    paintPaperEdge(ctx);
-    return canvas;
-  }
-  function paintBadgeImage(ctx, image, source2, target) {
-    const scale = target.radius / source2.radius;
-    ctx.drawImage(image, target.x - source2.x * scale, target.y - source2.y * scale, image.naturalWidth * scale, image.naturalHeight * scale);
-  }
-  function encodePaperBadge(canvas, maxLength = Infinity) {
-    try {
-      for (const quality of [0.9, 0.8, 0.68]) {
-        const url = canvas.toDataURL("image/webp", quality);
-        if (url.startsWith("data:image/webp;base64,") && url.length < maxLength)
-          return url;
-      }
-    } catch {
-    }
-    return null;
-  }
-
-  // .build/typescript/runtime/tiger-badge.js
-  var presentedArt = /* @__PURE__ */ new WeakMap();
-  function tigerLegacyBadgeFile(moment) {
-    return moment.route === "tiger" && moment.edition !== 3 && tigerLegacyBadgeTile(moment.id) ? "badges/moments-v1.webp" : null;
-  }
-  function tigerJournalArt(image, moment) {
-    if (moment.route !== "tiger" || !image.naturalWidth || !image.naturalHeight)
-      return null;
-    const width = image.naturalWidth, height = image.naturalHeight;
-    const original = image.currentSrc || image.src;
-    const cacheKey = `${moment.id}|${Boolean(moment.captureArt)}|${original}`;
-    const cached = presentedArt.get(image)?.get(cacheKey);
-    if (cached)
-      return cached;
-    const art = tigerBadgeArt(moment.id), tile = tigerLegacyBadgeTile(moment.id);
-    const rectangular = Math.abs(width / height - 1) > 0.05;
-    const atlas = !!tile && /(?:^|\/)moments-v1\.webp(?:[?#]|$)/.test(original);
-    let source2;
-    if (atlas && tile) {
-      source2 = { x: (tile.column + 0.5) * width / 3, y: (tile.row + 0.5) * height / 3, radius: Math.min(width, height) / 3 * 0.41 };
-    } else if (rectangular) {
-      source2 = { x: width / 2, y: height / 2, radius: Math.min(width, height) / 2 };
-    } else if (moment.captureArt && art) {
-      if (width === PAPER_BADGE.size && height === PAPER_BADGE.size)
-        return { src: original };
-      source2 = { x: width / 2, y: height / 2, radius: width * 249 / 576 };
-    } else {
-      source2 = { x: width * (art?.x ?? 0.5), y: height * (art?.y ?? 0.5), radius: Math.min(width, height) * (art?.radius ?? 0.41) };
-    }
-    const canvas = composePaperBadge(image.ownerDocument, (ctx, target) => paintBadgeImage(ctx, image, source2, target));
-    const src = canvas && encodePaperBadge(canvas);
-    if (!src)
-      return null;
-    const keepOriginal = !atlas && (rectangular || Boolean(moment.captureArt && !art));
-    const presentation = { src, ...keepOriginal ? { original } : {} };
-    const cache = presentedArt.get(image) ?? /* @__PURE__ */ new Map();
-    cache.set(cacheKey, presentation);
-    presentedArt.set(image, cache);
-    return presentation;
-  }
-
-  // .build/typescript/runtime/journal-route-filter.js
-  function createJournalRouteFilter({ dom, routes, onChange }) {
-    const root = dom.get("journal-route");
-    const bindings = new EventBindings();
-    const choices = [{ id: "all", name: "全部路线" }, ...routes];
-    root.replaceChildren();
-    function reveal(label2) {
-      if (root.scrollWidth <= root.clientWidth)
-        return;
-      const bounds = root.getBoundingClientRect(), item = label2.getBoundingClientRect();
-      if (item.left < bounds.left + 6)
-        root.scrollLeft += item.left - bounds.left - 6;
-      else if (item.right > bounds.right - 6)
-        root.scrollLeft += item.right - bounds.right + 6;
-    }
-    const tabs = choices.map((choice) => {
-      const label2 = dom.html("label", null, root, "journal-route-option");
-      const input = dom.html("input", null, label2);
-      input.type = "radio";
-      input.name = "journal-route";
-      input.value = choice.id;
-      input.checked = choice.id === "all";
-      input.setAttribute("aria-controls", "journal-list");
-      const paper2 = dom.html("span", null, label2, "journal-route-tab");
-      dom.html("span", choice.name, paper2, "journal-route-name");
-      const count = dom.html("span", null, paper2, "journal-route-total");
-      count.setAttribute("aria-hidden", "true");
-      bindings.listen(input, "change", () => {
-        if (!input.checked)
-          return;
-        reveal(label2);
-        onChange(choice.id);
-      });
-      bindings.listen(input, "focus", () => reveal(label2));
-      return { ...choice, input, count };
-    });
-    return {
-      render(selected, moments) {
-        const counts = /* @__PURE__ */ new Map([["all", moments.length]]);
-        for (const moment of moments)
-          counts.set(moment.route, (counts.get(moment.route) ?? 0) + 1);
-        for (const tab of tabs) {
-          const count = counts.get(tab.id) ?? 0;
-          tab.input.checked = tab.id === selected;
-          tab.input.setAttribute("aria-label", `${tab.name}，${count}段回忆`);
-          tab.count.textContent = String(count);
-          tab.count.hidden = count === 0;
-        }
-      },
-      destroy() {
-        bindings.destroy();
-      }
-    };
-  }
-
-  // .build/typescript/runtime/journal-controller.js
-  function createJournalController(options) {
-    const { dom, catalog: D, data, scenes } = options;
-    const { get: $, html } = dom;
-    const bindings = new EventBindings();
-    const pictures = /* @__PURE__ */ new Map();
-    const store = createJournalStore({ catalog: D, data, storage: options.storage });
-    let records = store.read();
-    let tripMoments = [];
-    let route = "all";
-    let pageSize = data.PAGE_SIZE;
-    let session = null;
-    let trigger = null;
-    let bodyOverflow = "";
-    let entries = [];
-    let index = 0;
-    let flip = null;
-    let swipe = null;
-    const routeFilter = createJournalRouteFilter({ dom, routes: options.routes, onChange(selected) {
-      route = selected;
-      pageSize = data.PAGE_SIZE;
-      render();
-    } });
-    function tagImage(parent, file, label2, reading, moment) {
-      const key = file + "|" + label2;
-      const cached = reading && pictures.get(key);
-      if (cached) {
-        parent.appendChild(cached);
-        return cached;
-      }
-      const panel = reading ? html("div", null, parent, "journal-art-view") : null;
-      const badge2 = html("span", null, panel ?? parent, "journal-badge-art journal-tag-art");
-      badge2.setAttribute("role", "img");
-      badge2.setAttribute("aria-label", label2 + " · 手绘收藏标签");
-      const status = html("span", "画作展开中", badge2, "journal-art-status");
-      const image = html("img", null, badge2, "journal-tag-image");
-      status.setAttribute("aria-hidden", "true");
-      image.setAttribute("alt", "");
-      image.setAttribute("loading", reading ? "eager" : "lazy");
-      image.setAttribute("decoding", "async");
-      image.style.opacity = "0";
-      if (panel)
-        pictures.set(key, panel);
-      let presented = false;
-      image.onload = () => {
-        if (!presented && options.presentArt) {
-          presented = true;
-          const presentation = options.presentArt(image, moment);
-          if (presentation) {
-            const original = presentation.original;
-            if (panel && original) {
-              const ratio = image.naturalWidth / image.naturalHeight;
-              const toggle = html("button", "查看完整原画", panel, "journal-original-toggle");
-              toggle.type = "button";
-              toggle.setAttribute("aria-pressed", "false");
-              let showOriginal = false;
-              toggle.addEventListener("click", () => {
-                showOriginal = !showOriginal;
-                toggle.setAttribute("aria-pressed", String(showOriginal));
-                toggle.textContent = showOriginal ? "返回圆形徽章" : "查看完整原画";
-                badge2.setAttribute("aria-label", label2 + (showOriginal ? " · 完整原画" : " · 手绘收藏标签"));
-                badge2.style.aspectRatio = showOriginal ? String(ratio) : "1";
-                image.hidden = false;
-                image.style.opacity = "0";
-                status.hidden = false;
-                status.textContent = "画作展开中";
-                image.src = showOriginal ? original : presentation.src;
-              });
-            }
-            if (image.src !== presentation.src) {
-              image.src = presentation.src;
-              return;
-            }
-          }
-        }
-        const loadedSource = image.src;
-        const reveal = () => {
-          if (image.src !== loadedSource)
-            return;
-          status.hidden = true;
-          image.hidden = false;
-          image.style.opacity = "1";
-        };
-        if (reading && image.decode)
-          image.decode().then(reveal, reveal);
-        else
-          reveal();
-      };
-      image.onerror = () => {
-        status.textContent = "画作暂未加载";
-        image.hidden = true;
-        badge2.setAttribute("aria-label", label2 + " · 画作暂未加载，文字回忆仍可阅读");
-      };
-      image.setAttribute("src", file);
-      return panel ?? badge2;
-    }
-    function badge(parent, moment, reading = false) {
-      if (moment.edition === 3 && !D.hasTag(moment)) {
-        const note = html("span", null, parent, "journal-memory-label");
-        const svg = dom.document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("viewBox", "0 0 72 44");
-        svg.setAttribute("aria-hidden", "true");
-        const path = dom.document.createElementNS("http://www.w3.org/2000/svg", "path");
-        for (const [key, value] of Object.entries({ d: "M8 34L25 12L37 28L47 18L65 34M20 34H54M26 38H47", fill: "none", stroke: "currentColor", "stroke-width": "1.3", "stroke-linecap": "round", "stroke-linejoin": "round" }))
-          path.setAttribute(key, value);
-        svg.appendChild(path);
-        note.appendChild(svg);
-        html("span", "沿途记事", note);
-        html("small", "未获得标签", note);
-        return note;
-      }
-      const file = D.tagArt(moment) ?? tigerLegacyBadgeFile(moment);
-      if (file)
-        return tagImage(parent, file, moment.tag || moment.title, reading, moment);
-      const entryIndex = Math.max(0, D.CATALOG.findIndex((entry) => entry.id === moment.id));
-      const i = entryIndex % 9;
-      const node2 = html("span", null, parent, "journal-badge-art");
-      node2.setAttribute("role", "img");
-      node2.setAttribute("aria-label", moment.title + "的山野徽章");
-      node2.style.backgroundImage = `url('badges/${["moments-v1", "moments-expansion-v1", "moments-westlake-v2"][Math.floor(entryIndex / 9)]}.webp')`;
-      node2.style.backgroundPosition = `${i % 3 * 50}% ${Math.floor(i / 3) * 50}%`;
-      return node2;
-    }
-    function render(append = false) {
-      const list = $("journal-list");
-      const book = data.page(records, route, pageSize);
-      routeFilter.render(route, data.page(records, "all", D.MAX_MOMENTS).entries);
-      $("journal-count").textContent = `${book.totalAll}个瞬间`;
-      $("trip-count").textContent = `本次记下${options.tripCount()}个瞬间`;
-      const routeName = options.routes.find((r) => r.id === route)?.name || "全部路线";
-      $("journal-filter-count").textContent = book.total ? `${routeName} · ${book.total}段回忆${book.remaining ? `，已展示${book.entries.length}段` : ""}` : `${routeName} · 等待新的回忆`;
-      $("journal-more").hidden = book.remaining === 0;
-      $("journal-more").textContent = `再翻${Math.min(data.PAGE_SIZE, book.remaining)}段回忆 ↓`;
-      const offset = append ? list.children.length : 0;
-      if (!append)
-        list.replaceChildren();
-      if (!book.total) {
-        const empty = html("li", null, list, "journal-empty");
-        html("strong", "这一页，留给下一次相遇", empty);
-        html("p", "一阵风、一片落叶，或一段安静的水声。沿途收下的手绘和回忆，会一起留在这里。", empty);
-        return;
-      }
-      for (const moment of book.entries.slice(offset)) {
-        const li = html("li", null, list, "journal-entry found");
-        li.setAttribute("data-route", moment.route);
-        li.setAttribute("data-moment", moment.key);
-        li.setAttribute("data-kind", D.hasTag(moment) ? "tag" : "note");
-        const button = html("button", null, li, "journal-wall-button");
-        for (const [key, value] of Object.entries({ type: "button", "aria-haspopup": "dialog", "aria-controls": "journal-detail", "aria-expanded": "false", "aria-label": "翻看" + moment.title + " · " + moment.place }))
-          button.setAttribute(key, value);
-        badge(button, moment);
-        html("strong", moment.title, button, "journal-wall-title");
-        html("small", moment.place.split(" · ")[0], button, "journal-wall-place");
-        html("span", "翻看回忆 ↗", button, "journal-wall-hint").setAttribute("aria-hidden", "true");
-        button.addEventListener("click", () => open(moment, button));
-      }
-    }
-    function renderDetail(direction = 0) {
-      const moment = entries[index];
-      if (!moment)
-        return;
-      const page = $("journal-detail-page");
-      flip?.cancel();
-      flip = null;
-      page.replaceChildren();
-      page.scrollTop = 0;
-      if (D.hasTag(moment)) {
-        const art = html("div", null, page, "journal-illustration");
-        badge(art, moment, true);
-        html("span", "一幅手绘，留住这一刻", art, "journal-art-caption");
-      }
-      const copy2 = html("div", null, page, "journal-copy");
-      html("p", moment.place, copy2, "journal-location");
-      html("h3", moment.title, copy2, "journal-entry-title").id = "journal-detail-title";
-      html("p", moment.memory, copy2, "journal-memory");
-      const meta = html("div", null, copy2, "journal-entry-meta");
-      if (typeof moment.createdAt === "number" && Number.isFinite(moment.createdAt)) {
-        const date = new Date(moment.createdAt);
-        const time = html("time", date.toLocaleString("zh-CN", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" }), meta, "journal-time");
-        time.setAttribute("datetime", date.toISOString());
-      } else
-        html("span", "从旧手帐留下", meta, "journal-time");
-      if (!D.hasTag(moment))
-        html("span", "沿途记事", meta, "journal-entry-kind");
-      const weather = moment.weather && options.weather[moment.weather];
-      if (weather)
-        html("span", weather.name, meta, "journal-entry-weather");
-      const proof = moment.edition === 3 ? options.evidence(moment.id) : null;
-      const observation = proof ? null : options.observation(moment.id);
-      const note = proof || observation;
-      const source2 = proof || observation && options.source(observation.source);
-      if (note && source2) {
-        const detail = html("details", null, copy2, "journal-place-note");
-        html("summary", "关于这片山野", detail);
-        html("p", note.fact, detail);
-        const link = html("a", source2.name + " ↗", detail, "journal-source");
-        link.setAttribute("href", source2.url);
-        link.setAttribute("target", "_blank");
-        link.setAttribute("rel", "noopener noreferrer");
-      }
-      $("journal-detail-route").textContent = options.routes.find((r) => r.id === moment.route)?.name || moment.place;
-      $("journal-detail-position").textContent = `${index + 1} / ${entries.length}`;
-      $("journal-detail-announcement").textContent = `第${index + 1}段，共${entries.length}段：${moment.title}`;
-      const previous = entries[index - 1], next = entries[index + 1];
-      const controls = [["journal-detail-prev", previous, "上一枚"], ["journal-detail-next", next, "下一枚"]];
-      for (const [id, entry, label2] of controls) {
-        $(id).setAttribute("aria-disabled", String(!entry));
-        $(id).setAttribute("aria-label", entry ? label2 + "：" + entry.title : label2 === "上一枚" ? "已是第一枚" : "已是最后一枚");
-      }
-      $("journal-detail-hint").textContent = entries.length === 1 ? "这一刻，值得留住" : !previous ? "从这一枚，慢慢翻看" : !next ? "已翻到最后一枚" : "左右翻看沿途回忆";
-      const keep = /* @__PURE__ */ new Set();
-      for (const entry of [previous, moment, next]) {
-        if (!entry || !D.hasTag(entry))
-          continue;
-        const file = D.tagArt(entry) ?? tigerLegacyBadgeFile(entry);
-        if (!file)
-          continue;
-        const label2 = entry.tag || entry.title, key = file + "|" + label2;
-        keep.add(key);
-        if (!pictures.has(key))
-          tagImage(html("div"), file, label2, true, entry);
-      }
-      for (const key of pictures.keys())
-        if (!keep.has(key))
-          pictures.delete(key);
-      if (direction && !options.reduced && page.animate)
-        flip = page.animate([{ opacity: 0.35, transform: `translateX(${direction * 16}px)` }, { opacity: 1, transform: "translateX(0)" }], { duration: 220, easing: "ease-out" });
-    }
-    function open(moment, button) {
-      if (session || options.rewardOpen())
-        return;
-      entries = data.page(records, route, D.MAX_MOMENTS).entries;
-      index = entries.findIndex((entry) => entry.route === moment.route && entry.id === moment.id);
-      if (index < 0)
-        return;
-      renderDetail();
-      $("journal-detail").setAttribute("aria-modal", "true");
-      $("journal-detail").showModal();
-      session = scenes.enter("journal");
-      trigger = button;
-      button.setAttribute("aria-expanded", "true");
-      bodyOverflow = dom.document.body.style.overflow || "";
-      dom.document.body.style.overflow = "hidden";
-      options.pauseInteraction();
-      options.stopLoop();
-      options.refresh();
-      $("journal-detail-close").focus({ preventScroll: true });
-    }
-    function closed(resume = true) {
-      if (!session)
-        return;
-      const closing = session;
-      session = null;
-      dom.document.body.style.overflow = bodyOverflow;
-      swipe = null;
-      flip?.cancel();
-      flip = null;
-      trigger?.setAttribute("aria-expanded", "false");
-      scenes.leave(closing, resume);
-      options.refresh();
-      if (trigger?.isConnected)
-        trigger.focus({ preventScroll: true });
-      trigger = null;
-      entries = [];
-      pictures.clear();
-      $("journal-detail-page").replaceChildren();
-    }
-    function close(resume = true) {
-      closed(resume);
-      $("journal-detail").close();
-    }
-    function turn(direction) {
-      const next = index + direction;
-      if (!session || next < 0 || next >= entries.length)
-        return;
-      index = next;
-      renderDetail(direction);
-    }
-    function remember(moment) {
-      const result = store.save(moment);
-      if (result.kind === "error") {
-        $("journal-storage").textContent = result.message;
-        return result;
-      }
-      records = result.moments;
-      if (!tripMoments.some((entry) => entry.route === moment.route && entry.id === moment.id))
-        tripMoments.push(moment);
-      $("journal-storage").textContent = "回忆自动保存在这个浏览器，相同的片刻只留一页。";
-      const message = result.change === "unchanged" ? "再次遇见，手帐中已留存" : result.change === "upgraded" ? "手帐已补上手绘" : "刚刚收下标签";
-      $("discovery-status").textContent = `${message}「${moment.title}」 · ${moment.place}`;
-      render();
-      options.onRemember(moment);
-      return result;
-    }
-    function renderEnding() {
-      const section = $("ending-journal"), list = $("ending-badges"), detail = $("ending-detail");
-      const collected = tripMoments.filter((moment) => D.hasTag(moment));
-      section.hidden = !collected.length;
-      list.replaceChildren();
-      detail.textContent = "";
-      for (const moment of collected) {
-        const button = html("button", null, list, "ending-badge-button");
-        button.setAttribute("type", "button");
-        button.setAttribute("aria-expanded", "false");
-        button.setAttribute("aria-controls", "ending-detail");
-        button.setAttribute("aria-label", "翻看" + moment.title);
-        badge(button, moment);
-        html("small", moment.title, button);
-        button.addEventListener("click", () => {
-          const expanded = button.getAttribute("aria-expanded") === "true";
-          for (const b of Array.from(list.children))
-            b.setAttribute("aria-expanded", "false");
-          button.setAttribute("aria-expanded", String(!expanded));
-          detail.textContent = expanded ? "" : moment.place + " · " + moment.memory;
-        });
-      }
-    }
-    function bind() {
-      const dialog = $("journal-detail");
-      bindings.listen($("journal-detail-close"), "click", () => close());
-      bindings.listen($("journal-detail-prev"), "click", () => turn(-1));
-      bindings.listen($("journal-detail-next"), "click", () => turn(1));
-      bindings.listen(dialog, "close", () => closed());
-      bindings.listen(dialog, "keydown", (event) => {
-        event.stopPropagation();
-        const target = event.target;
-        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || target.isContentEditable || /^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName))
-          return;
-        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-          event.preventDefault();
-          turn(event.key === "ArrowLeft" ? -1 : 1);
-        }
-      });
-      const page = $("journal-detail-page");
-      bindings.listen(page, "pointerdown", (event) => {
-        swipe = null;
-        if (event.pointerType !== "touch" || !event.isPrimary || event.target.closest?.("button,a,summary,details"))
-          return;
-        swipe = { id: event.pointerId, x: event.clientX, y: event.clientY, time: event.timeStamp, scroll: page.scrollTop };
-      });
-      bindings.listen(page, "pointerup", (event) => {
-        const start = swipe;
-        swipe = null;
-        if (!start || start.id !== event.pointerId || event.timeStamp - start.time > 650 || Math.abs(page.scrollTop - start.scroll) > 8)
-          return;
-        const dx = event.clientX - start.x, dy = event.clientY - start.y;
-        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.7)
-          turn(dx < 0 ? 1 : -1);
-      });
-      bindings.listen(page, "pointercancel", () => {
-        swipe = null;
-      });
-      bindings.listen($("journal-more"), "click", () => {
-        const previous = $("journal-list").children.length;
-        pageSize += data.PAGE_SIZE;
-        render(true);
-        $("journal-list").children[previous]?.querySelector("button")?.focus();
-      });
-    }
-    function reload() {
-      records = store.read();
-      render();
-    }
-    const browser = dom.document.defaultView;
-    const storageChanged = (event) => {
-      if (event.storageArea === options.storage)
-        reload();
-    };
-    browser?.addEventListener("storage", storageChanged);
-    bind();
-    return {
-      get open() {
-        return session !== null;
-      },
-      get records() {
-        return records;
-      },
-      render,
-      renderEnding,
-      remember,
-      close,
-      reload,
-      resetTrip() {
-        tripMoments = [];
-      },
-      recent(routeId) {
-        return records.filter((moment) => moment.route === routeId).slice(-3).map((moment) => moment.id);
-      },
-      destroy() {
-        close(false);
-        routeFilter.destroy();
-        bindings.destroy();
-        browser?.removeEventListener("storage", storageChanged);
-      }
-    };
-  }
-
-  // .build/typescript/runtime/journal-badge.js
-  var ROUND_BADGE_IDS = /* @__PURE__ */ new Set(["wugong-forest-leaves", "wugong-camp-stars", "wugong-homeward-pages"]);
-  var SIZE = 640;
-  var CENTER = SIZE / 2;
-  var outline = (radius) => Array.from({ length: 145 }, (_, i) => {
-    const a = i / 144 * Math.PI * 2, r = radius + Math.sin(a * 11) * 0.8 + Math.sin(a * 23) * 0.35;
-    return `${i ? "L" : "M"}${CENTER + Math.cos(a) * r},${CENTER + Math.sin(a) * r}`;
-  }).join(" ") + "Z";
-  var outer = outline(302);
-  var inner = outline(279);
-  var gold = outline(295);
-  var ink = outline(285);
-  var sprigs = Array.from({ length: 18 }, (_, i) => {
-    const a = 0.25 + i / 17 * 1.1, sign = i % 2 ? 1 : -1, x = CENTER + sign * Math.sin(a) * 292, y = CENTER + Math.cos(a) * 292;
-    return `M${x},${y}q${sign * 7},-12 ${sign * 1},-18q${-sign * 9},9 ${-sign * 1},18Z`;
-  });
-  function circularBadge(image, options = {}) {
-    if (!image.naturalWidth || !image.naturalHeight)
-      return null;
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = SIZE;
-    const ctx = canvas.getContext("2d");
-    if (!ctx)
-      return null;
-    let x = 0, y = 0, width = image.naturalWidth, height = image.naturalHeight;
-    if (options.legacyPaper) {
-      x = width * 24 / 900;
-      y = height * 24 / 660;
-      width *= 852 / 900;
-      height *= 530 / 660;
-    }
-    const side = Math.min(width, height), centerX = options.camp ? 0.36 : 0.5;
-    x += Math.max(0, Math.min(width - side, width * centerX - side / 2));
-    y += (height - side) / 2;
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(CENTER, CENTER, 280, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.drawImage(image, x, y, side, side, 40, 40, 560, 560);
-    ctx.restore();
-    ctx.fillStyle = "#f3edd9";
-    ctx.fill(new Path2D(`${outer} ${inner}`), "evenodd");
-    ctx.strokeStyle = "#b69a61";
-    ctx.lineWidth = 2.4;
-    ctx.stroke(new Path2D(gold));
-    ctx.strokeStyle = "#a6a67b";
-    ctx.lineWidth = 1.1;
-    ctx.stroke(new Path2D(ink));
-    ctx.fillStyle = "#b4a777";
-    ctx.globalAlpha = 0.8;
-    for (const d of sprigs)
-      ctx.fill(new Path2D(d));
-    ctx.globalAlpha = 1;
-    return canvas;
-  }
-  function roundJournalArt(image, moment) {
-    if (moment.route === "tiger")
-      return tigerJournalArt(image, moment);
-    if (!ROUND_BADGE_IDS.has(moment.id) || image.naturalWidth <= image.naturalHeight * 1.1)
-      return null;
-    const canvas = circularBadge(image, { camp: moment.id === "wugong-camp-stars", legacyPaper: !!moment.captureArt && moment.id !== "wugong-camp-stars" });
-    return canvas ? { src: canvas.toDataURL("image/webp", 0.88) } : null;
-  }
-
-  // .build/typescript/runtime/music-layer.js
-  var WUGONG_MUSIC = Object.freeze({
-    id: "wugong-reverie",
-    file: "audio/wugong-reverie-v1.mp3",
-    title: "Reverie",
-    author: "Scott Buckley",
-    source: "https://www.scottbuckley.com.au/library/reverie/",
-    license: "CC BY 4.0"
-  });
-  var theme = (slug, title) => Object.freeze({
-    id: "wugong-" + slug,
-    file: "audio/wugong-" + slug + "-loop-v1.mp3",
-    title,
-    author: "Scott Buckley",
-    source: "https://www.scottbuckley.com.au/library/" + slug + "/",
-    license: "CC BY 4.0"
-  });
-  var WUGONG_THEMES = Object.freeze({
-    wind: theme("childhood", "Childhood"),
-    clouds: theme("cirrus", "Cirrus"),
-    greet: theme("a-kind-of-hope", "A Kind Of Hope"),
-    puzzle: WUGONG_MUSIC
-  });
-  var MOGAN_MUSIC = WUGONG_THEMES.greet;
-  var MOGAN_THEMES = Object.freeze({ rain: WUGONG_THEMES.clouds, footsteps: WUGONG_MUSIC, sling: WUGONG_THEMES.wind });
-  var momentGames = Object.freeze({
-    "meadow-bird": "wind",
-    "meadow-butterfly": "clouds",
-    "wugong-wind-hiker": "greet",
-    "meadow-flower": "puzzle",
-    "bamboo-drop": "rain",
-    "bamboo-step": "footsteps",
-    "bamboo-leaf": "sling"
-  });
-  function musicLevel(scene) {
-    if (!["wugong", "mogan"].includes(scene.routeId || "") || !scene.mode || scene.mode === "silent")
-      return 0;
-    const game = scene.momentGame || momentGames[scene.momentId || ""];
-    let level = scene.mode === "photo" ? 0.47 : scene.mode === "choice" ? 0.24 : scene.mode === "reward" ? 0.42 : 0.4;
-    if (scene.mode === "moment")
-      level = game === "greet" ? 0.25 : game === "puzzle" ? 0.35 : game === "clouds" ? 0.32 : 0.29;
-    if (scene.routeId === "mogan") {
-      level = scene.mode === "moment" ? game === "footsteps" ? 0.2 : game === "rain" ? 0.24 : 0.3 : scene.mode === "reward" ? 0.34 : scene.mode === "choice" ? 0.2 : 0.33;
-    }
-    if (scene.weather === "storm")
-      level *= 0.65;
-    else if (scene.weather === "rain")
-      level *= 0.82;
-    return level;
-  }
-  function musicTrack(scene) {
-    if (!musicLevel(scene))
-      return null;
-    const game = scene.momentGame || momentGames[scene.momentId || ""];
-    if (scene.routeId === "mogan") {
-      if ((scene.mode === "moment" || scene.mode === "reward") && game && Object.hasOwn(MOGAN_THEMES, game))
-        return MOGAN_THEMES[game];
-      return MOGAN_MUSIC;
-    }
-    if ((scene.mode === "moment" || scene.mode === "reward") && game && Object.hasOwn(WUGONG_THEMES, game))
-      return WUGONG_THEMES[game];
-    return WUGONG_MUSIC;
-  }
-  function createTrackLayer({ context, destination, track, createMedia = () => typeof Audio === "function" ? new Audio() : null, timers = globalThis, onStateChange = () => {
-  } }) {
-    let media = null;
-    let source2 = null;
-    let volume = null;
-    let state = "off";
-    let desired = false, destroyed = false, failed = false, pending = false;
-    let failureState = "error";
-    let epoch = 0, target = 0;
-    let stopTimer = null;
-    let fade = null;
-    let lastDuck = -Infinity;
-    const listeners = [];
-    function publish(next) {
-      if (state === next || destroyed)
-        return;
-      state = next;
-      onStateChange();
-    }
-    function cancelStop() {
-      if (stopTimer !== null)
-        timers.clearTimeout(stopTimer);
-      stopTimer = null;
-    }
-    function hold() {
-      if (!volume)
-        return 0;
-      const now = context.currentTime, param = volume.gain;
-      const held = fade ? fade.from + (fade.to - fade.from) * Math.max(0, Math.min(1, (now - fade.at) / fade.duration)) : param.value;
-      if (param.cancelAndHoldAtTime)
-        param.cancelAndHoldAtTime(now);
-      else {
-        param.cancelScheduledValues(now);
-        param.setValueAtTime(held, now);
-      }
-      return held;
-    }
-    function ramp(level, duration) {
-      if (!volume)
-        return;
-      const from = hold(), now = context.currentTime;
-      volume.gain.linearRampToValueAtTime(level, now + duration);
-      fade = { from, to: level, at: now, duration };
-    }
-    function silence() {
-      if (!volume)
-        return;
-      volume.gain.cancelScheduledValues(context.currentTime);
-      volume.gain.setValueAtTime(0, context.currentTime);
-      fade = null;
-    }
-    function listen(type, fn) {
-      const listener = fn;
-      media.addEventListener(type, listener);
-      listeners.push([type, listener]);
-    }
-    function prepare() {
-      if (media)
-        return true;
-      if (typeof context.createMediaElementSource !== "function") {
-        failed = true;
-        state = failureState = "unavailable";
-        return false;
-      }
-      try {
-        media = createMedia();
-        if (!media) {
-          failed = true;
-          state = failureState = "unavailable";
-          return false;
-        }
-        media.preload = "none";
-        media.loop = true;
-        media.setAttribute("playsinline", "");
-        source2 = context.createMediaElementSource(media);
-        volume = context.createGain();
-        volume.gain.value = 0;
-        source2.connect(volume);
-        volume.connect(destination);
-        listen("playing", () => {
-          if (!desired || destroyed || failed) {
-            media?.pause();
-            return;
-          }
-          failed = false;
-          ramp(target, 2.4);
-          publish("playing");
-        });
-        listen("waiting", () => {
-          if (desired) {
-            silence();
-            publish("loading");
-          }
-        });
-        listen("error", () => {
-          if (!desired || destroyed)
-            return;
-          failed = true;
-          pending = false;
-          ++epoch;
-          failureState = "error";
-          silence();
-          media?.pause();
-          publish("error");
-        });
-        media.src = track.file;
-        return true;
-      } catch (_) {
-        failed = true;
-        source2?.disconnect();
-        volume?.disconnect();
-        source2 = null;
-        volume = null;
-        media?.pause();
-        if (media)
-          for (const [type, fn] of listeners)
-            media.removeEventListener(type, fn);
-        listeners.length = 0;
-        media = null;
-        state = failureState = "unavailable";
-        return false;
-      }
-    }
-    function play() {
-      if (pending || failed || !media || !desired || destroyed)
-        return;
-      if (!media.paused) {
-        if (state === "paused") {
-          state = "playing";
-          ramp(target, 1.4);
-        }
-        return;
-      }
-      const token = ++epoch;
-      pending = true;
-      state = "loading";
-      try {
-        Promise.resolve(media.play()).then(() => {
-          if (destroyed || !desired) {
-            media?.pause();
-            return;
-          }
-          if (token !== epoch)
-            return;
-          pending = false;
-          ramp(target, 2.4);
-          publish("playing");
-        }).catch((error) => {
-          if (token !== epoch || destroyed || !desired)
-            return;
-          pending = false;
-          failed = true;
-          silence();
-          media?.pause();
-          failureState = error instanceof Error && error.name === "NotAllowedError" ? "blocked" : "error";
-          publish(failureState);
-        });
-      } catch (_) {
-        pending = false;
-        failed = true;
-        silence();
-        state = failureState = "error";
-      }
-    }
-    function pause(immediate = false, duration = 0.32) {
-      if (destroyed)
-        return;
-      desired = false;
-      pending = false;
-      const token = ++epoch;
-      cancelStop();
-      if (!media)
-        return;
-      if (immediate || media.paused) {
-        silence();
-        media.pause();
-      } else {
-        ramp(0, duration);
-        stopTimer = timers.setTimeout(() => {
-          stopTimer = null;
-          if (token === epoch && !desired)
-            media?.pause();
-        }, Math.round(duration * 1e3) + 20);
-      }
-      state = "paused";
-    }
-    function sync(scene) {
-      if (destroyed)
-        return;
-      const next = musicLevel(scene);
-      if (!next) {
-        if (desired)
-          pause();
-        return;
-      }
-      cancelStop();
-      const wasDesired = desired, changed = Math.abs(next - target) > 2e-3;
-      target = next;
-      desired = true;
-      if (failed) {
-        state = failureState;
-        return;
-      }
-      if (!prepare())
-        return;
-      if (!wasDesired && !media.paused) {
-        state = "playing";
-        ramp(target, 1.4);
-      } else if (changed && state === "playing")
-        ramp(target, 1.2);
-      play();
-    }
-    function resume(scene) {
-      if (destroyed)
-        return;
-      failed = false;
-      if (media?.error)
-        media.load();
-      sync(scene);
-    }
-    function duck(strength = 0.78, length = 0.65) {
-      if (!volume || !desired || state !== "playing" || context.currentTime - lastDuck < 0.12)
-        return;
-      lastDuck = context.currentTime;
-      const now = context.currentTime;
-      hold();
-      const lower = target * Math.max(0.5, Math.min(1, strength));
-      volume.gain.linearRampToValueAtTime(lower, now + 0.04);
-      volume.gain.linearRampToValueAtTime(target, now + length);
-      fade = { from: lower, to: target, at: now + 0.04, duration: length - 0.04 };
-    }
-    function destroy() {
-      if (destroyed)
-        return;
-      pause(true);
-      destroyed = true;
-      cancelStop();
-      if (media) {
-        for (const [type, fn] of listeners)
-          media.removeEventListener(type, fn);
-        media.removeAttribute("src");
-        media.load();
-      }
-      source2?.disconnect();
-      volume?.disconnect();
-      media = null;
-      source2 = null;
-      volume = null;
-    }
-    return { sync, resume, pause, duck, destroy, get state() {
-      return state;
-    }, get playing() {
-      return desired && state === "playing";
-    } };
-  }
-  function createMusicLayer(options) {
-    const layers = /* @__PURE__ */ new Map();
-    let requested = null;
-    let previous = null;
-    let desired = false, destroyed = false;
-    function fadePrevious(duration) {
-      const id = previous;
-      previous = null;
-      if (id && id !== requested?.id)
-        layers.get(id)?.pause(false, duration);
-    }
-    function getLayer(track) {
-      let layer = layers.get(track.id);
-      if (!layer) {
-        layer = createTrackLayer({ ...options, track, onStateChange: () => {
-          if (destroyed)
-            return;
-          if (desired && requested?.id === track.id) {
-            const current = layers.get(track.id);
-            if (current?.state === "playing")
-              fadePrevious(0.95);
-            else if (current && ["error", "blocked", "unavailable"].includes(current.state))
-              fadePrevious(0.32);
-          }
-          options.onStateChange?.();
-        } });
-        layers.set(track.id, layer);
-      }
-      return layer;
-    }
-    function pause(immediate = false) {
-      desired = false;
-      previous = null;
-      for (const layer of layers.values())
-        layer.pause(immediate);
-    }
-    function select(scene, retry) {
-      if (destroyed)
-        return;
-      const track = musicTrack(scene);
-      if (!track) {
-        if (desired)
-          pause();
-        return;
-      }
-      if (requested?.id !== track.id) {
-        const outgoing = requested && layers.get(requested.id)?.playing ? requested.id : previous;
-        for (const [id, layer] of layers)
-          if (id !== track.id && id !== outgoing)
-            layer.pause(true);
-        previous = outgoing !== track.id ? outgoing : null;
-        requested = track;
-      }
-      desired = true;
-      if (previous)
-        layers.get(previous)?.sync(scene);
-      const current = getLayer(track);
-      retry ? current.resume(scene) : current.sync(scene);
-      if (current.state === "playing")
-        fadePrevious(0.95);
-      else if (["error", "blocked", "unavailable"].includes(current.state))
-        fadePrevious(0.32);
-    }
-    function destroy() {
-      if (destroyed)
-        return;
-      destroyed = true;
-      desired = false;
-      previous = null;
-      for (const layer of layers.values())
-        layer.destroy();
-      layers.clear();
-    }
-    return {
-      sync: (scene) => select(scene, false),
-      resume: (scene) => select(scene, true),
-      pause,
-      duck: (strength, length) => {
-        if (desired && requested)
-          layers.get(requested.id)?.duck(strength, length);
-      },
-      destroy,
-      get track() {
-        return requested;
-      },
-      get state() {
-        return requested ? layers.get(requested.id)?.state || "off" : "off";
-      },
-      get playing() {
-        return !!(desired && requested && layers.get(requested.id)?.playing);
-      }
-    };
-  }
-
   // .build/typescript/runtime/mogan/rules.js
   var MOGAN_GAMES = Object.freeze({ "bamboo-drop": "rain", "bamboo-step": "footsteps", "bamboo-leaf": "sling" });
   var CUP = Object.freeze({ width: 132, anchorY: 0.184, mouthY: 0.73, mouthRadius: 38 * 1.32, waterRadius: 34 * 1.32, waterDepth: 14 * 1.32 });
@@ -6235,7 +5069,7 @@ var TrailRuntime = (() => {
     return { adapter, destroy: () => bindings.destroy() };
   }
 
-  // .build/typescript/wugong-walk/model.js
+  // .build/typescript/journey/geometry.js
   function curve(knots2, subdivisions = 15) {
     if (knots2.length < 2)
       return [...knots2];
@@ -7707,6 +6541,1594 @@ var TrailRuntime = (() => {
     });
     bindings.listen(zoom, "input", () => onAction("zoom", Number(zoom.value)));
     return { adapter, destroy: () => bindings.destroy() };
+  }
+
+  // .build/typescript/runtime/legacy-game-registry.js
+  function installLegacyHomeGames(options) {
+    const { mini, dom, platform, legacy } = options, onAction = mini.action;
+    const mogan = platform && legacy ? createMoganGames({ dom, legacy, onAction }) : null;
+    if (mogan)
+      mini.registerGame(Object.keys(MOGAN_GAMES), mogan.adapter);
+    const tiger = createTigerGames({ dom, onAction });
+    mini.registerGame(Object.keys(TIGER_GAMES), tiger.adapter);
+    const trail = createTigerTrailGames({ dom, onAction });
+    mini.registerGame(Object.keys(TRAIL_GAMES), trail.adapter);
+    const installed = /* @__PURE__ */ new Set([
+      ...mogan ? Object.keys(MOGAN_GAMES) : [],
+      ...Object.keys(TIGER_GAMES),
+      ...Object.keys(TRAIL_GAMES)
+    ]);
+    const tigerKinds = TIGER_GAMES, moganKinds = MOGAN_GAMES;
+    let destroyed = false;
+    return {
+      has: (entryId) => installed.has(entryId),
+      kindFor(entryId) {
+        if (!entryId)
+          return void 0;
+        return TRAIL_GAMES[entryId] || tigerKinds[entryId] || (legacy ? moganKinds[entryId] : void 0) || platform?.kinds[entryId];
+      },
+      destroy() {
+        if (destroyed)
+          return;
+        destroyed = true;
+        mogan?.destroy();
+        tiger.destroy();
+        trail.destroy();
+      }
+    };
+  }
+
+  // .build/typescript/runtime/reward-controller.js
+  function createRewardController(options) {
+    const { dom, scenes, catalog: D } = options, { get: $ } = dom;
+    const bindings = new EventBindings();
+    let current = null;
+    let session = null;
+    let collecting = false;
+    let flight = null;
+    let bodyOverflow = "";
+    let imageEntry = null;
+    let imageListener = null;
+    function close(resume = true) {
+      if (!current)
+        return;
+      const wasMini = !!options.gameKind(current.id), closing = session;
+      current = null;
+      session = null;
+      collecting = false;
+      flight?.cancel();
+      flight = null;
+      if (imageEntry && imageEntry.onChange === imageListener)
+        imageEntry.onChange = null;
+      imageEntry = null;
+      imageListener = null;
+      $("wind-keepsake").hidden = true;
+      $("reward-overlay").hidden = true;
+      $("app-main").removeAttribute("inert");
+      dom.document.body.style.overflow = bodyOverflow;
+      scenes.leave(closing, resume);
+      options.refresh();
+      if (resume) {
+        $("walk-toggle").focus({ preventScroll: true });
+        if (wasMini && !options.reduced && !options.autoCollect)
+          $("journey-stage").animate?.([{ opacity: 0.6, transform: "scale(.985)" }, { opacity: 1, transform: "scale(1)" }], { duration: 450, easing: "ease-out" });
+      }
+    }
+    function show(moment, returnStatus) {
+      if (!D.hasTag(moment) || options.autoCollect && (!moment.earned || moment.edition !== 3))
+        return false;
+      if (current)
+        close(false);
+      current = moment;
+      collecting = false;
+      session = scenes.enter("reward", returnStatus);
+      const game = options.gameKind(moment.id);
+      $("reward-overlay").setAttribute("data-wind", String(!!game));
+      $("reward-overlay").setAttribute("data-collecting", "false");
+      $("reward-overlay").setAttribute("data-auto", String(!!options.autoCollect));
+      $("reward-continue").disabled = false;
+      $("reward-continue").hidden = !!options.autoCollect;
+      $("reward-continue").textContent = game ? "收进手帐，继续走 →" : "收好徽章 →";
+      const file = D.tagArt(moment), cached = options.cache?.request(file, "high") || null;
+      const display = () => {
+        if (current !== moment)
+          return;
+        let image = $("reward-art");
+        if (options.presentArt && current) {
+          const framed = cached?.state === "ready" ? options.presentArt(cached.image, current) : null;
+          const source2 = framed?.src || file;
+          if (source2 && image.getAttribute("src") !== source2)
+            image.setAttribute("src", source2);
+        } else if (cached?.state === "ready" && cached.image !== image) {
+          image.removeAttribute("id");
+          cached.image.id = "reward-art";
+          cached.image.setAttribute("class", "reward-art");
+          image.replaceWith(cached.image);
+          image = cached.image;
+        }
+        if (!cached && file)
+          image.setAttribute("src", file);
+        image.setAttribute("alt", (moment.tag || moment.title) + " · 手绘水彩徽章");
+        image.hidden = !!cached && cached.state !== "ready";
+        $("reward-loading").hidden = !cached || cached.state === "ready";
+        $("reward-loading").textContent = cached?.state === "error" ? "画作暂未加载，可收好后在手帐查看。" : "正在展开手绘纪念…";
+      };
+      if (cached) {
+        imageEntry = cached;
+        imageListener = display;
+        cached.onChange = display;
+      }
+      display();
+      $("reward-title").textContent = moment.tag || moment.title;
+      $("reward-place").textContent = moment.place;
+      $("reward-copy").textContent = D.item(moment.id).result;
+      $("reward-overlay").hidden = false;
+      $("app-main").setAttribute("inert", "");
+      bodyOverflow = dom.document.body.style.overflow || "";
+      dom.document.body.style.overflow = "hidden";
+      options.stopLoop();
+      options.refresh();
+      if (options.autoCollect) {
+        $("reward-dialog").setAttribute("tabindex", "-1");
+        $("reward-dialog").focus({ preventScroll: true });
+      } else
+        $("reward-continue").focus({ preventScroll: true });
+      options.audio.mini?.(game || "memory", "reveal");
+      if (options.autoCollect && !dom.document.hidden)
+        collect();
+      return true;
+    }
+    function collect() {
+      if (!current || collecting)
+        return;
+      if (options.onCollected?.(current) === false) {
+        $("reward-continue").hidden = false;
+        $("reward-continue").textContent = "重试保存";
+        $("reward-continue").focus({ preventScroll: true });
+        return;
+      }
+      if (options.autoCollect)
+        $("reward-continue").hidden = true;
+      const game = options.gameKind(current.id);
+      options.audio.mini?.(game || "memory", "collect");
+      const targetElement = $(options.autoCollect ? "reward-overlay" : "reward-dialog");
+      if (!targetElement.animate || !options.autoCollect && (!game || options.reduced)) {
+        close();
+        return;
+      }
+      collecting = true;
+      const moment = current;
+      $("reward-continue").disabled = true;
+      $("reward-overlay").setAttribute("data-collecting", "true");
+      $("wind-keepsake").hidden = !!options.autoCollect;
+      let animation;
+      try {
+        if (options.autoCollect) {
+          const hold = options.reduced ? 1200 : 1500, fade = options.reduced ? 180 : 950;
+          animation = flight = targetElement.animate([{ opacity: 1 }, { opacity: 1, offset: hold / (hold + fade) }, { opacity: 0 }], { duration: hold + fade, easing: "ease-in-out", fill: "forwards" });
+        } else {
+          const box = $("reward-dialog").getBoundingClientRect(), target = $("wind-keepsake").getBoundingClientRect();
+          const dx = target.left + target.width / 2 - box.left - box.width / 2, dy = target.top + target.height / 2 - box.top - box.height / 2;
+          animation = flight = targetElement.animate([{ transform: "translate(0,0) scale(1) rotate(0)", opacity: 1 }, { transform: "translate(0,-16px) scale(1.025) rotate(-2deg)", opacity: 1, offset: 0.2 }, { transform: `translate(${dx}px,${dy}px) scale(.08) rotate(6deg)`, opacity: 0 }], { duration: 680, easing: "cubic-bezier(.55,0,.25,1)", fill: "forwards" });
+        }
+      } catch {
+        close();
+        return;
+      }
+      const finish2 = () => {
+        if (current === moment && flight === animation)
+          close();
+      };
+      animation.finished.then(finish2, finish2);
+    }
+    bindings.listen($("reward-continue"), "click", collect);
+    function visibilityChanged() {
+      if (!options.autoCollect || !current)
+        return;
+      if (dom.document.hidden)
+        flight?.pause?.();
+      else if (flight)
+        flight.play?.();
+      else if ($("reward-continue").hidden)
+        collect();
+    }
+    if (options.autoCollect)
+      dom.document.addEventListener("visibilitychange", visibilityChanged);
+    return {
+      get current() {
+        return current;
+      },
+      get open() {
+        return current !== null;
+      },
+      show,
+      close,
+      collect,
+      handleKey(event) {
+        if (!current)
+          return false;
+        if (event.key === "Escape") {
+          event.preventDefault();
+          close();
+        } else if (event.key === "Tab") {
+          event.preventDefault();
+          $($("reward-continue").hidden ? "reward-dialog" : "reward-continue").focus({ preventScroll: true });
+        }
+        return true;
+      },
+      destroy() {
+        close(false);
+        bindings.destroy();
+        dom.document.removeEventListener("visibilitychange", visibilityChanged);
+      }
+    };
+  }
+
+  // .build/typescript/runtime/private-photo.js
+  function isPhotoPointId(value) {
+    return value === "jx-creek" || value === "jx-tea";
+  }
+  var PEN_NAMES = ["松间客", "溪边客", "茶山客", "听雨人", "望云人", "寻叶人"];
+  function isPenName(value) {
+    return PEN_NAMES.some((name) => name === value);
+  }
+  function parsePrivatePhoto(value) {
+    if (!value || typeof value !== "object" || !("kind" in value) || value.kind !== "private-local" || !("id" in value) || typeof value.id !== "string" || !value.id || !("route" in value) || value.route !== "westlake" || !("point" in value) || typeof value.point !== "string" || !("sceneVersion" in value) || typeof value.sceneVersion !== "string" || !("createdAt" in value) || typeof value.createdAt !== "number" || !Number.isFinite(value.createdAt) || !("image" in value) || typeof value.image !== "string" || !/^data:image\/(webp|png);base64,[A-Za-z0-9+/=]+$/.test(value.image) || !("body" in value) || typeof value.body !== "string" || !("anchor" in value) || typeof value.anchor !== "number" || !Number.isInteger(value.anchor) || value.anchor < 0 || value.anchor > 2 || !("zoom" in value) || typeof value.zoom !== "number" || !Number.isFinite(value.zoom) || value.zoom < 1 || value.zoom > 1.3 || !("attribution" in value) || !value.attribution || typeof value.attribution !== "object" || !("kind" in value.attribution))
+      return null;
+    if (!isPhotoPointId(value.point))
+      return null;
+    let attribution;
+    if (value.attribution.kind === "anonymous")
+      attribution = { kind: "anonymous" };
+    else if (value.attribution.kind === "pen-name" && "name" in value.attribution && isPenName(value.attribution.name))
+      attribution = { kind: "pen-name", name: value.attribution.name };
+    else
+      return null;
+    return { id: value.id, kind: "private-local", route: "westlake", point: value.point, sceneVersion: value.sceneVersion, createdAt: value.createdAt, image: value.image, body: value.body, anchor: value.anchor, zoom: value.zoom, attribution };
+  }
+
+  // .build/typescript/runtime/private-photo-store.js
+  var PRIVATE_PHOTO_DB = "trailbound-private-photos-v1";
+  var PRIVATE_PHOTO_DB_VERSION = 1;
+  var PRIVATE_PHOTO_CHANGED = "trailbound-private-photo-saved";
+  function createPrivatePhotoStore(factory) {
+    let opening = null;
+    function open() {
+      if (opening)
+        return opening;
+      opening = new Promise((resolve, reject) => {
+        if (!factory) {
+          reject(new Error("浏览器未提供本地照片存储"));
+          return;
+        }
+        const request = factory.open(PRIVATE_PHOTO_DB, PRIVATE_PHOTO_DB_VERSION);
+        request.onupgradeneeded = () => {
+          request.result.createObjectStore("photos", { keyPath: "id" });
+        };
+        request.onsuccess = () => {
+          request.result.onversionchange = () => {
+            request.result.close();
+            opening = null;
+          };
+          resolve(request.result);
+        };
+        request.onerror = () => reject(request.error);
+        request.onblocked = () => reject(new Error("请合上其他旧版本页面后重试"));
+      });
+      opening.catch(() => {
+        opening = null;
+      });
+      return opening;
+    }
+    return {
+      async read() {
+        try {
+          const db = await open();
+          const photos = await new Promise((resolve, reject) => {
+            const request = db.transaction("photos", "readonly").objectStore("photos").getAll();
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+              const rows = request.result;
+              resolve(Array.isArray(rows) ? rows.map(parsePrivatePhoto).filter((photo) => photo !== null).sort((a, b) => b.createdAt - a.createdAt) : []);
+            };
+          });
+          return { kind: "loaded", photos };
+        } catch {
+          return { kind: "error", message: "本机私藏暂时无法读取，原有照片没有被删除。可以重试。" };
+        }
+      },
+      async save(photo) {
+        const snapshot = parsePrivatePhoto(photo);
+        if (!snapshot)
+          return { kind: "error", message: "这张照片还没准备好，请重新拍下这一眼。" };
+        try {
+          const db = await open();
+          await new Promise((resolve, reject) => {
+            const tx = db.transaction("photos", "readwrite");
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+            tx.onabort = () => reject(tx.error);
+            tx.objectStore("photos").put(snapshot);
+          });
+          return { kind: "stored", photo: snapshot };
+        } catch {
+          return { kind: "error", message: "这张照片还没保存成功，请腾出空间后重试。编辑内容仍留在这里。" };
+        }
+      },
+      async close() {
+        const pending = opening;
+        opening = null;
+        if (pending) {
+          try {
+            (await pending).close();
+          } catch {
+          }
+        }
+      }
+    };
+  }
+
+  // .build/typescript/runtime/journal-store.js
+  function createJournalStore({ catalog, data, storage }) {
+    const read = () => catalog.loadMoments(storage);
+    function save(moment) {
+      if (!catalog.hasTag(moment) || moment.edition === 3 && !moment.earned) {
+        return { kind: "error", message: "完成互动后才会记入手帐。" };
+      }
+      const result = data.remember(read(), moment);
+      if (result.status === "full")
+        return { kind: "error", message: "手帐已满，原有回忆已保留。可以先留在这里看看画。" };
+      if (result.status !== "unchanged" && !catalog.saveMoments(storage, result.moments)) {
+        return { kind: "error", message: "暂时无法保存手帐，可以重试。" };
+      }
+      return { kind: "stored", existing: result.status === "unchanged", change: result.status, moments: result.moments };
+    }
+    return { read, save };
+  }
+
+  // .build/typescript/content/look-here.js
+  var GLIMPSE_POINTS = [
+    {
+      id: "jx-creek",
+      name: "九溪 · 溪林停步处",
+      zone: [2, 5.7],
+      paper: { x: 1455, y: 1435 },
+      bounds: { x: 1060, y: 1190, width: 760, height: 570 },
+      anchors: [{ x: 1380, y: 1190, width: 440, height: 330 }, { x: 1435, y: 1255, width: 360, height: 270 }, { x: 1300, y: 1370, width: 480, height: 360 }],
+      labels: ["溪弯与树影", "石边的水纹", "树下的水岸"],
+      recommendations: ["溪水在石头旁拐了一个小弯。", "树影落在水边，颜色又深了一层。", "先停一停，听听石头之间的水声。"],
+      caption: "溪水在石头旁拐了一个小弯。你也看见了吗？"
+    },
+    {
+      id: "jx-tea",
+      name: "九溪 · 茶坡转角",
+      zone: [9, 12.8],
+      paper: { x: 2250, y: 825 },
+      bounds: { x: 1850, y: 610, width: 720, height: 540 },
+      anchors: [{ x: 1850, y: 785, width: 440, height: 330 }, { x: 1930, y: 690, width: 400, height: 300 }, { x: 1850, y: 740, width: 520, height: 390 }],
+      labels: ["转角与茶坡", "沿径望坡", "溪岸望茶垄"],
+      recommendations: ["茶垄顺着山坡，一层一层弯过去。", "转过这个弯，眼前的绿又换了一种。", "把这一坡的春色，留在午前的光里。"],
+      caption: "茶垄顺着山坡，一层一层弯过去。"
+    }
+  ];
+  function glimpsePoint(id) {
+    return GLIMPSE_POINTS.find((point) => point.id === id);
+  }
+
+  // .build/typescript/content/tiger-badges.js
+  var TIGER_BADGE_ART = {
+    bends: { file: "badges/tiger-memories-v4/bends.webp", x: 0.5, y: 0.5, radius: 0.4 },
+    inn: { file: "badges/tiger-memories-v4/inn.webp", x: 0.5, y: 0.5, radius: 0.4 },
+    waterfall: { file: "badges/tiger-memories-v4/waterfall.webp", x: 0.5, y: 0.48, radius: 0.4 },
+    river: { file: "badges/tiger-memories-v4/river.webp", x: 0.5, y: 0.48, radius: 0.4 }
+  };
+  var TIGER_BADGE_ENTRIES = {
+    "tiger-bends-puzzle-v4": TIGER_BADGE_ART.bends,
+    "tiger-inn-pairs-v4": TIGER_BADGE_ART.inn,
+    "tiger-waterfall-paint-v4": TIGER_BADGE_ART.waterfall,
+    "tiger-river-roundframe-v4": TIGER_BADGE_ART.river
+  };
+  var TIGER_LEGACY_BADGE_TILES = {
+    "gorge-goat": { column: 0, row: 1 },
+    "gorge-eagle": { column: 1, row: 1 },
+    "gorge-sparkle": { column: 2, row: 1 }
+  };
+  function tigerBadgeArt(id) {
+    switch (id) {
+      case "tiger-bends-puzzle-v4":
+        return TIGER_BADGE_ENTRIES[id];
+      case "tiger-inn-pairs-v4":
+        return TIGER_BADGE_ENTRIES[id];
+      case "tiger-waterfall-paint-v4":
+        return TIGER_BADGE_ENTRIES[id];
+      case "tiger-river-roundframe-v4":
+        return TIGER_BADGE_ENTRIES[id];
+      default:
+        return null;
+    }
+  }
+  function tigerLegacyBadgeTile(id) {
+    switch (id) {
+      case "gorge-goat":
+        return TIGER_LEGACY_BADGE_TILES[id];
+      case "gorge-eagle":
+        return TIGER_LEGACY_BADGE_TILES[id];
+      case "gorge-sparkle":
+        return TIGER_LEGACY_BADGE_TILES[id];
+      default:
+        return null;
+    }
+  }
+
+  // .build/typescript/runtime/badge-paper.js
+  var PAPER_BADGE = { size: 768, center: 384, outerRadius: 360, artRadius: 336 };
+  var PAPER_BADGE_ART = {
+    x: PAPER_BADGE.center,
+    y: PAPER_BADGE.center,
+    radius: PAPER_BADGE.artRadius
+  };
+  function circle(ctx, radius) {
+    ctx.moveTo(PAPER_BADGE.center + radius, PAPER_BADGE.center);
+    ctx.arc(PAPER_BADGE.center, PAPER_BADGE.center, radius, 0, Math.PI * 2);
+  }
+  function paintPaperEdge(ctx) {
+    const { center, outerRadius, artRadius } = PAPER_BADGE;
+    ctx.save();
+    ctx.beginPath();
+    circle(ctx, outerRadius);
+    circle(ctx, artRadius - 0.5);
+    ctx.clip("evenodd");
+    ctx.fillStyle = "#f3edda";
+    ctx.fillRect(0, 0, PAPER_BADGE.size, PAPER_BADGE.size);
+    for (let i = 0; i < 760; i++) {
+      const angle = i * 2.3999632297;
+      const radius = artRadius + i * 37 % 97 / 97 * (outerRadius - artRadius);
+      const x = center + Math.cos(angle) * radius, y = center + Math.sin(angle) * radius;
+      ctx.strokeStyle = i % 3 ? "#a58c6119" : "#ffffff75";
+      ctx.lineWidth = 0.65;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(angle + 0.7) * 2, y + Math.sin(angle + 0.7) * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+    ctx.save();
+    ctx.lineCap = "round";
+    for (const line2 of [
+      { radius: outerRadius - 2.5, color: "#a58c61", width: 2.5 },
+      { radius: artRadius + 2, color: "#89947c", width: 1.35 }
+    ]) {
+      ctx.strokeStyle = line2.color;
+      ctx.lineWidth = line2.width;
+      ctx.beginPath();
+      for (let i = 0; i <= 192; i++) {
+        const angle = i / 192 * Math.PI * 2;
+        const radius = line2.radius + Math.sin(angle * 13) * 0.35 + Math.sin(angle * 29) * 0.15;
+        const x = center + Math.cos(angle) * radius, y = center + Math.sin(angle) * radius;
+        if (i)
+          ctx.lineTo(x, y);
+        else
+          ctx.moveTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function composePaperBadge(doc, paint) {
+    const canvas = doc.createElement("canvas");
+    canvas.width = canvas.height = PAPER_BADGE.size;
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return null;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.save();
+    ctx.beginPath();
+    circle(ctx, PAPER_BADGE.artRadius);
+    ctx.clip();
+    paint(ctx, PAPER_BADGE_ART);
+    ctx.restore();
+    paintPaperEdge(ctx);
+    return canvas;
+  }
+  function paintBadgeImage(ctx, image, source2, target) {
+    const scale = target.radius / source2.radius;
+    ctx.drawImage(image, target.x - source2.x * scale, target.y - source2.y * scale, image.naturalWidth * scale, image.naturalHeight * scale);
+  }
+  function encodePaperBadge(canvas, maxLength = Infinity) {
+    try {
+      for (const quality of [0.9, 0.8, 0.68]) {
+        const url = canvas.toDataURL("image/webp", quality);
+        if (url.startsWith("data:image/webp;base64,") && url.length < maxLength)
+          return url;
+      }
+    } catch {
+    }
+    return null;
+  }
+
+  // .build/typescript/runtime/tiger-badge.js
+  var presentedArt = /* @__PURE__ */ new WeakMap();
+  function tigerLegacyBadgeFile(moment) {
+    return moment.route === "tiger" && moment.edition !== 3 && tigerLegacyBadgeTile(moment.id) ? "badges/moments-v1.webp" : null;
+  }
+  function tigerJournalArt(image, moment) {
+    if (moment.route !== "tiger" || !image.naturalWidth || !image.naturalHeight)
+      return null;
+    const width = image.naturalWidth, height = image.naturalHeight;
+    const original = image.currentSrc || image.src;
+    const cacheKey = `${moment.id}|${Boolean(moment.captureArt)}|${original}`;
+    const cached = presentedArt.get(image)?.get(cacheKey);
+    if (cached)
+      return cached;
+    const art = tigerBadgeArt(moment.id), tile = tigerLegacyBadgeTile(moment.id);
+    const rectangular = Math.abs(width / height - 1) > 0.05;
+    const atlas = !!tile && /(?:^|\/)moments-v1\.webp(?:[?#]|$)/.test(original);
+    let source2;
+    if (atlas && tile) {
+      source2 = { x: (tile.column + 0.5) * width / 3, y: (tile.row + 0.5) * height / 3, radius: Math.min(width, height) / 3 * 0.41 };
+    } else if (rectangular) {
+      source2 = { x: width / 2, y: height / 2, radius: Math.min(width, height) / 2 };
+    } else if (moment.captureArt && art) {
+      if (width === PAPER_BADGE.size && height === PAPER_BADGE.size)
+        return { src: original };
+      source2 = { x: width / 2, y: height / 2, radius: width * 249 / 576 };
+    } else {
+      source2 = { x: width * (art?.x ?? 0.5), y: height * (art?.y ?? 0.5), radius: Math.min(width, height) * (art?.radius ?? 0.41) };
+    }
+    const canvas = composePaperBadge(image.ownerDocument, (ctx, target) => paintBadgeImage(ctx, image, source2, target));
+    const src = canvas && encodePaperBadge(canvas);
+    if (!src)
+      return null;
+    const keepOriginal = !atlas && (rectangular || Boolean(moment.captureArt && !art));
+    const presentation = { src, ...keepOriginal ? { original } : {} };
+    const cache = presentedArt.get(image) ?? /* @__PURE__ */ new Map();
+    cache.set(cacheKey, presentation);
+    presentedArt.set(image, cache);
+    return presentation;
+  }
+
+  // .build/typescript/runtime/journal-route-filter.js
+  function createJournalRouteFilter({ dom, routes, onChange }) {
+    const root = dom.get("journal-route");
+    const bindings = new EventBindings();
+    const choices = [{ id: "all", name: "全部路线" }, ...routes];
+    root.replaceChildren();
+    function reveal(label2) {
+      if (root.scrollWidth <= root.clientWidth)
+        return;
+      const bounds = root.getBoundingClientRect(), item = label2.getBoundingClientRect();
+      if (item.left < bounds.left + 6)
+        root.scrollLeft += item.left - bounds.left - 6;
+      else if (item.right > bounds.right - 6)
+        root.scrollLeft += item.right - bounds.right + 6;
+    }
+    const tabs = choices.map((choice) => {
+      const label2 = dom.html("label", null, root, "journal-route-option");
+      const input = dom.html("input", null, label2);
+      input.type = "radio";
+      input.name = "journal-route";
+      input.value = choice.id;
+      input.checked = choice.id === "all";
+      input.setAttribute("aria-controls", "journal-list");
+      const paper2 = dom.html("span", null, label2, "journal-route-tab");
+      dom.html("span", choice.name, paper2, "journal-route-name");
+      const count = dom.html("span", null, paper2, "journal-route-total");
+      count.setAttribute("aria-hidden", "true");
+      bindings.listen(input, "change", () => {
+        if (!input.checked)
+          return;
+        reveal(label2);
+        onChange(choice.id);
+      });
+      bindings.listen(input, "focus", () => reveal(label2));
+      return { ...choice, input, count };
+    });
+    return {
+      render(selected, moments) {
+        const counts = /* @__PURE__ */ new Map([["all", moments.length]]);
+        for (const moment of moments)
+          counts.set(moment.route, (counts.get(moment.route) ?? 0) + 1);
+        for (const tab of tabs) {
+          const count = counts.get(tab.id) ?? 0;
+          tab.input.checked = tab.id === selected;
+          tab.input.setAttribute("aria-label", `${tab.name}，${count}段回忆`);
+          tab.count.textContent = String(count);
+          tab.count.hidden = count === 0;
+        }
+      },
+      destroy() {
+        bindings.destroy();
+      }
+    };
+  }
+
+  // .build/typescript/runtime/journal-controller.js
+  function createJournalController(options) {
+    const { dom, catalog: D, data, scenes } = options;
+    const { get: $, html } = dom;
+    const bindings = new EventBindings();
+    const pictures = /* @__PURE__ */ new Map();
+    const store = createJournalStore({ catalog: D, data, storage: options.storage });
+    let photoFactory = null;
+    try {
+      photoFactory = dom.document.defaultView?.indexedDB ?? null;
+    } catch {
+    }
+    const photoStore = createPrivatePhotoStore(photoFactory);
+    let privatePhotos = [], photoReadGeneration = 0, destroyed = false;
+    let records = store.read();
+    let tripMoments = [];
+    let route = "all";
+    let pageSize = data.PAGE_SIZE;
+    let session = null;
+    let trigger = null;
+    let bodyOverflow = "";
+    let entries = [];
+    let index = 0;
+    let flip = null;
+    let swipe = null;
+    const routeFilter = createJournalRouteFilter({ dom, routes: options.routes, onChange(selected) {
+      route = selected;
+      pageSize = data.PAGE_SIZE;
+      render();
+    } });
+    function tagImage(parent, file, label2, reading, moment) {
+      const key = file + "|" + label2;
+      const cached = reading && pictures.get(key);
+      if (cached) {
+        parent.appendChild(cached);
+        return cached;
+      }
+      const panel = reading ? html("div", null, parent, "journal-art-view") : null;
+      const badge2 = html("span", null, panel ?? parent, "journal-badge-art journal-tag-art");
+      badge2.setAttribute("role", "img");
+      badge2.setAttribute("aria-label", label2 + " · 手绘收藏标签");
+      const status = html("span", "画作展开中", badge2, "journal-art-status");
+      const image = html("img", null, badge2, "journal-tag-image");
+      status.setAttribute("aria-hidden", "true");
+      image.setAttribute("alt", "");
+      image.setAttribute("loading", reading ? "eager" : "lazy");
+      image.setAttribute("decoding", "async");
+      image.style.opacity = "0";
+      if (panel)
+        pictures.set(key, panel);
+      let presented = false;
+      image.onload = () => {
+        if (!presented && options.presentArt) {
+          presented = true;
+          const presentation = options.presentArt(image, moment);
+          if (presentation) {
+            const original = presentation.original;
+            if (panel && original) {
+              const ratio = image.naturalWidth / image.naturalHeight;
+              const toggle = html("button", "查看完整原画", panel, "journal-original-toggle");
+              toggle.type = "button";
+              toggle.setAttribute("aria-pressed", "false");
+              let showOriginal = false;
+              toggle.addEventListener("click", () => {
+                showOriginal = !showOriginal;
+                toggle.setAttribute("aria-pressed", String(showOriginal));
+                toggle.textContent = showOriginal ? "返回圆形徽章" : "查看完整原画";
+                badge2.setAttribute("aria-label", label2 + (showOriginal ? " · 完整原画" : " · 手绘收藏标签"));
+                badge2.style.aspectRatio = showOriginal ? String(ratio) : "1";
+                image.hidden = false;
+                image.style.opacity = "0";
+                status.hidden = false;
+                status.textContent = "画作展开中";
+                image.src = showOriginal ? original : presentation.src;
+              });
+            }
+            if (image.src !== presentation.src) {
+              image.src = presentation.src;
+              return;
+            }
+          }
+        }
+        const loadedSource = image.src;
+        const reveal = () => {
+          if (image.src !== loadedSource)
+            return;
+          status.hidden = true;
+          image.hidden = false;
+          image.style.opacity = "1";
+        };
+        if (reading && image.decode)
+          image.decode().then(reveal, reveal);
+        else
+          reveal();
+      };
+      image.onerror = () => {
+        status.textContent = "画作暂未加载";
+        image.hidden = true;
+        badge2.setAttribute("aria-label", label2 + " · 画作暂未加载，文字回忆仍可阅读");
+      };
+      image.setAttribute("src", file);
+      return panel ?? badge2;
+    }
+    function badge(parent, moment, reading = false) {
+      if (moment.edition === 3 && !D.hasTag(moment)) {
+        const note = html("span", null, parent, "journal-memory-label");
+        const svg = dom.document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 72 44");
+        svg.setAttribute("aria-hidden", "true");
+        const path = dom.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        for (const [key, value] of Object.entries({ d: "M8 34L25 12L37 28L47 18L65 34M20 34H54M26 38H47", fill: "none", stroke: "currentColor", "stroke-width": "1.3", "stroke-linecap": "round", "stroke-linejoin": "round" }))
+          path.setAttribute(key, value);
+        svg.appendChild(path);
+        note.appendChild(svg);
+        html("span", "沿途记事", note);
+        html("small", "未获得标签", note);
+        return note;
+      }
+      const file = D.tagArt(moment) ?? tigerLegacyBadgeFile(moment);
+      if (file)
+        return tagImage(parent, file, moment.tag || moment.title, reading, moment);
+      const entryIndex = Math.max(0, D.CATALOG.findIndex((entry) => entry.id === moment.id));
+      const i = entryIndex % 9;
+      const node2 = html("span", null, parent, "journal-badge-art");
+      node2.setAttribute("role", "img");
+      node2.setAttribute("aria-label", moment.title + "的山野徽章");
+      node2.style.backgroundImage = `url('badges/${["moments-v1", "moments-expansion-v1", "moments-westlake-v2"][Math.floor(entryIndex / 9)]}.webp')`;
+      node2.style.backgroundPosition = `${i % 3 * 50}% ${Math.floor(i / 3) * 50}%`;
+      return node2;
+    }
+    function render(append = false) {
+      const list = $("journal-list");
+      const moments = data.page(records, "all", D.MAX_MOMENTS).entries;
+      const all = [...moments.map((value) => ({ kind: "moment", value })), ...privatePhotos.map((value) => ({ kind: "private", value }))];
+      all.sort((a, b) => (b.value.createdAt ?? 0) - (a.value.createdAt ?? 0));
+      const filtered = all.filter((item) => route === "all" || item.value.route === route);
+      const visible = filtered.slice(0, pageSize), remaining = filtered.length - visible.length;
+      routeFilter.render(route, all.map((item) => item.value));
+      $("journal-count").textContent = `${all.length}个瞬间`;
+      const intro = dom.document.querySelector(".journal-intro");
+      if (intro)
+        intro.textContent = privatePhotos.length ? "点开一页手帐，翻看沿途回忆。" : "点开一枚徽章，翻看沿途回忆。";
+      $("trip-count").textContent = `本次记下${options.tripCount()}个瞬间`;
+      const routeName = options.routes.find((r) => r.id === route)?.name || "全部路线";
+      $("journal-filter-count").textContent = filtered.length ? `${routeName} · ${filtered.length}段回忆${remaining ? `，已展示${visible.length}段` : ""}` : `${routeName} · 等待新的回忆`;
+      $("journal-more").hidden = remaining === 0;
+      $("journal-more").textContent = `再翻${Math.min(data.PAGE_SIZE, remaining)}段回忆 ↓`;
+      const offset = append ? list.children.length : 0;
+      if (!append)
+        list.replaceChildren();
+      if (!filtered.length) {
+        const empty = html("li", null, list, "journal-empty");
+        html("strong", "这一页，留给下一次相遇", empty);
+        html("p", "一阵风、一片落叶，或一段安静的水声。沿途收下的手绘和回忆，会一起留在这里。", empty);
+        return;
+      }
+      for (const item of visible.slice(offset)) {
+        if (item.kind === "private") {
+          const photo = item.value, name = glimpsePoint(photo.point)?.name ?? "九溪私藏";
+          const li2 = html("li", null, list, "journal-entry found");
+          li2.dataset.route = photo.route;
+          li2.dataset.kind = "private-photo";
+          const button2 = html("button", null, li2, "journal-wall-button");
+          button2.type = "button";
+          button2.setAttribute("aria-label", `翻看私藏照片 · ${name}`);
+          button2.setAttribute("aria-haspopup", "dialog");
+          button2.setAttribute("aria-controls", "journal-detail");
+          const image = html("img", null, button2, "journal-private-image");
+          image.alt = name + "的游戏场景私藏";
+          image.loading = "lazy";
+          image.src = photo.image;
+          image.onerror = () => {
+            image.hidden = true;
+            html("span", "照片暂未展开，文字仍可阅读", button2);
+          };
+          html("strong", name.replace("九溪 · ", ""), button2, "journal-wall-title");
+          html("small", "九溪龙井 · 仅本机私藏", button2, "journal-wall-place");
+          html("span", "翻看私藏 ↗", button2, "journal-wall-hint").setAttribute("aria-hidden", "true");
+          button2.addEventListener("click", () => openPrivate(photo, button2));
+          continue;
+        }
+        const moment = item.value;
+        const li = html("li", null, list, "journal-entry found");
+        li.setAttribute("data-route", moment.route);
+        li.setAttribute("data-moment", moment.key);
+        li.setAttribute("data-kind", D.hasTag(moment) ? "tag" : "note");
+        const button = html("button", null, li, "journal-wall-button");
+        for (const [key, value] of Object.entries({ type: "button", "aria-haspopup": "dialog", "aria-controls": "journal-detail", "aria-expanded": "false", "aria-label": "翻看" + moment.title + " · " + moment.place }))
+          button.setAttribute(key, value);
+        badge(button, moment);
+        html("strong", moment.title, button, "journal-wall-title");
+        html("small", moment.place.split(" · ")[0], button, "journal-wall-place");
+        html("span", "翻看回忆 ↗", button, "journal-wall-hint").setAttribute("aria-hidden", "true");
+        button.addEventListener("click", () => open(moment, button));
+      }
+    }
+    function openPrivate(photo, button) {
+      if (session || options.rewardOpen())
+        return;
+      entries = [];
+      index = 0;
+      const name = glimpsePoint(photo.point)?.name ?? "九溪私藏", page = $("journal-detail-page");
+      page.replaceChildren();
+      const art = html("div", null, page, "journal-illustration");
+      const image = html("img", null, art, "journal-private-detail-image");
+      image.alt = name + "的游戏场景私藏";
+      image.src = photo.image;
+      image.onerror = () => {
+        image.hidden = true;
+        html("p", "照片暂未展开，文字仍可阅读。", art);
+      };
+      const copy2 = html("div", null, page, "journal-copy");
+      html("p", name, copy2, "journal-location");
+      html("h3", "我的这一眼", copy2, "journal-entry-title").id = "journal-detail-title";
+      if (photo.body)
+        html("p", photo.body, copy2, "journal-memory");
+      html("p", "只保存在这台设备，尚未公开。", copy2, "journal-entry-meta");
+      if (photo.attribution.kind === "pen-name")
+        html("p", `留笺人：${photo.attribution.name}`, copy2, "journal-entry-meta");
+      const date = new Date(photo.createdAt), time = html("time", date.toLocaleString("zh-CN"), copy2, "journal-time");
+      time.dateTime = date.toISOString();
+      $("journal-detail-route").textContent = "九溪龙井";
+      $("journal-detail-position").textContent = "私藏";
+      $("journal-detail-announcement").textContent = name + " · 本机私藏";
+      $("journal-detail-hint").textContent = "这一眼，只留给自己";
+      for (const id of ["journal-detail-prev", "journal-detail-next"]) {
+        $(id).hidden = true;
+        $(id).setAttribute("aria-disabled", "true");
+      }
+      $("journal-detail").setAttribute("aria-modal", "true");
+      $("journal-detail").showModal();
+      session = scenes.enter("journal");
+      trigger = button;
+      button.setAttribute("aria-expanded", "true");
+      bodyOverflow = dom.document.body.style.overflow || "";
+      dom.document.body.style.overflow = "hidden";
+      options.pauseInteraction();
+      options.stopLoop();
+      options.refresh();
+      $("journal-detail-close").focus({ preventScroll: true });
+    }
+    function renderDetail(direction = 0) {
+      const moment = entries[index];
+      if (!moment)
+        return;
+      const page = $("journal-detail-page");
+      flip?.cancel();
+      flip = null;
+      page.replaceChildren();
+      page.scrollTop = 0;
+      if (D.hasTag(moment)) {
+        const art = html("div", null, page, "journal-illustration");
+        badge(art, moment, true);
+        html("span", "一幅手绘，留住这一刻", art, "journal-art-caption");
+      }
+      const copy2 = html("div", null, page, "journal-copy");
+      html("p", moment.place, copy2, "journal-location");
+      html("h3", moment.title, copy2, "journal-entry-title").id = "journal-detail-title";
+      html("p", moment.memory, copy2, "journal-memory");
+      const meta = html("div", null, copy2, "journal-entry-meta");
+      if (typeof moment.createdAt === "number" && Number.isFinite(moment.createdAt)) {
+        const date = new Date(moment.createdAt);
+        const time = html("time", date.toLocaleString("zh-CN", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" }), meta, "journal-time");
+        time.setAttribute("datetime", date.toISOString());
+      } else
+        html("span", "从旧手帐留下", meta, "journal-time");
+      if (!D.hasTag(moment))
+        html("span", "沿途记事", meta, "journal-entry-kind");
+      const weather = moment.weather && options.weather[moment.weather];
+      if (weather)
+        html("span", weather.name, meta, "journal-entry-weather");
+      const proof = moment.edition === 3 ? options.evidence(moment.id) : null;
+      const observation = proof ? null : options.observation(moment.id);
+      const note = proof || observation;
+      const source2 = proof || observation && options.source(observation.source);
+      if (note && source2) {
+        const detail = html("details", null, copy2, "journal-place-note");
+        html("summary", "关于这片山野", detail);
+        html("p", note.fact, detail);
+        const link = html("a", source2.name + " ↗", detail, "journal-source");
+        link.setAttribute("href", source2.url);
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
+      }
+      $("journal-detail-route").textContent = options.routes.find((r) => r.id === moment.route)?.name || moment.place;
+      $("journal-detail-position").textContent = `${index + 1} / ${entries.length}`;
+      $("journal-detail-announcement").textContent = `第${index + 1}段，共${entries.length}段：${moment.title}`;
+      const previous = entries[index - 1], next = entries[index + 1];
+      const controls = [["journal-detail-prev", previous, "上一枚"], ["journal-detail-next", next, "下一枚"]];
+      for (const [id, entry, label2] of controls) {
+        $(id).hidden = false;
+        $(id).setAttribute("aria-disabled", String(!entry));
+        $(id).setAttribute("aria-label", entry ? label2 + "：" + entry.title : label2 === "上一枚" ? "已是第一枚" : "已是最后一枚");
+      }
+      $("journal-detail-hint").textContent = entries.length === 1 ? "这一刻，值得留住" : !previous ? "从这一枚，慢慢翻看" : !next ? "已翻到最后一枚" : "左右翻看沿途回忆";
+      const keep = /* @__PURE__ */ new Set();
+      for (const entry of [previous, moment, next]) {
+        if (!entry || !D.hasTag(entry))
+          continue;
+        const file = D.tagArt(entry) ?? tigerLegacyBadgeFile(entry);
+        if (!file)
+          continue;
+        const label2 = entry.tag || entry.title, key = file + "|" + label2;
+        keep.add(key);
+        if (!pictures.has(key))
+          tagImage(html("div"), file, label2, true, entry);
+      }
+      for (const key of pictures.keys())
+        if (!keep.has(key))
+          pictures.delete(key);
+      if (direction && !options.reduced && page.animate)
+        flip = page.animate([{ opacity: 0.35, transform: `translateX(${direction * 16}px)` }, { opacity: 1, transform: "translateX(0)" }], { duration: 220, easing: "ease-out" });
+    }
+    function open(moment, button) {
+      if (session || options.rewardOpen())
+        return;
+      entries = data.page(records, route, D.MAX_MOMENTS).entries;
+      index = entries.findIndex((entry) => entry.route === moment.route && entry.id === moment.id);
+      if (index < 0)
+        return;
+      renderDetail();
+      $("journal-detail").setAttribute("aria-modal", "true");
+      $("journal-detail").showModal();
+      session = scenes.enter("journal");
+      trigger = button;
+      button.setAttribute("aria-expanded", "true");
+      bodyOverflow = dom.document.body.style.overflow || "";
+      dom.document.body.style.overflow = "hidden";
+      options.pauseInteraction();
+      options.stopLoop();
+      options.refresh();
+      $("journal-detail-close").focus({ preventScroll: true });
+    }
+    function closed(resume = true) {
+      if (!session)
+        return;
+      const closing = session;
+      session = null;
+      dom.document.body.style.overflow = bodyOverflow;
+      swipe = null;
+      flip?.cancel();
+      flip = null;
+      trigger?.setAttribute("aria-expanded", "false");
+      scenes.leave(closing, resume);
+      options.refresh();
+      if (trigger?.isConnected)
+        trigger.focus({ preventScroll: true });
+      trigger = null;
+      entries = [];
+      pictures.clear();
+      $("journal-detail-page").replaceChildren();
+    }
+    function close(resume = true) {
+      closed(resume);
+      $("journal-detail").close();
+    }
+    function turn(direction) {
+      const next = index + direction;
+      if (!session || next < 0 || next >= entries.length)
+        return;
+      index = next;
+      renderDetail(direction);
+    }
+    function remember(moment) {
+      const result = store.save(moment);
+      if (result.kind === "error") {
+        $("journal-storage").textContent = result.message;
+        return result;
+      }
+      records = result.moments;
+      if (!tripMoments.some((entry) => entry.route === moment.route && entry.id === moment.id))
+        tripMoments.push(moment);
+      $("journal-storage").textContent = "回忆自动保存在这个浏览器，相同的片刻只留一页。";
+      const message = result.change === "unchanged" ? "再次遇见，手帐中已留存" : result.change === "upgraded" ? "手帐已补上手绘" : "刚刚收下标签";
+      $("discovery-status").textContent = `${message}「${moment.title}」 · ${moment.place}`;
+      render();
+      options.onRemember(moment);
+      return result;
+    }
+    function renderEnding() {
+      const section = $("ending-journal"), list = $("ending-badges"), detail = $("ending-detail");
+      const collected = tripMoments.filter((moment) => D.hasTag(moment));
+      section.hidden = !collected.length;
+      list.replaceChildren();
+      detail.textContent = "";
+      for (const moment of collected) {
+        const button = html("button", null, list, "ending-badge-button");
+        button.setAttribute("type", "button");
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-controls", "ending-detail");
+        button.setAttribute("aria-label", "翻看" + moment.title);
+        badge(button, moment);
+        html("small", moment.title, button);
+        button.addEventListener("click", () => {
+          const expanded = button.getAttribute("aria-expanded") === "true";
+          for (const b of Array.from(list.children))
+            b.setAttribute("aria-expanded", "false");
+          button.setAttribute("aria-expanded", String(!expanded));
+          detail.textContent = expanded ? "" : moment.place + " · " + moment.memory;
+        });
+      }
+    }
+    function bind() {
+      const dialog = $("journal-detail");
+      bindings.listen($("journal-detail-close"), "click", () => close());
+      bindings.listen($("journal-detail-prev"), "click", () => turn(-1));
+      bindings.listen($("journal-detail-next"), "click", () => turn(1));
+      bindings.listen(dialog, "close", () => closed());
+      bindings.listen(dialog, "keydown", (event) => {
+        event.stopPropagation();
+        const target = event.target;
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || target.isContentEditable || /^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName))
+          return;
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          event.preventDefault();
+          turn(event.key === "ArrowLeft" ? -1 : 1);
+        }
+      });
+      const page = $("journal-detail-page");
+      bindings.listen(page, "pointerdown", (event) => {
+        swipe = null;
+        if (event.pointerType !== "touch" || !event.isPrimary || event.target.closest?.("button,a,summary,details"))
+          return;
+        swipe = { id: event.pointerId, x: event.clientX, y: event.clientY, time: event.timeStamp, scroll: page.scrollTop };
+      });
+      bindings.listen(page, "pointerup", (event) => {
+        const start = swipe;
+        swipe = null;
+        if (!start || start.id !== event.pointerId || event.timeStamp - start.time > 650 || Math.abs(page.scrollTop - start.scroll) > 8)
+          return;
+        const dx = event.clientX - start.x, dy = event.clientY - start.y;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.7)
+          turn(dx < 0 ? 1 : -1);
+      });
+      bindings.listen(page, "pointercancel", () => {
+        swipe = null;
+      });
+      bindings.listen($("journal-more"), "click", () => {
+        const previous = $("journal-list").children.length;
+        pageSize += data.PAGE_SIZE;
+        render(true);
+        $("journal-list").children[previous]?.querySelector("button")?.focus();
+      });
+    }
+    function reloadPhotos() {
+      if (!photoFactory)
+        return;
+      const token = ++photoReadGeneration;
+      void photoStore.read().then((result) => {
+        if (destroyed || token !== photoReadGeneration)
+          return;
+        if (result.kind === "loaded") {
+          const unchanged = result.photos.length === privatePhotos.length && result.photos.every((photo, i) => {
+            const previous = privatePhotos[i];
+            return previous && photo.id === previous.id && photo.createdAt === previous.createdAt && photo.point === previous.point && photo.image === previous.image && photo.body === previous.body && photo.anchor === previous.anchor && photo.zoom === previous.zoom && photo.attribution.kind === previous.attribution.kind && (photo.attribution.kind === "anonymous" || previous.attribution.kind === "pen-name" && photo.attribution.name === previous.attribution.name);
+          });
+          if (unchanged)
+            return;
+          privatePhotos = result.photos;
+          render();
+        } else
+          $("journal-storage").textContent = result.message;
+      });
+    }
+    function reload() {
+      records = store.read();
+      render();
+      reloadPhotos();
+    }
+    const browser = dom.document.defaultView;
+    const storageChanged = (event) => {
+      if (event.storageArea === options.storage)
+        reload();
+    };
+    browser?.addEventListener("storage", storageChanged);
+    browser?.addEventListener(PRIVATE_PHOTO_CHANGED, reloadPhotos);
+    browser?.addEventListener("focus", reloadPhotos);
+    bind();
+    reloadPhotos();
+    return {
+      get open() {
+        return session !== null;
+      },
+      get records() {
+        return records;
+      },
+      render,
+      renderEnding,
+      remember,
+      close,
+      reload,
+      resetTrip() {
+        tripMoments = [];
+      },
+      recent(routeId) {
+        return records.filter((moment) => moment.route === routeId).slice(-3).map((moment) => moment.id);
+      },
+      destroy() {
+        destroyed = true;
+        photoReadGeneration++;
+        close(false);
+        routeFilter.destroy();
+        bindings.destroy();
+        browser?.removeEventListener("storage", storageChanged);
+        browser?.removeEventListener(PRIVATE_PHOTO_CHANGED, reloadPhotos);
+        browser?.removeEventListener("focus", reloadPhotos);
+        void photoStore.close();
+      }
+    };
+  }
+
+  // .build/typescript/runtime/journal-badge.js
+  var ROUND_BADGE_IDS = /* @__PURE__ */ new Set(["wugong-forest-leaves", "wugong-camp-stars", "wugong-homeward-pages"]);
+  var SIZE = 640;
+  var CENTER = SIZE / 2;
+  var outline = (radius) => Array.from({ length: 145 }, (_, i) => {
+    const a = i / 144 * Math.PI * 2, r = radius + Math.sin(a * 11) * 0.8 + Math.sin(a * 23) * 0.35;
+    return `${i ? "L" : "M"}${CENTER + Math.cos(a) * r},${CENTER + Math.sin(a) * r}`;
+  }).join(" ") + "Z";
+  var outer = outline(302);
+  var inner = outline(279);
+  var gold = outline(295);
+  var ink = outline(285);
+  var sprigs = Array.from({ length: 18 }, (_, i) => {
+    const a = 0.25 + i / 17 * 1.1, sign = i % 2 ? 1 : -1, x = CENTER + sign * Math.sin(a) * 292, y = CENTER + Math.cos(a) * 292;
+    return `M${x},${y}q${sign * 7},-12 ${sign * 1},-18q${-sign * 9},9 ${-sign * 1},18Z`;
+  });
+  function circularBadge(image, options = {}) {
+    if (!image.naturalWidth || !image.naturalHeight)
+      return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = SIZE;
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return null;
+    let x = 0, y = 0, width = image.naturalWidth, height = image.naturalHeight;
+    if (options.legacyPaper) {
+      x = width * 24 / 900;
+      y = height * 24 / 660;
+      width *= 852 / 900;
+      height *= 530 / 660;
+    }
+    const side = Math.min(width, height), centerX = options.camp ? 0.36 : 0.5;
+    x += Math.max(0, Math.min(width - side, width * centerX - side / 2));
+    y += (height - side) / 2;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(CENTER, CENTER, 280, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(image, x, y, side, side, 40, 40, 560, 560);
+    ctx.restore();
+    ctx.fillStyle = "#f3edd9";
+    ctx.fill(new Path2D(`${outer} ${inner}`), "evenodd");
+    ctx.strokeStyle = "#b69a61";
+    ctx.lineWidth = 2.4;
+    ctx.stroke(new Path2D(gold));
+    ctx.strokeStyle = "#a6a67b";
+    ctx.lineWidth = 1.1;
+    ctx.stroke(new Path2D(ink));
+    ctx.fillStyle = "#b4a777";
+    ctx.globalAlpha = 0.8;
+    for (const d of sprigs)
+      ctx.fill(new Path2D(d));
+    ctx.globalAlpha = 1;
+    return canvas;
+  }
+  function roundJournalArt(image, moment) {
+    if (moment.route === "tiger")
+      return tigerJournalArt(image, moment);
+    if (!ROUND_BADGE_IDS.has(moment.id) || image.naturalWidth <= image.naturalHeight * 1.1)
+      return null;
+    const canvas = circularBadge(image, { camp: moment.id === "wugong-camp-stars", legacyPaper: !!moment.captureArt && moment.id !== "wugong-camp-stars" });
+    return canvas ? { src: canvas.toDataURL("image/webp", 0.88) } : null;
+  }
+
+  // .build/typescript/runtime/music-layer.js
+  var WUGONG_MUSIC = Object.freeze({
+    id: "wugong-reverie",
+    file: "audio/wugong-reverie-v1.mp3",
+    title: "Reverie",
+    author: "Scott Buckley",
+    source: "https://www.scottbuckley.com.au/library/reverie/",
+    license: "CC BY 4.0"
+  });
+  var theme = (slug, title) => Object.freeze({
+    id: "wugong-" + slug,
+    file: "audio/wugong-" + slug + "-loop-v1.mp3",
+    title,
+    author: "Scott Buckley",
+    source: "https://www.scottbuckley.com.au/library/" + slug + "/",
+    license: "CC BY 4.0"
+  });
+  var WUGONG_THEMES = Object.freeze({
+    wind: theme("childhood", "Childhood"),
+    clouds: theme("cirrus", "Cirrus"),
+    greet: theme("a-kind-of-hope", "A Kind Of Hope"),
+    puzzle: WUGONG_MUSIC
+  });
+  var MOGAN_MUSIC = WUGONG_THEMES.greet;
+  var MOGAN_THEMES = Object.freeze({ rain: WUGONG_THEMES.clouds, footsteps: WUGONG_MUSIC, sling: WUGONG_THEMES.wind });
+  var momentGames = Object.freeze({
+    "meadow-bird": "wind",
+    "meadow-butterfly": "clouds",
+    "wugong-wind-hiker": "greet",
+    "meadow-flower": "puzzle",
+    "bamboo-drop": "rain",
+    "bamboo-step": "footsteps",
+    "bamboo-leaf": "sling"
+  });
+  function musicLevel(scene) {
+    if (!["wugong", "mogan"].includes(scene.routeId || "") || !scene.mode || scene.mode === "silent")
+      return 0;
+    const game = scene.momentGame || momentGames[scene.momentId || ""];
+    let level = scene.mode === "photo" ? 0.47 : scene.mode === "choice" ? 0.24 : scene.mode === "reward" ? 0.42 : 0.4;
+    if (scene.mode === "moment")
+      level = game === "greet" ? 0.25 : game === "puzzle" ? 0.35 : game === "clouds" ? 0.32 : 0.29;
+    if (scene.routeId === "mogan") {
+      level = scene.mode === "moment" ? game === "footsteps" ? 0.2 : game === "rain" ? 0.24 : 0.3 : scene.mode === "reward" ? 0.34 : scene.mode === "choice" ? 0.2 : 0.33;
+    }
+    if (scene.weather === "storm")
+      level *= 0.65;
+    else if (scene.weather === "rain")
+      level *= 0.82;
+    return level;
+  }
+  function musicTrack(scene) {
+    if (!musicLevel(scene))
+      return null;
+    const game = scene.momentGame || momentGames[scene.momentId || ""];
+    if (scene.routeId === "mogan") {
+      if ((scene.mode === "moment" || scene.mode === "reward") && game && Object.hasOwn(MOGAN_THEMES, game))
+        return MOGAN_THEMES[game];
+      return MOGAN_MUSIC;
+    }
+    if ((scene.mode === "moment" || scene.mode === "reward") && game && Object.hasOwn(WUGONG_THEMES, game))
+      return WUGONG_THEMES[game];
+    return WUGONG_MUSIC;
+  }
+  function createTrackLayer({ context, destination, track, createMedia = () => typeof Audio === "function" ? new Audio() : null, timers = globalThis, onStateChange = () => {
+  } }) {
+    let media = null;
+    let source2 = null;
+    let volume = null;
+    let state = "off";
+    let desired = false, destroyed = false, failed = false, pending = false;
+    let failureState = "error";
+    let epoch = 0, target = 0;
+    let stopTimer = null;
+    let fade = null;
+    let lastDuck = -Infinity;
+    const listeners = [];
+    function publish(next) {
+      if (state === next || destroyed)
+        return;
+      state = next;
+      onStateChange();
+    }
+    function cancelStop() {
+      if (stopTimer !== null)
+        timers.clearTimeout(stopTimer);
+      stopTimer = null;
+    }
+    function hold() {
+      if (!volume)
+        return 0;
+      const now = context.currentTime, param = volume.gain;
+      const held = fade ? fade.from + (fade.to - fade.from) * Math.max(0, Math.min(1, (now - fade.at) / fade.duration)) : param.value;
+      if (param.cancelAndHoldAtTime)
+        param.cancelAndHoldAtTime(now);
+      else {
+        param.cancelScheduledValues(now);
+        param.setValueAtTime(held, now);
+      }
+      return held;
+    }
+    function ramp(level, duration) {
+      if (!volume)
+        return;
+      const from = hold(), now = context.currentTime;
+      volume.gain.linearRampToValueAtTime(level, now + duration);
+      fade = { from, to: level, at: now, duration };
+    }
+    function silence() {
+      if (!volume)
+        return;
+      volume.gain.cancelScheduledValues(context.currentTime);
+      volume.gain.setValueAtTime(0, context.currentTime);
+      fade = null;
+    }
+    function listen(type, fn) {
+      const listener = fn;
+      media.addEventListener(type, listener);
+      listeners.push([type, listener]);
+    }
+    function prepare() {
+      if (media)
+        return true;
+      if (typeof context.createMediaElementSource !== "function") {
+        failed = true;
+        state = failureState = "unavailable";
+        return false;
+      }
+      try {
+        media = createMedia();
+        if (!media) {
+          failed = true;
+          state = failureState = "unavailable";
+          return false;
+        }
+        media.preload = "none";
+        media.loop = true;
+        media.setAttribute("playsinline", "");
+        source2 = context.createMediaElementSource(media);
+        volume = context.createGain();
+        volume.gain.value = 0;
+        source2.connect(volume);
+        volume.connect(destination);
+        listen("playing", () => {
+          if (!desired || destroyed || failed) {
+            media?.pause();
+            return;
+          }
+          failed = false;
+          ramp(target, 2.4);
+          publish("playing");
+        });
+        listen("waiting", () => {
+          if (desired) {
+            silence();
+            publish("loading");
+          }
+        });
+        listen("error", () => {
+          if (!desired || destroyed)
+            return;
+          failed = true;
+          pending = false;
+          ++epoch;
+          failureState = "error";
+          silence();
+          media?.pause();
+          publish("error");
+        });
+        media.src = track.file;
+        return true;
+      } catch (_) {
+        failed = true;
+        source2?.disconnect();
+        volume?.disconnect();
+        source2 = null;
+        volume = null;
+        media?.pause();
+        if (media)
+          for (const [type, fn] of listeners)
+            media.removeEventListener(type, fn);
+        listeners.length = 0;
+        media = null;
+        state = failureState = "unavailable";
+        return false;
+      }
+    }
+    function play() {
+      if (pending || failed || !media || !desired || destroyed)
+        return;
+      if (!media.paused) {
+        if (state === "paused") {
+          state = "playing";
+          ramp(target, 1.4);
+        }
+        return;
+      }
+      const token = ++epoch;
+      pending = true;
+      state = "loading";
+      try {
+        Promise.resolve(media.play()).then(() => {
+          if (destroyed || !desired) {
+            media?.pause();
+            return;
+          }
+          if (token !== epoch)
+            return;
+          pending = false;
+          ramp(target, 2.4);
+          publish("playing");
+        }).catch((error) => {
+          if (token !== epoch || destroyed || !desired)
+            return;
+          pending = false;
+          failed = true;
+          silence();
+          media?.pause();
+          failureState = error instanceof Error && error.name === "NotAllowedError" ? "blocked" : "error";
+          publish(failureState);
+        });
+      } catch (_) {
+        pending = false;
+        failed = true;
+        silence();
+        state = failureState = "error";
+      }
+    }
+    function pause(immediate = false, duration = 0.32) {
+      if (destroyed)
+        return;
+      desired = false;
+      pending = false;
+      const token = ++epoch;
+      cancelStop();
+      if (!media)
+        return;
+      if (immediate || media.paused) {
+        silence();
+        media.pause();
+      } else {
+        ramp(0, duration);
+        stopTimer = timers.setTimeout(() => {
+          stopTimer = null;
+          if (token === epoch && !desired)
+            media?.pause();
+        }, Math.round(duration * 1e3) + 20);
+      }
+      state = "paused";
+    }
+    function sync(scene) {
+      if (destroyed)
+        return;
+      const next = musicLevel(scene);
+      if (!next) {
+        if (desired)
+          pause();
+        return;
+      }
+      cancelStop();
+      const wasDesired = desired, changed = Math.abs(next - target) > 2e-3;
+      target = next;
+      desired = true;
+      if (failed) {
+        state = failureState;
+        return;
+      }
+      if (!prepare())
+        return;
+      if (!wasDesired && !media.paused) {
+        state = "playing";
+        ramp(target, 1.4);
+      } else if (changed && state === "playing")
+        ramp(target, 1.2);
+      play();
+    }
+    function resume(scene) {
+      if (destroyed)
+        return;
+      failed = false;
+      if (media?.error)
+        media.load();
+      sync(scene);
+    }
+    function duck(strength = 0.78, length = 0.65) {
+      if (!volume || !desired || state !== "playing" || context.currentTime - lastDuck < 0.12)
+        return;
+      lastDuck = context.currentTime;
+      const now = context.currentTime;
+      hold();
+      const lower = target * Math.max(0.5, Math.min(1, strength));
+      volume.gain.linearRampToValueAtTime(lower, now + 0.04);
+      volume.gain.linearRampToValueAtTime(target, now + length);
+      fade = { from: lower, to: target, at: now + 0.04, duration: length - 0.04 };
+    }
+    function destroy() {
+      if (destroyed)
+        return;
+      pause(true);
+      destroyed = true;
+      cancelStop();
+      if (media) {
+        for (const [type, fn] of listeners)
+          media.removeEventListener(type, fn);
+        media.removeAttribute("src");
+        media.load();
+      }
+      source2?.disconnect();
+      volume?.disconnect();
+      media = null;
+      source2 = null;
+      volume = null;
+    }
+    return { sync, resume, pause, duck, destroy, get state() {
+      return state;
+    }, get playing() {
+      return desired && state === "playing";
+    } };
+  }
+  function createMusicLayer(options) {
+    const layers = /* @__PURE__ */ new Map();
+    let requested = null;
+    let previous = null;
+    let desired = false, destroyed = false;
+    function fadePrevious(duration) {
+      const id = previous;
+      previous = null;
+      if (id && id !== requested?.id)
+        layers.get(id)?.pause(false, duration);
+    }
+    function getLayer(track) {
+      let layer = layers.get(track.id);
+      if (!layer) {
+        layer = createTrackLayer({ ...options, track, onStateChange: () => {
+          if (destroyed)
+            return;
+          if (desired && requested?.id === track.id) {
+            const current = layers.get(track.id);
+            if (current?.state === "playing")
+              fadePrevious(0.95);
+            else if (current && ["error", "blocked", "unavailable"].includes(current.state))
+              fadePrevious(0.32);
+          }
+          options.onStateChange?.();
+        } });
+        layers.set(track.id, layer);
+      }
+      return layer;
+    }
+    function pause(immediate = false) {
+      desired = false;
+      previous = null;
+      for (const layer of layers.values())
+        layer.pause(immediate);
+    }
+    function select(scene, retry) {
+      if (destroyed)
+        return;
+      const track = musicTrack(scene);
+      if (!track) {
+        if (desired)
+          pause();
+        return;
+      }
+      if (requested?.id !== track.id) {
+        const outgoing = requested && layers.get(requested.id)?.playing ? requested.id : previous;
+        for (const [id, layer] of layers)
+          if (id !== track.id && id !== outgoing)
+            layer.pause(true);
+        previous = outgoing !== track.id ? outgoing : null;
+        requested = track;
+      }
+      desired = true;
+      if (previous)
+        layers.get(previous)?.sync(scene);
+      const current = getLayer(track);
+      retry ? current.resume(scene) : current.sync(scene);
+      if (current.state === "playing")
+        fadePrevious(0.95);
+      else if (["error", "blocked", "unavailable"].includes(current.state))
+        fadePrevious(0.32);
+    }
+    function destroy() {
+      if (destroyed)
+        return;
+      destroyed = true;
+      desired = false;
+      previous = null;
+      for (const layer of layers.values())
+        layer.destroy();
+      layers.clear();
+    }
+    return {
+      sync: (scene) => select(scene, false),
+      resume: (scene) => select(scene, true),
+      pause,
+      duck: (strength, length) => {
+        if (desired && requested)
+          layers.get(requested.id)?.duck(strength, length);
+      },
+      destroy,
+      get track() {
+        return requested;
+      },
+      get state() {
+        return requested ? layers.get(requested.id)?.state || "off" : "off";
+      },
+      get playing() {
+        return !!(desired && requested && layers.get(requested.id)?.playing);
+      }
+    };
   }
   return __toCommonJS(index_exports);
 })();

@@ -1,11 +1,7 @@
-import { clamp, mix, smooth, type Trail, type WalkMode } from './model';
+import type { ScrollJourney } from './scroll/journey';
+import { clamp, mix, smooth } from '../journey/geometry';
 
-export interface EnvironmentJourney {
-  readonly day: 1 | 2; readonly travel: number;
-  readonly trail: Pick<Trail, 'campTravel' | 'summitTravel' | 'length'>;
-  readonly mode: { kind: 'resting'; elapsed: number } | { kind: Exclude<WalkMode['kind'], 'resting'> | 'sleeping' | 'waking' | 'encounter' };
-  readonly hour?: number;
-}
+export type EnvironmentJourney = Pick<ScrollJourney, 'day' | 'hour' | 'mode'>;
 
 export type TimeSetting = 'journey' | 'dawn' | 'day' | 'dusk' | 'night';
 export type WeatherSetting = 'journey' | 'clear' | 'cloud' | 'mist' | 'drizzle';
@@ -33,13 +29,6 @@ const weatherTrack: readonly { hour: number; weather: Weather }[] = [
 ];
 const timeHours: Record<Exclude<TimeSetting, 'journey'>, number> = { dawn: 6.1, day: 11.5, dusk: 18.2, night: 21.3 };
 const color = (a: Color, b: Color, t: number) => `rgb(${a.map((v, i) => Math.round(mix(v, b[i], t))).join(',')})`;
-function journeyHour(model: EnvironmentJourney): number {
-  if (model.hour !== undefined) return model.hour;
-  const { trail, travel } = model;
-  if (model.day === 2) return 29.9 + clamp((travel - trail.campTravel) / (trail.summitTravel - trail.campTravel)) * 4.5 + clamp((travel - trail.summitTravel) / (trail.length - trail.summitTravel)) * 4.1;
-  const rest = model.mode.kind === 'resting' ? smooth(model.mode.elapsed / 32) * 2.4 : 0;
-  return 8 + clamp(travel / trail.campTravel) * 10.2 + rest;
-}
 function forecast(hour: number): WeatherProfile {
   const first = weatherTrack[0], last = weatherTrack[weatherTrack.length - 1];
   if (hour <= first.hour) return weatherProfiles[first.weather];
@@ -66,17 +55,17 @@ export class SceneEnvironment {
   private day: 1 | 2;
   private time: TimeSetting = 'journey';
   private weather: WeatherSetting = 'journey';
-  constructor(model: EnvironmentJourney) { this.hours = journeyHour(model); this.day = model.day; this.profile = forecast(this.hours); }
+  constructor(model: EnvironmentJourney) { this.hours = model.hour; this.day = model.day; this.profile = forecast(this.hours); }
   setTime(setting: TimeSetting): void { this.time = setting; }
   setWeather(setting: WeatherSetting): void { this.weather = setting; }
   reset(model: EnvironmentJourney): void {
-    this.elapsed = 0; this.wet = 0; this.hours = this.time === 'journey' ? journeyHour(model) : (model.day - 1) * 24 + timeHours[this.time];
+    this.elapsed = 0; this.wet = 0; this.hours = this.time === 'journey' ? model.hour : (model.day - 1) * 24 + timeHours[this.time];
     this.day = model.day; this.profile = this.weather === 'journey' ? forecast(this.hours) : weatherProfiles[this.weather];
   }
   advance(dt: number, model: EnvironmentJourney): void {
     if (model.mode.kind === 'visiting' || model.mode.kind === 'encounter') return;
     this.elapsed += dt; this.day = model.day;
-    const target = this.time === 'journey' ? journeyHour(model) : (model.day - 1) * 24 + timeHours[this.time];
+    const target = this.time === 'journey' ? model.hour : (model.day - 1) * 24 + timeHours[this.time];
     this.hours = mix(this.hours, target, 1 - Math.exp(-dt * .65));
     const profile = this.weather === 'journey' ? forecast(this.hours) : weatherProfiles[this.weather], rate = 1 - Math.exp(-dt * .42);
     this.profile = { cloud: mix(this.profile.cloud, profile.cloud, rate), fog: mix(this.profile.fog, profile.fog, rate), rain: mix(this.profile.rain, profile.rain, rate), wind: mix(this.profile.wind, profile.wind, rate) };

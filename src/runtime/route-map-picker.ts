@@ -1,7 +1,7 @@
 import type { RouteId, RouteSummary } from './contracts';
 import { ROUTE_MAP_GEOMETRY as geometry } from './route-map-geometry.generated';
 import { layoutMapLabels } from './map-labels';
-import { ROUTE_ATLAS } from '../content/route-atlas';
+import { CHAPTERS, chapterFor } from '../content/catalog';
 import { landmarkSymbol } from '../journey/landmark-symbol';
 
 const NS = 'http://www.w3.org/2000/svg';
@@ -69,9 +69,10 @@ export function createRouteMapPicker(options: RouteMapPickerOptions): RouteMapPi
   const status = doc.createElement('p'); status.className = 'atlas-status'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   const markers: Marker[] = [], ids = new Set<RouteId>();
   for (const route of routes) {
-    if (ids.has(route.id) || !(route.id in ROUTE_ATLAS)) throw new Error('路线地图目录无法读取');
+    const chapter = chapterFor(route.id);
+    if (ids.has(route.id) || !chapter) throw new Error('路线地图目录无法读取');
     ids.add(route.id);
-    const label = ROUTE_ATLAS[route.id], button = doc.createElement('button');
+    const label = chapter.atlas, button = doc.createElement('button');
     button.type = 'button'; button.id = `route-${route.id}`; button.className = 'atlas-place';
     button.setAttribute('aria-label', `${route.name} · ${label.region} · 查看旅程封面`);
     button.setAttribute('aria-controls', 'journey-stage'); button.dataset.route = route.id;
@@ -91,7 +92,7 @@ export function createRouteMapPicker(options: RouteMapPickerOptions): RouteMapPi
     button.addEventListener('blur', () => highlight(false), { signal });
     markers.push({ id: route.id, button, line, dot });
   }
-  if (ids.size !== Object.keys(ROUTE_ATLAS).length) throw new Error('路线地图缺少地点');
+  if (ids.size !== CHAPTERS.length) throw new Error('路线地图缺少地点');
   root.replaceChildren(frame, status);
 
   function setSelected(id: RouteId | null): void {
@@ -101,7 +102,8 @@ export function createRouteMapPicker(options: RouteMapPickerOptions): RouteMapPi
       marker.button.setAttribute('aria-pressed', String(active));
       marker.line.classList.toggle('is-selected', active); marker.dot.classList.toggle('is-selected', active);
     }
-    status.textContent = id ? `已选 ${ROUTE_ATLAS[id].name}，旅程封面已展开。` : '点一处山野，展开这趟旅程。';
+    const chapter = id ? chapterFor(id) : null;
+    status.textContent = chapter ? `已选 ${chapter.atlas.name}，旅程封面已展开。` : '点一处山野，展开这趟旅程。';
   }
   function layout(): void {
     if (disposed) return;

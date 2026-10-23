@@ -2,9 +2,10 @@ import { MapCamera, mapCharacterScale, type MapProjection, type MapView } from '
 import { Application, Container, Graphics } from 'pixi.js';
 import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../characters/pixi';
 import { DEFAULT_CHARACTER, type CharacterId } from '../characters/catalog';
-import { clamp } from '../wugong-walk/model';
+import { clamp } from '../journey/geometry';
 import type { CoastalJourney } from './chapter';
-import { path, WORLD } from './route';
+import { path } from './route';
+import { WORLD } from '../content/maclehose-map';
 import { drawCoast, noise, SURF_ARCS } from './terrain';
 import { WalkingTurn } from '../journey/walking-turn';
 

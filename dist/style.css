@@ -445,3 +445,7 @@ body.choosing-route :is(.album,.route-details){display:none}
 @media(max-width:900px){.home-page .intro{display:block}.home-page .intro h1{margin-bottom:8px}.home-page .intro>p:last-child{max-width:none}.route-atlas-shell{padding:18px 14px 12px}.atlas-heading>span{letter-spacing:0}}
 @media(max-width:560px){.home-page .site-header{padding-block:16px}.home-page main{padding-top:21px}.home-page .intro{margin-bottom:21px}.home-page .intro h1{font-size:27px}.home-page .intro>p:last-child{font-size:11px;max-width:320px}.route-atlas-shell{padding:16px 6px 10px;border-radius:15px;margin-bottom:24px}.atlas-heading{padding:0 9px}.atlas-heading h2{font-size:18px}.atlas-heading>span{font-size:10px}.atlas-footer{font-size:9px;margin:0 8px;padding:8px 0 0}.atlas-status{font-size:12px;padding-bottom:12px}.atlas-compass{top:15px;left:12px;font-size:9px}.atlas-compass svg{width:22px;height:28px}.atlas-loading{height:430px}.stage-heading .route-map-back{font-size:9px}.illustrated-entry-cover .overlay-card{padding:23px 20px}.illustrated-entry-cover .overlay-card h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.atlas-place{transition:none}}
+
+/* Local scene photographs share the journal wall without becoming reward badges. */
+.journal-private-image{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:6px solid #f5f1df;box-shadow:0 2px 6px #40573814;border-radius:2px}
+.journal-private-detail-image{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border:8px solid #f5f1df;border-radius:2px;box-sizing:border-box}

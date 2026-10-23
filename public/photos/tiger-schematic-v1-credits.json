@@ -1,0 +1,126 @@
+{
+  "start": {
+    "file": "photos/tiger-start-schematic-v1.jpg",
+    "title": "Tiger Leaping Gorge trail 01.JPG",
+    "caption": "桥头高路起点一带实拍 · 2008",
+    "alt": "桥头村落与高路起点一带的实景",
+    "author": "© BrokenSphere / Wikimedia Commons",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Tiger_Leaping_Gorge_trail_01.JPG",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/3/35/Tiger_Leaping_Gorge_trail_01.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "description": "A section of the Tiger Leaping Gorge trail in Qiatou running from Qiatou to Walnut Grove in Yunnan, PRC.  At 20 km, it can be hiked in good weather in 2 days.",
+    "locality": {
+      "status": "verified",
+      "basis": "作者原始说明为桥头高路起步段。"
+    },
+    "verifiedOn": "2026-10-19",
+    "modifications": "Commons 1280px 预览或原始 JPEG 打包，界面按容器比例裁切；照片沿用原许可。",
+    "sha256": "ab1dfb565bf4644e0a04dfeaa0c6a1107e75026ae5ddb1e4b9c9a5d7ad46b925"
+  },
+  "bends": {
+    "file": "photos/tiger-bends-place-v2.jpg",
+    "title": "The highlight of the morning would be the famed 28 switchbacks. They seemed way easier than the previous day's 20 switchbacks that no one told us about. :)",
+    "caption": "二十八道拐入口山路 · 历史实拍",
+    "alt": "二十八道拐入口的石砌建筑、上行山路与二十八拐手写提示",
+    "author": "Yun Huang Yong",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "https://www.flickr.com/photos/goosmurf/24039089569/",
+    "original": "https://live.staticflickr.com/1489/24039089569_cdc8dc5570_h.jpg",
+    "description": "作者原题明确为当日的二十八道拐路段，画面可见二十八拐提示与上行山径；采用入口原貌，不声称是最高点全景。",
+    "locality": {
+      "status": "verified",
+      "basis": "作者原题明确为当日的二十八道拐路段，画面可见二十八拐提示与上行山径；采用入口原貌，不声称是最高点全景。"
+    },
+    "verifiedOn": "2026-10-19",
+    "modifications": "Flickr 提供的 JPEG 尺寸版本直接打包，界面按容器比例裁切；无内容修补或生成。",
+    "sha256": "822e3839f07155306f538bf7528a0a2c2bb949e67bad6e27d737c8e3b76dba9a"
+  },
+  "halfway": {
+    "file": "photos/tiger-halfway-place-v1.jpg",
+    "title": "中途旅店 / Halfway Hostel",
+    "caption": "中途客栈建筑实拍 · 历史影像",
+    "alt": "中途客栈的石砌墙面、瓦顶与招牌",
+    "author": "Chen Zhao",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "https://www.flickr.com/photos/livepine/437155769/",
+    "original": "https://live.staticflickr.com/163/437155769_ee7581e2c9_o.jpg",
+    "description": "作者原题为中途旅店 / Halfway Hostel，画面可见 HALF WAY G.H. 建筑招牌。",
+    "locality": {
+      "status": "verified",
+      "basis": "作者原题为中途旅店 / Halfway Hostel，画面可见 HALF WAY G.H. 建筑招牌。"
+    },
+    "verifiedOn": "2026-10-19",
+    "modifications": "Flickr 提供的 JPEG 尺寸版本直接打包，界面按容器比例裁切；无内容修补或生成。",
+    "sha256": "ffd9494ff87f21e3fcc5649d468cfc4ec17cda19d691a24c46057724998817df"
+  },
+  "waterfall": {
+    "file": "photos/tiger-longdong-place-v1.jpg",
+    "title": "瀑布 / waterfall",
+    "caption": "龙洞瀑布 · 历史实拍",
+    "alt": "龙洞瀑布沿岩壁跌落，徒步山径横穿瀑布，下方水流分叉落入沟谷",
+    "author": "Chen Zhao",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "https://www.flickr.com/photos/livepine/437155777/",
+    "original": "https://live.staticflickr.com/182/437155777_188a40a139_o.jpg",
+    "description": "作者原题为瀑布 / waterfall，未直接标注龙洞名称。地点根据与 Nick Kembel 明确命名为 Longdong waterfall 的对岸实拍进行地貌比对推定：横切主瀑布的山径、主瀑左侧向右伸出的楔形岩层，以及山径下方左右分叉的水道位置相符。保留原始标题，不把比对判断写成原作者定名。",
+    "locality": {
+      "status": "verified",
+      "basis": "作者原题为瀑布 / waterfall，未直接标注龙洞名称。地点根据与 Nick Kembel 明确命名为 Longdong waterfall 的对岸实拍进行地貌比对推定：横切主瀑布的山径、主瀑左侧向右伸出的楔形岩层，以及山径下方左右分叉的水道位置相符。保留原始标题，不把比对判断写成原作者定名。",
+      "method": "landmark-comparison",
+      "references": [
+        {
+          "source": "https://www.nickkembel.com/tiger-leaping-gorge-trek/",
+          "section": "Bendiwan to Jiantang Village (End of Trail)",
+          "caption": "Longdong waterfall viewed from directly across the valley",
+          "image": "https://e5rxtr4t5ah.exactdn.com/wp-content/uploads/2025/08/longdong-waterfall-tiger-leaping.jpg?strip=all",
+          "use": "仅作地点和岩壁比对，不随游戏打包或作为游戏实拍使用。"
+        }
+      ]
+    },
+    "verifiedOn": "2026-10-19",
+    "modifications": "Flickr 提供的 JPEG 尺寸版本直接打包，界面按容器比例裁切；无内容修补或生成。",
+    "sha256": "51a2ad4934b619b3c317f1b5b4cf1f224af336624160462074997f0439e9654f"
+  },
+  "tinas": {
+    "file": "photos/tiger-tinas-place-v1.jpg",
+    "title": "中虎跳 TINA‘S - panoramio.jpg",
+    "caption": "中峡客栈建筑实拍 · 2011",
+    "alt": "峡谷山壁前的中峡客栈，外墙保留原有客栈招牌",
+    "author": "zhanyoun",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%E4%B8%AD%E8%99%8E%E8%B7%B3_TINA%E2%80%98S_-_panoramio.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/a/a1/%E4%B8%AD%E8%99%8E%E8%B7%B3_TINA%E2%80%98S_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "description": "中虎跳_TINA‘S",
+    "locality": {
+      "status": "verified",
+      "basis": "原题中虎跳 TINA‘S，画面可见 TINA'S G.H. 外墙招牌；Commons 记录原 Panoramio 许可审核。"
+    },
+    "verifiedOn": "2026-10-19",
+    "modifications": "Commons 1280px 预览或原始 JPEG 打包，界面按容器比例裁切；照片沿用原许可。",
+    "sha256": "8a1c3a58cb6d2e65d407c58a6bec21b695998100ac1236d6175ba286192ed192"
+  },
+  "river": {
+    "file": "photos/tiger-river-schematic-v1.jpg",
+    "title": "Middle Tiger Leaping Gorge - panoramio (3).jpg",
+    "caption": "中虎跳江段实景 · 2004",
+    "alt": "中虎跳的金沙江、江中巨石与两侧岩壁",
+    "author": "ogwen",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Middle_Tiger_Leaping_Gorge_-_panoramio_(3).jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/2/28/Middle_Tiger_Leaping_Gorge_-_panoramio_%283%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "description": "Middle Tiger Leaping Gorge",
+    "locality": {
+      "status": "verified",
+      "basis": "原题明确为 Middle Tiger Leaping Gorge，画面对应中虎跳江段。"
+    },
+    "verifiedOn": "2026-10-19",
+    "modifications": "Commons 1280px 预览或原始 JPEG 打包，界面按容器比例裁切；照片沿用原许可。",
+    "sha256": "fc146cf1618e36d3e75d3b8c0676401920c6e02000d6a19e05bc5c3b83e1ba06"
+  }
+}

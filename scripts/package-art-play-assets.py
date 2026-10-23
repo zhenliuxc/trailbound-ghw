@@ -7,7 +7,7 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path('/workspace/generated_images/exec-7d922569-40ff-42b3-84f4-a467a276b4bb.png')
-OUTPUT = ROOT / 'dist/sprites/art-play-props-v1.webp'
+OUTPUT = ROOT / 'public/sprites/art-play-props-v1.webp'
 NAMES = ['closed-tea-bud', 'paired-tea-leaves', 'broad-tea-leaf', 'three-leaf-fan', 'bamboo-fork', 'paper-leaf', 'bamboo-stalk', 'mountain-paper-label']
 
 image = Image.open(SOURCE).convert('RGBA')
@@ -53,7 +53,7 @@ for index, name in enumerate(NAMES):
 
 atlas = {'file': 'sprites/art-play-props-v1.webp', 'columns': 4, 'rows': 2, 'width': image.width, 'height': image.height, 'frames': frames}
 script = "(function(root){const atlas=" + json.dumps(atlas, ensure_ascii=False, separators=(',', ':')) + ";if(typeof module==='object'&&module.exports)module.exports=atlas;else root.TrailArtAtlas=atlas;}(typeof globalThis!=='undefined'?globalThis:this));\n"
-(ROOT / 'dist/art-play-atlas.js').write_text(script)
+(ROOT / 'src/legacy/art-play-atlas.js').write_text(script)
 manifest = {**atlas, 'generator': 'OpenAI ImageGen', 'source': str(SOURCE), 'source_sha256': hashlib.sha256(SOURCE.read_bytes()).hexdigest(), 'sha256': hashlib.sha256(OUTPUT.read_bytes()).hexdigest(), 'bytes': OUTPUT.stat().st_size, 'processing': 'Proportional resize and WebP encoding; frame rectangles use the dominant alpha component plus an eight-pixel margin. Original PNG retained.'}
-(ROOT / 'dist/sprites/art-play-props-v1.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+(ROOT / 'public/sprites/art-play-props-v1.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
 print(json.dumps({'file': str(OUTPUT), 'width': image.width, 'height': image.height, 'bytes': OUTPUT.stat().st_size, 'frames': frames}))

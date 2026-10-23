@@ -1,0 +1,12 @@
+{
+  "file": "photos/tiger-bends-place-v1.jpg",
+  "title": "Someone wrote a warning",
+  "author": "timquijano",
+  "source": "https://www.flickr.com/photos/timquijano/5460872955/",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+  "original": "https://live.staticflickr.com/5015/5460872955_f5027effa0_k.jpg",
+  "modifications": "Flickr 提供的 JPEG 尺寸版本直接打包，界面按容器比例显示；无内容修补或生成。",
+  "status": "本轮较早入口试选图，保留给尚未刷新的本地预览；当前清单改用 tiger-bends-place-v2.jpg。",
+  "sha256": "4cdcd4702ecef6b95820d1f0046b45f8ada242a01e95b29430e95542cf278e5d"
+}

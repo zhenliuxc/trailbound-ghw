@@ -1,6 +1,7 @@
 import { Container, Graphics } from 'pixi.js';
-import { curve, type Point } from '../wugong-walk/model';
-import { CAMP_IDS, CREST, PLACES, path, surfaceCrest } from './geography';
+import { curve, type Point } from '../journey/geometry';
+import { path, surfaceCrest } from './geography';
+import { CAMP_IDS, CREST, PLACES } from '../content/aotai-map';
 
 const noise = (i: number) => { const n = Math.sin(i * 127.1 + 311.7) * 43758.5453; return n - Math.floor(n); };
 const polygon = (g: Graphics, points: readonly Point[], color: string, alpha = 1) => {

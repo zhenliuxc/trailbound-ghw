@@ -2,7 +2,7 @@ import { Application, Container, Graphics, Sprite, Texture } from 'pixi.js';
 import { DEFAULT_CHARACTER, type CharacterId } from '../../characters/catalog';
 import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../../characters/pixi';
 import { mapCharacterScale } from '../../journey/map-camera';
-import { clamp, mix } from '../model';
+import { clamp, mix } from '../../journey/geometry';
 import type { EnvironmentFrame } from '../environment';
 import { ScrollCamera, type ScrollProjection, type ScrollView } from './camera';
 import type { ScrollJourney } from './journey';

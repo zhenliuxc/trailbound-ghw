@@ -1,0 +1,46 @@
+{
+  "tool": "Built-in image_gen",
+  "date": "2026-10-19",
+  "use": "Original artistic game illustrations; not photographs or navigation maps.",
+  "assets": [
+    {
+      "name": "stone-sea",
+      "ref": "badges/aotai-rock-facets-v4.webp",
+      "prompt": "Use case: illustration-story. Asset: full-bleed watercolor background for a Qinling Aotai hiking mini game. Use the reference ONLY for painting style, palette and terrain, not its round frame. Landscape 3:2 composition. Foreground detailed angular gray granite stone sea with a few thin snow pockets and ochre lichen, midground sparse dark Qinling firs below tree line, continuous rounded Qinling mountain ridges in blue-gray distance. Fine watercolor on warm paper, natural atmospheric depth, understated sage green and gray, quiet morning. No alpine needle peaks, people, badges, text, UI, symbols or borders. Fill entire rectangular canvas with the landscape.",
+      "source": "art/aotai-v1/stone-sea.png",
+      "file": "scenes/aotai-chapter-v1/stone-sea.webp",
+      "modifications": "WebP encoding, quality 91; transparency preserved. Display cropping and compositing at runtime."
+    },
+    {
+      "name": "ridge",
+      "ref": "badges/aotai-ridgeline-v4.webp",
+      "prompt": "Use case: illustration-story. Asset: full-bleed watercolor Qinling main-ridge panorama for a ridge recognition mini game. Reference is STYLE and TERRAIN guidance only, remove the circular badge framing. Landscape 3:2. A long readable continuous Qinling ridge across center, five naturally shaped rounded granite summits and shallow saddles with sparse snow, stone sea foreground and distant conifer valleys. Fine detailed translucent watercolor on warm paper, sage and blue gray, pale high-altitude sky. Clear mountain silhouettes, natural low autumn morning sun, expansive atmosphere. No people, UI, lettering, symbols, frame or badge. Entire canvas landscape.",
+      "source": "art/aotai-v1/ridge.png",
+      "file": "scenes/aotai-chapter-v1/ridge.webp",
+      "modifications": "WebP encoding, quality 91; transparency preserved. Display cropping and compositing at runtime."
+    },
+    {
+      "name": "mist",
+      "ref": "badges/snow-light-v5.webp",
+      "prompt": "Use case: illustration-story. Asset: full-bleed watercolor background for a Taibai mist-and-mountain memory game. Use reference only for fine watercolor style, scene geography and blue-gray / warm paper palette, not the round frame. Landscape 3:2. Three overlapping Qinling granite ridge layers, wisps of valley cloud below peaks, distant broad Taibai summit lit through mist, thin snow and dark fir tree line at lower slopes. Top half open pale misty sky, foreground finely rendered gray rocks and dry alpine grasses. Gentle sunlight, readable calm landscape. No people, animals, interface, letters, badge, frame or border. Paint to every edge.",
+      "source": "art/aotai-v1/mist.png",
+      "file": "scenes/aotai-chapter-v1/mist.webp",
+      "modifications": "WebP encoding, quality 91; transparency preserved. Display cropping and compositing at runtime."
+    },
+    {
+      "name": "takin-pair",
+      "ref": "badges/aotai-takin-first-v4.webp",
+      "transparent": true,
+      "prompt": "Use case: illustration-story. Asset: transparent watercolor animal sprite for a quiet Qinling hiking game. Reference only for animal identity, warm watercolor medium and palette. Render ONE side-view group of an anatomically believable golden Qinling takin adult and a small calf following, both walking to the RIGHT, full bodies with feet visible and all four legs plausible. Adult at left with curved dark horns, stocky ochre shaggy coat, calf at right, both calm. Refined hand-painted watercolor texture, soft natural edges, matching illustrated hiking journal. No background, no ground plane, no text, no badge, no shadow rectangle or white matte. Actual transparent background. Leave clear transparent margin around all animals.",
+      "source": "art/aotai-v1/takin-pair.png",
+      "file": "scenes/aotai-chapter-v1/takin-pair.webp",
+      "modifications": "WebP encoding, quality 91; transparency preserved. Display cropping and compositing at runtime."
+    }
+  ],
+  "retainedBadges": [
+    "badges/aotai-rock-facets-v4.webp",
+    "badges/aotai-ridgeline-v4.webp",
+    "badges/aotai-takin-first-v4.webp",
+    "badges/snow-light-v5.webp"
+  ]
+}

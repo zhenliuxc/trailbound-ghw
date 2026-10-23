@@ -27,15 +27,12 @@ case "$action" in
   serve)
     exec python3 -u -m http.server "${PORT:-8000}" --bind 127.0.0.1 --directory dist
     ;;
-  blender)
-    exec "$project_dir/.local/tools/blender/Blender.app/Contents/MacOS/Blender" "$@"
-    ;;
   dev)
     if [[ ! -d node_modules/typescript || ! -d node_modules/esbuild ]]; then
       print -u2 "Install locked dependencies first: $0 install"
       exit 1
     fi
-    # A server restored during migration can be reused without binding twice.
+    # Reuse this project’s running local server.
     server_pid_file="$project_dir/.local/server-${PORT:-8000}.pid"
     if [[ -f "$server_pid_file" ]]; then
       server_pid="$(<"$server_pid_file")"
@@ -60,7 +57,7 @@ case "$action" in
     python3 -u -m http.server "${PORT:-8000}" --bind 127.0.0.1 --directory dist
     ;;
   *)
-    print -u2 "Usage: $0 [dev|install|build|watch|serve|blender]"
+    print -u2 "Usage: $0 [dev|install|build|watch|serve]"
     exit 2
     ;;
 esac

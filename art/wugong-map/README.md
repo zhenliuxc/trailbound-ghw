@@ -1,8 +1,10 @@
-# 武功山地图素材 · v1
+# 武功山地图与人物素材
+
+制作与引用遵循 [游戏美学](../../docs/game-design-charter.md)、[渲染与素材分工](../../docs/RENDERING_AND_LIBRARIES.md) 和 [素材来源规范](../../docs/PROVENANCE.md)。本文保存源图尺寸、锚点、原始来源与生成提示词，不代表主地图使用整幅手绘背景。
 
 ## 休息与远眺人物姿势
 
-`hiker-rest-source-v1.png` → `dist/characters/wugong-rest-view-v1.webp`，实际 1774 × 887，真正 RGBA 透明背景。参考图为原 `dist/characters/trailbound-chibi-v1.webp`，以原角色米帽、红巾、灰蓝衣、卡其裤、苔绿包身份生成两种新姿势；左侧坐在低灰岩上休息，背包放身旁，右侧背后三分之二站姿远眺，看不到正脸。
+`hiker-rest-source-v1.png` → `public/characters/wugong-rest-view-v1.webp`，实际 1774 × 887，真正 RGBA 透明背景。参考图为原 `public/characters/trailbound-chibi-v1.webp`，以原角色米帽、红巾、灰蓝衣、卡其裤、苔绿包身份生成两种新姿势；左侧坐在低灰岩上休息，背包放身旁，右侧背后三分之二站姿远眺，看不到正脸。
 
 两格都按 887 × 887 划分。实际大连通 alpha 边界和安全裁切区域见 `hiker-rest-v1.json`：
 
@@ -11,7 +13,7 @@
 | sit | 172,176,682,640 | 166,170,694,652 | 622,812 | 456,642 |
 | view | 1159,87,392,734 | 1153,81,404,746 | 1408,815 | 255,734 |
 
-姿势图也只整图 WebP 编码，不修改源像素；准备脚本同时生成其 JSON 元数据。已查看原图确认完整帽顶、石头、背包与双脚，坐姿和背影身份延续原角色；这是素材创作检查，没有运行游戏或浏览器。
+姿势图只整图 WebP 编码，不修改源像素；准备脚本同时生成其 JSON 元数据。坐姿和背影延续同一角色身份，完整帽顶、石头、背包与双脚保留在裁切范围内。
 
 原件：`/Users/liuxucheng/.codex/generated_images/01a14806-838b-72c0-8dcb-ba7f05fa57a4/exec-0d12b94e-fdda-4429-b166-575b91a6c6f0.png`
 
@@ -28,20 +30,20 @@ No floor, terrain, sky, scenery, paper rectangle, backdrop, broad external shado
 ```
 
 
-2026-10-17，使用 Codex 内置 `image_gen.imagegen` 制作原创水彩素材，没有调用收费 API 或 CLI。现有 `dist/scenes/wugong-v1.webp` 与 `dist/scenes/wugong-cloudsea-v1.webp` 仅用于人工查看画风；本次生成的是独立新素材，没有修改旧画。
+素材由内置 `image_gen.imagegen` 生成，画风参考为 `public/scenes/wugong-v1.webp` 与 `public/scenes/wugong-cloudsea-v1.webp`。地形、物件和人物分别保留独立源图。
 
 ## 文件与尺寸
 
 | 源文件 | 交付文件 | 实际尺寸 | 用途 |
 | --- | --- | --- | --- |
-| `terrain-source-v1.png` | `dist/scenes/wugong-terrain-v1.webp` | 2172 × 724 | 3:1 斜俯视地面长卷，左侧山林经草坡到右侧草脊灰岩；不含天空和提前展开的云海 |
-| `props-source-v1.png` | `dist/sprites/wugong-map-props-v1.webp` | 1254 × 1254，RGBA | 树、芒草苔石、双帐篷营地、观景石四组独立景物 |
+| `terrain-source-v1.png` | `public/scenes/wugong-terrain-v1.webp` | 2172 × 724 | 3:1 斜俯视地面长卷，左侧山林经草坡到右侧草脊灰岩；不含天空和提前展开的云海 |
+| `props-source-v1.png` | `public/sprites/wugong-map-props-v1.webp` | 1254 × 1254，RGBA | 树、芒草苔石、双帐篷营地、观景石四组独立景物 |
 
 生成工具返回的分辨率低于提示词请求的 3072 × 1024 与 2048 × 2048；未放大插值，也不把提示词尺寸称为实际尺寸。透明图的上排高于下排，不能按四个等大方格切图。`props-v1.json` 和 `src/runtime/wugong-prop-art.ts` 保存实际 alpha 边界、相应源图矩形与地面锚点。每个锚点相对其裁切矩形，不相对整张图。
 
 运行 `node art/wugong-map/prepare-v1.mjs` 可从保留的 PNG 源图重新编码 WebP 并生成上述坐标元数据。脚本按显式非等分区域查找 alpha > 12 的八连通域，合并区域内所有不小于最大域 0.8% 的主要区域，保留完整营地，边缘加入至多 6 像素。只对整张原图做格式编码，保留原有 alpha；没有抠改、改色、重画或生成新背景。坐标计算不是游戏测试。
 
-已逐张查看源图：长卷为连续地面，无水平天空；四组景物完整可辨，透明间隙保留。素材创作检查不等于地图布局、角色遮挡、浏览器或手机验收。未执行游戏测试、构建或发布。
+长卷是无天空的连续地面；四组景物保持独立透明间隙。整幅手绘地形属于素材源，当前行进地图使用程序绘制的 2D 示意图。
 
 ## 来源
 
