@@ -1057,6 +1057,7 @@
     $("map-frame").classList.toggle("active", walking);
     $("journey-state").textContent = { ready: "约2–3分钟", walking: "沿着山径慢慢走", paused: "停下来看看", encounter: "在路上停一停", finished: "今天的旅程", retreated: "平安结束" }[state.status];
     if (r.id === "wugong" && state.status === "ready") $("journey-state").textContent = "东江村反穿 · 2天1夜";
+    if (r.id === "aotai" && state.status === "ready") $("journey-state").textContent = "塘口 → 汤峪方向";
     if (tigerJourney) $("journey-state").textContent = state.status === "ready" ? "高路 · 江边往返" : { high: "沿高路行进", junction: "已到高路终点", connector: "准备进入江边支线", river: "中虎跳江边", riverside: "江边目的地 · 待返回", returning: state.status === "paused" ? "回程歇脚" : "沿原小路返回", complete: "旅程结束" }[tigerJourney.phase];
     $("journey-progress").setAttribute("aria-label", tigerJourney ? "高路进度" : "旅程进度");
     $("journey-progress").setAttribute("aria-valuenow", Math.round(state.progress * 100));
@@ -1065,12 +1066,14 @@
     $("thought").textContent = echo && state.elapsed < echoUntil ? echo : state.status === "paused" && !photoFromAlbum ? K.moment(state.routeId, state.progress)?.look || J.thought(state) : J.thought(state);
     if (r.id === "wugong" && state.status === "ready") $("thought").textContent = "穿过林间和草甸，在观音宕歇一夜，把沿途的手绘收进手帐。";
     $("feeling").textContent = J.feeling(state);
-    $("walk-toggle").disabled = !(["walking", "paused"].includes(state.status) || ["wugong", "tiger"].includes(r.id) && state.status === "ready") || !!photoFromAlbum || !!miniController.state || !!rewardController.current;
-    $("walk-toggle").textContent = state.status === "ready" && r.id === "tiger" ? "从桥头出发 →" : r.id === "wugong" && state.status === "ready" ? "从东江村出发 →" : state.status === "paused" ? "继续走 →" : "停下来看看";
+    $("walk-toggle").disabled = !(["walking", "paused"].includes(state.status) || ["wugong", "tiger", "aotai"].includes(r.id) && state.status === "ready") || !!photoFromAlbum || !!miniController.state || !!rewardController.current;
+    $("walk-toggle").textContent = state.status === "ready" && r.id === "tiger" ? "从桥头出发 →" : r.id === "wugong" && state.status === "ready" ? "从东江村出发 →" : r.id === "aotai" && state.status === "ready" ? "走进秦岭 →" : state.status === "paused" ? "继续走 →" : "停下来看看";
     const wugongWalkPreview = $("wugong-walk-preview");
     if (wugongWalkPreview) wugongWalkPreview.hidden = r.id !== "wugong";
     const tigerWalkPreview = $("tiger-walk-preview");
     if (tigerWalkPreview) tigerWalkPreview.hidden = r.id !== "tiger";
+    const aotaiWalkPreview = $("aotai-walk-preview");
+    if (aotaiWalkPreview) aotaiWalkPreview.hidden = r.id !== "aotai";
     if (tigerJourney && !["high", "returning"].includes(tigerJourney.phase)) $("walk-toggle").disabled = true;
     if (tigerJourney?.phase === "returning") $("walk-toggle").textContent = state.status === "paused" ? "继续返回 →" : "在回程歇一会儿";
     if (tigerJourney && tigerJourney.phase !== "high") {
@@ -1110,16 +1113,22 @@
       }
     }
     const wugongEntry = r.id === "wugong" && state.status === "ready";
+    const tigerEntry = r.id === "tiger" && state.status === "ready";
+    const aotaiEntry = r.id === "aotai" && state.status === "ready";
     $("map-frame").classList.toggle("wugong-entry", wugongEntry);
+    $("map-frame").classList.toggle("tiger-entry", tigerEntry);
+    $("map-frame").classList.toggle("aotai-entry", aotaiEntry);
     $("overlay").classList.toggle("wugong-entry-cover", wugongEntry);
+    $("overlay").classList.toggle("tiger-entry-cover", tigerEntry);
+    $("overlay").classList.toggle("aotai-entry-cover", aotaiEntry);
     $("overlay").hidden = state.status !== "ready" || miniController.active || rewardController.open || !!photoId;
     if (state.status === "ready") {
       const story = J.storyOf(state);
-      $("overlay-kicker").textContent = r.id === "wugong" ? "东江村经典反穿 · 两天一夜" : "THE TRAIL IS WAITING";
-      $("overlay-title").textContent = r.id === "wugong" ? "沿着草甸，把山野收进手帐。" : story.openingTitle;
-      $("overlay-copy").textContent = r.id === "wugong" ? "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。" : story.opening;
-      $("overlay-action").textContent = r.id === "wugong" ? "从东江村出发 →" : "出发，走一走 →";
-      $("overlay-hint").textContent = r.id === "wugong" ? "跟随山路 · 沿途实景 · 手绘互动与旅行手帐" : r.id === "tiger" ? "桥头 → 中峡客栈 · 江边支线可选 · 随时停下" : r.id === "westlake" ? "约2–3分钟 · 路边的小动静，值得停一下" : "约2–3分钟 · 自动行走 · 随时停下";
+      $("overlay-kicker").textContent = r.id === "wugong" ? "东江村经典反穿 · 两天一夜" : tigerEntry ? "虎跳峡高路 · 两天一夜" : aotaiEntry ? "鳌太线 · 冬季历史路线" : "THE TRAIL IS WAITING";
+      $("overlay-title").textContent = r.id === "wugong" ? "沿着草甸，把山野收进手帐。" : aotaiEntry ? "循着山脊，走进云与石之间。" : story.openingTitle;
+      $("overlay-copy").textContent = r.id === "wugong" ? "从东江村穿过林间与草甸，在观音宕过夜。第二天经过吊马桩和金顶，沿景区山路下到大门。走到风景里，留下一幅手绘。" : tigerEntry ? "从桥头越过二十八道拐，在中途客栈住一晚。清晨经龙洞瀑布走到中峡客栈，也可沿小路下到中虎跳江边，再循原路返回。" : aotaiEntry ? "从塘口村上鳌山，翻过飞机梁、金字塔与太白梁，走向大爷海和拔仙台。沿历史路线上下山，在途中歇脚过夜，把山野相遇收进手帐，最后经下板寺向汤峪方向离山。" : story.opening;
+      $("overlay-action").textContent = r.id === "wugong" ? "从东江村出发 →" : tigerEntry ? "从桥头出发 →" : aotaiEntry ? "走进秦岭 →" : "出发，走一走 →";
+      $("overlay-hint").textContent = r.id === "wugong" ? "跟随山路 · 沿途实景 · 手绘互动与旅行手帐" : r.id === "tiger" ? "中途客栈过夜 · 沿途实景 · 手绘收藏" : aotaiEntry ? "历史路线示意 · 多程过夜 · 手绘收藏" : r.id === "westlake" ? "约2–3分钟 · 路边的小动静，值得停一下" : "约2–3分钟 · 自动行走 · 随时停下";
     }
     $("story-panel").hidden = state.pending?.kind !== "choice";
     if (state.pending?.kind === "choice") {
@@ -1176,6 +1185,10 @@
     syncAudio();
   }
   function apply(next) {
+    if (state.routeId === "aotai" && state.status === "ready" && next.status !== "ready") {
+      location.assign($("aotai-walk-preview").href);
+      return;
+    }
     if (state.routeId === "tiger" && state.status === "ready" && next.status !== "ready") {
       location.assign($("tiger-walk-preview").href);
       return;
@@ -1355,7 +1368,7 @@
     render();
   });
   $("overlay-action").addEventListener("click", () => apply(J.start(state)));
-  $("walk-toggle").addEventListener("click", () => apply(["wugong", "tiger"].includes(state.routeId) && state.status === "ready" ? J.start(state) : state.status === "paused" ? J.resume(state) : J.pause(state)));
+  $("walk-toggle").addEventListener("click", () => apply(["wugong", "tiger", "aotai"].includes(state.routeId) && state.status === "ready" ? J.start(state) : state.status === "paused" ? J.resume(state) : J.pause(state)));
   $("photo-continue").addEventListener("click", closePhoto);
   $("photo-close").addEventListener("click", closePhoto);
   $("replay").addEventListener("click", () => {

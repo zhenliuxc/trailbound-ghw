@@ -34,6 +34,7 @@
   'snow-lichen':{zone:'ridge',cue:'snow'},
   'snow-light':{zone:'peak',cue:'air'},
   'aotai-takin-first':{zone:'snow',cue:'snow'},
+  'aotai-camp-night':{zone:'camp',cue:'snow'},
   'coast-sand':{zone:'bay',cue:'surf'},
   'coast-shell':{zone:'beach',cue:'sand'},
   'coast-pier':{zone:'harbour',cue:'water'},
@@ -119,6 +120,7 @@
    mix.drips=Math.max(mix.drips||0,routeId==='mogan'?.12:routeId==='westlake'?.065:.025);
   }else if(weather==='snow'||weather==='blizzard')layers.push({id:'weather',kind:'snow',highpass:2100,cutoff:5600,gain:weather==='blizzard'?.013:.005,mod:.23,depth:.35,space:0});
   if(weather==='wind'||weather==='blizzard'){layers[0].gain*=1.18;layers[0].depth=Math.min(.7,layers[0].depth+.12);}
+  if(routeId==='aotai'&&momentId==='aotai-takin-first'){mix.leaves=.025;mix.drips=0;layers[0].gain*=.45;}
   const scale=mode==='reward'?.36:mode==='choice'?.72:1;
   for(const id of Object.keys(mix))mix[id]*=scale;
   for(const layer of layers)layer.gain*=scale;

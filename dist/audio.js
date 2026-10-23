@@ -358,7 +358,7 @@
  const WUGONG_STEPS=['wugongStep1','wugongStep2','wugongStep3'];
  const MOGAN_FOLEY=['drop','splash','wugongPaper','wugongPlace','wugongCloth','wugongLine','wugongFlutter',...WUGONG_STEPS];
  const TIGER_FOLEY=['wugongClick',...WUGONG_STEPS,'paper','drop','splash','wugongCloth','wugongPlace','wugongLine','wugongTurn'];
- const MINI_SAMPLES={tiger:TIGER_FOLEY,aotai:['paper'],maclehose:['paper','splash'],changping:['paper','splash'],westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['wugongPaper','wugongPlace','wugongCloth','wugongClick','wugongTurn','wugongLine','wugongFlutter']};
+ const MINI_SAMPLES={tiger:TIGER_FOLEY,aotai:['paper','wugongPlace','wugongCloth','wugongStep1','wugongStep2','wugongStep3'],maclehose:['paper','splash'],changping:['paper','splash'],westlake:['splash','drop','paper'],mogan:['drop','paper'],wugong:['wugongPaper','wugongPlace','wugongCloth','wugongClick','wugongTurn','wugongLine','wugongFlutter']};
  const momentMix=Scene.momentMix,westlakeMix=Scene.westlakeMix;
  for(const p of Object.values(PROFILES)){Object.freeze(p.melody);Object.freeze(p.chord);Object.freeze(p.ambience);Object.freeze(p);}Object.freeze(PROFILES);
  const hz=midi=>440*Math.pow(2,(midi-69)/12);
@@ -591,6 +591,21 @@
    if(event==='reveal'||event==='collect'){duck(group,.76,.6);transient(event==='collect'?'wugongPlace':'paper',0,event==='collect'?.25:.22,1,{space:.04});return true;}
    return false;
   }
+  function aotaiMini(event,pan,index,start){
+   if(event==='aotai-gust'){texture(group,{kind:'wind',highpass:200,cutoff:1600,length:1.8,gain:.018,pan,attack:.25,space:.02},start);return true;}
+   if(event==='aotai-camp-quiet'){group.landscape.layers[0].gain*=.35;updateMix(group,{...group.mix,leaves:.012});return true;}
+   if(event==='aotai-hoof'){
+    transient(WUGONG_STEPS[Math.abs(index)%3],pan,.16,.62,{space:.02,cutoff:1350});
+    texture(group,{kind:'snow',highpass:480,cutoff:2400,length:.32,gain:.013,pan,attack:.025},start);return true;
+   }
+   if(event==='aotai-breath'){texture(group,{kind:'wind',highpass:170,cutoff:820,length:.9,gain:.011,pan,attack:.22,space:0},start);return true;}
+   if(event==='aotai-cloth'){transient('wugongCloth',pan,.065,.86,{space:0,cutoff:1900});return true;}
+   if(event==='altar-place'){transient('wugongStep2',pan,.08,.84,{space:0,cutoff:2200});return true;}
+   if(event==='sling-release'){transient('wugongCloth',pan,.09,.9,{space:0,cutoff:2400});return true;}
+   if(event==='pack-place'){transient('wugongPlace',pan,.17,.92,{space:.02,cutoff:2600});return true;}
+   if(['depth-paper','complete','reveal','collect'].includes(event)){transient('paper',pan,.13,.95,{space:.02});return true;}
+   return false;
+  }
   function mini(game,event,{x=.5,index=0}={}){
    const channel=['piece-pick','card-swap','card-return'].includes(event)?'paper':event,interval=({frame:.22,focus:.24,inspect:.24,tug:.25,ripple:.14,'cloud-clear':.08,'card-clear':.10,miss:.24,catch:.08,goal:.12,reveal:.6,collect:.6})[channel]??.065;
    if(!canCue(channel,interval))return false;
@@ -598,6 +613,7 @@
    if(group.routeId==='wugong')return wugongMini(event,pan);
    if(group.routeId==='mogan')return moganMini(event,pan,index);
    if(group.routeId==='tiger')return tigerMini(event,pan,index,start);
+   if(group.routeId==='aotai')return aotaiMini(event,pan,index,start);
    if(['piece-pick','card-swap','card-return','sling-draw'].includes(event)){
     if(!transient('paper',pan,event==='sling-draw'?.19:.14,event==='card-return'?.88:1.05))texture(group,{kind:'leaves',cutoff:3300,highpass:800,length:.10,gain:.012,pan},start);
     if(event==='sling-draw')texture(group,{kind:'wind',cutoff:900,highpass:200,length:.20,gain:.008,pan},start);return true;

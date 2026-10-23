@@ -1,0 +1,26 @@
+{
+  "author": "Chen Zhao",
+  "authorUrl": "https://www.flickr.com/photos/livepine/437155777/",
+  "caption": "龙洞瀑布 · 历史实拍",
+  "checkpoint": "waterfall",
+  "frameSize": [
+    938.8582763671876,
+    474.5383605957031
+  ],
+  "imageSize": [
+    938.8582763671876,
+    474.5383605957031
+  ],
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+  "loaded": true,
+  "naturalSize": [
+    960,
+    1280
+  ],
+  "objectFit": "cover",
+  "objectPosition": "50% 72%",
+  "originalTitle": "瀑布 / waterfall",
+  "source": "http://127.0.0.1:8000/photos/tiger-longdong-place-v1.jpg",
+  "title": "龙洞瀑布"
+}

@@ -1,0 +1,140 @@
+{
+  "recordedAt": "2026-10-19T08:28:02.733Z",
+  "source": "Real browser DOM pose labels and screenshots; normal elapsed time, no game-state injection.",
+  "blueCamp": [
+    {
+      "pose": "walking",
+      "elapsed": 7
+    },
+    {
+      "pose": "stopping",
+      "elapsed": 7140
+    },
+    {
+      "pose": "arriving",
+      "elapsed": 7691
+    },
+    {
+      "pose": "unpacking",
+      "elapsed": 8710
+    },
+    {
+      "pose": "sitting",
+      "elapsed": 10502
+    },
+    {
+      "pose": "resting",
+      "elapsed": 11610
+    }
+  ],
+  "blueMorning": [
+    {
+      "pose": "sleeping",
+      "elapsed": 4
+    },
+    {
+      "pose": "waking",
+      "elapsed": 4787
+    },
+    {
+      "pose": "standing",
+      "elapsed": 6792
+    },
+    {
+      "pose": "packing",
+      "elapsed": 7999
+    },
+    {
+      "pose": "walking",
+      "elapsed": 9319
+    }
+  ],
+  "girlCamp": [
+    {
+      "pose": "walking",
+      "elapsed": 5
+    },
+    {
+      "pose": "stopping",
+      "elapsed": 7143
+    },
+    {
+      "pose": "arriving",
+      "elapsed": 7700
+    },
+    {
+      "pose": "unpacking",
+      "elapsed": 8708
+    },
+    {
+      "pose": "sitting",
+      "elapsed": 10520
+    },
+    {
+      "pose": "resting",
+      "elapsed": 11643
+    }
+  ],
+  "girlMorning": [
+    {
+      "pose": "sleeping",
+      "elapsed": 13
+    },
+    {
+      "pose": "waking",
+      "elapsed": 4517
+    },
+    {
+      "pose": "standing",
+      "elapsed": 6518
+    },
+    {
+      "pose": "packing",
+      "elapsed": 7724
+    },
+    {
+      "pose": "walking",
+      "elapsed": 9025
+    }
+  ],
+  "tigerInn": [
+    {
+      "pose": "resting",
+      "elapsed": 4
+    },
+    {
+      "pose": "sleeping",
+      "elapsed": 3764
+    },
+    {
+      "pose": "waking",
+      "elapsed": 8769
+    },
+    {
+      "pose": "walking",
+      "elapsed": 12966
+    }
+  ],
+  "crossTabClimb": [
+    {
+      "file": "tiger-cross-tab-fixed-0.jpg",
+      "elapsed": 1500
+    },
+    {
+      "file": "tiger-cross-tab-fixed-1.jpg",
+      "elapsed": 5001
+    },
+    {
+      "file": "tiger-cross-tab-fixed-2.jpg",
+      "elapsed": 8501
+    },
+    {
+      "file": "tiger-cross-tab-fixed-3.jpg",
+      "elapsed": 12000
+    },
+    {
+      "file": "tiger-cross-tab-fixed-4.jpg",
+      "elapsed": 15500
+    }
+  ]
+}

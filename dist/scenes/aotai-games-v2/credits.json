@@ -1,0 +1,46 @@
+{
+  "created": "2026-10-19",
+  "tool": "Built-in image_gen",
+  "purpose": "Aotai winter minigames only; original generated illustrations, not photographs",
+  "assets": [
+    {
+      "source": "art/aotai-games-v2/winter-tent.png",
+      "output": "scenes/aotai-games-v2/winter-tent.webp",
+      "generation": "exec-9481b81e-2d33-433b-9e1b-2a2318c17147",
+      "brief": "Transparent detailed watercolor ochre dome tent, green skirt, snowy top, unlit lantern at entrance; no ropes/pegs; runtime adds interactive ropes.",
+      "changes": "WebP encoding with alpha retained; original PNG kept."
+    },
+    {
+      "source": "art/aotai-games-v2/takin-atlas.png",
+      "output": "scenes/aotai-games-v2/takin-atlas.webp",
+      "generation": "exec-156e1dbd-2e8e-4243-b053-ca034bb9b9b3",
+      "prompt": "Use case: precise-object-edit.\nAsset type: transparent watercolor sprite atlas for a quiet winter hiking game.\nReference: preserve the two separate complete animals and their right-facing side-oblique poses, heavy adult body and smaller calf.\nChange the winter coat to deep dark brown with warm charcoal and umber shadows, a little muted ochre on upper fur, strong silhouette readable against gray-white snow. This is an illustrated story encounter, not a zoological specimen chart.\nCRITICAL: genuinely transparent background, absolutely NO glow, haze, cast shadow, backdrop, paper rectangle, text, landscape, ground or border. Fine fur edges preserve real alpha.\nComposition: horizontal 1536x1024 atlas, adult entirely inside left 58 percent, calf entirely inside right 34 percent, a completely transparent vertical gap of at least 7 percent. All four legs and hoof tips fully visible and detached from the other animal; equal hoof baseline around 88 percent canvas height. Calf about half adult height. Both face RIGHT.\nStyle: fine textured watercolor, delicate ink edges, calm natural expression, original artwork. Keep the layout and body proportions; only darker fur and remove all surrounding haze.",
+      "changes": "WebP encoding with original alpha. Runtime uses measured separate sprite bounds, mirrors right-facing art for leftward passage."
+    },
+    {
+      "source": "art/aotai-games-v2/camp-badge.png",
+      "output": "badges/aotai-camp-night-v1.webp",
+      "generation": "exec-c90bf50d-a64d-41d9-900f-e90821800db0",
+      "brief": "Circular watercolor memory badge: ochre lantern-lit tent in snowy Qinling hollow with conifers and quiet dark-blue starry sky, off-white paper rim, transparent corners, no text.",
+      "changes": "Resize to 640px, WebP alpha retained. New ID avoids rewriting historical mist-game badge."
+    },
+    {
+      "source": "art/aotai-games-v2/winter-encounter.png",
+      "output": "scenes/aotai-games-v2/winter-encounter.webp",
+      "generation": "exec-01e2c06d-d083-4a6f-97ba-c40bd7ed8dbf",
+      "brief": "Side-oblique watercolor snowy Qinling hillside, grounded horizontal road, broad near lay-by and far rock bend. No animals or characters baked into the scene.",
+      "changes": "WebP encoding; original PNG retained. Runtime adds separate animals, traveler, footprints and snow."
+    },
+    {
+      "source": "art/aotai-games-v2/winter-slope.png",
+      "output": "scenes/aotai-games-v2/winter-slope.webp",
+      "generation": "exec-b331262f-ab05-424e-9277-790e751e9b8f",
+      "promptFile": "art/aotai-games-v2/slope-prompt.txt",
+      "brief": "Transparent watercolor snow-covered granite foreground rising from lower left to upper right, with a fixed snow-capped shelter rock.",
+      "changes": "WebP encoding retaining alpha; separate foreground composite at runtime."
+    }
+  ],
+  "preparation": "scripts/art/prepare-aotai-games.mjs",
+  "audio": "Uses existing Kenney CC0 cloth and generic footsteps, plus designed snow/breath textures; not takin or Qinling field recordings. See audio/wugong-credits.json.",
+  "fiction": "Animal waiting, stopping and passage are fictional game rules, not a real close-distance takin avoidance guide."
+}

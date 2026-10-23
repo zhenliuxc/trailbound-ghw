@@ -1,0 +1,16 @@
+Browser tab: 29, Title: "虎跳峡 · 高路与江边 / 山径", URL: "http://127.0.0.1:8000/tiger-walk.html?scene=trip-photos-8".
+1 AXWebArea 虎跳峡 · 高路与江边 / 山径, URL: 127.0.0.1:8000/tiger-walk.html?scene=trip-photos-8
+	2 text 请使用支持 Canvas 的浏览器。
+	3 container 中途客栈, ID: tg-photo
+		4 button Description: 关闭照片，停在山路, ID: tg-photo-close
+		5 image Description: 中途客栈的石砌墙面、瓦顶与招牌, ID: tg-photo-image
+		6 text 中途客栈建筑实拍 · 历史影像
+		7 heading 中途客栈, Value: 2, ID: tg-photo-title
+			8 text 中途客栈
+		9 container
+			10 link Description: Chen Zhao, Help: 中途旅店 / Halfway Hostel, Value: flickr.com/photos/livepine/437155769/, ID: tg-photo-source
+			11 text  · 
+			12 link Description: CC BY 2.0, Value: creativecommons.org/licenses/by/2.0/, ID: tg-photo-license
+		13 button 在中途客栈歇脚 →, ID: tg-photo-continue
+
+The focused UI element is 4 button Description: 关闭照片，停在山路, ID: tg-photo-close

@@ -1,0 +1,5 @@
+
+> trailbound-ghw@0.14.0-rc.1 build
+> node scripts/build-runtime.mjs
+
+Built TypeScript runtime and browser entry point. Gameplay/browser/audio tests were not run.

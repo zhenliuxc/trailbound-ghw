@@ -1,0 +1,57 @@
+Browser tab: 29, Title: "虎跳峡 · 高路与江边 / 山径", URL: "http://127.0.0.1:8000/tiger-walk.html?scene=full-trip-audit-8".
+0 AXWebArea 虎跳峡 · 高路与江边 / 山径, URL: 127.0.0.1:8000/tiger-walk.html?scene=full-trip-audit-8
+	1 text 请使用支持 Canvas 的浏览器。
+	2 container Description: 虎跳峡手绘互动与旅行手帐, ID: tg-art
+		3 button Description: 关闭手绘，回到山路, ID: tg-art-close
+		4 container Description: 虎跳峡手绘互动与旅行手帐, ID: tg-art-frame
+			5 AXWebArea 虎跳峡 · 手绘与旅行手帐, URL: 127.0.0.1:8000/tiger-art.html?v=road-guide-7
+				6 container
+					7 text 山径 · 虎跳峡
+					8 heading 旅行手帐, Value: 1, ID: art-page-title
+						9 text 旅行手帐
+					10 button 返回山路 ×, ID: walk-toggle
+				11 container app-main
+					12 container 旅行手帐
+						13 container
+							14 text FIELD NOTES / 把山野留在纸上
+							15 heading 旅行手帐, Value: 2, ID: journal-title
+								16 text 旅行手帐
+							82 text 12个瞬间
+						18 text 把走过的山野，一枚一枚收好。点开手绘，慢慢翻看。
+						19 text 按路线翻看
+						20 pop up button (collapsed, settable) 按路线翻看, Value: 虎跳峡, ID: journal-route, Secondary Actions: Expand
+							21 menu
+								22 全部路线
+								23 武功山
+								24 (selected) 虎跳峡
+								25 鳌太线
+								26 麦理浩径
+								27 长坪沟
+								28 莫干山
+								29 九溪 · 西湖
+						83 text 虎跳峡 · 5段回忆
+						31 content list journal-list
+							84 pop up button (collapsed) Description: 翻看江声入峡 · 虎跳峡 · 中虎跳江边, Secondary Actions: Expand
+								85 image 江声入峡 · 手绘收藏标签
+								86 text 江声入峡
+								87 text 虎跳峡
+							88 pop up button (collapsed) Description: 翻看崖间飞瀑 · 虎跳峡 · 龙洞瀑布, Secondary Actions: Expand
+								89 image 崖间飞瀑 · 手绘收藏标签
+								90 text 崖间飞瀑
+								91 text 虎跳峡
+							92 pop up button (collapsed) Description: 翻看半山灯火 · 虎跳峡 · 中途客栈, Secondary Actions: Expand
+								93 image 半山灯火 · 手绘收藏标签
+								94 text 半山灯火
+								95 text 虎跳峡
+							96 pop up button (collapsed) Description: 翻看山弯初见 · 虎跳峡 · 二十八道拐, Secondary Actions: Expand
+								97 image 山弯初见 · 手绘收藏标签
+								98 text 山弯初见
+								99 text 虎跳峡
+							100 pop up button (collapsed) Description: 翻看二十八道拐 · 虎跳峡 · 二十八道拐, Secondary Actions: Expand
+								101 image 二十八道拐 · 手绘收藏标签
+								102 text 二十八道拐
+								103 text 虎跳峡
+						80 text 回忆自动保存在这个浏览器，相同的片刻只留一页。
+				81 link Description: 致谢, Value: 127.0.0.1:8000/tiger-credits.html
+
+The focused UI element is 3 button Description: 关闭手绘，回到山路, ID: tg-art-close

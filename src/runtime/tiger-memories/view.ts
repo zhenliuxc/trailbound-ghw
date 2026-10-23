@@ -1,5 +1,5 @@
 import type { ImageCache, MiniInput, MiniViewRefs } from '../contracts';
-import { MAP_WALK_FILE, MAP_WALK_FRAMES } from '../map-walk-art';
+import { CHARACTERS, DEFAULT_CHARACTER, characterId, readCharacterId, type CharacterId } from '../../characters/catalog';
 import { badgeFile, sceneFile, clamp, type MemoryKind, type MemoryState, type Point, type Rect } from './model';
 import { coverage, frameCenter, frameFits, layout, PAINT_REGIONS, PALETTE, riverImageRect, roadFromStage, roadToStage } from './layout';
 import { ROAD_LENGTH, ROAD_POINTS, ROAD_STATIONS, roadAt, roadWalk, roadWalkingProgress } from './road';
@@ -35,7 +35,9 @@ export class MemoryView implements MiniViewRefs {
   private paintedPoints = -1;
   private portraitValue = false;
   private cssWidth = 1000;
+  private actorId: CharacterId;
   constructor(readonly kind: MemoryKind, private readonly doc: Document) {
+    this.actorId = characterId(new URLSearchParams(doc.defaultView?.location.search).get('character')) ?? readCharacterId();
     this.canvas = doc.createElement('canvas'); this.canvas.className = 'tiger-memory-canvas'; this.canvas.setAttribute('aria-hidden', 'true');
     this.brushCanvas = doc.createElement('canvas'); this.brushCanvas.width = 640; this.brushCanvas.height = 480;
   }
@@ -58,7 +60,12 @@ export class MemoryView implements MiniViewRefs {
     };
     try {
       if (!this.canvas.getContext('2d')) throw new Error('画面暂不支持绘制');
-      const [scene, badge, actor, rapids] = await Promise.all([load(sceneFile(this.kind)), load(badgeFile(this.kind)), this.kind === 'bends' ? load(MAP_WALK_FILE) : Promise.resolve(null), this.kind === 'bends' ? load(sceneFile('river')) : Promise.resolve(null)]);
+      const loadActor = async () => {
+        if (this.kind !== 'bends') return null;
+        try { return await load(CHARACTERS[this.actorId].walk.file); }
+        catch (error) { if (this.actorId === DEFAULT_CHARACTER) throw error; this.actorId = DEFAULT_CHARACTER; return load(CHARACTERS[this.actorId].walk.file); }
+      };
+      const [scene, badge, actor, rapids] = await Promise.all([load(sceneFile(this.kind)), load(badgeFile(this.kind)), loadActor(), this.kind === 'bends' ? load(sceneFile('river')) : Promise.resolve(null)]);
       if (this.disposed) return;
       this.images = { scene, badge, actor, rapids }; this.contentState = 'ready'; if (this.state) this.paint(this.state);
     } catch { if (!this.disposed) { this.contentState = 'error'; if (this.state) this.paint(this.state); } }
@@ -182,8 +189,9 @@ export class MemoryView implements MiniViewRefs {
     const actor = this.images.actor, at = roadAt(walk);
     const moving = phase.kind === 'walking' && roadWalkingProgress(phase.elapsed + .02) > walk + .00001;
     if (actor) {
-      const frame = MAP_WALK_FRAMES[moving && !s.play.reduced ? Math.floor(walk * ROAD_LENGTH / 12) % 8 : 1], [sx, sy, w, h, fx, fy] = frame;
-      const scale = (60 - walk * 9) / h * l.scene.width / 1000, facing = Math.cos(at.heading) < 0 ? -1 : 1;
+      const frame = CHARACTERS[this.actorId].walk.frames[moving && !s.play.reduced ? Math.floor(walk * ROAD_LENGTH / 12) % 8 : 1];
+      const { x: sx, y: sy, width: w, height: h, footX: fx, footY: fy } = frame;
+      const scale = (60 - walk * 9) / 54 * frame.scale * l.scene.width / 1000, facing = Math.cos(at.heading) < 0 ? -1 : 1;
       ctx.save(); ctx.translate(l.scene.x + at.x * l.scene.width / 1000, l.scene.y + at.y * l.scene.height / 750);
       if (phase.kind === 'drawing') ctx.translate(-15, 5);
       ctx.fillStyle = '#38473b35'; ctx.beginPath(); ctx.ellipse(0, 1, 12, 3, 0, 0, 7); ctx.fill();

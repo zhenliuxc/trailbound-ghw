@@ -1,0 +1,6 @@
+Use case: illustration-story.
+Asset type: one transparent foreground scenery layer for a fine-watercolor 2D winter hiking game. Wide 1536x1024 canvas, genuine alpha, no backdrop.
+Subject: a connected rugged snow-covered Qinling granite mountainside rising diagonally from lower left to upper right. This is substantial grounded terrain, not a narrow bridge, plank, rail, board, or polygon slab.
+Composition: the walkable crest starts near x17%, y78%, rises gently through x45%, y61%, and ends near x82%, y45%. Deep rocky mountain face and snowdrifts fill ALL space below this crest to bottom edge. At x53%, y57%, a single natural dark gray-green rock protrudes about 9% of canvas height above the slope, with an uneven snow cap; a hiker can pause on its left side. Left and right sides of rock face taper beyond frame and have soft watercolor alpha fringes. Upper area above slope completely TRANSPARENT.
+Style: detailed natural watercolor and thin ink on textured paper, weathered granite planes, blue-gray crevices, warm off-white powder snow, restrained moss-gray rocks; no flat geometric fills. Natural winter overcast lighting consistent across the surface. Fine granular snow edge following the diagonal crest, no painted human footprints.
+No people, animals, trees, sky, clouds, river, circles, labels, border, arrows, text, glow, gradient backdrop, or watermark.

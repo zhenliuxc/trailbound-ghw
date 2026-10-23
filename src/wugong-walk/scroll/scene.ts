@@ -1,5 +1,6 @@
-import { Application, Container, Graphics, Rectangle, Sprite, Texture } from 'pixi.js';
-import { MAP_WALK_FILE, MAP_WALK_FRAMES, MAP_WALK_SCALE } from '../../runtime/map-walk-art';
+import { Application, Container, Graphics, Sprite, Texture } from 'pixi.js';
+import { DEFAULT_CHARACTER, type CharacterId } from '../../characters/catalog';
+import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../../characters/pixi';
 import { clamp, mix } from '../model';
 import type { EnvironmentFrame } from '../environment';
 import { ScrollCamera, type ScrollProjection, type ScrollView } from './camera';
@@ -7,25 +8,6 @@ import type { ScrollJourney } from './journey';
 import { ScrollTrail } from './route';
 import { SchematicMap } from './schematic';
 import { ScrollSky } from './sky';
-import { CAMP_POSE_FILE, CAMP_POSES, CAMP_POSE_SCALE } from './camp-poses';
-
-interface FigureFrame { texture: Texture; footX: number; footY: number; scale: number; contactX: number }
-
-async function loadTexture(file: string, signal: AbortSignal): Promise<Texture> {
-  const image = new Image(); image.decoding = 'async';
-  await new Promise<void>((resolve, reject) => {
-    const cleanup = () => { image.onload = null; image.onerror = null; signal.removeEventListener('abort', abort); };
-    const abort = () => { cleanup(); image.src = ''; reject(new DOMException('Loading aborted', 'AbortError')); };
-    image.onload = () => { cleanup(); resolve(); };
-    image.onerror = () => { cleanup(); reject(new Error('人物素材暂未加载，点“重新展开山路”再试一次。')); };
-    if (signal.aborted) { abort(); return; }
-    signal.addEventListener('abort', abort, { once: true }); image.src = file;
-  });
-  return Texture.from(image);
-}
-function subtexture(texture: Texture, x: number, y: number, width: number, height: number): Texture {
-  return new Texture({ source: texture.source, frame: new Rectangle(x, y, width, height) });
-}
 function softTexture(color: string): Texture {
   const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 64;
   const ctx = canvas.getContext('2d'); if (!ctx) return Texture.WHITE;
@@ -48,10 +30,12 @@ export class ScrollScene {
   private readonly stars = new Graphics();
   private readonly haze: Sprite[] = [];
   private readonly hiker = new Container();
-  private readonly figure = new Sprite();
+  private readonly figure = new CharacterFigure();
   private readonly shadow = new Sprite();
-  private walk: FigureFrame[] = [];
-  private actions: FigureFrame[] = [];
+  private walk: readonly CharacterSprite[] = [];
+  private actions: readonly CharacterSprite[] = [];
+  private readonly people = new CharacterLibrary();
+  private selectedCharacter: CharacterId = DEFAULT_CHARACTER;
   private width = 1200;
   private height = 600;
   private initialized = false;
@@ -64,6 +48,16 @@ export class ScrollScene {
     this.landscape = new SchematicMap(trail); this.sky = new ScrollSky(trail);
   }
   get mode(): ScrollView { return this.camera.mode; }
+  get character(): CharacterId { return this.selectedCharacter; }
+  private useCharacter(pack: Awaited<ReturnType<CharacterLibrary['load']>>): void {
+    this.walk = pack.walk; this.actions = pack.actions; this.selectedCharacter = pack.id;
+    this.figure.reset();
+  }
+  async setCharacter(id: CharacterId, signal: AbortSignal): Promise<void> {
+    const pack = await this.people.load(id, signal);
+    if (this.disposed || signal.aborted) throw new DOMException('已离开角色选择', 'AbortError');
+    this.useCharacter(pack);
+  }
   setMode(mode: ScrollView): void { this.camera.change(mode); }
   async load(signal: AbortSignal): Promise<void> {
     await this.app.init({ canvas: this.canvas, autoStart: false, sharedTicker: false, preference: 'webgl', antialias: true, background: '#f1eee1', autoDensity: true, resolution: Math.min(2, window.devicePixelRatio || 1), width: this.width, height: this.height });
@@ -72,14 +66,12 @@ export class ScrollScene {
       this.app.destroy({ removeView: false }, { children: true }); this.initialized = false;
       throw new DOMException('Loading aborted', 'AbortError');
     }
-    const [actions, walking] = await Promise.all([CAMP_POSE_FILE, MAP_WALK_FILE].map(file => loadTexture(file, signal).then(texture => { this.textures.push(texture); return texture; })));
+    const character = await this.people.initial(signal);
     if (signal.aborted) throw new DOMException('Loading aborted', 'AbortError');
     this.sky.view.addChild(this.stars);
     this.app.stage.addChild(this.sky.view, this.world, this.atmosphere, this.warmth, this.shade, this.landscape.lights, this.rain);
     this.world.addChild(this.landscape.ground, this.landscape.subjects);
-    const contactOffsets = [-3.74, 3.74, -.44, -4.92, -5.12, 2.83, -3.49, -4.95];
-    this.walk = MAP_WALK_FRAMES.map(([x, y, width, height, footX, footY], i) => ({ texture: subtexture(walking, x, y, width, height), footX, footY, scale: MAP_WALK_SCALE, contactX: contactOffsets[i] }));
-    this.actions = CAMP_POSES.map(pose => ({ texture: subtexture(actions, pose.x, pose.y, pose.width, pose.height), footX: pose.footX, footY: pose.footY, scale: CAMP_POSE_SCALE, contactX: 0 }));
+    this.useCharacter(character);
     this.shadow.texture = softTexture('#31432a66'); this.textures.push(this.shadow.texture);
     this.shadow.anchor.set(.5); this.shadow.width = 28; this.shadow.height = 6;
     this.hiker.addChild(this.shadow, this.figure); this.landscape.subjects.addChild(this.hiker);
@@ -99,10 +91,6 @@ export class ScrollScene {
     this.shade.blendMode = 'multiply';
     this.stars.clear();
     for (let i = 0; i < 38; i++) this.stars.circle((i * 137.3) % width, (i * 61.7) % (height * .48), i % 7 === 0 ? 1.2 : .7).fill({ color: '#f6edcc', alpha: .4 + (i % 4) * .12 });
-  }
-  private showFigure(sprite: Sprite, frame: FigureFrame): void {
-    sprite.texture = frame.texture; sprite.scale.set(frame.scale);
-    sprite.pivot.set(frame.footX, frame.footY); sprite.position.set(0, 0);
   }
   private paintHiker(journey: ScrollJourney, dt: number, reduced: boolean): void {
     const pose = journey.pose;
@@ -124,7 +112,7 @@ export class ScrollScene {
       const t = pose.elapsed % 12;
       a = this.actions[t > 1.6 && t < 3.8 ? 3 : 2];
     }
-    this.showFigure(this.figure, a); this.figure.alpha = 1;
+    this.figure.show(a, dt, this.actions.includes(a), reduced);
     const point = journey.point;
     this.hiker.alpha = pose.kind === 'sleeping' ? 1 - clamp(pose.elapsed / .7) : pose.kind === 'waking' ? clamp(pose.elapsed / 1.5) : 1;
     const lean = journey.moving ? clamp(-journey.angle * .14, -.06, .11) : 0;
@@ -173,6 +161,7 @@ export class ScrollScene {
     if (this.disposed) return; this.disposed = true;
     if (this.initialized) this.app.destroy({ removeView: false }, { children: true, texture: false, textureSource: false });
     this.sky.destroy();
+    this.people.destroy();
     for (const texture of this.textures) if (texture !== Texture.WHITE) texture.destroy(true);
   }
 }

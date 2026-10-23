@@ -1,0 +1,20 @@
+Browser tab: 29, Title: "虎跳峡 · 高路与江边 / 山径", URL: "http://127.0.0.1:8000/tiger-walk.html?scene=trip-photos-8".
+1 AXWebArea 虎跳峡 · 高路与江边 / 山径, URL: 127.0.0.1:8000/tiger-walk.html?scene=trip-photos-8
+	2 text 请使用支持 Canvas 的浏览器。
+	3 container Description: 虎跳峡手绘互动与旅行手帐, ID: tg-art
+		4 button Description: 关闭手绘，回到山路, ID: tg-art-close
+		5 container Description: 虎跳峡手绘互动与旅行手帐, ID: tg-art-frame
+			6 AXWebArea 虎跳峡 · 手绘与旅行手帐, URL: 127.0.0.1:8000/tiger-art.html?entry=tiger-waterfall-paint-v4&place=%E8%99%8E%E8%B7%B3%E5%B3%A1+%C2%B7+%E9%BE%99%E6%B4%9E%E7%80%91%E5%B8%83&v=trip-photos-8
+				7 container
+					8 text 山径 · 虎跳峡
+					9 heading 山间手绘, Value: 1, ID: art-page-title
+						10 text 山间手绘
+					11 button 返回山路 ×, ID: walk-toggle
+				25 container 崖间飞瀑, ID: reward-dialog
+					26 image Description: 崖间飞瀑 · 手绘水彩徽章, ID: reward-art
+					27 heading 崖间飞瀑, Value: 2, ID: reward-title
+						28 text 崖间飞瀑
+					29 text 已收进手帐
+				24 link Description: 致谢, Value: 127.0.0.1:8000/tiger-credits.html
+
+The focused UI element is 25 container 崖间飞瀑, ID: reward-dialog

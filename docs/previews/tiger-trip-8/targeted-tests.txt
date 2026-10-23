@@ -1,0 +1,33 @@
+✔ waiting and tapping blank paper cannot complete any of the four games (3.132416ms)
+✔ drawing the full S precedes walking, river playback and the saved badge (1.465875ms)
+✔ a straight shortcut from the start to the shoulder cannot complete an S (0.460875ms)
+✔ lifting midway preserves the road and drawing can resume at its visible tip (1.026167ms)
+✔ cancelled gestures never start playback, even after the last road point was drawn (0.851667ms)
+✔ keyboard strokes require actual cursor movement and portrait drawing uses the same road geometry (0.970917ms)
+✔ the filled road scene covers its container while the complete S remains visible (1.599291ms)
+✔ a filled-container drawing maps back to the same road without changing the hit target (0.929667ms)
+✔ the inn requires two matching pairs; wrong pairs turn back without earning a badge (0.839875ms)
+✔ watercolor requires strokes over both blanks, not elapsed time or a single dab (2.536125ms)
+✔ cancelled brush gestures stop painting and preserve the colors already applied (0.379875ms)
+✔ the default river view cannot earn a picture; a real drag framing boulder and whitewater can (0.208125ms)
+✔ portrait framing is reachable and cancellation never acts as a shutter (0.096583ms)
+✔ failed image capture cannot award the goal, and retry keeps the completed work (0.614ms)
+✔ new memories have distinct round-badge assets and replay keeps the first journal record (0.344667ms)
+✔ complete high road and optional river return preserve named stops and finish back at Tinas (8.98775ms)
+✔ high road can end at Tinas without inventing a riverside visit or reward (3.960583ms)
+✔ unfinished games award nothing and a skipped river scene still allows the same-path return (3.534375ms)
+✔ Halfway rest, overnight and morning departure are part of the journey without an idle reward (3.361167ms)
+✔ closing a photo pauses; reopening and choosing continue really resumes walking (0.22125ms)
+✔ road and river branch join without a jump and preserve the reverse path (0.136708ms)
+✔ one continuous hold walks the painted bends and automatically earns the memory at the shoulder (3.188625ms)
+✔ releasing a hold stops the hiker; a tap followed by waiting cannot earn the memory (0.244667ms)
+✔ space can be held and released to continue the same hill walk (1.75225ms)
+✔ arriving at the river on the real map starts framing; no image means no earned memory (0.238458ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 422.612125

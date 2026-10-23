@@ -123,6 +123,7 @@ export interface MiniViewRefs {
   story?: boolean;
   mogan?: boolean;
   tiger?: boolean;
+  directInput?: boolean;
   mountain?: boolean;
   waitsForArt?: boolean;
   contentState?: 'loading' | 'ready' | 'error';

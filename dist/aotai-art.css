@@ -1,0 +1,25 @@
+.aotai-art-page #app-main{max-width:none}.aotai-art-page #micro-panel[data-aotai]{width:100%;height:auto;max-width:none;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto 0 auto auto;grid-template-areas:"heading heading" "scene scene" "progress progress" "instruction instruction" "result controls";gap:8px 16px}
+.aotai-art-page #micro-panel[data-aotai] #micro-surface{position:relative;width:100%;height:auto;min-height:300px;aspect-ratio:25/18;overflow:hidden;touch-action:none;background:#ececdd}
+.aotai-art-page #micro-panel[data-aotai] #micro-art{opacity:0;pointer-events:none}.aotai-game-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;animation:ao-art-unfold .65s ease-out both}
+.aotai-art-page #micro-panel[data-aotai] #micro-instruction{display:block;grid-area:instruction;position:static;width:auto;height:auto;min-height:22px;margin:0;padding:0 3px;overflow:visible;clip-path:none;white-space:normal;text-align:left;font-size:13px;line-height:1.7;color:#6b7e64}
+.aotai-art-page #micro-panel[data-aotai] #micro-result{grid-area:result;position:static;width:auto;height:auto;min-height:0;padding:0;margin:0;overflow:visible;clip-path:none;white-space:normal;color:#88927b;font-size:11px;line-height:1.7}
+.aotai-art-page #micro-panel[data-aotai] .micro-progress{opacity:0;pointer-events:none}.aotai-art-page #micro-panel[data-aotai] .micro-heading small{display:none}.aotai-art-page #micro-panel[data-aotai] .micro-heading h2{font-size:18px}.aotai-art-page #micro-panel[data-aotai] .mini-controls{flex-wrap:wrap}
+@keyframes ao-art-unfold{from{opacity:0}to{opacity:1}}
+@media(min-width:900px){.aotai-art-page #micro-panel[data-aotai] #micro-surface{aspect-ratio:auto;height:clamp(350px,calc(100dvh - 270px),760px)}}
+@media(max-width:600px){.aotai-art-page #micro-panel[data-aotai]{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto 0 auto auto auto;grid-template-areas:"heading" "scene" "progress" "instruction" "result" "controls";gap:6px}.aotai-art-page #micro-panel[data-aotai] #micro-surface{aspect-ratio:25/31;min-height:340px}.aotai-art-page #micro-panel[data-aotai] #micro-instruction{font-size:12px}.aotai-art-page #micro-panel[data-aotai] #micro-result{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.aotai-game-canvas{animation:none}}
+
+/* Keep the illustrated events on the same quiet paper as the journal. */
+.aotai-art-page{background:#f5f1e6;color:#405954}
+.aotai-art-page .art-page-header{border-color:#cecdbd80;background:#f7f3e9}
+.aotai-art-page #micro-panel[data-aotai]{background:#faf6eb;border:1px solid #d5cfbd;border-radius:15px 18px 16px 13px;box-shadow:0 5px 22px #5a51430d}
+.aotai-art-page #micro-panel[data-aotai] #micro-surface{border:1px solid #c7cbbd70;border-radius:7px 10px 8px 9px;box-shadow:0 2px 8px #5e64570c;background:#eee9db}
+.aotai-art-page #micro-panel[data-aotai] #micro-surface:focus{outline:none}
+.aotai-art-page #micro-panel[data-aotai] #micro-surface:focus-visible{outline:1px dashed #6f8179;outline-offset:3px}
+.aotai-art-page #micro-panel[data-aotai] .micro-heading h2{font-family:"Kaiti SC","STKaiti",var(--serif);font-weight:600;letter-spacing:.08em;color:#435d59}
+.aotai-art-page #micro-panel[data-aotai] .mini-controls{gap:4px 9px}
+.aotai-art-page #micro-panel[data-aotai] :is(.mini-controls button,.micro-heading button){min-height:44px;color:#60736a;border:1px solid #c7cbb68c;background:#f8f4e9;border-radius:9px 12px 10px 8px;box-shadow:none}
+.aotai-art-page #micro-panel[data-aotai] .mini-controls button:hover{background:#eeefdf;border-color:#aebba3}
+.aotai-art-page #micro-panel[data-aotai] :is(.mini-controls button,.micro-heading button):focus-visible{outline:2px solid #8c9b86;outline-offset:2px}
+.aotai-art-page #micro-panel[data-aotai] #micro-result{font-size:12px;color:#798478}
+@media(max-width:600px){.aotai-art-page #micro-panel[data-aotai] #micro-result{font-size:11px}.aotai-art-page #micro-panel[data-aotai] .mini-controls{gap:4px 8px}}

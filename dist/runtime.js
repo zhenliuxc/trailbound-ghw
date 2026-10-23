@@ -1987,7 +1987,7 @@ var TrailRuntime = (() => {
       text("wind-chapter-copy", flow.phase === "invite" ? rain2 ? "看叶尖蓄水，让竹筒等在雨滴下面。" : "水纹有方向，轻轻拨水，绕过青石。" : flow.phase === "memory" ? "正在展开你的手绘纪念" : rain2 ? "雨滴在竹筒里，留下最后一圈涟漪。" : "落叶慢慢漂远，溪水还在轻轻流。");
     }
     function update(s, refs) {
-      if (refs.mogan || refs.tiger) {
+      if (refs.mogan || refs.tiger || refs.directInput) {
       } else if (s.game && games?.artAssets[s.game])
         artTools(s, refs);
       else if (s.game && games?.wugongAssets[s.game])
@@ -2041,7 +2041,7 @@ var TrailRuntime = (() => {
       view.update(current, refs);
       api.present?.(current, refs);
       if (current.game) {
-        if (current.game === "wind" && games)
+        if (current.game === "wind" && games && !refs.directInput)
           options.audio.wind?.(games.flow(current).energy, current.play.complete);
         for (const event of current.events || [])
           if (event.serial > soundSerial) {
@@ -2069,7 +2069,7 @@ var TrailRuntime = (() => {
     function inputReady(input = {}) {
       if (!interactive() || !current || !refs)
         return false;
-      if ((refs.mogan || refs.tiger) && refs.contentState !== "ready")
+      if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready")
         return false;
       if (refs.art && !view.artReady(refs))
         return false;
@@ -2108,7 +2108,7 @@ var TrailRuntime = (() => {
       $("mini-retry").disabled = false;
       $("micro-art").replaceChildren();
       refs = api.draw(options.svg, $("micro-art"), entry);
-      refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || refs.tiger || current.game === "wind");
+      refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || refs.tiger || refs.directInput || current.game === "wind");
       if (refs.waitsForArt)
         refs.contentState = "loading";
       surface.setAttribute("aria-busy", String(refs.waitsForArt));
@@ -2121,7 +2121,7 @@ var TrailRuntime = (() => {
       $("micro-panel").setAttribute("data-mogan", String(!!refs.mogan));
       $("micro-panel").setAttribute("data-art-game", String(!!refs.art));
       $("micro-panel").setAttribute("data-game", current.game || "");
-      $("wind-hud").hidden = !current.game || !!refs.art || !!refs.mogan || !!refs.tiger;
+      $("wind-hud").hidden = !current.game || !!refs.art || !!refs.mogan || !!refs.tiger || !!refs.directInput;
       const labels = { wind: "武功山 · 借风", clouds: "武功山 · 拨云见山", altar: "武功山 · 金顶石语", greet: "武功山 · 风口相遇", creek: "九溪 · 推叶", rain: "莫干山 · 接雨" };
       $("mini-place-label").textContent = current.game && current.game in labels ? labels[current.game] : "";
       $("mini-controls").hidden = !current.game;
@@ -2204,7 +2204,7 @@ var TrailRuntime = (() => {
     function update(dt) {
       if (!interactive() || !current || !refs)
         return;
-      if ((refs.mogan || refs.tiger) && refs.contentState !== "ready") {
+      if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready") {
         updateStatus();
         paint();
         return;
@@ -2250,7 +2250,7 @@ var TrailRuntime = (() => {
     function action(name, value) {
       if (!interactive() || !current || !refs)
         return;
-      if ((refs.mogan || refs.tiger) && refs.contentState !== "ready")
+      if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready")
         return;
       if (refs.art && !view.artReady(refs))
         return;
@@ -2336,7 +2336,7 @@ var TrailRuntime = (() => {
       });
       bindings.listen(surface, "keydown", keydown);
       bindings.listen(surface, "keyup", (event) => {
-        if (interactive() && current && (refs?.mogan || refs?.tiger) && api.key && inputReady()) {
+        if (interactive() && current && (refs?.mogan || refs?.tiger || refs?.directInput) && api.key && inputReady()) {
           const next = api.key(current, event.key, "up");
           if (next) {
             event.preventDefault();
@@ -2364,7 +2364,7 @@ var TrailRuntime = (() => {
         pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, drag: false };
         surface.setPointerCapture?.(event.pointerId);
         if (current.game)
-          perform({ ...point(event), ...refs?.art || refs?.mogan || refs?.tiger || current.game === "clouds" ? { phase: "press" } : {} });
+          perform({ ...point(event), ...refs?.art || refs?.mogan || refs?.tiger || refs?.directInput || current.game === "clouds" ? { phase: "press" } : {} });
       });
       bindings.listen(surface, "pointermove", (event) => {
         if (!interactive() || !current)
@@ -2406,9 +2406,9 @@ var TrailRuntime = (() => {
           return;
         event.stopPropagation?.();
         const dragged = pointer.drag, input = { ...point(event), gesture: dragged ? "drag" : "tap" };
-        if (refs?.art || refs?.mogan || refs?.tiger || current.game === "clouds") {
+        if (refs?.art || refs?.mogan || refs?.tiger || refs?.directInput || current.game === "clouds") {
           pendingPoint = null;
-          if (dragged && refs && (view.artReady(refs) || (refs.mogan || refs.tiger || current.game === "clouds") && refs.contentState === "ready"))
+          if (dragged && refs && (view.artReady(refs) || (refs.mogan || refs.tiger || refs.directInput || current.game === "clouds") && refs.contentState === "ready"))
             current = api.move(current, input);
           perform({ ...input, phase: "release", dragged });
         } else if (dragged) {
@@ -2429,7 +2429,7 @@ var TrailRuntime = (() => {
       bindings.listen(surface, "blur", () => {
         if (current?.sling?.charge)
           cancelGesture();
-        if (refs?.mountain) {
+        if (refs?.mountain || refs?.directInput) {
           cancelGesture();
           return;
         }

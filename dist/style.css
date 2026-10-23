@@ -383,3 +383,16 @@
 .wugong-entry-cover .overlay-card h2{font-size:25px}
 .wugong-entry-cover .overlay-card>p:not(.eyebrow){margin-bottom:16px}
 @media(max-width:680px){.wugong-entry-cover .overlay-card{padding:23px 20px}.wugong-entry-cover .overlay-card h2{font-size:23px}.wugong-entry-cover .overlay-hint{font-size:9px}}
+
+/* Tiger's illustrated entry leads into its existing 2D route. */
+.tiger-entry > :is(#map,.pixi-landscape,.weather-badge,#weather-fx-html,.map-toggle){visibility:hidden}
+.overlay.tiger-entry-cover{background:#cbd6ce url('scenes/tiger-v1.webp') 56% center/cover no-repeat;place-items:end center;padding:clamp(18px,3vw,40px)}
+.tiger-entry-cover .overlay-card{max-width:540px;padding:24px 30px;background:#fffdf2ee;box-shadow:0 6px 32px #29422b1f}
+.tiger-entry-cover .overlay-card h2{font-size:25px}
+.tiger-entry-cover .overlay-card>p:not(.eyebrow){margin-bottom:16px}
+@media(max-width:680px){.tiger-entry-cover .overlay-card{padding:23px 20px}.tiger-entry-cover .overlay-card h2{font-size:23px}.tiger-entry-cover .overlay-hint{font-size:9px}}
+.aotai-entry > :is(#map,.pixi-landscape,.weather-badge,#weather-fx-html,.map-toggle){visibility:hidden}
+.overlay.aotai-entry-cover{background:#cbd6ce url('scenes/aotai-v1.webp') 50% center/cover no-repeat;place-items:end center;padding:clamp(18px,3vw,40px)}
+.aotai-entry-cover .overlay-card{max-width:780px;width:min(100%,780px);padding:23px 32px;background:#faf8edd9;border:1px solid #f8f6e5c9;box-shadow:0 10px 40px #233f3c1a;backdrop-filter:blur(5px);border-radius:16px}
+.aotai-entry-cover #overlay-kicker{margin:0 0 6px;font-size:10px;letter-spacing:2px}.aotai-entry-cover #overlay-title{font-size:clamp(24px,2.8vw,37px);line-height:1.4;margin:4px 0 9px}.aotai-entry-cover #overlay-copy{font-size:13px;line-height:1.9;margin:0 auto 15px;max-width:650px}.aotai-entry-cover #overlay-action{padding:12px 25px;font-size:14px;min-height:48px}.aotai-entry-cover #overlay-hint{font-size:10px;margin:10px 0 0}
+@media(max-width:600px){.overlay.aotai-entry-cover{padding:14px;background-position:57% center}.aotai-entry-cover .overlay-card{padding:20px 18px}.aotai-entry-cover #overlay-title{font-size:25px}.aotai-entry-cover #overlay-copy{font-size:12px}.aotai-entry-cover #overlay-hint{font-size:9px}}

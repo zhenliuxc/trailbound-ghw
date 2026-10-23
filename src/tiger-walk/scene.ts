@@ -1,6 +1,6 @@
-import { Application, Container, Graphics, Rectangle, Sprite, Texture } from 'pixi.js';
-import { MAP_WALK_FILE, MAP_WALK_FRAMES, MAP_WALK_SCALE } from '../runtime/map-walk-art';
-import { CAMP_POSE_FILE, CAMP_POSES, CAMP_POSE_SCALE } from '../wugong-walk/scroll/camp-poses';
+import { Application, Container, Graphics } from 'pixi.js';
+import { DEFAULT_CHARACTER, type CharacterId } from '../characters/catalog';
+import { CharacterFigure, CharacterLibrary, type CharacterSprite } from '../characters/pixi';
 import { clamp, mix, type Point } from '../wugong-walk/model';
 import type { TigerJourney } from './journey';
 import { riverCourse, TIGER_WORLD } from './route';
@@ -8,17 +8,6 @@ import { drawTigerLandscape, INN_LIGHTS, noise, WATERFALL } from './terrain';
 
 export type View = 'follow' | 'overview';
 export interface Projection { readonly width: number; readonly height: number; readonly scale: number; toScreen(point: Point): Point; fromScreen(point: Point): Point }
-interface Figure { texture: Texture; x: number; y: number; scale: number }
-async function texture(file: string, signal: AbortSignal): Promise<Texture> {
-  const image = new Image(); image.decoding = 'async';
-  await new Promise<void>((resolve, reject) => {
-    const clean = () => { image.onload = image.onerror = null; signal.removeEventListener('abort', abort); };
-    const abort = () => { clean(); image.src = ''; reject(new DOMException('素材加载已取消', 'AbortError')); };
-    image.onload = () => { clean(); resolve(); }; image.onerror = () => { clean(); reject(new Error('人物素材未能展开，可以重新加载。')); };
-    if (signal.aborted) { abort(); return; } signal.addEventListener('abort', abort, { once: true }); image.src = file;
-  });
-  return Texture.from(image);
-}
 
 export class TigerScene {
   private readonly app = new Application();
@@ -29,11 +18,12 @@ export class TigerScene {
   private readonly weather = new Graphics();
   private readonly shade = new Graphics();
   private readonly walker = new Container();
-  private readonly figure = new Sprite();
+  private readonly figure = new CharacterFigure();
   private readonly shadow = new Graphics();
-  private walk: Figure[] = [];
-  private rest: Figure[] = [];
-  private readonly textures: Texture[] = [];
+  private walk: readonly CharacterSprite[] = [];
+  private rest: readonly CharacterSprite[] = [];
+  private readonly people = new CharacterLibrary();
+  private selectedCharacter: CharacterId = DEFAULT_CHARACTER;
   private width = 1200;
   private height = 620;
   private center = { x: 400, y: 1100 };
@@ -46,14 +36,23 @@ export class TigerScene {
   private disposed = false;
   mode: View = 'follow';
   constructor(private readonly canvas: HTMLCanvasElement) {}
+  get character(): CharacterId { return this.selectedCharacter; }
+  private useCharacter(pack: Awaited<ReturnType<CharacterLibrary['load']>>): void {
+    this.walk = pack.walk; this.rest = pack.actions; this.selectedCharacter = pack.id;
+    this.figure.reset();
+  }
+  async setCharacter(id: CharacterId, signal: AbortSignal): Promise<void> {
+    const pack = await this.people.load(id, signal);
+    if (this.disposed || signal.aborted) throw new DOMException('已离开角色选择', 'AbortError');
+    this.useCharacter(pack);
+  }
   async load(signal: AbortSignal): Promise<void> {
     await this.app.init({ canvas: this.canvas, autoStart: false, sharedTicker: false, preference: 'webgl', antialias: true, background: '#e4e9dd', autoDensity: true, resolution: Math.min(2, devicePixelRatio || 1), width: this.width, height: this.height });
     this.initialized = true; this.app.stop();
     if (this.disposed || signal.aborted) { this.app.destroy({ removeView: false }, { children: true }); this.initialized = false; throw new DOMException('已离开山路', 'AbortError'); }
-    const atlases = await Promise.all([MAP_WALK_FILE, CAMP_POSE_FILE].map(file => texture(file, signal).then(t => { if (this.disposed || signal.aborted) { t.destroy(true); throw new DOMException('已离开山路', 'AbortError'); } this.textures.push(t); return t; })));
+    const character = await this.people.initial(signal);
     if (this.disposed || signal.aborted) throw new DOMException('已离开山路', 'AbortError');
-    this.walk = MAP_WALK_FRAMES.map(([x, y, width, height, footX, footY]) => ({ texture: new Texture({ source: atlases[0].source, frame: new Rectangle(x, y, width, height) }), x: footX, y: footY, scale: MAP_WALK_SCALE }));
-    this.rest = CAMP_POSES.map(p => ({ texture: new Texture({ source: atlases[1].source, frame: new Rectangle(p.x, p.y, p.width, p.height) }), x: p.footX, y: p.footY, scale: CAMP_POSE_SCALE }));
+    this.useCharacter(character);
     this.app.stage.addChild(this.world, this.shade, this.weather);
     drawTigerLandscape(this.world, this.river);
     this.world.addChild(this.falls, this.lamps);
@@ -97,7 +96,7 @@ export class TigerScene {
     const rest = ['resting', 'sleeping', 'waking'].includes(journey.mode.kind) || journey.mode.kind === 'paused' && journey.atInn || journey.mode.kind === 'game' && journey.mode.id === 'inn-pairs';
     if (journey.moving) this.lastFrame = Math.floor((journey.phase % 1) * 8);
     const figure = rest ? this.rest[journey.mode.kind === 'waking' ? 1 : 2] : this.walk[this.lastFrame];
-    this.figure.texture = figure.texture; this.figure.pivot.set(figure.x, figure.y); this.figure.scale.set(figure.scale);
+    this.figure.show(figure, dt, rest, reduced);
     const side = Math.cos(journey.heading);
     if (journey.moving && Math.abs(side) > .42 && Math.sign(side) !== this.facing) { this.turnWait += dt; if (this.turnWait > .22) { this.facing = Math.sign(side); this.turnWait = 0; } } else this.turnWait = 0;
     const figureZoom = this.mode === 'follow' ? Math.max(1, .65 / z) : 1;
@@ -122,8 +121,7 @@ export class TigerScene {
   }
   destroy(): void {
     if (this.disposed) return; this.disposed = true;
-    if (this.initialized) this.app.destroy({ removeView: false }, { children: true });
-    for (const f of [...this.walk, ...this.rest]) f.texture.destroy(false);
-    for (const t of this.textures) t.destroy(true);
+    if (this.initialized) this.app.destroy({ removeView: false }, { children: true, texture: false, textureSource: false });
+    this.people.destroy();
   }
 }

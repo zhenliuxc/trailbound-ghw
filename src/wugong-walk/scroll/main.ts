@@ -14,6 +14,7 @@ import { FOREST_LEAVES_ID, HOMEWARD_PAGES_ID } from './keepsake-games';
 import { TrailKeepsakes } from './trail-keepsakes';
 import { TrailSoundscape } from './soundscape';
 import { DISCOVERY_SCENES, DiscoveryTransition } from './discovery-transition';
+import { createCharacterPicker } from '../../characters/picker';
 
 function node(id: string): HTMLElement {
   const element = document.getElementById(id); if (!element) throw new Error(`山路界面缺少：${id}`); return element;
@@ -45,8 +46,8 @@ let nearestStop: ScrollStopId | null = null;
 let activeEvent: TrailEventId | null = null;
 
 function pauseAudio(): void { soundscape.pause(); }
-function resumeAudio(): void { if (sound && !document.hidden && !art.open && !camp.open && !keepsakes.open && journey.mode.kind !== 'visiting' && journey.mode.kind !== 'encounter') soundscape.resume(); }
-function ensureLoop(): void { if (ready && !disposed && !document.hidden && !art.open && !camp.open && !keepsakes.open && !animation) animation = requestAnimationFrame(tick); }
+function resumeAudio(): void { if (sound && !document.hidden && !art.open && !camp.open && !keepsakes.open && !characterPicker.open && journey.mode.kind !== 'visiting' && journey.mode.kind !== 'encounter') soundscape.resume(); }
+function ensureLoop(): void { if (ready && !disposed && !document.hidden && !art.open && !camp.open && !keepsakes.open && !characterPicker.open && !animation) animation = requestAnimationFrame(tick); }
 const keepsakes = new TrailKeepsakes({ signal,
   onClose(result) {
     if (journey.mode.kind === 'encounter' && (journey.mode.id === 'leaves' || journey.mode.id === 'return')) {
@@ -83,6 +84,15 @@ const art = new ArtOverlay(signal, result => {
   }
   uiKey = ''; updateUI(); updateVisit(); lastTime = 0; ensureLoop(); resumeAudio();
 }, 'ww', { soft: true });
+const characterPicker = createCharacterPicker({ trigger: button('ww-character'), signal,
+  current: () => scene.character,
+  beforeOpen() {
+    if (!ready || disposed || art.open || camp.open || keepsakes.open || discovery.pending || journey.mode.kind === 'visiting' || journey.mode.kind === 'encounter') return false;
+    journey.pause(); cancelAnimationFrame(animation); animation = 0; lastTime = 0; pauseAudio(); updateUI(); return true;
+  },
+  apply: (id, selectionSignal) => scene.setCharacter(id, selectionSignal),
+  afterClose() { if (disposed) return; lastTime = 0; resize(); uiKey = ''; updateUI(); ensureLoop(); resumeAudio(); },
+});
 function openArt(entry?: string, place?: string, event: TrailEventId | null = null): void {
   if (!ready || disposed || discovery.pending || art.open || camp.open || keepsakes.open) return;
   activeEvent = event;
@@ -209,7 +219,7 @@ async function toggleSound(): Promise<void> {
 }
 function tick(now: number): void {
   animation = 0;
-  if (disposed || document.hidden || art.open || camp.open || keepsakes.open || !ready) return;
+  if (disposed || document.hidden || art.open || camp.open || keepsakes.open || characterPicker.open || !ready) return;
   const dt = lastTime ? Math.min(.05, Math.max(0, (now - lastTime) / 1000)) : 0; lastTime = now;
   const day = journey.day;
   journey.tick(dt); if (journey.day !== day) environment.reset(journey);
@@ -250,7 +260,7 @@ document.addEventListener('keydown', event => {
     event.preventDefault(); discovery.cancel(); journey.closeEncounter(false);
     uiKey = ''; updateUI(); updateVisit(); resumeAudio(); return;
   }
-  if (!ready || art.open || journey.mode.kind === 'visiting' || journey.mode.kind === 'encounter' || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLButtonElement || event.target instanceof HTMLAnchorElement) return;
+  if (!ready || art.open || characterPicker.open || journey.mode.kind === 'visiting' || journey.mode.kind === 'encounter' || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLButtonElement || event.target instanceof HTMLAnchorElement) return;
   if (event.code === 'Space') { event.preventDefault(); if (!event.repeat) journey.toggle(); }
   else if (event.code === 'Escape' || event.code === 'ArrowLeft' || event.code === 'ArrowDown') { event.preventDefault(); journey.pause(); }
   else if (event.code === 'ArrowRight' || event.code === 'ArrowUp') { event.preventDefault(); journey.walkTo(); }
@@ -271,7 +281,7 @@ window.addEventListener('pagehide', event => {
 window.addEventListener('pageshow', event => { if (event.persisted) { lastTime = 0; ensureLoop(); updateUI(); } }, { signal });
 async function start(): Promise<void> {
   await scene.load(signal); if (signal.aborted || disposed) return;
-  ready = true; resize(); loading.hidden = true; node('ww-detail-hint').hidden = true;
+  ready = true; resize(); loading.hidden = true; node('ww-detail-hint').hidden = true; characterPicker.refresh();
   if (autostart && !document.hidden) { journey.walkTo(); autostart = false; }
   updateUI(); updateEnvironment(); observer.observe(map); ensureLoop();
 }

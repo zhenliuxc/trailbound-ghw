@@ -182,6 +182,15 @@
   {id:'wugong-forest-leaves',route:'wugong',order:0,edition:3,manualOnly:true,reward:true,place:'武功山 · 东江村上山林间',name:'林间的叶影',tag:'林间叶影',hint:'翻开两张纸叶，找到四对相同的叶形。',memory:'上山的林间石路边，我歇了歇脚，把四对叶影一一认出来。叶子还留在林间，清凉的树影留在了手帐里。',result:'四对叶影都找到了。',interaction:'tap',icon:'leaf',artV5:'scenes/wugong-forest-leaves-v1/forest-v1.webp',badge:'scenes/wugong-forest-leaves-v1/forest-v1.webp'},
   {id:'wugong-homeward-pages',route:'wugong',order:5,edition:3,manualOnly:true,reward:true,place:'武功山 · 福星谷下山林间',name:'把来路排进手帐',tag:'归途山色',hint:'把四幅小画按林间、草甸、星夜、金顶的先后排好。',memory:'下山回到林荫里，我把上山的林间、草甸、观音宕的夜色和金顶，按走过的顺序排好。这一程的山色，终于连成了完整的一页。',result:'来时的山路，在纸上连了起来。',interaction:'drag',icon:'mountain',artV5:'scenes/wugong-v1.webp',badge:'scenes/wugong-v1.webp'}
  );
+ // Aotai's ordered chapter owns arrivals; existing journal identities stay intact.
+ const aotaiChapter=[
+  ['snow-tracks','石海滚雪球','石海纹理','秦岭 · 石海','从雪球向右下方轻拖，松手，让它滚进雪窝。','badges/aotai-rock-facets-v4.webp'],
+  ['snow-lichen','踏风上梁','秦岭长脊','秦岭 · 主脊','按住小人上山；风强时松手，在岩后歇一下。','badges/aotai-ridgeline-v4.webp'],
+  ['aotai-takin-first','冬林初遇','秦岭初遇','秦岭 · 林缘','退到宽处，让出山路。','badges/aotai-takin-first-v4.webp'],
+  ['snow-light','雾里还有远山','雾后山光','太白山区域 · 雾中石海','翻开画片，找到三对相同的山间景物。','badges/snow-light-v5.webp']
+ ];
+ for(const [id,name,tag,place,hint,art] of aotaiChapter){const entry=CATALOG.find(e=>e.id===id);if(entry)Object.assign(entry,{name,tag,place,hint,edition:3,manualOnly:true,reward:true,condition:'秦岭虚拟地貌章节',artV5:art,badge:art});}
+ CATALOG.push({id:'aotai-camp-night',route:'aotai',order:3,edition:3,manualOnly:true,reward:true,place:'秦岭 · 大石河营地',name:'雪夜搭营',tag:'雪夜营灯',hint:'把两根帐绳拖到地钉处系紧，再点亮营灯。',memory:'在大石河的冬夜系紧帐绳，点亮营灯。风慢慢安静下来，帐篷里留下一点暖光。',result:'帐绳系稳了，营灯亮了。',interaction:'drag',icon:'tent',artV5:'badges/aotai-camp-night-v1.webp',badge:'badges/aotai-camp-night-v1.webp'});
  const ids=new Set(CATALOG.map(x=>x.id));
  function clean(values){return Array.isArray(values)?[...new Set(values.filter(x=>typeof x==='string'&&ids.has(x)))]:[];}
  function item(id){return CATALOG.find(x=>x.id===id);}

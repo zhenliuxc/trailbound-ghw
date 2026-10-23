@@ -12,6 +12,8 @@ import { TRAIL_GAMES } from '../runtime/tiger-trail/rules';
 import { createTigerMemoryGames } from '../runtime/tiger-memories/adapter';
 import { MEMORY_IDS, MEMORY_SPECS, MemoryState, memoryId } from '../runtime/tiger-memories/model';
 import { roadWalk } from '../runtime/tiger-memories/road';
+import { createAotaiGames } from '../runtime/aotai-games/adapter';
+import { AOTAI_GAMES, AOTAI_IDS, aotaiGameId } from '../runtime/aotai-games/model';
 
 interface ArtAudio extends SoundPlayer { enabled: boolean; enable(scene: MusicScene): Promise<boolean>; disable(): void; hide(): void; setScene(scene: MusicScene): void; destroy(): void }
 interface ArtCatalog extends MomentCatalog { safeCaptureArt(value: unknown): string | null }
@@ -29,10 +31,13 @@ declare global {
 }
 const dom = createDom(document), { get: $ } = dom;
 const query = new URLSearchParams(location.search), id = query.get('entry');
-const routeId = document.body.dataset.route === 'tiger' ? 'tiger' : 'wugong';
-const mapPage = routeId === 'tiger' ? 'tiger-walk.html' : 'wugong-walk.html';
-const allowed = new Set(routeId === 'tiger' ? [...Object.keys(TRAIL_GAMES), ...MEMORY_IDS] : ['meadow-bird', 'meadow-butterfly', 'meadow-flower', 'wugong-wind-hiker']);
-const places = new Set(routeId === 'tiger' ? ['虎跳峡 · 二十八道拐', '虎跳峡 · 中虎跳江边', '虎跳峡 · 中途客栈', '虎跳峡 · 龙洞瀑布'] : ['武功山 · 山脊草甸', '武功山 · 观音宕草甸', '武功山 · 吊马桩', '武功山 · 吊马桩山脊', '武功山 · 金顶古祭坛']);
+const routeId = document.body.dataset.route === 'tiger' ? 'tiger' : document.body.dataset.route === 'aotai' ? 'aotai' : 'wugong';
+const artRoutes = {
+  wugong: { map: 'wugong-walk.html', entries: ['meadow-bird', 'meadow-butterfly', 'meadow-flower', 'wugong-wind-hiker'], places: ['武功山 · 山脊草甸', '武功山 · 观音宕草甸', '武功山 · 吊马桩', '武功山 · 吊马桩山脊', '武功山 · 金顶古祭坛'] },
+  tiger: { map: 'tiger-walk.html', entries: [...Object.keys(TRAIL_GAMES), ...MEMORY_IDS], places: ['虎跳峡 · 二十八道拐', '虎跳峡 · 中虎跳江边', '虎跳峡 · 中途客栈', '虎跳峡 · 龙洞瀑布'] },
+  aotai: { map: 'aotai-walk.html', entries: AOTAI_IDS, places: AOTAI_IDS.map(id => AOTAI_GAMES[id].place) },
+};
+const mapPage = artRoutes[routeId].map, allowed = new Set<string>(artRoutes[routeId].entries), places = new Set<string>(artRoutes[routeId].places);
 const requestedPlace = query.get('place'), place = requestedPlace && places.has(requestedPlace) ? requestedPlace : null;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let disposed = false, closing = false, animation = 0, lastTime = 0, collected = 0;
@@ -60,7 +65,7 @@ function refresh(): void {
   ensureLoop();
 }
 const audio = window.TrailAudio.create({ AudioContext, navigator, fetch: fetch.bind(window), timers: window, createMusic: createMusicLayer, onError() { $('mini-sound').textContent = '声音未能开启，再试一次'; }, onStateChange() {} });
-const reward = createRewardController({ dom, scenes, catalog, cache, audio, reduced, autoCollect: true, presentArt: roundJournalArt, gameKind: entryId => routeId === 'tiger' ? memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId] : games.kinds[entryId], refresh, stopLoop,
+const reward = createRewardController({ dom, scenes, catalog, cache, audio, reduced, autoCollect: true, presentArt: roundJournalArt, gameKind: entryId => routeId === 'aotai' ? aotaiGameId(entryId) ? AOTAI_GAMES[entryId].game : undefined : routeId === 'tiger' ? memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId] : games.kinds[entryId], refresh, stopLoop,
   onCollected(moment) {
     const saved = storeEarnedMoment(catalog, window.TrailJournal, storage, moment);
     if (saved.kind === 'error') { $('reward-copy').textContent = saved.message; return false; }
@@ -102,6 +107,7 @@ const tigerGames = routeId === 'tiger' ? createTigerTrailGames({ dom, riverArriv
 if (tigerGames) mini.registerGame(Object.keys(TRAIL_GAMES), tigerGames.adapter);
 const tigerMemories = routeId === 'tiger' ? createTigerMemoryGames(dom, name => mini.action(name)) : null;
 if (tigerMemories) mini.registerGame(MEMORY_IDS, tigerMemories.adapter);
+if (routeId === 'aotai') mini.registerGame(AOTAI_IDS, createAotaiGames(dom));
 let lastRoadSound = 0;
 function frame(now: number): void {
   animation = 0; if (disposed || document.hidden) return;

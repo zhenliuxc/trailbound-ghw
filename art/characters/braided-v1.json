@@ -1,0 +1,219 @@
+{
+  "source": "art/characters/braided-source-v1.png",
+  "reference": "art/characters/braided-reference-v1.png",
+  "generator": "Built-in image_gen; identity reference supplied by the user.",
+  "prompt": "art/characters/braided-v1-prompt.txt",
+  "sha256": "44ed1c3c6700284696f1d6687db2a7e0026620de14f6e85f1ddc514640ff0bc5",
+  "width": 1536,
+  "height": 1024,
+  "preparation": "Read alpha components and foot anchors, keep original RGBA pixels in the atlas, encode WebP. Separate thumbnail crops and resizes only. No painted background is used.",
+  "coordinates": "x/y are source coordinates; footX/footY are ground anchors relative to the cropped frame. Camp x anchors project the pelvis onto the ground so extended boots do not shift the body between poses. Source rows have different heights; scales normalize walking and standing camp poses to 54 map pixels.",
+  "walkHeight": 348.5,
+  "actionHeight": 284,
+  "frames": [
+    {
+      "pose": "left-contact",
+      "cell": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 382
+      },
+      "x": 99,
+      "y": 17,
+      "width": 243,
+      "height": 358,
+      "footX": 125,
+      "footY": 357,
+      "visibleHeight": 356,
+      "soleOffset": -44.74725274725276
+    },
+    {
+      "pose": "left-weight",
+      "cell": {
+        "x": 384,
+        "y": 0,
+        "width": 384,
+        "height": 382
+      },
+      "x": 484,
+      "y": 17,
+      "width": 218,
+      "height": 356,
+      "footX": 124,
+      "footY": 355,
+      "visibleHeight": 354,
+      "soleOffset": 26.383561643835606
+    },
+    {
+      "pose": "right-pass",
+      "cell": {
+        "x": 768,
+        "y": 0,
+        "width": 384,
+        "height": 382
+      },
+      "x": 869,
+      "y": 17,
+      "width": 212,
+      "height": 359,
+      "footX": 121,
+      "footY": 358,
+      "visibleHeight": 357,
+      "soleOffset": -23.99019607843138
+    },
+    {
+      "pose": "right-rise",
+      "cell": {
+        "x": 1152,
+        "y": 0,
+        "width": 384,
+        "height": 382
+      },
+      "x": 1242,
+      "y": 17,
+      "width": 218,
+      "height": 358,
+      "footX": 134,
+      "footY": 357,
+      "visibleHeight": 356,
+      "soleOffset": -53.513513513513544
+    },
+    {
+      "pose": "right-contact",
+      "cell": {
+        "x": 0,
+        "y": 382,
+        "width": 384,
+        "height": 355
+      },
+      "x": 98,
+      "y": 389,
+      "width": 234,
+      "height": 344,
+      "footX": 117,
+      "footY": 343,
+      "visibleHeight": 342,
+      "soleOffset": -20.77118644067798
+    },
+    {
+      "pose": "right-weight",
+      "cell": {
+        "x": 384,
+        "y": 382,
+        "width": 384,
+        "height": 355
+      },
+      "x": 484,
+      "y": 389,
+      "width": 227,
+      "height": 343,
+      "footX": 119,
+      "footY": 342,
+      "visibleHeight": 341,
+      "soleOffset": 46.92647058823525
+    },
+    {
+      "pose": "left-pass",
+      "cell": {
+        "x": 768,
+        "y": 382,
+        "width": 384,
+        "height": 355
+      },
+      "x": 865,
+      "y": 389,
+      "width": 215,
+      "height": 345,
+      "footX": 125,
+      "footY": 344,
+      "visibleHeight": 343,
+      "soleOffset": -18.886363636363626
+    },
+    {
+      "pose": "left-rise",
+      "cell": {
+        "x": 1152,
+        "y": 382,
+        "width": 384,
+        "height": 355
+      },
+      "x": 1241,
+      "y": 389,
+      "width": 228,
+      "height": 344,
+      "footX": 137,
+      "footY": 343,
+      "visibleHeight": 342,
+      "soleOffset": -49.326530612244824
+    },
+    {
+      "pose": "unpacking",
+      "cell": {
+        "x": 0,
+        "y": 737,
+        "width": 384,
+        "height": 287
+      },
+      "x": 105,
+      "y": 737,
+      "width": 178,
+      "height": 285,
+      "footX": 104,
+      "footY": 284,
+      "visibleHeight": 284,
+      "soleOffset": -26.25
+    },
+    {
+      "pose": "kneeling",
+      "cell": {
+        "x": 384,
+        "y": 737,
+        "width": 384,
+        "height": 287
+      },
+      "x": 463,
+      "y": 765,
+      "width": 277,
+      "height": 247,
+      "footX": 87,
+      "footY": 246,
+      "visibleHeight": 245,
+      "soleOffset": 16.444444444444457
+    },
+    {
+      "pose": "seated",
+      "cell": {
+        "x": 768,
+        "y": 737,
+        "width": 384,
+        "height": 287
+      },
+      "x": 805,
+      "y": 773,
+      "width": 313,
+      "height": 241,
+      "footX": 155,
+      "footY": 240,
+      "visibleHeight": 239,
+      "soleOffset": 99.12857142857138
+    },
+    {
+      "pose": "drinking",
+      "cell": {
+        "x": 1152,
+        "y": 737,
+        "width": 384,
+        "height": 287
+      },
+      "x": 1189,
+      "y": 773,
+      "width": 321,
+      "height": 241,
+      "footX": 161,
+      "footY": 240,
+      "visibleHeight": 239,
+      "soleOffset": 100.54054054054063
+    }
+  ]
+}

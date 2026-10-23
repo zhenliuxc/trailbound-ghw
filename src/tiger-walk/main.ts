@@ -6,6 +6,7 @@ import { TigerJourney } from './journey';
 import { PHOTOS } from './photos';
 import { CHECKPOINT_IDS, EVENTS, PLACES, isCheckpoint, place, type CheckpointId, type EventId } from './route';
 import { TigerScene, type Projection, type View } from './scene';
+import { createCharacterPicker } from '../characters/picker';
 
 const node = (id: string): HTMLElement => { const element = document.getElementById(id); if (!element) throw new Error(`虎跳峡界面缺少 ${id}`); return element; };
 const button = (id: string): HTMLButtonElement => { const element = node(id); if (!(element instanceof HTMLButtonElement)) throw new Error(`虎跳峡按钮无法读取 ${id}`); return element; };
@@ -24,10 +25,19 @@ const art = new ArtOverlay(signal, result => {
   const event = activeEvent; activeEvent = null;
   if (event && journey.mode.kind === 'game' && journey.mode.id === event) { if (journey.closeGame(result.collected > 0)) scene.snap(); }
   sync(); lastTime = 0; loop(); resumeAudio();
-}, 'tg', { soft: true, page: 'tiger-art.html', version: 'road-guide-7' });
-function loop(): void { if (ready && !disposed && !document.hidden && !art.open && !photo.open && !animation) animation = requestAnimationFrame(tick); }
-function resumeAudio(): void { if (sound && !document.hidden && !art.open && !photo.open && !discovery.pending && journey.mode.kind !== 'game') audio.resume(); }
-function openJournal(): void { if (!ready || art.open || photo.open || discovery.pending || journey.mode.kind === 'game') return; cancelAnimationFrame(animation); animation = 0; audio.pause(); art.show(); }
+}, 'tg', { soft: true, page: 'tiger-art.html', version: 'character-check-2' });
+const characterPicker = createCharacterPicker({ trigger: button('tg-character'), signal,
+  current: () => scene.character,
+  beforeOpen() {
+    if (!ready || disposed || art.open || photo.open || discovery.pending || journey.mode.kind === 'game') return false;
+    journey.pause(); cancelAnimationFrame(animation); animation = 0; lastTime = 0; audio.pause(); sync(); return true;
+  },
+  apply: (id, selectionSignal) => scene.setCharacter(id, selectionSignal),
+  afterClose() { if (disposed) return; lastTime = 0; resize(); sync(); loop(); resumeAudio(); },
+});
+function loop(): void { if (ready && !disposed && !document.hidden && !art.open && !photo.open && !characterPicker.open && !animation) animation = requestAnimationFrame(tick); }
+function resumeAudio(): void { if (sound && !document.hidden && !art.open && !photo.open && !characterPicker.open && !discovery.pending && journey.mode.kind !== 'game') audio.resume(); }
+function openJournal(): void { if (!ready || art.open || photo.open || discovery.pending || journey.mode.kind === 'game') return; cancelAnimationFrame(animation); animation = 0; audio.pause(); art.show(undefined, undefined, scene.character); }
 
 const icons = {
   flag: '<path d="M7 27V5l18 3-18 8M4 27h12"/>', house: '<path d="m4 14 12-9 12 9M7 13v14h18V13M13 27V17h6v10"/>',
@@ -78,7 +88,9 @@ function position(p: Projection): void {
 function showPhoto(id: CheckpointId): void {
   const metadata = PHOTOS[id]; photoId = id;
   node('tg-photo-title').textContent = id === 'tinas' && journey.leg === 'return' ? '中峡客栈 · 返回终点' : place(id).name; node('tg-photo-caption').textContent = metadata.caption;
+  image.dataset.checkpoint = id;
   for (const [target, text, url] of [['tg-photo-source', metadata.author, metadata.source], ['tg-photo-license', metadata.license, metadata.licenseUrl]]) { const link = node(target); link.textContent = text; link.setAttribute('href', url); }
+  node('tg-photo-source').title = metadata.title;
   image.hidden = true; image.alt = metadata.alt; node('tg-photo-state').hidden = false; node('tg-photo-message').textContent = '实景照片正在展开…'; button('tg-photo-retry').hidden = true;
   image.onload = () => { if (photoId !== id || !photo.open) return; image.hidden = false; node('tg-photo-state').hidden = true; };
   image.onerror = () => { if (photoId !== id || !photo.open) return; node('tg-photo-message').textContent = '照片暂未加载，可以重试或继续走。'; button('tg-photo-retry').hidden = false; };
@@ -130,12 +142,12 @@ function sync(): void {
     audio.pause(); audio.cue();
     discovery.show(mode.id, reduced, () => {
       if (disposed || journey.mode.kind !== 'game' || journey.mode.id !== mode.id) return;
-      activeEvent = mode.id; cancelAnimationFrame(animation); animation = 0; art.show(EVENTS[mode.id].entry, EVENTS[mode.id].place);
+      activeEvent = mode.id; cancelAnimationFrame(animation); animation = 0; art.show(EVENTS[mode.id].entry, EVENTS[mode.id].place, scene.character);
     });
   }
 }
 function tick(now: number): void {
-  animation = 0; if (disposed || !ready || document.hidden || art.open || photo.open) return;
+  animation = 0; if (disposed || !ready || document.hidden || art.open || photo.open || characterPicker.open) return;
   const dt = lastTime ? Math.min(.05, Math.max(0, (now - lastTime) / 1000)) : 0; lastTime = now;
   journey.tick(dt); audio.update(journey, dt); projection = scene.paint(journey, dt, reduced); position(projection); sync(); loop();
 }
@@ -154,12 +166,12 @@ button('tg-sound').addEventListener('click', () => {
   const token = ++audioToken, control = button('tg-sound');
   if (sound) { sound = false; audio.disable(); control.textContent = '声音 · 关'; control.setAttribute('aria-pressed', 'false'); return; }
   control.disabled = true;
-  void audio.enable().then(() => { if (disposed || token !== audioToken) return; sound = true; control.textContent = '声音 · 开'; control.setAttribute('aria-pressed', 'true'); if (art.open || photo.open || journey.mode.kind === 'game') audio.pause(); }, () => { control.textContent = '声音 · 重试'; }).finally(() => { if (!disposed) control.disabled = false; });
+  void audio.enable().then(() => { if (disposed || token !== audioToken) return; sound = true; control.textContent = '声音 · 开'; control.setAttribute('aria-pressed', 'true'); if (art.open || photo.open || characterPicker.open || journey.mode.kind === 'game') audio.pause(); }, () => { control.textContent = '声音 · 重试'; }).finally(() => { if (!disposed) control.disabled = false; });
 }, { signal });
 button('tg-retry').addEventListener('click', () => location.reload(), { signal });
 document.addEventListener('keydown', event => {
   if (event.code === 'Escape' && discovery.pending) { event.preventDefault(); discovery.cancel(); journey.closeGame(false); sync(); resumeAudio(); return; }
-  if (!ready || art.open || photo.open || journey.mode.kind === 'game' || event.target instanceof HTMLButtonElement || event.target instanceof HTMLAnchorElement || event.target instanceof HTMLInputElement) return;
+  if (!ready || art.open || photo.open || characterPicker.open || journey.mode.kind === 'game' || event.target instanceof HTMLButtonElement || event.target instanceof HTMLAnchorElement || event.target instanceof HTMLInputElement) return;
   if (event.code === 'Space') { event.preventDefault(); if (!event.repeat) journey.toggle(); }
   else if (event.code === 'Escape' || event.code === 'ArrowLeft') journey.pause();
   else if (event.code === 'ArrowRight' && (journey.mode.kind === 'ready' || journey.mode.kind === 'paused')) journey.toggle();
@@ -172,7 +184,7 @@ const observer = new ResizeObserver(() => { clearTimeout(resizeTimer); resizeTim
 window.addEventListener('pagehide', event => { lastTime = 0; cancelAnimationFrame(animation); animation = 0; audio.pause(); journey.pause(); if (event.persisted) return; disposed = true; audioToken++; lifecycle.abort(); observer.disconnect(); clearTimeout(resizeTimer); photoMotion(); art.dispose(); scene.destroy(); audio.destroy(); image.onload = image.onerror = null; }, { signal });
 window.addEventListener('pageshow', event => { if (event.persisted) { sync(); loop(); } }, { signal });
 void scene.load(signal).then(() => {
-  if (signal.aborted || disposed) return; ready = true; loading.hidden = true; resize(); observer.observe(map);
+  if (signal.aborted || disposed) return; ready = true; loading.hidden = true; resize(); observer.observe(map); characterPicker.refresh();
   if (autostart && !document.hidden) { autostart = false; journey.toggle(); }
   sync(); loop();
 }, error => { if (signal.aborted || disposed) return; scene.destroy(); node('tg-loading-copy').textContent = error instanceof Error ? error.message : '山路暂时未能展开。'; button('tg-retry').hidden = false; });

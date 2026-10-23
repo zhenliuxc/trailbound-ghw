@@ -1,6 +1,4910 @@
 // Generated Wugong art bridge. Reuses existing mini-game, reward and journal controllers.
 "use strict";
 (() => {
+  var __create = Object.create;
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getProtoOf = Object.getPrototypeOf;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __commonJS = (cb, mod) => function __require() {
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+    mod
+  ));
+
+  // node_modules/matter-js/build/matter.js
+  var require_matter = __commonJS({
+    "node_modules/matter-js/build/matter.js"(exports, module) {
+      (function webpackUniversalModuleDefinition(root, factory) {
+        if (typeof exports === "object" && typeof module === "object")
+          module.exports = factory();
+        else if (typeof define === "function" && define.amd)
+          define("Matter", [], factory);
+        else if (typeof exports === "object")
+          exports["Matter"] = factory();
+        else
+          root["Matter"] = factory();
+      })(exports, function() {
+        return (
+          /******/
+          (function(modules) {
+            var installedModules = {};
+            function __webpack_require__(moduleId) {
+              if (installedModules[moduleId]) {
+                return installedModules[moduleId].exports;
+              }
+              var module2 = installedModules[moduleId] = {
+                /******/
+                i: moduleId,
+                /******/
+                l: false,
+                /******/
+                exports: {}
+                /******/
+              };
+              modules[moduleId].call(module2.exports, module2, module2.exports, __webpack_require__);
+              module2.l = true;
+              return module2.exports;
+            }
+            __webpack_require__.m = modules;
+            __webpack_require__.c = installedModules;
+            __webpack_require__.d = function(exports2, name, getter) {
+              if (!__webpack_require__.o(exports2, name)) {
+                Object.defineProperty(exports2, name, { enumerable: true, get: getter });
+              }
+            };
+            __webpack_require__.r = function(exports2) {
+              if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
+                Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });
+              }
+              Object.defineProperty(exports2, "__esModule", { value: true });
+            };
+            __webpack_require__.t = function(value, mode) {
+              if (mode & 1) value = __webpack_require__(value);
+              if (mode & 8) return value;
+              if (mode & 4 && typeof value === "object" && value && value.__esModule) return value;
+              var ns = /* @__PURE__ */ Object.create(null);
+              __webpack_require__.r(ns);
+              Object.defineProperty(ns, "default", { enumerable: true, value });
+              if (mode & 2 && typeof value != "string") for (var key in value) __webpack_require__.d(ns, key, function(key2) {
+                return value[key2];
+              }.bind(null, key));
+              return ns;
+            };
+            __webpack_require__.n = function(module2) {
+              var getter = module2 && module2.__esModule ? (
+                /******/
+                function getDefault() {
+                  return module2["default"];
+                }
+              ) : (
+                /******/
+                function getModuleExports() {
+                  return module2;
+                }
+              );
+              __webpack_require__.d(getter, "a", getter);
+              return getter;
+            };
+            __webpack_require__.o = function(object, property) {
+              return Object.prototype.hasOwnProperty.call(object, property);
+            };
+            __webpack_require__.p = "";
+            return __webpack_require__(__webpack_require__.s = 20);
+          })([
+            /* 0 */
+            /***/
+            (function(module2, exports2) {
+              var Common = {};
+              module2.exports = Common;
+              (function() {
+                Common._baseDelta = 1e3 / 60;
+                Common._nextId = 0;
+                Common._seed = 0;
+                Common._nowStartTime = +/* @__PURE__ */ new Date();
+                Common._warnedOnce = {};
+                Common._decomp = null;
+                Common.extend = function(obj, deep) {
+                  var argsStart, args, deepClone;
+                  if (typeof deep === "boolean") {
+                    argsStart = 2;
+                    deepClone = deep;
+                  } else {
+                    argsStart = 1;
+                    deepClone = true;
+                  }
+                  for (var i = argsStart; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    if (source) {
+                      for (var prop in source) {
+                        if (deepClone && source[prop] && source[prop].constructor === Object) {
+                          if (!obj[prop] || obj[prop].constructor === Object) {
+                            obj[prop] = obj[prop] || {};
+                            Common.extend(obj[prop], deepClone, source[prop]);
+                          } else {
+                            obj[prop] = source[prop];
+                          }
+                        } else {
+                          obj[prop] = source[prop];
+                        }
+                      }
+                    }
+                  }
+                  return obj;
+                };
+                Common.clone = function(obj, deep) {
+                  return Common.extend({}, deep, obj);
+                };
+                Common.keys = function(obj) {
+                  if (Object.keys)
+                    return Object.keys(obj);
+                  var keys = [];
+                  for (var key in obj)
+                    keys.push(key);
+                  return keys;
+                };
+                Common.values = function(obj) {
+                  var values = [];
+                  if (Object.keys) {
+                    var keys = Object.keys(obj);
+                    for (var i = 0; i < keys.length; i++) {
+                      values.push(obj[keys[i]]);
+                    }
+                    return values;
+                  }
+                  for (var key in obj)
+                    values.push(obj[key]);
+                  return values;
+                };
+                Common.get = function(obj, path, begin, end) {
+                  path = path.split(".").slice(begin, end);
+                  for (var i = 0; i < path.length; i += 1) {
+                    obj = obj[path[i]];
+                  }
+                  return obj;
+                };
+                Common.set = function(obj, path, val, begin, end) {
+                  var parts = path.split(".").slice(begin, end);
+                  Common.get(obj, path, 0, -1)[parts[parts.length - 1]] = val;
+                  return val;
+                };
+                Common.shuffle = function(array) {
+                  for (var i = array.length - 1; i > 0; i--) {
+                    var j = Math.floor(Common.random() * (i + 1));
+                    var temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                  }
+                  return array;
+                };
+                Common.choose = function(choices) {
+                  return choices[Math.floor(Common.random() * choices.length)];
+                };
+                Common.isElement = function(obj) {
+                  if (typeof HTMLElement !== "undefined") {
+                    return obj instanceof HTMLElement;
+                  }
+                  return !!(obj && obj.nodeType && obj.nodeName);
+                };
+                Common.isArray = function(obj) {
+                  return Object.prototype.toString.call(obj) === "[object Array]";
+                };
+                Common.isFunction = function(obj) {
+                  return typeof obj === "function";
+                };
+                Common.isPlainObject = function(obj) {
+                  return typeof obj === "object" && obj.constructor === Object;
+                };
+                Common.isString = function(obj) {
+                  return toString.call(obj) === "[object String]";
+                };
+                Common.clamp = function(value, min, max) {
+                  if (value < min)
+                    return min;
+                  if (value > max)
+                    return max;
+                  return value;
+                };
+                Common.sign = function(value) {
+                  return value < 0 ? -1 : 1;
+                };
+                Common.now = function() {
+                  if (typeof window !== "undefined" && window.performance) {
+                    if (window.performance.now) {
+                      return window.performance.now();
+                    } else if (window.performance.webkitNow) {
+                      return window.performance.webkitNow();
+                    }
+                  }
+                  if (Date.now) {
+                    return Date.now();
+                  }
+                  return /* @__PURE__ */ new Date() - Common._nowStartTime;
+                };
+                Common.random = function(min, max) {
+                  min = typeof min !== "undefined" ? min : 0;
+                  max = typeof max !== "undefined" ? max : 1;
+                  return min + _seededRandom() * (max - min);
+                };
+                var _seededRandom = function() {
+                  Common._seed = (Common._seed * 9301 + 49297) % 233280;
+                  return Common._seed / 233280;
+                };
+                Common.colorToNumber = function(colorString) {
+                  colorString = colorString.replace("#", "");
+                  if (colorString.length == 3) {
+                    colorString = colorString.charAt(0) + colorString.charAt(0) + colorString.charAt(1) + colorString.charAt(1) + colorString.charAt(2) + colorString.charAt(2);
+                  }
+                  return parseInt(colorString, 16);
+                };
+                Common.logLevel = 1;
+                Common.log = function() {
+                  if (console && Common.logLevel > 0 && Common.logLevel <= 3) {
+                    console.log.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
+                  }
+                };
+                Common.info = function() {
+                  if (console && Common.logLevel > 0 && Common.logLevel <= 2) {
+                    console.info.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
+                  }
+                };
+                Common.warn = function() {
+                  if (console && Common.logLevel > 0 && Common.logLevel <= 3) {
+                    console.warn.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
+                  }
+                };
+                Common.warnOnce = function() {
+                  var message = Array.prototype.slice.call(arguments).join(" ");
+                  if (!Common._warnedOnce[message]) {
+                    Common.warn(message);
+                    Common._warnedOnce[message] = true;
+                  }
+                };
+                Common.deprecated = function(obj, prop, warning) {
+                  obj[prop] = Common.chain(function() {
+                    Common.warnOnce("🔅 deprecated 🔅", warning);
+                  }, obj[prop]);
+                };
+                Common.nextId = function() {
+                  return Common._nextId++;
+                };
+                Common.indexOf = function(haystack, needle) {
+                  if (haystack.indexOf)
+                    return haystack.indexOf(needle);
+                  for (var i = 0; i < haystack.length; i++) {
+                    if (haystack[i] === needle)
+                      return i;
+                  }
+                  return -1;
+                };
+                Common.map = function(list, func) {
+                  if (list.map) {
+                    return list.map(func);
+                  }
+                  var mapped = [];
+                  for (var i = 0; i < list.length; i += 1) {
+                    mapped.push(func(list[i]));
+                  }
+                  return mapped;
+                };
+                Common.topologicalSort = function(graph) {
+                  var result = [], visited = [], temp = [];
+                  for (var node in graph) {
+                    if (!visited[node] && !temp[node]) {
+                      Common._topologicalSort(node, visited, temp, graph, result);
+                    }
+                  }
+                  return result;
+                };
+                Common._topologicalSort = function(node, visited, temp, graph, result) {
+                  var neighbors = graph[node] || [];
+                  temp[node] = true;
+                  for (var i = 0; i < neighbors.length; i += 1) {
+                    var neighbor = neighbors[i];
+                    if (temp[neighbor]) {
+                      continue;
+                    }
+                    if (!visited[neighbor]) {
+                      Common._topologicalSort(neighbor, visited, temp, graph, result);
+                    }
+                  }
+                  temp[node] = false;
+                  visited[node] = true;
+                  result.push(node);
+                };
+                Common.chain = function() {
+                  var funcs = [];
+                  for (var i = 0; i < arguments.length; i += 1) {
+                    var func = arguments[i];
+                    if (func._chained) {
+                      funcs.push.apply(funcs, func._chained);
+                    } else {
+                      funcs.push(func);
+                    }
+                  }
+                  var chain = function() {
+                    var lastResult, args = new Array(arguments.length);
+                    for (var i2 = 0, l = arguments.length; i2 < l; i2++) {
+                      args[i2] = arguments[i2];
+                    }
+                    for (i2 = 0; i2 < funcs.length; i2 += 1) {
+                      var result = funcs[i2].apply(lastResult, args);
+                      if (typeof result !== "undefined") {
+                        lastResult = result;
+                      }
+                    }
+                    return lastResult;
+                  };
+                  chain._chained = funcs;
+                  return chain;
+                };
+                Common.chainPathBefore = function(base, path, func) {
+                  return Common.set(base, path, Common.chain(
+                    func,
+                    Common.get(base, path)
+                  ));
+                };
+                Common.chainPathAfter = function(base, path, func) {
+                  return Common.set(base, path, Common.chain(
+                    Common.get(base, path),
+                    func
+                  ));
+                };
+                Common.setDecomp = function(decomp) {
+                  Common._decomp = decomp;
+                };
+                Common.getDecomp = function() {
+                  var decomp = Common._decomp;
+                  try {
+                    if (!decomp && typeof window !== "undefined") {
+                      decomp = window.decomp;
+                    }
+                    if (!decomp && typeof global !== "undefined") {
+                      decomp = global.decomp;
+                    }
+                  } catch (e) {
+                    decomp = null;
+                  }
+                  return decomp;
+                };
+              })();
+            }),
+            /* 1 */
+            /***/
+            (function(module2, exports2) {
+              var Bounds = {};
+              module2.exports = Bounds;
+              (function() {
+                Bounds.create = function(vertices) {
+                  var bounds = {
+                    min: { x: 0, y: 0 },
+                    max: { x: 0, y: 0 }
+                  };
+                  if (vertices)
+                    Bounds.update(bounds, vertices);
+                  return bounds;
+                };
+                Bounds.update = function(bounds, vertices, velocity) {
+                  bounds.min.x = Infinity;
+                  bounds.max.x = -Infinity;
+                  bounds.min.y = Infinity;
+                  bounds.max.y = -Infinity;
+                  for (var i = 0; i < vertices.length; i++) {
+                    var vertex = vertices[i];
+                    if (vertex.x > bounds.max.x) bounds.max.x = vertex.x;
+                    if (vertex.x < bounds.min.x) bounds.min.x = vertex.x;
+                    if (vertex.y > bounds.max.y) bounds.max.y = vertex.y;
+                    if (vertex.y < bounds.min.y) bounds.min.y = vertex.y;
+                  }
+                  if (velocity) {
+                    if (velocity.x > 0) {
+                      bounds.max.x += velocity.x;
+                    } else {
+                      bounds.min.x += velocity.x;
+                    }
+                    if (velocity.y > 0) {
+                      bounds.max.y += velocity.y;
+                    } else {
+                      bounds.min.y += velocity.y;
+                    }
+                  }
+                };
+                Bounds.contains = function(bounds, point2) {
+                  return point2.x >= bounds.min.x && point2.x <= bounds.max.x && point2.y >= bounds.min.y && point2.y <= bounds.max.y;
+                };
+                Bounds.overlaps = function(boundsA, boundsB) {
+                  return boundsA.min.x <= boundsB.max.x && boundsA.max.x >= boundsB.min.x && boundsA.max.y >= boundsB.min.y && boundsA.min.y <= boundsB.max.y;
+                };
+                Bounds.translate = function(bounds, vector) {
+                  bounds.min.x += vector.x;
+                  bounds.max.x += vector.x;
+                  bounds.min.y += vector.y;
+                  bounds.max.y += vector.y;
+                };
+                Bounds.shift = function(bounds, position) {
+                  var deltaX = bounds.max.x - bounds.min.x, deltaY = bounds.max.y - bounds.min.y;
+                  bounds.min.x = position.x;
+                  bounds.max.x = position.x + deltaX;
+                  bounds.min.y = position.y;
+                  bounds.max.y = position.y + deltaY;
+                };
+              })();
+            }),
+            /* 2 */
+            /***/
+            (function(module2, exports2) {
+              var Vector = {};
+              module2.exports = Vector;
+              (function() {
+                Vector.create = function(x, y) {
+                  return { x: x || 0, y: y || 0 };
+                };
+                Vector.clone = function(vector) {
+                  return { x: vector.x, y: vector.y };
+                };
+                Vector.magnitude = function(vector) {
+                  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+                };
+                Vector.magnitudeSquared = function(vector) {
+                  return vector.x * vector.x + vector.y * vector.y;
+                };
+                Vector.rotate = function(vector, angle, output) {
+                  var cos = Math.cos(angle), sin = Math.sin(angle);
+                  if (!output) output = {};
+                  var x = vector.x * cos - vector.y * sin;
+                  output.y = vector.x * sin + vector.y * cos;
+                  output.x = x;
+                  return output;
+                };
+                Vector.rotateAbout = function(vector, angle, point2, output) {
+                  var cos = Math.cos(angle), sin = Math.sin(angle);
+                  if (!output) output = {};
+                  var x = point2.x + ((vector.x - point2.x) * cos - (vector.y - point2.y) * sin);
+                  output.y = point2.y + ((vector.x - point2.x) * sin + (vector.y - point2.y) * cos);
+                  output.x = x;
+                  return output;
+                };
+                Vector.normalise = function(vector) {
+                  var magnitude = Vector.magnitude(vector);
+                  if (magnitude === 0)
+                    return { x: 0, y: 0 };
+                  return { x: vector.x / magnitude, y: vector.y / magnitude };
+                };
+                Vector.dot = function(vectorA, vectorB) {
+                  return vectorA.x * vectorB.x + vectorA.y * vectorB.y;
+                };
+                Vector.cross = function(vectorA, vectorB) {
+                  return vectorA.x * vectorB.y - vectorA.y * vectorB.x;
+                };
+                Vector.cross3 = function(vectorA, vectorB, vectorC) {
+                  return (vectorB.x - vectorA.x) * (vectorC.y - vectorA.y) - (vectorB.y - vectorA.y) * (vectorC.x - vectorA.x);
+                };
+                Vector.add = function(vectorA, vectorB, output) {
+                  if (!output) output = {};
+                  output.x = vectorA.x + vectorB.x;
+                  output.y = vectorA.y + vectorB.y;
+                  return output;
+                };
+                Vector.sub = function(vectorA, vectorB, output) {
+                  if (!output) output = {};
+                  output.x = vectorA.x - vectorB.x;
+                  output.y = vectorA.y - vectorB.y;
+                  return output;
+                };
+                Vector.mult = function(vector, scalar) {
+                  return { x: vector.x * scalar, y: vector.y * scalar };
+                };
+                Vector.div = function(vector, scalar) {
+                  return { x: vector.x / scalar, y: vector.y / scalar };
+                };
+                Vector.perp = function(vector, negate) {
+                  negate = negate === true ? -1 : 1;
+                  return { x: negate * -vector.y, y: negate * vector.x };
+                };
+                Vector.neg = function(vector) {
+                  return { x: -vector.x, y: -vector.y };
+                };
+                Vector.angle = function(vectorA, vectorB) {
+                  return Math.atan2(vectorB.y - vectorA.y, vectorB.x - vectorA.x);
+                };
+                Vector._temp = [
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create()
+                ];
+              })();
+            }),
+            /* 3 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Vertices = {};
+              module2.exports = Vertices;
+              var Vector = __webpack_require__(2);
+              var Common = __webpack_require__(0);
+              (function() {
+                Vertices.create = function(points, body) {
+                  var vertices = [];
+                  for (var i = 0; i < points.length; i++) {
+                    var point2 = points[i], vertex = {
+                      x: point2.x,
+                      y: point2.y,
+                      index: i,
+                      body,
+                      isInternal: false
+                    };
+                    vertices.push(vertex);
+                  }
+                  return vertices;
+                };
+                Vertices.fromPath = function(path, body) {
+                  var pathPattern = /L?\s*([-\d.e]+)[\s,]*([-\d.e]+)*/ig, points = [];
+                  path.replace(pathPattern, function(match, x, y) {
+                    points.push({ x: parseFloat(x), y: parseFloat(y) });
+                  });
+                  return Vertices.create(points, body);
+                };
+                Vertices.centre = function(vertices) {
+                  var area = Vertices.area(vertices, true), centre = { x: 0, y: 0 }, cross, temp, j;
+                  for (var i = 0; i < vertices.length; i++) {
+                    j = (i + 1) % vertices.length;
+                    cross = Vector.cross(vertices[i], vertices[j]);
+                    temp = Vector.mult(Vector.add(vertices[i], vertices[j]), cross);
+                    centre = Vector.add(centre, temp);
+                  }
+                  return Vector.div(centre, 6 * area);
+                };
+                Vertices.mean = function(vertices) {
+                  var average = { x: 0, y: 0 };
+                  for (var i = 0; i < vertices.length; i++) {
+                    average.x += vertices[i].x;
+                    average.y += vertices[i].y;
+                  }
+                  return Vector.div(average, vertices.length);
+                };
+                Vertices.area = function(vertices, signed) {
+                  var area = 0, j = vertices.length - 1;
+                  for (var i = 0; i < vertices.length; i++) {
+                    area += (vertices[j].x - vertices[i].x) * (vertices[j].y + vertices[i].y);
+                    j = i;
+                  }
+                  if (signed)
+                    return area / 2;
+                  return Math.abs(area) / 2;
+                };
+                Vertices.inertia = function(vertices, mass) {
+                  var numerator = 0, denominator = 0, v = vertices, cross, j;
+                  for (var n = 0; n < v.length; n++) {
+                    j = (n + 1) % v.length;
+                    cross = Math.abs(Vector.cross(v[j], v[n]));
+                    numerator += cross * (Vector.dot(v[j], v[j]) + Vector.dot(v[j], v[n]) + Vector.dot(v[n], v[n]));
+                    denominator += cross;
+                  }
+                  return mass / 6 * (numerator / denominator);
+                };
+                Vertices.translate = function(vertices, vector, scalar) {
+                  scalar = typeof scalar !== "undefined" ? scalar : 1;
+                  var verticesLength = vertices.length, translateX = vector.x * scalar, translateY = vector.y * scalar, i;
+                  for (i = 0; i < verticesLength; i++) {
+                    vertices[i].x += translateX;
+                    vertices[i].y += translateY;
+                  }
+                  return vertices;
+                };
+                Vertices.rotate = function(vertices, angle, point2) {
+                  if (angle === 0)
+                    return;
+                  var cos = Math.cos(angle), sin = Math.sin(angle), pointX = point2.x, pointY = point2.y, verticesLength = vertices.length, vertex, dx, dy, i;
+                  for (i = 0; i < verticesLength; i++) {
+                    vertex = vertices[i];
+                    dx = vertex.x - pointX;
+                    dy = vertex.y - pointY;
+                    vertex.x = pointX + (dx * cos - dy * sin);
+                    vertex.y = pointY + (dx * sin + dy * cos);
+                  }
+                  return vertices;
+                };
+                Vertices.contains = function(vertices, point2) {
+                  var pointX = point2.x, pointY = point2.y, verticesLength = vertices.length, vertex = vertices[verticesLength - 1], nextVertex;
+                  for (var i = 0; i < verticesLength; i++) {
+                    nextVertex = vertices[i];
+                    if ((pointX - vertex.x) * (nextVertex.y - vertex.y) + (pointY - vertex.y) * (vertex.x - nextVertex.x) > 0) {
+                      return false;
+                    }
+                    vertex = nextVertex;
+                  }
+                  return true;
+                };
+                Vertices.scale = function(vertices, scaleX, scaleY, point2) {
+                  if (scaleX === 1 && scaleY === 1)
+                    return vertices;
+                  point2 = point2 || Vertices.centre(vertices);
+                  var vertex, delta;
+                  for (var i = 0; i < vertices.length; i++) {
+                    vertex = vertices[i];
+                    delta = Vector.sub(vertex, point2);
+                    vertices[i].x = point2.x + delta.x * scaleX;
+                    vertices[i].y = point2.y + delta.y * scaleY;
+                  }
+                  return vertices;
+                };
+                Vertices.chamfer = function(vertices, radius, quality, qualityMin, qualityMax) {
+                  if (typeof radius === "number") {
+                    radius = [radius];
+                  } else {
+                    radius = radius || [8];
+                  }
+                  quality = typeof quality !== "undefined" ? quality : -1;
+                  qualityMin = qualityMin || 2;
+                  qualityMax = qualityMax || 14;
+                  var newVertices = [];
+                  for (var i = 0; i < vertices.length; i++) {
+                    var prevVertex = vertices[i - 1 >= 0 ? i - 1 : vertices.length - 1], vertex = vertices[i], nextVertex = vertices[(i + 1) % vertices.length], currentRadius = radius[i < radius.length ? i : radius.length - 1];
+                    if (currentRadius === 0) {
+                      newVertices.push(vertex);
+                      continue;
+                    }
+                    var prevNormal = Vector.normalise({
+                      x: vertex.y - prevVertex.y,
+                      y: prevVertex.x - vertex.x
+                    });
+                    var nextNormal = Vector.normalise({
+                      x: nextVertex.y - vertex.y,
+                      y: vertex.x - nextVertex.x
+                    });
+                    var diagonalRadius = Math.sqrt(2 * Math.pow(currentRadius, 2)), radiusVector = Vector.mult(Common.clone(prevNormal), currentRadius), midNormal = Vector.normalise(Vector.mult(Vector.add(prevNormal, nextNormal), 0.5)), scaledVertex = Vector.sub(vertex, Vector.mult(midNormal, diagonalRadius));
+                    var precision = quality;
+                    if (quality === -1) {
+                      precision = Math.pow(currentRadius, 0.32) * 1.75;
+                    }
+                    precision = Common.clamp(precision, qualityMin, qualityMax);
+                    if (precision % 2 === 1)
+                      precision += 1;
+                    var alpha = Math.acos(Vector.dot(prevNormal, nextNormal)), theta = alpha / precision;
+                    for (var j = 0; j < precision; j++) {
+                      newVertices.push(Vector.add(Vector.rotate(radiusVector, theta * j), scaledVertex));
+                    }
+                  }
+                  return newVertices;
+                };
+                Vertices.clockwiseSort = function(vertices) {
+                  var centre = Vertices.mean(vertices);
+                  vertices.sort(function(vertexA, vertexB) {
+                    return Vector.angle(centre, vertexA) - Vector.angle(centre, vertexB);
+                  });
+                  return vertices;
+                };
+                Vertices.isConvex = function(vertices) {
+                  var flag = 0, n = vertices.length, i, j, k, z;
+                  if (n < 3)
+                    return null;
+                  for (i = 0; i < n; i++) {
+                    j = (i + 1) % n;
+                    k = (i + 2) % n;
+                    z = (vertices[j].x - vertices[i].x) * (vertices[k].y - vertices[j].y);
+                    z -= (vertices[j].y - vertices[i].y) * (vertices[k].x - vertices[j].x);
+                    if (z < 0) {
+                      flag |= 1;
+                    } else if (z > 0) {
+                      flag |= 2;
+                    }
+                    if (flag === 3) {
+                      return false;
+                    }
+                  }
+                  if (flag !== 0) {
+                    return true;
+                  } else {
+                    return null;
+                  }
+                };
+                Vertices.hull = function(vertices) {
+                  var upper = [], lower = [], vertex, i;
+                  vertices = vertices.slice(0);
+                  vertices.sort(function(vertexA, vertexB) {
+                    var dx = vertexA.x - vertexB.x;
+                    return dx !== 0 ? dx : vertexA.y - vertexB.y;
+                  });
+                  for (i = 0; i < vertices.length; i += 1) {
+                    vertex = vertices[i];
+                    while (lower.length >= 2 && Vector.cross3(lower[lower.length - 2], lower[lower.length - 1], vertex) <= 0) {
+                      lower.pop();
+                    }
+                    lower.push(vertex);
+                  }
+                  for (i = vertices.length - 1; i >= 0; i -= 1) {
+                    vertex = vertices[i];
+                    while (upper.length >= 2 && Vector.cross3(upper[upper.length - 2], upper[upper.length - 1], vertex) <= 0) {
+                      upper.pop();
+                    }
+                    upper.push(vertex);
+                  }
+                  upper.pop();
+                  lower.pop();
+                  return upper.concat(lower);
+                };
+              })();
+            }),
+            /* 4 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Body2 = {};
+              module2.exports = Body2;
+              var Vertices = __webpack_require__(3);
+              var Vector = __webpack_require__(2);
+              var Sleeping = __webpack_require__(7);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              var Axes = __webpack_require__(11);
+              (function() {
+                Body2._timeCorrection = true;
+                Body2._inertiaScale = 4;
+                Body2._nextCollidingGroupId = 1;
+                Body2._nextNonCollidingGroupId = -1;
+                Body2._nextCategory = 1;
+                Body2._baseDelta = 1e3 / 60;
+                Body2.create = function(options) {
+                  var defaults = {
+                    id: Common.nextId(),
+                    type: "body",
+                    label: "Body",
+                    parts: [],
+                    plugin: {},
+                    angle: 0,
+                    vertices: Vertices.fromPath("L 0 0 L 40 0 L 40 40 L 0 40"),
+                    position: { x: 0, y: 0 },
+                    force: { x: 0, y: 0 },
+                    torque: 0,
+                    positionImpulse: { x: 0, y: 0 },
+                    constraintImpulse: { x: 0, y: 0, angle: 0 },
+                    totalContacts: 0,
+                    speed: 0,
+                    angularSpeed: 0,
+                    velocity: { x: 0, y: 0 },
+                    angularVelocity: 0,
+                    isSensor: false,
+                    isStatic: false,
+                    isSleeping: false,
+                    motion: 0,
+                    sleepThreshold: 60,
+                    density: 1e-3,
+                    restitution: 0,
+                    friction: 0.1,
+                    frictionStatic: 0.5,
+                    frictionAir: 0.01,
+                    collisionFilter: {
+                      category: 1,
+                      mask: 4294967295,
+                      group: 0
+                    },
+                    slop: 0.05,
+                    timeScale: 1,
+                    render: {
+                      visible: true,
+                      opacity: 1,
+                      strokeStyle: null,
+                      fillStyle: null,
+                      lineWidth: null,
+                      sprite: {
+                        xScale: 1,
+                        yScale: 1,
+                        xOffset: 0,
+                        yOffset: 0
+                      }
+                    },
+                    events: null,
+                    bounds: null,
+                    chamfer: null,
+                    circleRadius: 0,
+                    positionPrev: null,
+                    anglePrev: 0,
+                    parent: null,
+                    axes: null,
+                    area: 0,
+                    mass: 0,
+                    inertia: 0,
+                    deltaTime: 1e3 / 60,
+                    _original: null
+                  };
+                  var body = Common.extend(defaults, options);
+                  _initProperties(body, options);
+                  return body;
+                };
+                Body2.nextGroup = function(isNonColliding) {
+                  if (isNonColliding)
+                    return Body2._nextNonCollidingGroupId--;
+                  return Body2._nextCollidingGroupId++;
+                };
+                Body2.nextCategory = function() {
+                  Body2._nextCategory = Body2._nextCategory << 1;
+                  return Body2._nextCategory;
+                };
+                var _initProperties = function(body, options) {
+                  options = options || {};
+                  Body2.set(body, {
+                    bounds: body.bounds || Bounds.create(body.vertices),
+                    positionPrev: body.positionPrev || Vector.clone(body.position),
+                    anglePrev: body.anglePrev || body.angle,
+                    vertices: body.vertices,
+                    parts: body.parts || [body],
+                    isStatic: body.isStatic,
+                    isSleeping: body.isSleeping,
+                    parent: body.parent || body
+                  });
+                  Vertices.rotate(body.vertices, body.angle, body.position);
+                  Axes.rotate(body.axes, body.angle);
+                  Bounds.update(body.bounds, body.vertices, body.velocity);
+                  Body2.set(body, {
+                    axes: options.axes || body.axes,
+                    area: options.area || body.area,
+                    mass: options.mass || body.mass,
+                    inertia: options.inertia || body.inertia
+                  });
+                  var defaultFillStyle = body.isStatic ? "#14151f" : Common.choose(["#f19648", "#f5d259", "#f55a3c", "#063e7b", "#ececd1"]), defaultStrokeStyle = body.isStatic ? "#555" : "#ccc", defaultLineWidth = body.isStatic && body.render.fillStyle === null ? 1 : 0;
+                  body.render.fillStyle = body.render.fillStyle || defaultFillStyle;
+                  body.render.strokeStyle = body.render.strokeStyle || defaultStrokeStyle;
+                  body.render.lineWidth = body.render.lineWidth || defaultLineWidth;
+                  body.render.sprite.xOffset += -(body.bounds.min.x - body.position.x) / (body.bounds.max.x - body.bounds.min.x);
+                  body.render.sprite.yOffset += -(body.bounds.min.y - body.position.y) / (body.bounds.max.y - body.bounds.min.y);
+                };
+                Body2.set = function(body, settings, value) {
+                  var property;
+                  if (typeof settings === "string") {
+                    property = settings;
+                    settings = {};
+                    settings[property] = value;
+                  }
+                  for (property in settings) {
+                    if (!Object.prototype.hasOwnProperty.call(settings, property))
+                      continue;
+                    value = settings[property];
+                    switch (property) {
+                      case "isStatic":
+                        Body2.setStatic(body, value);
+                        break;
+                      case "isSleeping":
+                        Sleeping.set(body, value);
+                        break;
+                      case "mass":
+                        Body2.setMass(body, value);
+                        break;
+                      case "density":
+                        Body2.setDensity(body, value);
+                        break;
+                      case "inertia":
+                        Body2.setInertia(body, value);
+                        break;
+                      case "vertices":
+                        Body2.setVertices(body, value);
+                        break;
+                      case "position":
+                        Body2.setPosition(body, value);
+                        break;
+                      case "angle":
+                        Body2.setAngle(body, value);
+                        break;
+                      case "velocity":
+                        Body2.setVelocity(body, value);
+                        break;
+                      case "angularVelocity":
+                        Body2.setAngularVelocity(body, value);
+                        break;
+                      case "speed":
+                        Body2.setSpeed(body, value);
+                        break;
+                      case "angularSpeed":
+                        Body2.setAngularSpeed(body, value);
+                        break;
+                      case "parts":
+                        Body2.setParts(body, value);
+                        break;
+                      case "centre":
+                        Body2.setCentre(body, value);
+                        break;
+                      default:
+                        body[property] = value;
+                    }
+                  }
+                };
+                Body2.setStatic = function(body, isStatic) {
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    if (isStatic) {
+                      if (!part.isStatic) {
+                        part._original = {
+                          restitution: part.restitution,
+                          friction: part.friction,
+                          mass: part.mass,
+                          inertia: part.inertia,
+                          density: part.density,
+                          inverseMass: part.inverseMass,
+                          inverseInertia: part.inverseInertia
+                        };
+                      }
+                      part.restitution = 0;
+                      part.friction = 1;
+                      part.mass = part.inertia = part.density = Infinity;
+                      part.inverseMass = part.inverseInertia = 0;
+                      part.positionPrev.x = part.position.x;
+                      part.positionPrev.y = part.position.y;
+                      part.anglePrev = part.angle;
+                      part.angularVelocity = 0;
+                      part.speed = 0;
+                      part.angularSpeed = 0;
+                      part.motion = 0;
+                    } else if (part._original) {
+                      part.restitution = part._original.restitution;
+                      part.friction = part._original.friction;
+                      part.mass = part._original.mass;
+                      part.inertia = part._original.inertia;
+                      part.density = part._original.density;
+                      part.inverseMass = part._original.inverseMass;
+                      part.inverseInertia = part._original.inverseInertia;
+                      part._original = null;
+                    }
+                    part.isStatic = isStatic;
+                  }
+                };
+                Body2.setMass = function(body, mass) {
+                  var moment = body.inertia / (body.mass / 6);
+                  body.inertia = moment * (mass / 6);
+                  body.inverseInertia = 1 / body.inertia;
+                  body.mass = mass;
+                  body.inverseMass = 1 / body.mass;
+                  body.density = body.mass / body.area;
+                };
+                Body2.setDensity = function(body, density) {
+                  Body2.setMass(body, density * body.area);
+                  body.density = density;
+                };
+                Body2.setInertia = function(body, inertia) {
+                  body.inertia = inertia;
+                  body.inverseInertia = 1 / body.inertia;
+                };
+                Body2.setVertices = function(body, vertices) {
+                  if (vertices[0].body === body) {
+                    body.vertices = vertices;
+                  } else {
+                    body.vertices = Vertices.create(vertices, body);
+                  }
+                  body.axes = Axes.fromVertices(body.vertices);
+                  body.area = Vertices.area(body.vertices);
+                  Body2.setMass(body, body.density * body.area);
+                  var centre = Vertices.centre(body.vertices);
+                  Vertices.translate(body.vertices, centre, -1);
+                  Body2.setInertia(body, Body2._inertiaScale * Vertices.inertia(body.vertices, body.mass));
+                  Vertices.translate(body.vertices, body.position);
+                  Bounds.update(body.bounds, body.vertices, body.velocity);
+                };
+                Body2.setParts = function(body, parts, autoHull) {
+                  var i;
+                  parts = parts.slice(0);
+                  body.parts.length = 0;
+                  body.parts.push(body);
+                  body.parent = body;
+                  for (i = 0; i < parts.length; i++) {
+                    var part = parts[i];
+                    if (part !== body) {
+                      part.parent = body;
+                      body.parts.push(part);
+                    }
+                  }
+                  if (body.parts.length === 1)
+                    return;
+                  autoHull = typeof autoHull !== "undefined" ? autoHull : true;
+                  if (autoHull) {
+                    var vertices = [];
+                    for (i = 0; i < parts.length; i++) {
+                      vertices = vertices.concat(parts[i].vertices);
+                    }
+                    Vertices.clockwiseSort(vertices);
+                    var hull = Vertices.hull(vertices), hullCentre = Vertices.centre(hull);
+                    Body2.setVertices(body, hull);
+                    Vertices.translate(body.vertices, hullCentre);
+                  }
+                  var total = Body2._totalProperties(body);
+                  body.area = total.area;
+                  body.parent = body;
+                  body.position.x = total.centre.x;
+                  body.position.y = total.centre.y;
+                  body.positionPrev.x = total.centre.x;
+                  body.positionPrev.y = total.centre.y;
+                  Body2.setMass(body, total.mass);
+                  Body2.setInertia(body, total.inertia);
+                  Body2.setPosition(body, total.centre);
+                };
+                Body2.setCentre = function(body, centre, relative) {
+                  if (!relative) {
+                    body.positionPrev.x = centre.x - (body.position.x - body.positionPrev.x);
+                    body.positionPrev.y = centre.y - (body.position.y - body.positionPrev.y);
+                    body.position.x = centre.x;
+                    body.position.y = centre.y;
+                  } else {
+                    body.positionPrev.x += centre.x;
+                    body.positionPrev.y += centre.y;
+                    body.position.x += centre.x;
+                    body.position.y += centre.y;
+                  }
+                };
+                Body2.setPosition = function(body, position, updateVelocity) {
+                  var delta = Vector.sub(position, body.position);
+                  if (updateVelocity) {
+                    body.positionPrev.x = body.position.x;
+                    body.positionPrev.y = body.position.y;
+                    body.velocity.x = delta.x;
+                    body.velocity.y = delta.y;
+                    body.speed = Vector.magnitude(delta);
+                  } else {
+                    body.positionPrev.x += delta.x;
+                    body.positionPrev.y += delta.y;
+                  }
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    part.position.x += delta.x;
+                    part.position.y += delta.y;
+                    Vertices.translate(part.vertices, delta);
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                  }
+                };
+                Body2.setAngle = function(body, angle, updateVelocity) {
+                  var delta = angle - body.angle;
+                  if (updateVelocity) {
+                    body.anglePrev = body.angle;
+                    body.angularVelocity = delta;
+                    body.angularSpeed = Math.abs(delta);
+                  } else {
+                    body.anglePrev += delta;
+                  }
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    part.angle += delta;
+                    Vertices.rotate(part.vertices, delta, body.position);
+                    Axes.rotate(part.axes, delta);
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                    if (i > 0) {
+                      Vector.rotateAbout(part.position, delta, body.position, part.position);
+                    }
+                  }
+                };
+                Body2.setVelocity = function(body, velocity) {
+                  var timeScale = body.deltaTime / Body2._baseDelta;
+                  body.positionPrev.x = body.position.x - velocity.x * timeScale;
+                  body.positionPrev.y = body.position.y - velocity.y * timeScale;
+                  body.velocity.x = (body.position.x - body.positionPrev.x) / timeScale;
+                  body.velocity.y = (body.position.y - body.positionPrev.y) / timeScale;
+                  body.speed = Vector.magnitude(body.velocity);
+                };
+                Body2.getVelocity = function(body) {
+                  var timeScale = Body2._baseDelta / body.deltaTime;
+                  return {
+                    x: (body.position.x - body.positionPrev.x) * timeScale,
+                    y: (body.position.y - body.positionPrev.y) * timeScale
+                  };
+                };
+                Body2.getSpeed = function(body) {
+                  return Vector.magnitude(Body2.getVelocity(body));
+                };
+                Body2.setSpeed = function(body, speed) {
+                  Body2.setVelocity(body, Vector.mult(Vector.normalise(Body2.getVelocity(body)), speed));
+                };
+                Body2.setAngularVelocity = function(body, velocity) {
+                  var timeScale = body.deltaTime / Body2._baseDelta;
+                  body.anglePrev = body.angle - velocity * timeScale;
+                  body.angularVelocity = (body.angle - body.anglePrev) / timeScale;
+                  body.angularSpeed = Math.abs(body.angularVelocity);
+                };
+                Body2.getAngularVelocity = function(body) {
+                  return (body.angle - body.anglePrev) * Body2._baseDelta / body.deltaTime;
+                };
+                Body2.getAngularSpeed = function(body) {
+                  return Math.abs(Body2.getAngularVelocity(body));
+                };
+                Body2.setAngularSpeed = function(body, speed) {
+                  Body2.setAngularVelocity(body, Common.sign(Body2.getAngularVelocity(body)) * speed);
+                };
+                Body2.translate = function(body, translation, updateVelocity) {
+                  Body2.setPosition(body, Vector.add(body.position, translation), updateVelocity);
+                };
+                Body2.rotate = function(body, rotation, point2, updateVelocity) {
+                  if (!point2) {
+                    Body2.setAngle(body, body.angle + rotation, updateVelocity);
+                  } else {
+                    var cos = Math.cos(rotation), sin = Math.sin(rotation), dx = body.position.x - point2.x, dy = body.position.y - point2.y;
+                    Body2.setPosition(body, {
+                      x: point2.x + (dx * cos - dy * sin),
+                      y: point2.y + (dx * sin + dy * cos)
+                    }, updateVelocity);
+                    Body2.setAngle(body, body.angle + rotation, updateVelocity);
+                  }
+                };
+                Body2.scale = function(body, scaleX, scaleY, point2) {
+                  var totalArea = 0, totalInertia = 0;
+                  point2 = point2 || body.position;
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    Vertices.scale(part.vertices, scaleX, scaleY, point2);
+                    part.axes = Axes.fromVertices(part.vertices);
+                    part.area = Vertices.area(part.vertices);
+                    Body2.setMass(part, body.density * part.area);
+                    Vertices.translate(part.vertices, { x: -part.position.x, y: -part.position.y });
+                    Body2.setInertia(part, Body2._inertiaScale * Vertices.inertia(part.vertices, part.mass));
+                    Vertices.translate(part.vertices, { x: part.position.x, y: part.position.y });
+                    if (i > 0) {
+                      totalArea += part.area;
+                      totalInertia += part.inertia;
+                    }
+                    part.position.x = point2.x + (part.position.x - point2.x) * scaleX;
+                    part.position.y = point2.y + (part.position.y - point2.y) * scaleY;
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                  }
+                  if (body.parts.length > 1) {
+                    body.area = totalArea;
+                    if (!body.isStatic) {
+                      Body2.setMass(body, body.density * totalArea);
+                      Body2.setInertia(body, totalInertia);
+                    }
+                  }
+                  if (body.circleRadius) {
+                    if (scaleX === scaleY) {
+                      body.circleRadius *= scaleX;
+                    } else {
+                      body.circleRadius = null;
+                    }
+                  }
+                };
+                Body2.update = function(body, deltaTime) {
+                  deltaTime = (typeof deltaTime !== "undefined" ? deltaTime : 1e3 / 60) * body.timeScale;
+                  var deltaTimeSquared = deltaTime * deltaTime, correction = Body2._timeCorrection ? deltaTime / (body.deltaTime || deltaTime) : 1;
+                  var frictionAir = 1 - body.frictionAir * (deltaTime / Common._baseDelta), velocityPrevX = (body.position.x - body.positionPrev.x) * correction, velocityPrevY = (body.position.y - body.positionPrev.y) * correction;
+                  body.velocity.x = velocityPrevX * frictionAir + body.force.x / body.mass * deltaTimeSquared;
+                  body.velocity.y = velocityPrevY * frictionAir + body.force.y / body.mass * deltaTimeSquared;
+                  body.positionPrev.x = body.position.x;
+                  body.positionPrev.y = body.position.y;
+                  body.position.x += body.velocity.x;
+                  body.position.y += body.velocity.y;
+                  body.deltaTime = deltaTime;
+                  body.angularVelocity = (body.angle - body.anglePrev) * frictionAir * correction + body.torque / body.inertia * deltaTimeSquared;
+                  body.anglePrev = body.angle;
+                  body.angle += body.angularVelocity;
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    Vertices.translate(part.vertices, body.velocity);
+                    if (i > 0) {
+                      part.position.x += body.velocity.x;
+                      part.position.y += body.velocity.y;
+                    }
+                    if (body.angularVelocity !== 0) {
+                      Vertices.rotate(part.vertices, body.angularVelocity, body.position);
+                      Axes.rotate(part.axes, body.angularVelocity);
+                      if (i > 0) {
+                        Vector.rotateAbout(part.position, body.angularVelocity, body.position, part.position);
+                      }
+                    }
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                  }
+                };
+                Body2.updateVelocities = function(body) {
+                  var timeScale = Body2._baseDelta / body.deltaTime, bodyVelocity = body.velocity;
+                  bodyVelocity.x = (body.position.x - body.positionPrev.x) * timeScale;
+                  bodyVelocity.y = (body.position.y - body.positionPrev.y) * timeScale;
+                  body.speed = Math.sqrt(bodyVelocity.x * bodyVelocity.x + bodyVelocity.y * bodyVelocity.y);
+                  body.angularVelocity = (body.angle - body.anglePrev) * timeScale;
+                  body.angularSpeed = Math.abs(body.angularVelocity);
+                };
+                Body2.applyForce = function(body, position, force) {
+                  var offset = { x: position.x - body.position.x, y: position.y - body.position.y };
+                  body.force.x += force.x;
+                  body.force.y += force.y;
+                  body.torque += offset.x * force.y - offset.y * force.x;
+                };
+                Body2._totalProperties = function(body) {
+                  var properties = {
+                    mass: 0,
+                    area: 0,
+                    inertia: 0,
+                    centre: { x: 0, y: 0 }
+                  };
+                  for (var i = body.parts.length === 1 ? 0 : 1; i < body.parts.length; i++) {
+                    var part = body.parts[i], mass = part.mass !== Infinity ? part.mass : 1;
+                    properties.mass += mass;
+                    properties.area += part.area;
+                    properties.inertia += part.inertia;
+                    properties.centre = Vector.add(properties.centre, Vector.mult(part.position, mass));
+                  }
+                  properties.centre = Vector.div(properties.centre, properties.mass);
+                  return properties;
+                };
+              })();
+            }),
+            /* 5 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Events2 = {};
+              module2.exports = Events2;
+              var Common = __webpack_require__(0);
+              (function() {
+                Events2.on = function(object, eventNames, callback) {
+                  var names = eventNames.split(" "), name;
+                  for (var i = 0; i < names.length; i++) {
+                    name = names[i];
+                    object.events = object.events || {};
+                    object.events[name] = object.events[name] || [];
+                    object.events[name].push(callback);
+                  }
+                  return callback;
+                };
+                Events2.off = function(object, eventNames, callback) {
+                  if (!eventNames) {
+                    object.events = {};
+                    return;
+                  }
+                  if (typeof eventNames === "function") {
+                    callback = eventNames;
+                    eventNames = Common.keys(object.events).join(" ");
+                  }
+                  var names = eventNames.split(" ");
+                  for (var i = 0; i < names.length; i++) {
+                    var callbacks = object.events[names[i]], newCallbacks = [];
+                    if (callback && callbacks) {
+                      for (var j = 0; j < callbacks.length; j++) {
+                        if (callbacks[j] !== callback)
+                          newCallbacks.push(callbacks[j]);
+                      }
+                    }
+                    object.events[names[i]] = newCallbacks;
+                  }
+                };
+                Events2.trigger = function(object, eventNames, event) {
+                  var names, name, callbacks, eventClone;
+                  var events = object.events;
+                  if (events && Common.keys(events).length > 0) {
+                    if (!event)
+                      event = {};
+                    names = eventNames.split(" ");
+                    for (var i = 0; i < names.length; i++) {
+                      name = names[i];
+                      callbacks = events[name];
+                      if (callbacks) {
+                        eventClone = Common.clone(event, false);
+                        eventClone.name = name;
+                        eventClone.source = object;
+                        for (var j = 0; j < callbacks.length; j++) {
+                          callbacks[j].apply(object, [eventClone]);
+                        }
+                      }
+                    }
+                  }
+                };
+              })();
+            }),
+            /* 6 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Composite2 = {};
+              module2.exports = Composite2;
+              var Events2 = __webpack_require__(5);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              var Body2 = __webpack_require__(4);
+              (function() {
+                Composite2.create = function(options) {
+                  return Common.extend({
+                    id: Common.nextId(),
+                    type: "composite",
+                    parent: null,
+                    isModified: false,
+                    bodies: [],
+                    constraints: [],
+                    composites: [],
+                    label: "Composite",
+                    plugin: {},
+                    cache: {
+                      allBodies: null,
+                      allConstraints: null,
+                      allComposites: null
+                    }
+                  }, options);
+                };
+                Composite2.setModified = function(composite, isModified, updateParents, updateChildren) {
+                  composite.isModified = isModified;
+                  if (isModified && composite.cache) {
+                    composite.cache.allBodies = null;
+                    composite.cache.allConstraints = null;
+                    composite.cache.allComposites = null;
+                  }
+                  if (updateParents && composite.parent) {
+                    Composite2.setModified(composite.parent, isModified, updateParents, updateChildren);
+                  }
+                  if (updateChildren) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      var childComposite = composite.composites[i];
+                      Composite2.setModified(childComposite, isModified, updateParents, updateChildren);
+                    }
+                  }
+                };
+                Composite2.add = function(composite, object) {
+                  var objects = [].concat(object);
+                  Events2.trigger(composite, "beforeAdd", { object });
+                  for (var i = 0; i < objects.length; i++) {
+                    var obj = objects[i];
+                    switch (obj.type) {
+                      case "body":
+                        if (obj.parent !== obj) {
+                          Common.warn("Composite.add: skipped adding a compound body part (you must add its parent instead)");
+                          break;
+                        }
+                        Composite2.addBody(composite, obj);
+                        break;
+                      case "constraint":
+                        Composite2.addConstraint(composite, obj);
+                        break;
+                      case "composite":
+                        Composite2.addComposite(composite, obj);
+                        break;
+                      case "mouseConstraint":
+                        Composite2.addConstraint(composite, obj.constraint);
+                        break;
+                    }
+                  }
+                  Events2.trigger(composite, "afterAdd", { object });
+                  return composite;
+                };
+                Composite2.remove = function(composite, object, deep) {
+                  var objects = [].concat(object);
+                  Events2.trigger(composite, "beforeRemove", { object });
+                  for (var i = 0; i < objects.length; i++) {
+                    var obj = objects[i];
+                    switch (obj.type) {
+                      case "body":
+                        Composite2.removeBody(composite, obj, deep);
+                        break;
+                      case "constraint":
+                        Composite2.removeConstraint(composite, obj, deep);
+                        break;
+                      case "composite":
+                        Composite2.removeComposite(composite, obj, deep);
+                        break;
+                      case "mouseConstraint":
+                        Composite2.removeConstraint(composite, obj.constraint);
+                        break;
+                    }
+                  }
+                  Events2.trigger(composite, "afterRemove", { object });
+                  return composite;
+                };
+                Composite2.addComposite = function(compositeA, compositeB) {
+                  compositeA.composites.push(compositeB);
+                  compositeB.parent = compositeA;
+                  Composite2.setModified(compositeA, true, true, false);
+                  return compositeA;
+                };
+                Composite2.removeComposite = function(compositeA, compositeB, deep) {
+                  var position = Common.indexOf(compositeA.composites, compositeB);
+                  if (position !== -1) {
+                    var bodies = Composite2.allBodies(compositeB);
+                    Composite2.removeCompositeAt(compositeA, position);
+                    for (var i = 0; i < bodies.length; i++) {
+                      bodies[i].sleepCounter = 0;
+                    }
+                  }
+                  if (deep) {
+                    for (var i = 0; i < compositeA.composites.length; i++) {
+                      Composite2.removeComposite(compositeA.composites[i], compositeB, true);
+                    }
+                  }
+                  return compositeA;
+                };
+                Composite2.removeCompositeAt = function(composite, position) {
+                  composite.composites.splice(position, 1);
+                  Composite2.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite2.addBody = function(composite, body) {
+                  composite.bodies.push(body);
+                  Composite2.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite2.removeBody = function(composite, body, deep) {
+                  var position = Common.indexOf(composite.bodies, body);
+                  if (position !== -1) {
+                    Composite2.removeBodyAt(composite, position);
+                    body.sleepCounter = 0;
+                  }
+                  if (deep) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      Composite2.removeBody(composite.composites[i], body, true);
+                    }
+                  }
+                  return composite;
+                };
+                Composite2.removeBodyAt = function(composite, position) {
+                  composite.bodies.splice(position, 1);
+                  Composite2.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite2.addConstraint = function(composite, constraint) {
+                  composite.constraints.push(constraint);
+                  Composite2.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite2.removeConstraint = function(composite, constraint, deep) {
+                  var position = Common.indexOf(composite.constraints, constraint);
+                  if (position !== -1) {
+                    Composite2.removeConstraintAt(composite, position);
+                  }
+                  if (deep) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      Composite2.removeConstraint(composite.composites[i], constraint, true);
+                    }
+                  }
+                  return composite;
+                };
+                Composite2.removeConstraintAt = function(composite, position) {
+                  composite.constraints.splice(position, 1);
+                  Composite2.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite2.clear = function(composite, keepStatic, deep) {
+                  if (deep) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      Composite2.clear(composite.composites[i], keepStatic, true);
+                    }
+                  }
+                  if (keepStatic) {
+                    composite.bodies = composite.bodies.filter(function(body) {
+                      return body.isStatic;
+                    });
+                  } else {
+                    composite.bodies.length = 0;
+                  }
+                  composite.constraints.length = 0;
+                  composite.composites.length = 0;
+                  Composite2.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite2.allBodies = function(composite) {
+                  if (composite.cache && composite.cache.allBodies) {
+                    return composite.cache.allBodies;
+                  }
+                  var bodies = [].concat(composite.bodies);
+                  for (var i = 0; i < composite.composites.length; i++)
+                    bodies = bodies.concat(Composite2.allBodies(composite.composites[i]));
+                  if (composite.cache) {
+                    composite.cache.allBodies = bodies;
+                  }
+                  return bodies;
+                };
+                Composite2.allConstraints = function(composite) {
+                  if (composite.cache && composite.cache.allConstraints) {
+                    return composite.cache.allConstraints;
+                  }
+                  var constraints = [].concat(composite.constraints);
+                  for (var i = 0; i < composite.composites.length; i++)
+                    constraints = constraints.concat(Composite2.allConstraints(composite.composites[i]));
+                  if (composite.cache) {
+                    composite.cache.allConstraints = constraints;
+                  }
+                  return constraints;
+                };
+                Composite2.allComposites = function(composite) {
+                  if (composite.cache && composite.cache.allComposites) {
+                    return composite.cache.allComposites;
+                  }
+                  var composites = [].concat(composite.composites);
+                  for (var i = 0; i < composite.composites.length; i++)
+                    composites = composites.concat(Composite2.allComposites(composite.composites[i]));
+                  if (composite.cache) {
+                    composite.cache.allComposites = composites;
+                  }
+                  return composites;
+                };
+                Composite2.get = function(composite, id2, type) {
+                  var objects, object;
+                  switch (type) {
+                    case "body":
+                      objects = Composite2.allBodies(composite);
+                      break;
+                    case "constraint":
+                      objects = Composite2.allConstraints(composite);
+                      break;
+                    case "composite":
+                      objects = Composite2.allComposites(composite).concat(composite);
+                      break;
+                  }
+                  if (!objects)
+                    return null;
+                  object = objects.filter(function(object2) {
+                    return object2.id.toString() === id2.toString();
+                  });
+                  return object.length === 0 ? null : object[0];
+                };
+                Composite2.move = function(compositeA, objects, compositeB) {
+                  Composite2.remove(compositeA, objects);
+                  Composite2.add(compositeB, objects);
+                  return compositeA;
+                };
+                Composite2.rebase = function(composite) {
+                  var objects = Composite2.allBodies(composite).concat(Composite2.allConstraints(composite)).concat(Composite2.allComposites(composite));
+                  for (var i = 0; i < objects.length; i++) {
+                    objects[i].id = Common.nextId();
+                  }
+                  return composite;
+                };
+                Composite2.translate = function(composite, translation, recursive) {
+                  var bodies = recursive ? Composite2.allBodies(composite) : composite.bodies;
+                  for (var i = 0; i < bodies.length; i++) {
+                    Body2.translate(bodies[i], translation);
+                  }
+                  return composite;
+                };
+                Composite2.rotate = function(composite, rotation, point2, recursive) {
+                  var cos = Math.cos(rotation), sin = Math.sin(rotation), bodies = recursive ? Composite2.allBodies(composite) : composite.bodies;
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], dx = body.position.x - point2.x, dy = body.position.y - point2.y;
+                    Body2.setPosition(body, {
+                      x: point2.x + (dx * cos - dy * sin),
+                      y: point2.y + (dx * sin + dy * cos)
+                    });
+                    Body2.rotate(body, rotation);
+                  }
+                  return composite;
+                };
+                Composite2.scale = function(composite, scaleX, scaleY, point2, recursive) {
+                  var bodies = recursive ? Composite2.allBodies(composite) : composite.bodies;
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], dx = body.position.x - point2.x, dy = body.position.y - point2.y;
+                    Body2.setPosition(body, {
+                      x: point2.x + dx * scaleX,
+                      y: point2.y + dy * scaleY
+                    });
+                    Body2.scale(body, scaleX, scaleY);
+                  }
+                  return composite;
+                };
+                Composite2.bounds = function(composite) {
+                  var bodies = Composite2.allBodies(composite), vertices = [];
+                  for (var i = 0; i < bodies.length; i += 1) {
+                    var body = bodies[i];
+                    vertices.push(body.bounds.min, body.bounds.max);
+                  }
+                  return Bounds.create(vertices);
+                };
+              })();
+            }),
+            /* 7 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Sleeping = {};
+              module2.exports = Sleeping;
+              var Body2 = __webpack_require__(4);
+              var Events2 = __webpack_require__(5);
+              var Common = __webpack_require__(0);
+              (function() {
+                Sleeping._motionWakeThreshold = 0.18;
+                Sleeping._motionSleepThreshold = 0.08;
+                Sleeping._minBias = 0.9;
+                Sleeping.update = function(bodies, delta) {
+                  var timeScale = delta / Common._baseDelta, motionSleepThreshold = Sleeping._motionSleepThreshold;
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], speed = Body2.getSpeed(body), angularSpeed = Body2.getAngularSpeed(body), motion = speed * speed + angularSpeed * angularSpeed;
+                    if (body.force.x !== 0 || body.force.y !== 0) {
+                      Sleeping.set(body, false);
+                      continue;
+                    }
+                    var minMotion = Math.min(body.motion, motion), maxMotion = Math.max(body.motion, motion);
+                    body.motion = Sleeping._minBias * minMotion + (1 - Sleeping._minBias) * maxMotion;
+                    if (body.sleepThreshold > 0 && body.motion < motionSleepThreshold) {
+                      body.sleepCounter += 1;
+                      if (body.sleepCounter >= body.sleepThreshold / timeScale) {
+                        Sleeping.set(body, true);
+                      }
+                    } else if (body.sleepCounter > 0) {
+                      body.sleepCounter -= 1;
+                    }
+                  }
+                };
+                Sleeping.afterCollisions = function(pairs) {
+                  var motionSleepThreshold = Sleeping._motionSleepThreshold;
+                  for (var i = 0; i < pairs.length; i++) {
+                    var pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    var collision = pair.collision, bodyA = collision.bodyA.parent, bodyB = collision.bodyB.parent;
+                    if (bodyA.isSleeping && bodyB.isSleeping || bodyA.isStatic || bodyB.isStatic)
+                      continue;
+                    if (bodyA.isSleeping || bodyB.isSleeping) {
+                      var sleepingBody = bodyA.isSleeping && !bodyA.isStatic ? bodyA : bodyB, movingBody = sleepingBody === bodyA ? bodyB : bodyA;
+                      if (!sleepingBody.isStatic && movingBody.motion > motionSleepThreshold) {
+                        Sleeping.set(sleepingBody, false);
+                      }
+                    }
+                  }
+                };
+                Sleeping.set = function(body, isSleeping) {
+                  var wasSleeping = body.isSleeping;
+                  if (isSleeping) {
+                    body.isSleeping = true;
+                    body.sleepCounter = body.sleepThreshold;
+                    body.positionImpulse.x = 0;
+                    body.positionImpulse.y = 0;
+                    body.positionPrev.x = body.position.x;
+                    body.positionPrev.y = body.position.y;
+                    body.anglePrev = body.angle;
+                    body.speed = 0;
+                    body.angularSpeed = 0;
+                    body.motion = 0;
+                    if (!wasSleeping) {
+                      Events2.trigger(body, "sleepStart");
+                    }
+                  } else {
+                    body.isSleeping = false;
+                    body.sleepCounter = 0;
+                    if (wasSleeping) {
+                      Events2.trigger(body, "sleepEnd");
+                    }
+                  }
+                };
+              })();
+            }),
+            /* 8 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Collision = {};
+              module2.exports = Collision;
+              var Vertices = __webpack_require__(3);
+              var Pair = __webpack_require__(9);
+              (function() {
+                var _supports = [];
+                var _overlapAB = {
+                  overlap: 0,
+                  axis: null
+                };
+                var _overlapBA = {
+                  overlap: 0,
+                  axis: null
+                };
+                Collision.create = function(bodyA, bodyB) {
+                  return {
+                    pair: null,
+                    collided: false,
+                    bodyA,
+                    bodyB,
+                    parentA: bodyA.parent,
+                    parentB: bodyB.parent,
+                    depth: 0,
+                    normal: { x: 0, y: 0 },
+                    tangent: { x: 0, y: 0 },
+                    penetration: { x: 0, y: 0 },
+                    supports: [null, null],
+                    supportCount: 0
+                  };
+                };
+                Collision.collides = function(bodyA, bodyB, pairs) {
+                  Collision._overlapAxes(_overlapAB, bodyA.vertices, bodyB.vertices, bodyA.axes);
+                  if (_overlapAB.overlap <= 0) {
+                    return null;
+                  }
+                  Collision._overlapAxes(_overlapBA, bodyB.vertices, bodyA.vertices, bodyB.axes);
+                  if (_overlapBA.overlap <= 0) {
+                    return null;
+                  }
+                  var pair = pairs && pairs.table[Pair.id(bodyA, bodyB)], collision;
+                  if (!pair) {
+                    collision = Collision.create(bodyA, bodyB);
+                    collision.collided = true;
+                    collision.bodyA = bodyA.id < bodyB.id ? bodyA : bodyB;
+                    collision.bodyB = bodyA.id < bodyB.id ? bodyB : bodyA;
+                    collision.parentA = collision.bodyA.parent;
+                    collision.parentB = collision.bodyB.parent;
+                  } else {
+                    collision = pair.collision;
+                  }
+                  bodyA = collision.bodyA;
+                  bodyB = collision.bodyB;
+                  var minOverlap;
+                  if (_overlapAB.overlap < _overlapBA.overlap) {
+                    minOverlap = _overlapAB;
+                  } else {
+                    minOverlap = _overlapBA;
+                  }
+                  var normal = collision.normal, tangent = collision.tangent, penetration = collision.penetration, supports = collision.supports, depth = minOverlap.overlap, minAxis = minOverlap.axis, normalX = minAxis.x, normalY = minAxis.y, deltaX = bodyB.position.x - bodyA.position.x, deltaY = bodyB.position.y - bodyA.position.y;
+                  if (normalX * deltaX + normalY * deltaY >= 0) {
+                    normalX = -normalX;
+                    normalY = -normalY;
+                  }
+                  normal.x = normalX;
+                  normal.y = normalY;
+                  tangent.x = -normalY;
+                  tangent.y = normalX;
+                  penetration.x = normalX * depth;
+                  penetration.y = normalY * depth;
+                  collision.depth = depth;
+                  var supportsB = Collision._findSupports(bodyA, bodyB, normal, 1), supportCount = 0;
+                  if (Vertices.contains(bodyA.vertices, supportsB[0])) {
+                    supports[supportCount++] = supportsB[0];
+                  }
+                  if (Vertices.contains(bodyA.vertices, supportsB[1])) {
+                    supports[supportCount++] = supportsB[1];
+                  }
+                  if (supportCount < 2) {
+                    var supportsA = Collision._findSupports(bodyB, bodyA, normal, -1);
+                    if (Vertices.contains(bodyB.vertices, supportsA[0])) {
+                      supports[supportCount++] = supportsA[0];
+                    }
+                    if (supportCount < 2 && Vertices.contains(bodyB.vertices, supportsA[1])) {
+                      supports[supportCount++] = supportsA[1];
+                    }
+                  }
+                  if (supportCount === 0) {
+                    supports[supportCount++] = supportsB[0];
+                  }
+                  collision.supportCount = supportCount;
+                  return collision;
+                };
+                Collision._overlapAxes = function(result, verticesA, verticesB, axes) {
+                  var verticesALength = verticesA.length, verticesBLength = verticesB.length, verticesAX = verticesA[0].x, verticesAY = verticesA[0].y, verticesBX = verticesB[0].x, verticesBY = verticesB[0].y, axesLength = axes.length, overlapMin = Number.MAX_VALUE, overlapAxisNumber = 0, overlap, overlapAB, overlapBA, dot, i, j;
+                  for (i = 0; i < axesLength; i++) {
+                    var axis = axes[i], axisX = axis.x, axisY = axis.y, minA = verticesAX * axisX + verticesAY * axisY, minB = verticesBX * axisX + verticesBY * axisY, maxA = minA, maxB = minB;
+                    for (j = 1; j < verticesALength; j += 1) {
+                      dot = verticesA[j].x * axisX + verticesA[j].y * axisY;
+                      if (dot > maxA) {
+                        maxA = dot;
+                      } else if (dot < minA) {
+                        minA = dot;
+                      }
+                    }
+                    for (j = 1; j < verticesBLength; j += 1) {
+                      dot = verticesB[j].x * axisX + verticesB[j].y * axisY;
+                      if (dot > maxB) {
+                        maxB = dot;
+                      } else if (dot < minB) {
+                        minB = dot;
+                      }
+                    }
+                    overlapAB = maxA - minB;
+                    overlapBA = maxB - minA;
+                    overlap = overlapAB < overlapBA ? overlapAB : overlapBA;
+                    if (overlap < overlapMin) {
+                      overlapMin = overlap;
+                      overlapAxisNumber = i;
+                      if (overlap <= 0) {
+                        break;
+                      }
+                    }
+                  }
+                  result.axis = axes[overlapAxisNumber];
+                  result.overlap = overlapMin;
+                };
+                Collision._findSupports = function(bodyA, bodyB, normal, direction) {
+                  var vertices = bodyB.vertices, verticesLength = vertices.length, bodyAPositionX = bodyA.position.x, bodyAPositionY = bodyA.position.y, normalX = normal.x * direction, normalY = normal.y * direction, vertexA = vertices[0], vertexB = vertexA, nearestDistance = normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y), vertexC, distance3, j;
+                  for (j = 1; j < verticesLength; j += 1) {
+                    vertexB = vertices[j];
+                    distance3 = normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y);
+                    if (distance3 < nearestDistance) {
+                      nearestDistance = distance3;
+                      vertexA = vertexB;
+                    }
+                  }
+                  vertexC = vertices[(verticesLength + vertexA.index - 1) % verticesLength];
+                  nearestDistance = normalX * (bodyAPositionX - vertexC.x) + normalY * (bodyAPositionY - vertexC.y);
+                  vertexB = vertices[(vertexA.index + 1) % verticesLength];
+                  if (normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y) < nearestDistance) {
+                    _supports[0] = vertexA;
+                    _supports[1] = vertexB;
+                    return _supports;
+                  }
+                  _supports[0] = vertexA;
+                  _supports[1] = vertexC;
+                  return _supports;
+                };
+              })();
+            }),
+            /* 9 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Pair = {};
+              module2.exports = Pair;
+              var Contact = __webpack_require__(16);
+              (function() {
+                Pair.create = function(collision, timestamp) {
+                  var bodyA = collision.bodyA, bodyB = collision.bodyB;
+                  var pair = {
+                    id: Pair.id(bodyA, bodyB),
+                    bodyA,
+                    bodyB,
+                    collision,
+                    contacts: [Contact.create(), Contact.create()],
+                    contactCount: 0,
+                    separation: 0,
+                    isActive: true,
+                    isSensor: bodyA.isSensor || bodyB.isSensor,
+                    timeCreated: timestamp,
+                    timeUpdated: timestamp,
+                    inverseMass: 0,
+                    friction: 0,
+                    frictionStatic: 0,
+                    restitution: 0,
+                    slop: 0
+                  };
+                  Pair.update(pair, collision, timestamp);
+                  return pair;
+                };
+                Pair.update = function(pair, collision, timestamp) {
+                  var supports = collision.supports, supportCount = collision.supportCount, contacts = pair.contacts, parentA = collision.parentA, parentB = collision.parentB;
+                  pair.isActive = true;
+                  pair.timeUpdated = timestamp;
+                  pair.collision = collision;
+                  pair.separation = collision.depth;
+                  pair.inverseMass = parentA.inverseMass + parentB.inverseMass;
+                  pair.friction = parentA.friction < parentB.friction ? parentA.friction : parentB.friction;
+                  pair.frictionStatic = parentA.frictionStatic > parentB.frictionStatic ? parentA.frictionStatic : parentB.frictionStatic;
+                  pair.restitution = parentA.restitution > parentB.restitution ? parentA.restitution : parentB.restitution;
+                  pair.slop = parentA.slop > parentB.slop ? parentA.slop : parentB.slop;
+                  pair.contactCount = supportCount;
+                  collision.pair = pair;
+                  var supportA = supports[0], contactA = contacts[0], supportB = supports[1], contactB = contacts[1];
+                  if (contactB.vertex === supportA || contactA.vertex === supportB) {
+                    contacts[1] = contactA;
+                    contacts[0] = contactA = contactB;
+                    contactB = contacts[1];
+                  }
+                  contactA.vertex = supportA;
+                  contactB.vertex = supportB;
+                };
+                Pair.setActive = function(pair, isActive, timestamp) {
+                  if (isActive) {
+                    pair.isActive = true;
+                    pair.timeUpdated = timestamp;
+                  } else {
+                    pair.isActive = false;
+                    pair.contactCount = 0;
+                  }
+                };
+                Pair.id = function(bodyA, bodyB) {
+                  return bodyA.id < bodyB.id ? bodyA.id.toString(36) + ":" + bodyB.id.toString(36) : bodyB.id.toString(36) + ":" + bodyA.id.toString(36);
+                };
+              })();
+            }),
+            /* 10 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Constraint = {};
+              module2.exports = Constraint;
+              var Vertices = __webpack_require__(3);
+              var Vector = __webpack_require__(2);
+              var Sleeping = __webpack_require__(7);
+              var Bounds = __webpack_require__(1);
+              var Axes = __webpack_require__(11);
+              var Common = __webpack_require__(0);
+              (function() {
+                Constraint._warming = 0.4;
+                Constraint._torqueDampen = 1;
+                Constraint._minLength = 1e-6;
+                Constraint.create = function(options) {
+                  var constraint = options;
+                  if (constraint.bodyA && !constraint.pointA)
+                    constraint.pointA = { x: 0, y: 0 };
+                  if (constraint.bodyB && !constraint.pointB)
+                    constraint.pointB = { x: 0, y: 0 };
+                  var initialPointA = constraint.bodyA ? Vector.add(constraint.bodyA.position, constraint.pointA) : constraint.pointA, initialPointB = constraint.bodyB ? Vector.add(constraint.bodyB.position, constraint.pointB) : constraint.pointB, length = Vector.magnitude(Vector.sub(initialPointA, initialPointB));
+                  constraint.length = typeof constraint.length !== "undefined" ? constraint.length : length;
+                  constraint.id = constraint.id || Common.nextId();
+                  constraint.label = constraint.label || "Constraint";
+                  constraint.type = "constraint";
+                  constraint.stiffness = constraint.stiffness || (constraint.length > 0 ? 1 : 0.7);
+                  constraint.damping = constraint.damping || 0;
+                  constraint.angularStiffness = constraint.angularStiffness || 0;
+                  constraint.angleA = constraint.bodyA ? constraint.bodyA.angle : constraint.angleA;
+                  constraint.angleB = constraint.bodyB ? constraint.bodyB.angle : constraint.angleB;
+                  constraint.plugin = {};
+                  var render = {
+                    visible: true,
+                    lineWidth: 2,
+                    strokeStyle: "#ffffff",
+                    type: "line",
+                    anchors: true
+                  };
+                  if (constraint.length === 0 && constraint.stiffness > 0.1) {
+                    render.type = "pin";
+                    render.anchors = false;
+                  } else if (constraint.stiffness < 0.9) {
+                    render.type = "spring";
+                  }
+                  constraint.render = Common.extend(render, constraint.render);
+                  return constraint;
+                };
+                Constraint.preSolveAll = function(bodies) {
+                  for (var i = 0; i < bodies.length; i += 1) {
+                    var body = bodies[i], impulse = body.constraintImpulse;
+                    if (body.isStatic || impulse.x === 0 && impulse.y === 0 && impulse.angle === 0) {
+                      continue;
+                    }
+                    body.position.x += impulse.x;
+                    body.position.y += impulse.y;
+                    body.angle += impulse.angle;
+                  }
+                };
+                Constraint.solveAll = function(constraints, delta) {
+                  var timeScale = Common.clamp(delta / Common._baseDelta, 0, 1);
+                  for (var i = 0; i < constraints.length; i += 1) {
+                    var constraint = constraints[i], fixedA = !constraint.bodyA || constraint.bodyA && constraint.bodyA.isStatic, fixedB = !constraint.bodyB || constraint.bodyB && constraint.bodyB.isStatic;
+                    if (fixedA || fixedB) {
+                      Constraint.solve(constraints[i], timeScale);
+                    }
+                  }
+                  for (i = 0; i < constraints.length; i += 1) {
+                    constraint = constraints[i];
+                    fixedA = !constraint.bodyA || constraint.bodyA && constraint.bodyA.isStatic;
+                    fixedB = !constraint.bodyB || constraint.bodyB && constraint.bodyB.isStatic;
+                    if (!fixedA && !fixedB) {
+                      Constraint.solve(constraints[i], timeScale);
+                    }
+                  }
+                };
+                Constraint.solve = function(constraint, timeScale) {
+                  var bodyA = constraint.bodyA, bodyB = constraint.bodyB, pointA = constraint.pointA, pointB = constraint.pointB;
+                  if (!bodyA && !bodyB)
+                    return;
+                  if (bodyA && !bodyA.isStatic) {
+                    Vector.rotate(pointA, bodyA.angle - constraint.angleA, pointA);
+                    constraint.angleA = bodyA.angle;
+                  }
+                  if (bodyB && !bodyB.isStatic) {
+                    Vector.rotate(pointB, bodyB.angle - constraint.angleB, pointB);
+                    constraint.angleB = bodyB.angle;
+                  }
+                  var pointAWorld = pointA, pointBWorld = pointB;
+                  if (bodyA) pointAWorld = Vector.add(bodyA.position, pointA);
+                  if (bodyB) pointBWorld = Vector.add(bodyB.position, pointB);
+                  if (!pointAWorld || !pointBWorld)
+                    return;
+                  var delta = Vector.sub(pointAWorld, pointBWorld), currentLength = Vector.magnitude(delta);
+                  if (currentLength < Constraint._minLength) {
+                    currentLength = Constraint._minLength;
+                  }
+                  var difference = (currentLength - constraint.length) / currentLength, isRigid = constraint.stiffness >= 1 || constraint.length === 0, stiffness = isRigid ? constraint.stiffness * timeScale : constraint.stiffness * timeScale * timeScale, damping = constraint.damping * timeScale, force = Vector.mult(delta, difference * stiffness), massTotal = (bodyA ? bodyA.inverseMass : 0) + (bodyB ? bodyB.inverseMass : 0), inertiaTotal = (bodyA ? bodyA.inverseInertia : 0) + (bodyB ? bodyB.inverseInertia : 0), resistanceTotal = massTotal + inertiaTotal, torque, share, normal, normalVelocity, relativeVelocity;
+                  if (damping > 0) {
+                    var zero = Vector.create();
+                    normal = Vector.div(delta, currentLength);
+                    relativeVelocity = Vector.sub(
+                      bodyB && Vector.sub(bodyB.position, bodyB.positionPrev) || zero,
+                      bodyA && Vector.sub(bodyA.position, bodyA.positionPrev) || zero
+                    );
+                    normalVelocity = Vector.dot(normal, relativeVelocity);
+                  }
+                  if (bodyA && !bodyA.isStatic) {
+                    share = bodyA.inverseMass / massTotal;
+                    bodyA.constraintImpulse.x -= force.x * share;
+                    bodyA.constraintImpulse.y -= force.y * share;
+                    bodyA.position.x -= force.x * share;
+                    bodyA.position.y -= force.y * share;
+                    if (damping > 0) {
+                      bodyA.positionPrev.x -= damping * normal.x * normalVelocity * share;
+                      bodyA.positionPrev.y -= damping * normal.y * normalVelocity * share;
+                    }
+                    torque = Vector.cross(pointA, force) / resistanceTotal * Constraint._torqueDampen * bodyA.inverseInertia * (1 - constraint.angularStiffness);
+                    bodyA.constraintImpulse.angle -= torque;
+                    bodyA.angle -= torque;
+                  }
+                  if (bodyB && !bodyB.isStatic) {
+                    share = bodyB.inverseMass / massTotal;
+                    bodyB.constraintImpulse.x += force.x * share;
+                    bodyB.constraintImpulse.y += force.y * share;
+                    bodyB.position.x += force.x * share;
+                    bodyB.position.y += force.y * share;
+                    if (damping > 0) {
+                      bodyB.positionPrev.x += damping * normal.x * normalVelocity * share;
+                      bodyB.positionPrev.y += damping * normal.y * normalVelocity * share;
+                    }
+                    torque = Vector.cross(pointB, force) / resistanceTotal * Constraint._torqueDampen * bodyB.inverseInertia * (1 - constraint.angularStiffness);
+                    bodyB.constraintImpulse.angle += torque;
+                    bodyB.angle += torque;
+                  }
+                };
+                Constraint.postSolveAll = function(bodies) {
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], impulse = body.constraintImpulse;
+                    if (body.isStatic || impulse.x === 0 && impulse.y === 0 && impulse.angle === 0) {
+                      continue;
+                    }
+                    Sleeping.set(body, false);
+                    for (var j = 0; j < body.parts.length; j++) {
+                      var part = body.parts[j];
+                      Vertices.translate(part.vertices, impulse);
+                      if (j > 0) {
+                        part.position.x += impulse.x;
+                        part.position.y += impulse.y;
+                      }
+                      if (impulse.angle !== 0) {
+                        Vertices.rotate(part.vertices, impulse.angle, body.position);
+                        Axes.rotate(part.axes, impulse.angle);
+                        if (j > 0) {
+                          Vector.rotateAbout(part.position, impulse.angle, body.position, part.position);
+                        }
+                      }
+                      Bounds.update(part.bounds, part.vertices, body.velocity);
+                    }
+                    impulse.angle *= Constraint._warming;
+                    impulse.x *= Constraint._warming;
+                    impulse.y *= Constraint._warming;
+                  }
+                };
+                Constraint.pointAWorld = function(constraint) {
+                  return {
+                    x: (constraint.bodyA ? constraint.bodyA.position.x : 0) + (constraint.pointA ? constraint.pointA.x : 0),
+                    y: (constraint.bodyA ? constraint.bodyA.position.y : 0) + (constraint.pointA ? constraint.pointA.y : 0)
+                  };
+                };
+                Constraint.pointBWorld = function(constraint) {
+                  return {
+                    x: (constraint.bodyB ? constraint.bodyB.position.x : 0) + (constraint.pointB ? constraint.pointB.x : 0),
+                    y: (constraint.bodyB ? constraint.bodyB.position.y : 0) + (constraint.pointB ? constraint.pointB.y : 0)
+                  };
+                };
+                Constraint.currentLength = function(constraint) {
+                  var pointAX = (constraint.bodyA ? constraint.bodyA.position.x : 0) + (constraint.pointA ? constraint.pointA.x : 0);
+                  var pointAY = (constraint.bodyA ? constraint.bodyA.position.y : 0) + (constraint.pointA ? constraint.pointA.y : 0);
+                  var pointBX = (constraint.bodyB ? constraint.bodyB.position.x : 0) + (constraint.pointB ? constraint.pointB.x : 0);
+                  var pointBY = (constraint.bodyB ? constraint.bodyB.position.y : 0) + (constraint.pointB ? constraint.pointB.y : 0);
+                  var deltaX = pointAX - pointBX;
+                  var deltaY = pointAY - pointBY;
+                  return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                };
+              })();
+            }),
+            /* 11 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Axes = {};
+              module2.exports = Axes;
+              var Vector = __webpack_require__(2);
+              var Common = __webpack_require__(0);
+              (function() {
+                Axes.fromVertices = function(vertices) {
+                  var axes = {};
+                  for (var i = 0; i < vertices.length; i++) {
+                    var j = (i + 1) % vertices.length, normal = Vector.normalise({
+                      x: vertices[j].y - vertices[i].y,
+                      y: vertices[i].x - vertices[j].x
+                    }), gradient = normal.y === 0 ? Infinity : normal.x / normal.y;
+                    gradient = gradient.toFixed(3).toString();
+                    axes[gradient] = normal;
+                  }
+                  return Common.values(axes);
+                };
+                Axes.rotate = function(axes, angle) {
+                  if (angle === 0)
+                    return;
+                  var cos = Math.cos(angle), sin = Math.sin(angle);
+                  for (var i = 0; i < axes.length; i++) {
+                    var axis = axes[i], xx;
+                    xx = axis.x * cos - axis.y * sin;
+                    axis.y = axis.x * sin + axis.y * cos;
+                    axis.x = xx;
+                  }
+                };
+              })();
+            }),
+            /* 12 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Bodies2 = {};
+              module2.exports = Bodies2;
+              var Vertices = __webpack_require__(3);
+              var Common = __webpack_require__(0);
+              var Body2 = __webpack_require__(4);
+              var Bounds = __webpack_require__(1);
+              var Vector = __webpack_require__(2);
+              (function() {
+                Bodies2.rectangle = function(x, y, width, height, options) {
+                  options = options || {};
+                  var rectangle = {
+                    label: "Rectangle Body",
+                    position: { x, y },
+                    vertices: Vertices.fromPath("L 0 0 L " + width + " 0 L " + width + " " + height + " L 0 " + height)
+                  };
+                  if (options.chamfer) {
+                    var chamfer = options.chamfer;
+                    rectangle.vertices = Vertices.chamfer(
+                      rectangle.vertices,
+                      chamfer.radius,
+                      chamfer.quality,
+                      chamfer.qualityMin,
+                      chamfer.qualityMax
+                    );
+                    delete options.chamfer;
+                  }
+                  return Body2.create(Common.extend({}, rectangle, options));
+                };
+                Bodies2.trapezoid = function(x, y, width, height, slope, options) {
+                  options = options || {};
+                  if (slope >= 1) {
+                    Common.warn("Bodies.trapezoid: slope parameter must be < 1.");
+                  }
+                  slope *= 0.5;
+                  var roof = (1 - slope * 2) * width;
+                  var x1 = width * slope, x2 = x1 + roof, x3 = x2 + x1, verticesPath;
+                  if (slope < 0.5) {
+                    verticesPath = "L 0 0 L " + x1 + " " + -height + " L " + x2 + " " + -height + " L " + x3 + " 0";
+                  } else {
+                    verticesPath = "L 0 0 L " + x2 + " " + -height + " L " + x3 + " 0";
+                  }
+                  var trapezoid = {
+                    label: "Trapezoid Body",
+                    position: { x, y },
+                    vertices: Vertices.fromPath(verticesPath)
+                  };
+                  if (options.chamfer) {
+                    var chamfer = options.chamfer;
+                    trapezoid.vertices = Vertices.chamfer(
+                      trapezoid.vertices,
+                      chamfer.radius,
+                      chamfer.quality,
+                      chamfer.qualityMin,
+                      chamfer.qualityMax
+                    );
+                    delete options.chamfer;
+                  }
+                  return Body2.create(Common.extend({}, trapezoid, options));
+                };
+                Bodies2.circle = function(x, y, radius, options, maxSides) {
+                  options = options || {};
+                  var circle = {
+                    label: "Circle Body",
+                    circleRadius: radius
+                  };
+                  maxSides = maxSides || 25;
+                  var sides = Math.ceil(Math.max(10, Math.min(maxSides, radius)));
+                  if (sides % 2 === 1)
+                    sides += 1;
+                  return Bodies2.polygon(x, y, sides, radius, Common.extend({}, circle, options));
+                };
+                Bodies2.polygon = function(x, y, sides, radius, options) {
+                  options = options || {};
+                  if (sides < 3)
+                    return Bodies2.circle(x, y, radius, options);
+                  var theta = 2 * Math.PI / sides, path = "", offset = theta * 0.5;
+                  for (var i = 0; i < sides; i += 1) {
+                    var angle = offset + i * theta, xx = Math.cos(angle) * radius, yy = Math.sin(angle) * radius;
+                    path += "L " + xx.toFixed(3) + " " + yy.toFixed(3) + " ";
+                  }
+                  var polygon2 = {
+                    label: "Polygon Body",
+                    position: { x, y },
+                    vertices: Vertices.fromPath(path)
+                  };
+                  if (options.chamfer) {
+                    var chamfer = options.chamfer;
+                    polygon2.vertices = Vertices.chamfer(
+                      polygon2.vertices,
+                      chamfer.radius,
+                      chamfer.quality,
+                      chamfer.qualityMin,
+                      chamfer.qualityMax
+                    );
+                    delete options.chamfer;
+                  }
+                  return Body2.create(Common.extend({}, polygon2, options));
+                };
+                Bodies2.fromVertices = function(x, y, vertexSets, options, flagInternal, removeCollinear, minimumArea, removeDuplicatePoints) {
+                  var decomp = Common.getDecomp(), canDecomp, body, parts, isConvex, isConcave, vertices, i, j, k, v, z;
+                  canDecomp = Boolean(decomp && decomp.quickDecomp);
+                  options = options || {};
+                  parts = [];
+                  flagInternal = typeof flagInternal !== "undefined" ? flagInternal : false;
+                  removeCollinear = typeof removeCollinear !== "undefined" ? removeCollinear : 0.01;
+                  minimumArea = typeof minimumArea !== "undefined" ? minimumArea : 10;
+                  removeDuplicatePoints = typeof removeDuplicatePoints !== "undefined" ? removeDuplicatePoints : 0.01;
+                  if (!Common.isArray(vertexSets[0])) {
+                    vertexSets = [vertexSets];
+                  }
+                  for (v = 0; v < vertexSets.length; v += 1) {
+                    vertices = vertexSets[v];
+                    isConvex = Vertices.isConvex(vertices);
+                    isConcave = !isConvex;
+                    if (isConcave && !canDecomp) {
+                      Common.warnOnce(
+                        "Bodies.fromVertices: Install the 'poly-decomp' library and use Common.setDecomp or provide 'decomp' as a global to decompose concave vertices."
+                      );
+                    }
+                    if (isConvex || !canDecomp) {
+                      if (isConvex) {
+                        vertices = Vertices.clockwiseSort(vertices);
+                      } else {
+                        vertices = Vertices.hull(vertices);
+                      }
+                      parts.push({
+                        position: { x, y },
+                        vertices
+                      });
+                    } else {
+                      var concave = vertices.map(function(vertex) {
+                        return [vertex.x, vertex.y];
+                      });
+                      decomp.makeCCW(concave);
+                      if (removeCollinear !== false)
+                        decomp.removeCollinearPoints(concave, removeCollinear);
+                      if (removeDuplicatePoints !== false && decomp.removeDuplicatePoints)
+                        decomp.removeDuplicatePoints(concave, removeDuplicatePoints);
+                      var decomposed = decomp.quickDecomp(concave);
+                      for (i = 0; i < decomposed.length; i++) {
+                        var chunk = decomposed[i];
+                        var chunkVertices = chunk.map(function(vertices2) {
+                          return {
+                            x: vertices2[0],
+                            y: vertices2[1]
+                          };
+                        });
+                        if (minimumArea > 0 && Vertices.area(chunkVertices) < minimumArea)
+                          continue;
+                        parts.push({
+                          position: Vertices.centre(chunkVertices),
+                          vertices: chunkVertices
+                        });
+                      }
+                    }
+                  }
+                  for (i = 0; i < parts.length; i++) {
+                    parts[i] = Body2.create(Common.extend(parts[i], options));
+                  }
+                  if (flagInternal) {
+                    var coincident_max_dist = 5;
+                    for (i = 0; i < parts.length; i++) {
+                      var partA = parts[i];
+                      for (j = i + 1; j < parts.length; j++) {
+                        var partB = parts[j];
+                        if (Bounds.overlaps(partA.bounds, partB.bounds)) {
+                          var pav = partA.vertices, pbv = partB.vertices;
+                          for (k = 0; k < partA.vertices.length; k++) {
+                            for (z = 0; z < partB.vertices.length; z++) {
+                              var da = Vector.magnitudeSquared(Vector.sub(pav[(k + 1) % pav.length], pbv[z])), db = Vector.magnitudeSquared(Vector.sub(pav[k], pbv[(z + 1) % pbv.length]));
+                              if (da < coincident_max_dist && db < coincident_max_dist) {
+                                pav[k].isInternal = true;
+                                pbv[z].isInternal = true;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  if (parts.length > 1) {
+                    body = Body2.create(Common.extend({ parts: parts.slice(0) }, options));
+                    Body2.setPosition(body, { x, y });
+                    return body;
+                  } else {
+                    return parts[0];
+                  }
+                };
+              })();
+            }),
+            /* 13 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Detector = {};
+              module2.exports = Detector;
+              var Common = __webpack_require__(0);
+              var Collision = __webpack_require__(8);
+              (function() {
+                Detector.create = function(options) {
+                  var defaults = {
+                    bodies: [],
+                    collisions: [],
+                    pairs: null
+                  };
+                  return Common.extend(defaults, options);
+                };
+                Detector.setBodies = function(detector, bodies) {
+                  detector.bodies = bodies.slice(0);
+                };
+                Detector.clear = function(detector) {
+                  detector.bodies = [];
+                  detector.collisions = [];
+                };
+                Detector.collisions = function(detector) {
+                  var pairs = detector.pairs, bodies = detector.bodies, bodiesLength = bodies.length, canCollide = Detector.canCollide, collides = Collision.collides, collisions = detector.collisions, collisionIndex = 0, i, j;
+                  bodies.sort(Detector._compareBoundsX);
+                  for (i = 0; i < bodiesLength; i++) {
+                    var bodyA = bodies[i], boundsA = bodyA.bounds, boundXMax = bodyA.bounds.max.x, boundYMax = bodyA.bounds.max.y, boundYMin = bodyA.bounds.min.y, bodyAStatic = bodyA.isStatic || bodyA.isSleeping, partsALength = bodyA.parts.length, partsASingle = partsALength === 1;
+                    for (j = i + 1; j < bodiesLength; j++) {
+                      var bodyB = bodies[j], boundsB = bodyB.bounds;
+                      if (boundsB.min.x > boundXMax) {
+                        break;
+                      }
+                      if (boundYMax < boundsB.min.y || boundYMin > boundsB.max.y) {
+                        continue;
+                      }
+                      if (bodyAStatic && (bodyB.isStatic || bodyB.isSleeping)) {
+                        continue;
+                      }
+                      if (!canCollide(bodyA.collisionFilter, bodyB.collisionFilter)) {
+                        continue;
+                      }
+                      var partsBLength = bodyB.parts.length;
+                      if (partsASingle && partsBLength === 1) {
+                        var collision = collides(bodyA, bodyB, pairs);
+                        if (collision) {
+                          collisions[collisionIndex++] = collision;
+                        }
+                      } else {
+                        var partsAStart = partsALength > 1 ? 1 : 0, partsBStart = partsBLength > 1 ? 1 : 0;
+                        for (var k = partsAStart; k < partsALength; k++) {
+                          var partA = bodyA.parts[k], boundsA = partA.bounds;
+                          for (var z = partsBStart; z < partsBLength; z++) {
+                            var partB = bodyB.parts[z], boundsB = partB.bounds;
+                            if (boundsA.min.x > boundsB.max.x || boundsA.max.x < boundsB.min.x || boundsA.max.y < boundsB.min.y || boundsA.min.y > boundsB.max.y) {
+                              continue;
+                            }
+                            var collision = collides(partA, partB, pairs);
+                            if (collision) {
+                              collisions[collisionIndex++] = collision;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  if (collisions.length !== collisionIndex) {
+                    collisions.length = collisionIndex;
+                  }
+                  return collisions;
+                };
+                Detector.canCollide = function(filterA, filterB) {
+                  if (filterA.group === filterB.group && filterA.group !== 0)
+                    return filterA.group > 0;
+                  return (filterA.mask & filterB.category) !== 0 && (filterB.mask & filterA.category) !== 0;
+                };
+                Detector._compareBoundsX = function(bodyA, bodyB) {
+                  return bodyA.bounds.min.x - bodyB.bounds.min.x;
+                };
+              })();
+            }),
+            /* 14 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Mouse = {};
+              module2.exports = Mouse;
+              var Common = __webpack_require__(0);
+              (function() {
+                Mouse.create = function(element) {
+                  var mouse = {};
+                  if (!element) {
+                    Common.log("Mouse.create: element was undefined, defaulting to document.body", "warn");
+                  }
+                  mouse.element = element || document.body;
+                  mouse.absolute = { x: 0, y: 0 };
+                  mouse.position = { x: 0, y: 0 };
+                  mouse.mousedownPosition = { x: 0, y: 0 };
+                  mouse.mouseupPosition = { x: 0, y: 0 };
+                  mouse.offset = { x: 0, y: 0 };
+                  mouse.scale = { x: 1, y: 1 };
+                  mouse.wheelDelta = 0;
+                  mouse.button = -1;
+                  mouse.pixelRatio = parseInt(mouse.element.getAttribute("data-pixel-ratio"), 10) || 1;
+                  mouse.sourceEvents = {
+                    mousemove: null,
+                    mousedown: null,
+                    mouseup: null,
+                    mousewheel: null
+                  };
+                  mouse.mousemove = function(event) {
+                    var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio), touches = event.changedTouches;
+                    if (touches) {
+                      mouse.button = 0;
+                      event.preventDefault();
+                    }
+                    mouse.absolute.x = position.x;
+                    mouse.absolute.y = position.y;
+                    mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                    mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                    mouse.sourceEvents.mousemove = event;
+                  };
+                  mouse.mousedown = function(event) {
+                    var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio), touches = event.changedTouches;
+                    if (touches) {
+                      mouse.button = 0;
+                      event.preventDefault();
+                    } else {
+                      mouse.button = event.button;
+                    }
+                    mouse.absolute.x = position.x;
+                    mouse.absolute.y = position.y;
+                    mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                    mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                    mouse.mousedownPosition.x = mouse.position.x;
+                    mouse.mousedownPosition.y = mouse.position.y;
+                    mouse.sourceEvents.mousedown = event;
+                  };
+                  mouse.mouseup = function(event) {
+                    var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio), touches = event.changedTouches;
+                    if (touches) {
+                      event.preventDefault();
+                    }
+                    mouse.button = -1;
+                    mouse.absolute.x = position.x;
+                    mouse.absolute.y = position.y;
+                    mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                    mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                    mouse.mouseupPosition.x = mouse.position.x;
+                    mouse.mouseupPosition.y = mouse.position.y;
+                    mouse.sourceEvents.mouseup = event;
+                  };
+                  mouse.mousewheel = function(event) {
+                    mouse.wheelDelta = Math.max(-1, Math.min(1, event.wheelDelta || -event.detail));
+                    event.preventDefault();
+                    mouse.sourceEvents.mousewheel = event;
+                  };
+                  Mouse.setElement(mouse, mouse.element);
+                  return mouse;
+                };
+                Mouse.setElement = function(mouse, element) {
+                  mouse.element = element;
+                  element.addEventListener("mousemove", mouse.mousemove, { passive: true });
+                  element.addEventListener("mousedown", mouse.mousedown, { passive: true });
+                  element.addEventListener("mouseup", mouse.mouseup, { passive: true });
+                  element.addEventListener("wheel", mouse.mousewheel, { passive: false });
+                  element.addEventListener("touchmove", mouse.mousemove, { passive: false });
+                  element.addEventListener("touchstart", mouse.mousedown, { passive: false });
+                  element.addEventListener("touchend", mouse.mouseup, { passive: false });
+                };
+                Mouse.clearSourceEvents = function(mouse) {
+                  mouse.sourceEvents.mousemove = null;
+                  mouse.sourceEvents.mousedown = null;
+                  mouse.sourceEvents.mouseup = null;
+                  mouse.sourceEvents.mousewheel = null;
+                  mouse.wheelDelta = 0;
+                };
+                Mouse.setOffset = function(mouse, offset) {
+                  mouse.offset.x = offset.x;
+                  mouse.offset.y = offset.y;
+                  mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                  mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                };
+                Mouse.setScale = function(mouse, scale) {
+                  mouse.scale.x = scale.x;
+                  mouse.scale.y = scale.y;
+                  mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                  mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                };
+                Mouse._getRelativeMousePosition = function(event, element, pixelRatio) {
+                  var elementBounds = element.getBoundingClientRect(), rootNode = document.documentElement || document.body.parentNode || document.body, scrollX = window.pageXOffset !== void 0 ? window.pageXOffset : rootNode.scrollLeft, scrollY = window.pageYOffset !== void 0 ? window.pageYOffset : rootNode.scrollTop, touches = event.changedTouches, x, y;
+                  if (touches) {
+                    x = touches[0].pageX - elementBounds.left - scrollX;
+                    y = touches[0].pageY - elementBounds.top - scrollY;
+                  } else {
+                    x = event.pageX - elementBounds.left - scrollX;
+                    y = event.pageY - elementBounds.top - scrollY;
+                  }
+                  return {
+                    x: x / (element.clientWidth / (element.width || element.clientWidth) * pixelRatio),
+                    y: y / (element.clientHeight / (element.height || element.clientHeight) * pixelRatio)
+                  };
+                };
+              })();
+            }),
+            /* 15 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Plugin = {};
+              module2.exports = Plugin;
+              var Common = __webpack_require__(0);
+              (function() {
+                Plugin._registry = {};
+                Plugin.register = function(plugin) {
+                  if (!Plugin.isPlugin(plugin)) {
+                    Common.warn("Plugin.register:", Plugin.toString(plugin), "does not implement all required fields.");
+                  }
+                  if (plugin.name in Plugin._registry) {
+                    var registered = Plugin._registry[plugin.name], pluginVersion = Plugin.versionParse(plugin.version).number, registeredVersion = Plugin.versionParse(registered.version).number;
+                    if (pluginVersion > registeredVersion) {
+                      Common.warn("Plugin.register:", Plugin.toString(registered), "was upgraded to", Plugin.toString(plugin));
+                      Plugin._registry[plugin.name] = plugin;
+                    } else if (pluginVersion < registeredVersion) {
+                      Common.warn("Plugin.register:", Plugin.toString(registered), "can not be downgraded to", Plugin.toString(plugin));
+                    } else if (plugin !== registered) {
+                      Common.warn("Plugin.register:", Plugin.toString(plugin), "is already registered to different plugin object");
+                    }
+                  } else {
+                    Plugin._registry[plugin.name] = plugin;
+                  }
+                  return plugin;
+                };
+                Plugin.resolve = function(dependency) {
+                  return Plugin._registry[Plugin.dependencyParse(dependency).name];
+                };
+                Plugin.toString = function(plugin) {
+                  return typeof plugin === "string" ? plugin : (plugin.name || "anonymous") + "@" + (plugin.version || plugin.range || "0.0.0");
+                };
+                Plugin.isPlugin = function(obj) {
+                  return obj && obj.name && obj.version && obj.install;
+                };
+                Plugin.isUsed = function(module3, name) {
+                  return module3.used.indexOf(name) > -1;
+                };
+                Plugin.isFor = function(plugin, module3) {
+                  var parsed = plugin.for && Plugin.dependencyParse(plugin.for);
+                  return !plugin.for || module3.name === parsed.name && Plugin.versionSatisfies(module3.version, parsed.range);
+                };
+                Plugin.use = function(module3, plugins) {
+                  module3.uses = (module3.uses || []).concat(plugins || []);
+                  if (module3.uses.length === 0) {
+                    Common.warn("Plugin.use:", Plugin.toString(module3), "does not specify any dependencies to install.");
+                    return;
+                  }
+                  var dependencies = Plugin.dependencies(module3), sortedDependencies = Common.topologicalSort(dependencies), status = [];
+                  for (var i = 0; i < sortedDependencies.length; i += 1) {
+                    if (sortedDependencies[i] === module3.name) {
+                      continue;
+                    }
+                    var plugin = Plugin.resolve(sortedDependencies[i]);
+                    if (!plugin) {
+                      status.push("❌ " + sortedDependencies[i]);
+                      continue;
+                    }
+                    if (Plugin.isUsed(module3, plugin.name)) {
+                      continue;
+                    }
+                    if (!Plugin.isFor(plugin, module3)) {
+                      Common.warn("Plugin.use:", Plugin.toString(plugin), "is for", plugin.for, "but installed on", Plugin.toString(module3) + ".");
+                      plugin._warned = true;
+                    }
+                    if (plugin.install) {
+                      plugin.install(module3);
+                    } else {
+                      Common.warn("Plugin.use:", Plugin.toString(plugin), "does not specify an install function.");
+                      plugin._warned = true;
+                    }
+                    if (plugin._warned) {
+                      status.push("🔶 " + Plugin.toString(plugin));
+                      delete plugin._warned;
+                    } else {
+                      status.push("✅ " + Plugin.toString(plugin));
+                    }
+                    module3.used.push(plugin.name);
+                  }
+                  if (status.length > 0) {
+                    Common.info(status.join("  "));
+                  }
+                };
+                Plugin.dependencies = function(module3, tracked) {
+                  var parsedBase = Plugin.dependencyParse(module3), name = parsedBase.name;
+                  tracked = tracked || {};
+                  if (name in tracked) {
+                    return;
+                  }
+                  module3 = Plugin.resolve(module3) || module3;
+                  tracked[name] = Common.map(module3.uses || [], function(dependency) {
+                    if (Plugin.isPlugin(dependency)) {
+                      Plugin.register(dependency);
+                    }
+                    var parsed = Plugin.dependencyParse(dependency), resolved = Plugin.resolve(dependency);
+                    if (resolved && !Plugin.versionSatisfies(resolved.version, parsed.range)) {
+                      Common.warn(
+                        "Plugin.dependencies:",
+                        Plugin.toString(resolved),
+                        "does not satisfy",
+                        Plugin.toString(parsed),
+                        "used by",
+                        Plugin.toString(parsedBase) + "."
+                      );
+                      resolved._warned = true;
+                      module3._warned = true;
+                    } else if (!resolved) {
+                      Common.warn(
+                        "Plugin.dependencies:",
+                        Plugin.toString(dependency),
+                        "used by",
+                        Plugin.toString(parsedBase),
+                        "could not be resolved."
+                      );
+                      module3._warned = true;
+                    }
+                    return parsed.name;
+                  });
+                  for (var i = 0; i < tracked[name].length; i += 1) {
+                    Plugin.dependencies(tracked[name][i], tracked);
+                  }
+                  return tracked;
+                };
+                Plugin.dependencyParse = function(dependency) {
+                  if (Common.isString(dependency)) {
+                    var pattern = /^[\w-]+(@(\*|[\^~]?\d+\.\d+\.\d+(-[0-9A-Za-z-+]+)?))?$/;
+                    if (!pattern.test(dependency)) {
+                      Common.warn("Plugin.dependencyParse:", dependency, "is not a valid dependency string.");
+                    }
+                    return {
+                      name: dependency.split("@")[0],
+                      range: dependency.split("@")[1] || "*"
+                    };
+                  }
+                  return {
+                    name: dependency.name,
+                    range: dependency.range || dependency.version
+                  };
+                };
+                Plugin.versionParse = function(range) {
+                  var pattern = /^(\*)|(\^|~|>=|>)?\s*((\d+)\.(\d+)\.(\d+))(-[0-9A-Za-z-+]+)?$/;
+                  if (!pattern.test(range)) {
+                    Common.warn("Plugin.versionParse:", range, "is not a valid version or range.");
+                  }
+                  var parts = pattern.exec(range);
+                  var major = Number(parts[4]);
+                  var minor = Number(parts[5]);
+                  var patch = Number(parts[6]);
+                  return {
+                    isRange: Boolean(parts[1] || parts[2]),
+                    version: parts[3],
+                    range,
+                    operator: parts[1] || parts[2] || "",
+                    major,
+                    minor,
+                    patch,
+                    parts: [major, minor, patch],
+                    prerelease: parts[7],
+                    number: major * 1e8 + minor * 1e4 + patch
+                  };
+                };
+                Plugin.versionSatisfies = function(version, range) {
+                  range = range || "*";
+                  var r = Plugin.versionParse(range), v = Plugin.versionParse(version);
+                  if (r.isRange) {
+                    if (r.operator === "*" || version === "*") {
+                      return true;
+                    }
+                    if (r.operator === ">") {
+                      return v.number > r.number;
+                    }
+                    if (r.operator === ">=") {
+                      return v.number >= r.number;
+                    }
+                    if (r.operator === "~") {
+                      return v.major === r.major && v.minor === r.minor && v.patch >= r.patch;
+                    }
+                    if (r.operator === "^") {
+                      if (r.major > 0) {
+                        return v.major === r.major && v.number >= r.number;
+                      }
+                      if (r.minor > 0) {
+                        return v.minor === r.minor && v.patch >= r.patch;
+                      }
+                      return v.patch === r.patch;
+                    }
+                  }
+                  return version === range || version === "*";
+                };
+              })();
+            }),
+            /* 16 */
+            /***/
+            (function(module2, exports2) {
+              var Contact = {};
+              module2.exports = Contact;
+              (function() {
+                Contact.create = function(vertex) {
+                  return {
+                    vertex,
+                    normalImpulse: 0,
+                    tangentImpulse: 0
+                  };
+                };
+              })();
+            }),
+            /* 17 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Engine2 = {};
+              module2.exports = Engine2;
+              var Sleeping = __webpack_require__(7);
+              var Resolver = __webpack_require__(18);
+              var Detector = __webpack_require__(13);
+              var Pairs = __webpack_require__(19);
+              var Events2 = __webpack_require__(5);
+              var Composite2 = __webpack_require__(6);
+              var Constraint = __webpack_require__(10);
+              var Common = __webpack_require__(0);
+              var Body2 = __webpack_require__(4);
+              (function() {
+                Engine2._deltaMax = 1e3 / 60;
+                Engine2.create = function(options) {
+                  options = options || {};
+                  var defaults = {
+                    positionIterations: 6,
+                    velocityIterations: 4,
+                    constraintIterations: 2,
+                    enableSleeping: false,
+                    events: [],
+                    plugin: {},
+                    gravity: {
+                      x: 0,
+                      y: 1,
+                      scale: 1e-3
+                    },
+                    timing: {
+                      timestamp: 0,
+                      timeScale: 1,
+                      lastDelta: 0,
+                      lastElapsed: 0,
+                      lastUpdatesPerFrame: 0
+                    }
+                  };
+                  var engine = Common.extend(defaults, options);
+                  engine.world = options.world || Composite2.create({ label: "World" });
+                  engine.pairs = options.pairs || Pairs.create();
+                  engine.detector = options.detector || Detector.create();
+                  engine.detector.pairs = engine.pairs;
+                  engine.grid = { buckets: [] };
+                  engine.world.gravity = engine.gravity;
+                  engine.broadphase = engine.grid;
+                  engine.metrics = {};
+                  return engine;
+                };
+                Engine2.update = function(engine, delta) {
+                  var startTime = Common.now();
+                  var world = engine.world, detector = engine.detector, pairs = engine.pairs, timing = engine.timing, timestamp = timing.timestamp, i;
+                  if (delta > Engine2._deltaMax) {
+                    Common.warnOnce(
+                      "Matter.Engine.update: delta argument is recommended to be less than or equal to",
+                      Engine2._deltaMax.toFixed(3),
+                      "ms."
+                    );
+                  }
+                  delta = typeof delta !== "undefined" ? delta : Common._baseDelta;
+                  delta *= timing.timeScale;
+                  timing.timestamp += delta;
+                  timing.lastDelta = delta;
+                  var event = {
+                    timestamp: timing.timestamp,
+                    delta
+                  };
+                  Events2.trigger(engine, "beforeUpdate", event);
+                  var allBodies = Composite2.allBodies(world), allConstraints = Composite2.allConstraints(world);
+                  if (world.isModified) {
+                    Detector.setBodies(detector, allBodies);
+                    Composite2.setModified(world, false, false, true);
+                  }
+                  if (engine.enableSleeping)
+                    Sleeping.update(allBodies, delta);
+                  Engine2._bodiesApplyGravity(allBodies, engine.gravity);
+                  if (delta > 0) {
+                    Engine2._bodiesUpdate(allBodies, delta);
+                  }
+                  Events2.trigger(engine, "beforeSolve", event);
+                  Constraint.preSolveAll(allBodies);
+                  for (i = 0; i < engine.constraintIterations; i++) {
+                    Constraint.solveAll(allConstraints, delta);
+                  }
+                  Constraint.postSolveAll(allBodies);
+                  var collisions = Detector.collisions(detector);
+                  Pairs.update(pairs, collisions, timestamp);
+                  if (engine.enableSleeping)
+                    Sleeping.afterCollisions(pairs.list);
+                  if (pairs.collisionStart.length > 0) {
+                    Events2.trigger(engine, "collisionStart", {
+                      pairs: pairs.collisionStart,
+                      timestamp: timing.timestamp,
+                      delta
+                    });
+                  }
+                  var positionDamping = Common.clamp(20 / engine.positionIterations, 0, 1);
+                  Resolver.preSolvePosition(pairs.list);
+                  for (i = 0; i < engine.positionIterations; i++) {
+                    Resolver.solvePosition(pairs.list, delta, positionDamping);
+                  }
+                  Resolver.postSolvePosition(allBodies);
+                  Constraint.preSolveAll(allBodies);
+                  for (i = 0; i < engine.constraintIterations; i++) {
+                    Constraint.solveAll(allConstraints, delta);
+                  }
+                  Constraint.postSolveAll(allBodies);
+                  Resolver.preSolveVelocity(pairs.list);
+                  for (i = 0; i < engine.velocityIterations; i++) {
+                    Resolver.solveVelocity(pairs.list, delta);
+                  }
+                  Engine2._bodiesUpdateVelocities(allBodies);
+                  if (pairs.collisionActive.length > 0) {
+                    Events2.trigger(engine, "collisionActive", {
+                      pairs: pairs.collisionActive,
+                      timestamp: timing.timestamp,
+                      delta
+                    });
+                  }
+                  if (pairs.collisionEnd.length > 0) {
+                    Events2.trigger(engine, "collisionEnd", {
+                      pairs: pairs.collisionEnd,
+                      timestamp: timing.timestamp,
+                      delta
+                    });
+                  }
+                  Engine2._bodiesClearForces(allBodies);
+                  Events2.trigger(engine, "afterUpdate", event);
+                  engine.timing.lastElapsed = Common.now() - startTime;
+                  return engine;
+                };
+                Engine2.merge = function(engineA, engineB) {
+                  Common.extend(engineA, engineB);
+                  if (engineB.world) {
+                    engineA.world = engineB.world;
+                    Engine2.clear(engineA);
+                    var bodies = Composite2.allBodies(engineA.world);
+                    for (var i = 0; i < bodies.length; i++) {
+                      var body = bodies[i];
+                      Sleeping.set(body, false);
+                      body.id = Common.nextId();
+                    }
+                  }
+                };
+                Engine2.clear = function(engine) {
+                  Pairs.clear(engine.pairs);
+                  Detector.clear(engine.detector);
+                };
+                Engine2._bodiesClearForces = function(bodies) {
+                  var bodiesLength = bodies.length;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i];
+                    body.force.x = 0;
+                    body.force.y = 0;
+                    body.torque = 0;
+                  }
+                };
+                Engine2._bodiesApplyGravity = function(bodies, gravity) {
+                  var gravityScale = typeof gravity.scale !== "undefined" ? gravity.scale : 1e-3, bodiesLength = bodies.length;
+                  if (gravity.x === 0 && gravity.y === 0 || gravityScale === 0) {
+                    return;
+                  }
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i];
+                    if (body.isStatic || body.isSleeping)
+                      continue;
+                    body.force.y += body.mass * gravity.y * gravityScale;
+                    body.force.x += body.mass * gravity.x * gravityScale;
+                  }
+                };
+                Engine2._bodiesUpdate = function(bodies, delta) {
+                  var bodiesLength = bodies.length;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i];
+                    if (body.isStatic || body.isSleeping)
+                      continue;
+                    Body2.update(body, delta);
+                  }
+                };
+                Engine2._bodiesUpdateVelocities = function(bodies) {
+                  var bodiesLength = bodies.length;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    Body2.updateVelocities(bodies[i]);
+                  }
+                };
+              })();
+            }),
+            /* 18 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Resolver = {};
+              module2.exports = Resolver;
+              var Vertices = __webpack_require__(3);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              (function() {
+                Resolver._restingThresh = 2;
+                Resolver._restingThreshTangent = Math.sqrt(6);
+                Resolver._positionDampen = 0.9;
+                Resolver._positionWarming = 0.8;
+                Resolver._frictionNormalMultiplier = 5;
+                Resolver._frictionMaxStatic = Number.MAX_VALUE;
+                Resolver.preSolvePosition = function(pairs) {
+                  var i, pair, contactCount, pairsLength = pairs.length;
+                  for (i = 0; i < pairsLength; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    contactCount = pair.contactCount;
+                    pair.collision.parentA.totalContacts += contactCount;
+                    pair.collision.parentB.totalContacts += contactCount;
+                  }
+                };
+                Resolver.solvePosition = function(pairs, delta, damping) {
+                  var i, pair, collision, bodyA, bodyB, normal, contactShare, positionImpulse, positionDampen = Resolver._positionDampen * (damping || 1), slopDampen = Common.clamp(delta / Common._baseDelta, 0, 1), pairsLength = pairs.length;
+                  for (i = 0; i < pairsLength; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    collision = pair.collision;
+                    bodyA = collision.parentA;
+                    bodyB = collision.parentB;
+                    normal = collision.normal;
+                    pair.separation = collision.depth + normal.x * (bodyB.positionImpulse.x - bodyA.positionImpulse.x) + normal.y * (bodyB.positionImpulse.y - bodyA.positionImpulse.y);
+                  }
+                  for (i = 0; i < pairsLength; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    collision = pair.collision;
+                    bodyA = collision.parentA;
+                    bodyB = collision.parentB;
+                    normal = collision.normal;
+                    positionImpulse = pair.separation - pair.slop * slopDampen;
+                    if (bodyA.isStatic || bodyB.isStatic)
+                      positionImpulse *= 2;
+                    if (!(bodyA.isStatic || bodyA.isSleeping)) {
+                      contactShare = positionDampen / bodyA.totalContacts;
+                      bodyA.positionImpulse.x += normal.x * positionImpulse * contactShare;
+                      bodyA.positionImpulse.y += normal.y * positionImpulse * contactShare;
+                    }
+                    if (!(bodyB.isStatic || bodyB.isSleeping)) {
+                      contactShare = positionDampen / bodyB.totalContacts;
+                      bodyB.positionImpulse.x -= normal.x * positionImpulse * contactShare;
+                      bodyB.positionImpulse.y -= normal.y * positionImpulse * contactShare;
+                    }
+                  }
+                };
+                Resolver.postSolvePosition = function(bodies) {
+                  var positionWarming = Resolver._positionWarming, bodiesLength = bodies.length, verticesTranslate = Vertices.translate, boundsUpdate = Bounds.update;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i], positionImpulse = body.positionImpulse, positionImpulseX = positionImpulse.x, positionImpulseY = positionImpulse.y, velocity = body.velocity;
+                    body.totalContacts = 0;
+                    if (positionImpulseX !== 0 || positionImpulseY !== 0) {
+                      for (var j = 0; j < body.parts.length; j++) {
+                        var part = body.parts[j];
+                        verticesTranslate(part.vertices, positionImpulse);
+                        boundsUpdate(part.bounds, part.vertices, velocity);
+                        part.position.x += positionImpulseX;
+                        part.position.y += positionImpulseY;
+                      }
+                      body.positionPrev.x += positionImpulseX;
+                      body.positionPrev.y += positionImpulseY;
+                      if (positionImpulseX * velocity.x + positionImpulseY * velocity.y < 0) {
+                        positionImpulse.x = 0;
+                        positionImpulse.y = 0;
+                      } else {
+                        positionImpulse.x *= positionWarming;
+                        positionImpulse.y *= positionWarming;
+                      }
+                    }
+                  }
+                };
+                Resolver.preSolveVelocity = function(pairs) {
+                  var pairsLength = pairs.length, i, j;
+                  for (i = 0; i < pairsLength; i++) {
+                    var pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    var contacts = pair.contacts, contactCount = pair.contactCount, collision = pair.collision, bodyA = collision.parentA, bodyB = collision.parentB, normal = collision.normal, tangent = collision.tangent;
+                    for (j = 0; j < contactCount; j++) {
+                      var contact = contacts[j], contactVertex = contact.vertex, normalImpulse = contact.normalImpulse, tangentImpulse = contact.tangentImpulse;
+                      if (normalImpulse !== 0 || tangentImpulse !== 0) {
+                        var impulseX = normal.x * normalImpulse + tangent.x * tangentImpulse, impulseY = normal.y * normalImpulse + tangent.y * tangentImpulse;
+                        if (!(bodyA.isStatic || bodyA.isSleeping)) {
+                          bodyA.positionPrev.x += impulseX * bodyA.inverseMass;
+                          bodyA.positionPrev.y += impulseY * bodyA.inverseMass;
+                          bodyA.anglePrev += bodyA.inverseInertia * ((contactVertex.x - bodyA.position.x) * impulseY - (contactVertex.y - bodyA.position.y) * impulseX);
+                        }
+                        if (!(bodyB.isStatic || bodyB.isSleeping)) {
+                          bodyB.positionPrev.x -= impulseX * bodyB.inverseMass;
+                          bodyB.positionPrev.y -= impulseY * bodyB.inverseMass;
+                          bodyB.anglePrev -= bodyB.inverseInertia * ((contactVertex.x - bodyB.position.x) * impulseY - (contactVertex.y - bodyB.position.y) * impulseX);
+                        }
+                      }
+                    }
+                  }
+                };
+                Resolver.solveVelocity = function(pairs, delta) {
+                  var timeScale = delta / Common._baseDelta, timeScaleSquared = timeScale * timeScale, timeScaleCubed = timeScaleSquared * timeScale, restingThresh = -Resolver._restingThresh * timeScale, restingThreshTangent = Resolver._restingThreshTangent, frictionNormalMultiplier = Resolver._frictionNormalMultiplier * timeScale, frictionMaxStatic = Resolver._frictionMaxStatic, pairsLength = pairs.length, tangentImpulse, maxFriction, i, j;
+                  for (i = 0; i < pairsLength; i++) {
+                    var pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    var collision = pair.collision, bodyA = collision.parentA, bodyB = collision.parentB, normalX = collision.normal.x, normalY = collision.normal.y, tangentX = collision.tangent.x, tangentY = collision.tangent.y, inverseMassTotal = pair.inverseMass, friction = pair.friction * pair.frictionStatic * frictionNormalMultiplier, contacts = pair.contacts, contactCount = pair.contactCount, contactShare = 1 / contactCount;
+                    var bodyAVelocityX = bodyA.position.x - bodyA.positionPrev.x, bodyAVelocityY = bodyA.position.y - bodyA.positionPrev.y, bodyAAngularVelocity = bodyA.angle - bodyA.anglePrev, bodyBVelocityX = bodyB.position.x - bodyB.positionPrev.x, bodyBVelocityY = bodyB.position.y - bodyB.positionPrev.y, bodyBAngularVelocity = bodyB.angle - bodyB.anglePrev;
+                    for (j = 0; j < contactCount; j++) {
+                      var contact = contacts[j], contactVertex = contact.vertex;
+                      var offsetAX = contactVertex.x - bodyA.position.x, offsetAY = contactVertex.y - bodyA.position.y, offsetBX = contactVertex.x - bodyB.position.x, offsetBY = contactVertex.y - bodyB.position.y;
+                      var velocityPointAX = bodyAVelocityX - offsetAY * bodyAAngularVelocity, velocityPointAY = bodyAVelocityY + offsetAX * bodyAAngularVelocity, velocityPointBX = bodyBVelocityX - offsetBY * bodyBAngularVelocity, velocityPointBY = bodyBVelocityY + offsetBX * bodyBAngularVelocity;
+                      var relativeVelocityX = velocityPointAX - velocityPointBX, relativeVelocityY = velocityPointAY - velocityPointBY;
+                      var normalVelocity = normalX * relativeVelocityX + normalY * relativeVelocityY, tangentVelocity = tangentX * relativeVelocityX + tangentY * relativeVelocityY;
+                      var normalOverlap = pair.separation + normalVelocity;
+                      var normalForce = Math.min(normalOverlap, 1);
+                      normalForce = normalOverlap < 0 ? 0 : normalForce;
+                      var frictionLimit = normalForce * friction;
+                      if (tangentVelocity < -frictionLimit || tangentVelocity > frictionLimit) {
+                        maxFriction = tangentVelocity > 0 ? tangentVelocity : -tangentVelocity;
+                        tangentImpulse = pair.friction * (tangentVelocity > 0 ? 1 : -1) * timeScaleCubed;
+                        if (tangentImpulse < -maxFriction) {
+                          tangentImpulse = -maxFriction;
+                        } else if (tangentImpulse > maxFriction) {
+                          tangentImpulse = maxFriction;
+                        }
+                      } else {
+                        tangentImpulse = tangentVelocity;
+                        maxFriction = frictionMaxStatic;
+                      }
+                      var oAcN = offsetAX * normalY - offsetAY * normalX, oBcN = offsetBX * normalY - offsetBY * normalX, share = contactShare / (inverseMassTotal + bodyA.inverseInertia * oAcN * oAcN + bodyB.inverseInertia * oBcN * oBcN);
+                      var normalImpulse = (1 + pair.restitution) * normalVelocity * share;
+                      tangentImpulse *= share;
+                      if (normalVelocity < restingThresh) {
+                        contact.normalImpulse = 0;
+                      } else {
+                        var contactNormalImpulse = contact.normalImpulse;
+                        contact.normalImpulse += normalImpulse;
+                        if (contact.normalImpulse > 0) contact.normalImpulse = 0;
+                        normalImpulse = contact.normalImpulse - contactNormalImpulse;
+                      }
+                      if (tangentVelocity < -restingThreshTangent || tangentVelocity > restingThreshTangent) {
+                        contact.tangentImpulse = 0;
+                      } else {
+                        var contactTangentImpulse = contact.tangentImpulse;
+                        contact.tangentImpulse += tangentImpulse;
+                        if (contact.tangentImpulse < -maxFriction) contact.tangentImpulse = -maxFriction;
+                        if (contact.tangentImpulse > maxFriction) contact.tangentImpulse = maxFriction;
+                        tangentImpulse = contact.tangentImpulse - contactTangentImpulse;
+                      }
+                      var impulseX = normalX * normalImpulse + tangentX * tangentImpulse, impulseY = normalY * normalImpulse + tangentY * tangentImpulse;
+                      if (!(bodyA.isStatic || bodyA.isSleeping)) {
+                        bodyA.positionPrev.x += impulseX * bodyA.inverseMass;
+                        bodyA.positionPrev.y += impulseY * bodyA.inverseMass;
+                        bodyA.anglePrev += (offsetAX * impulseY - offsetAY * impulseX) * bodyA.inverseInertia;
+                      }
+                      if (!(bodyB.isStatic || bodyB.isSleeping)) {
+                        bodyB.positionPrev.x -= impulseX * bodyB.inverseMass;
+                        bodyB.positionPrev.y -= impulseY * bodyB.inverseMass;
+                        bodyB.anglePrev -= (offsetBX * impulseY - offsetBY * impulseX) * bodyB.inverseInertia;
+                      }
+                    }
+                  }
+                };
+              })();
+            }),
+            /* 19 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Pairs = {};
+              module2.exports = Pairs;
+              var Pair = __webpack_require__(9);
+              var Common = __webpack_require__(0);
+              (function() {
+                Pairs.create = function(options) {
+                  return Common.extend({
+                    table: {},
+                    list: [],
+                    collisionStart: [],
+                    collisionActive: [],
+                    collisionEnd: []
+                  }, options);
+                };
+                Pairs.update = function(pairs, collisions, timestamp) {
+                  var pairUpdate = Pair.update, pairCreate = Pair.create, pairSetActive = Pair.setActive, pairsTable = pairs.table, pairsList = pairs.list, pairsListLength = pairsList.length, pairsListIndex = pairsListLength, collisionStart = pairs.collisionStart, collisionEnd = pairs.collisionEnd, collisionActive = pairs.collisionActive, collisionsLength = collisions.length, collisionStartIndex = 0, collisionEndIndex = 0, collisionActiveIndex = 0, collision, pair, i;
+                  for (i = 0; i < collisionsLength; i++) {
+                    collision = collisions[i];
+                    pair = collision.pair;
+                    if (pair) {
+                      if (pair.isActive) {
+                        collisionActive[collisionActiveIndex++] = pair;
+                      }
+                      pairUpdate(pair, collision, timestamp);
+                    } else {
+                      pair = pairCreate(collision, timestamp);
+                      pairsTable[pair.id] = pair;
+                      collisionStart[collisionStartIndex++] = pair;
+                      pairsList[pairsListIndex++] = pair;
+                    }
+                  }
+                  pairsListIndex = 0;
+                  pairsListLength = pairsList.length;
+                  for (i = 0; i < pairsListLength; i++) {
+                    pair = pairsList[i];
+                    if (pair.timeUpdated >= timestamp) {
+                      pairsList[pairsListIndex++] = pair;
+                    } else {
+                      pairSetActive(pair, false, timestamp);
+                      if (pair.collision.bodyA.sleepCounter > 0 && pair.collision.bodyB.sleepCounter > 0) {
+                        pairsList[pairsListIndex++] = pair;
+                      } else {
+                        collisionEnd[collisionEndIndex++] = pair;
+                        delete pairsTable[pair.id];
+                      }
+                    }
+                  }
+                  if (pairsList.length !== pairsListIndex) {
+                    pairsList.length = pairsListIndex;
+                  }
+                  if (collisionStart.length !== collisionStartIndex) {
+                    collisionStart.length = collisionStartIndex;
+                  }
+                  if (collisionEnd.length !== collisionEndIndex) {
+                    collisionEnd.length = collisionEndIndex;
+                  }
+                  if (collisionActive.length !== collisionActiveIndex) {
+                    collisionActive.length = collisionActiveIndex;
+                  }
+                };
+                Pairs.clear = function(pairs) {
+                  pairs.table = {};
+                  pairs.list.length = 0;
+                  pairs.collisionStart.length = 0;
+                  pairs.collisionActive.length = 0;
+                  pairs.collisionEnd.length = 0;
+                  return pairs;
+                };
+              })();
+            }),
+            /* 20 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Matter = module2.exports = __webpack_require__(21);
+              Matter.Axes = __webpack_require__(11);
+              Matter.Bodies = __webpack_require__(12);
+              Matter.Body = __webpack_require__(4);
+              Matter.Bounds = __webpack_require__(1);
+              Matter.Collision = __webpack_require__(8);
+              Matter.Common = __webpack_require__(0);
+              Matter.Composite = __webpack_require__(6);
+              Matter.Composites = __webpack_require__(22);
+              Matter.Constraint = __webpack_require__(10);
+              Matter.Contact = __webpack_require__(16);
+              Matter.Detector = __webpack_require__(13);
+              Matter.Engine = __webpack_require__(17);
+              Matter.Events = __webpack_require__(5);
+              Matter.Grid = __webpack_require__(23);
+              Matter.Mouse = __webpack_require__(14);
+              Matter.MouseConstraint = __webpack_require__(24);
+              Matter.Pair = __webpack_require__(9);
+              Matter.Pairs = __webpack_require__(19);
+              Matter.Plugin = __webpack_require__(15);
+              Matter.Query = __webpack_require__(25);
+              Matter.Render = __webpack_require__(26);
+              Matter.Resolver = __webpack_require__(18);
+              Matter.Runner = __webpack_require__(27);
+              Matter.SAT = __webpack_require__(28);
+              Matter.Sleeping = __webpack_require__(7);
+              Matter.Svg = __webpack_require__(29);
+              Matter.Vector = __webpack_require__(2);
+              Matter.Vertices = __webpack_require__(3);
+              Matter.World = __webpack_require__(30);
+              Matter.Engine.run = Matter.Runner.run;
+              Matter.Common.deprecated(Matter.Engine, "run", "Engine.run ➤ use Matter.Runner.run(engine) instead");
+            }),
+            /* 21 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Matter = {};
+              module2.exports = Matter;
+              var Plugin = __webpack_require__(15);
+              var Common = __webpack_require__(0);
+              (function() {
+                Matter.name = "matter-js";
+                Matter.version = true ? "0.20.0" : void 0;
+                Matter.uses = [];
+                Matter.used = [];
+                Matter.use = function() {
+                  Plugin.use(Matter, Array.prototype.slice.call(arguments));
+                };
+                Matter.before = function(path, func) {
+                  path = path.replace(/^Matter./, "");
+                  return Common.chainPathBefore(Matter, path, func);
+                };
+                Matter.after = function(path, func) {
+                  path = path.replace(/^Matter./, "");
+                  return Common.chainPathAfter(Matter, path, func);
+                };
+              })();
+            }),
+            /* 22 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Composites = {};
+              module2.exports = Composites;
+              var Composite2 = __webpack_require__(6);
+              var Constraint = __webpack_require__(10);
+              var Common = __webpack_require__(0);
+              var Body2 = __webpack_require__(4);
+              var Bodies2 = __webpack_require__(12);
+              var deprecated = Common.deprecated;
+              (function() {
+                Composites.stack = function(x, y, columns, rows, columnGap, rowGap, callback) {
+                  var stack = Composite2.create({ label: "Stack" }), currentX = x, currentY = y, lastBody, i = 0;
+                  for (var row = 0; row < rows; row++) {
+                    var maxHeight = 0;
+                    for (var column = 0; column < columns; column++) {
+                      var body = callback(currentX, currentY, column, row, lastBody, i);
+                      if (body) {
+                        var bodyHeight = body.bounds.max.y - body.bounds.min.y, bodyWidth = body.bounds.max.x - body.bounds.min.x;
+                        if (bodyHeight > maxHeight)
+                          maxHeight = bodyHeight;
+                        Body2.translate(body, { x: bodyWidth * 0.5, y: bodyHeight * 0.5 });
+                        currentX = body.bounds.max.x + columnGap;
+                        Composite2.addBody(stack, body);
+                        lastBody = body;
+                        i += 1;
+                      } else {
+                        currentX += columnGap;
+                      }
+                    }
+                    currentY += maxHeight + rowGap;
+                    currentX = x;
+                  }
+                  return stack;
+                };
+                Composites.chain = function(composite, xOffsetA, yOffsetA, xOffsetB, yOffsetB, options) {
+                  var bodies = composite.bodies;
+                  for (var i = 1; i < bodies.length; i++) {
+                    var bodyA = bodies[i - 1], bodyB = bodies[i], bodyAHeight = bodyA.bounds.max.y - bodyA.bounds.min.y, bodyAWidth = bodyA.bounds.max.x - bodyA.bounds.min.x, bodyBHeight = bodyB.bounds.max.y - bodyB.bounds.min.y, bodyBWidth = bodyB.bounds.max.x - bodyB.bounds.min.x;
+                    var defaults = {
+                      bodyA,
+                      pointA: { x: bodyAWidth * xOffsetA, y: bodyAHeight * yOffsetA },
+                      bodyB,
+                      pointB: { x: bodyBWidth * xOffsetB, y: bodyBHeight * yOffsetB }
+                    };
+                    var constraint = Common.extend(defaults, options);
+                    Composite2.addConstraint(composite, Constraint.create(constraint));
+                  }
+                  composite.label += " Chain";
+                  return composite;
+                };
+                Composites.mesh = function(composite, columns, rows, crossBrace, options) {
+                  var bodies = composite.bodies, row, col, bodyA, bodyB, bodyC;
+                  for (row = 0; row < rows; row++) {
+                    for (col = 1; col < columns; col++) {
+                      bodyA = bodies[col - 1 + row * columns];
+                      bodyB = bodies[col + row * columns];
+                      Composite2.addConstraint(composite, Constraint.create(Common.extend({ bodyA, bodyB }, options)));
+                    }
+                    if (row > 0) {
+                      for (col = 0; col < columns; col++) {
+                        bodyA = bodies[col + (row - 1) * columns];
+                        bodyB = bodies[col + row * columns];
+                        Composite2.addConstraint(composite, Constraint.create(Common.extend({ bodyA, bodyB }, options)));
+                        if (crossBrace && col > 0) {
+                          bodyC = bodies[col - 1 + (row - 1) * columns];
+                          Composite2.addConstraint(composite, Constraint.create(Common.extend({ bodyA: bodyC, bodyB }, options)));
+                        }
+                        if (crossBrace && col < columns - 1) {
+                          bodyC = bodies[col + 1 + (row - 1) * columns];
+                          Composite2.addConstraint(composite, Constraint.create(Common.extend({ bodyA: bodyC, bodyB }, options)));
+                        }
+                      }
+                    }
+                  }
+                  composite.label += " Mesh";
+                  return composite;
+                };
+                Composites.pyramid = function(x, y, columns, rows, columnGap, rowGap, callback) {
+                  return Composites.stack(x, y, columns, rows, columnGap, rowGap, function(stackX, stackY, column, row, lastBody, i) {
+                    var actualRows = Math.min(rows, Math.ceil(columns / 2)), lastBodyWidth = lastBody ? lastBody.bounds.max.x - lastBody.bounds.min.x : 0;
+                    if (row > actualRows)
+                      return;
+                    row = actualRows - row;
+                    var start = row, end = columns - 1 - row;
+                    if (column < start || column > end)
+                      return;
+                    if (i === 1) {
+                      Body2.translate(lastBody, { x: (column + (columns % 2 === 1 ? 1 : -1)) * lastBodyWidth, y: 0 });
+                    }
+                    var xOffset = lastBody ? column * lastBodyWidth : 0;
+                    return callback(x + xOffset + column * columnGap, stackY, column, row, lastBody, i);
+                  });
+                };
+                Composites.newtonsCradle = function(x, y, number, size, length) {
+                  var newtonsCradle = Composite2.create({ label: "Newtons Cradle" });
+                  for (var i = 0; i < number; i++) {
+                    var separation = 1.9, circle = Bodies2.circle(
+                      x + i * (size * separation),
+                      y + length,
+                      size,
+                      { inertia: Infinity, restitution: 1, friction: 0, frictionAir: 1e-4, slop: 1 }
+                    ), constraint = Constraint.create({ pointA: { x: x + i * (size * separation), y }, bodyB: circle });
+                    Composite2.addBody(newtonsCradle, circle);
+                    Composite2.addConstraint(newtonsCradle, constraint);
+                  }
+                  return newtonsCradle;
+                };
+                deprecated(Composites, "newtonsCradle", "Composites.newtonsCradle ➤ moved to newtonsCradle example");
+                Composites.car = function(x, y, width, height, wheelSize) {
+                  var group = Body2.nextGroup(true), wheelBase = 20, wheelAOffset = -width * 0.5 + wheelBase, wheelBOffset = width * 0.5 - wheelBase, wheelYOffset = 0;
+                  var car = Composite2.create({ label: "Car" }), body = Bodies2.rectangle(x, y, width, height, {
+                    collisionFilter: {
+                      group
+                    },
+                    chamfer: {
+                      radius: height * 0.5
+                    },
+                    density: 2e-4
+                  });
+                  var wheelA = Bodies2.circle(x + wheelAOffset, y + wheelYOffset, wheelSize, {
+                    collisionFilter: {
+                      group
+                    },
+                    friction: 0.8
+                  });
+                  var wheelB = Bodies2.circle(x + wheelBOffset, y + wheelYOffset, wheelSize, {
+                    collisionFilter: {
+                      group
+                    },
+                    friction: 0.8
+                  });
+                  var axelA = Constraint.create({
+                    bodyB: body,
+                    pointB: { x: wheelAOffset, y: wheelYOffset },
+                    bodyA: wheelA,
+                    stiffness: 1,
+                    length: 0
+                  });
+                  var axelB = Constraint.create({
+                    bodyB: body,
+                    pointB: { x: wheelBOffset, y: wheelYOffset },
+                    bodyA: wheelB,
+                    stiffness: 1,
+                    length: 0
+                  });
+                  Composite2.addBody(car, body);
+                  Composite2.addBody(car, wheelA);
+                  Composite2.addBody(car, wheelB);
+                  Composite2.addConstraint(car, axelA);
+                  Composite2.addConstraint(car, axelB);
+                  return car;
+                };
+                deprecated(Composites, "car", "Composites.car ➤ moved to car example");
+                Composites.softBody = function(x, y, columns, rows, columnGap, rowGap, crossBrace, particleRadius, particleOptions, constraintOptions) {
+                  particleOptions = Common.extend({ inertia: Infinity }, particleOptions);
+                  constraintOptions = Common.extend({ stiffness: 0.2, render: { type: "line", anchors: false } }, constraintOptions);
+                  var softBody = Composites.stack(x, y, columns, rows, columnGap, rowGap, function(stackX, stackY) {
+                    return Bodies2.circle(stackX, stackY, particleRadius, particleOptions);
+                  });
+                  Composites.mesh(softBody, columns, rows, crossBrace, constraintOptions);
+                  softBody.label = "Soft Body";
+                  return softBody;
+                };
+                deprecated(Composites, "softBody", "Composites.softBody ➤ moved to softBody and cloth examples");
+              })();
+            }),
+            /* 23 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Grid = {};
+              module2.exports = Grid;
+              var Pair = __webpack_require__(9);
+              var Common = __webpack_require__(0);
+              var deprecated = Common.deprecated;
+              (function() {
+                Grid.create = function(options) {
+                  var defaults = {
+                    buckets: {},
+                    pairs: {},
+                    pairsList: [],
+                    bucketWidth: 48,
+                    bucketHeight: 48
+                  };
+                  return Common.extend(defaults, options);
+                };
+                Grid.update = function(grid, bodies, engine, forceUpdate) {
+                  var i, col, row, world = engine.world, buckets = grid.buckets, bucket, bucketId, gridChanged = false;
+                  for (i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (body.isSleeping && !forceUpdate)
+                      continue;
+                    if (world.bounds && (body.bounds.max.x < world.bounds.min.x || body.bounds.min.x > world.bounds.max.x || body.bounds.max.y < world.bounds.min.y || body.bounds.min.y > world.bounds.max.y))
+                      continue;
+                    var newRegion = Grid._getRegion(grid, body);
+                    if (!body.region || newRegion.id !== body.region.id || forceUpdate) {
+                      if (!body.region || forceUpdate)
+                        body.region = newRegion;
+                      var union = Grid._regionUnion(newRegion, body.region);
+                      for (col = union.startCol; col <= union.endCol; col++) {
+                        for (row = union.startRow; row <= union.endRow; row++) {
+                          bucketId = Grid._getBucketId(col, row);
+                          bucket = buckets[bucketId];
+                          var isInsideNewRegion = col >= newRegion.startCol && col <= newRegion.endCol && row >= newRegion.startRow && row <= newRegion.endRow;
+                          var isInsideOldRegion = col >= body.region.startCol && col <= body.region.endCol && row >= body.region.startRow && row <= body.region.endRow;
+                          if (!isInsideNewRegion && isInsideOldRegion) {
+                            if (isInsideOldRegion) {
+                              if (bucket)
+                                Grid._bucketRemoveBody(grid, bucket, body);
+                            }
+                          }
+                          if (body.region === newRegion || isInsideNewRegion && !isInsideOldRegion || forceUpdate) {
+                            if (!bucket)
+                              bucket = Grid._createBucket(buckets, bucketId);
+                            Grid._bucketAddBody(grid, bucket, body);
+                          }
+                        }
+                      }
+                      body.region = newRegion;
+                      gridChanged = true;
+                    }
+                  }
+                  if (gridChanged)
+                    grid.pairsList = Grid._createActivePairsList(grid);
+                };
+                deprecated(Grid, "update", "Grid.update ➤ replaced by Matter.Detector");
+                Grid.clear = function(grid) {
+                  grid.buckets = {};
+                  grid.pairs = {};
+                  grid.pairsList = [];
+                };
+                deprecated(Grid, "clear", "Grid.clear ➤ replaced by Matter.Detector");
+                Grid._regionUnion = function(regionA, regionB) {
+                  var startCol = Math.min(regionA.startCol, regionB.startCol), endCol = Math.max(regionA.endCol, regionB.endCol), startRow = Math.min(regionA.startRow, regionB.startRow), endRow = Math.max(regionA.endRow, regionB.endRow);
+                  return Grid._createRegion(startCol, endCol, startRow, endRow);
+                };
+                Grid._getRegion = function(grid, body) {
+                  var bounds = body.bounds, startCol = Math.floor(bounds.min.x / grid.bucketWidth), endCol = Math.floor(bounds.max.x / grid.bucketWidth), startRow = Math.floor(bounds.min.y / grid.bucketHeight), endRow = Math.floor(bounds.max.y / grid.bucketHeight);
+                  return Grid._createRegion(startCol, endCol, startRow, endRow);
+                };
+                Grid._createRegion = function(startCol, endCol, startRow, endRow) {
+                  return {
+                    id: startCol + "," + endCol + "," + startRow + "," + endRow,
+                    startCol,
+                    endCol,
+                    startRow,
+                    endRow
+                  };
+                };
+                Grid._getBucketId = function(column, row) {
+                  return "C" + column + "R" + row;
+                };
+                Grid._createBucket = function(buckets, bucketId) {
+                  var bucket = buckets[bucketId] = [];
+                  return bucket;
+                };
+                Grid._bucketAddBody = function(grid, bucket, body) {
+                  var gridPairs = grid.pairs, pairId = Pair.id, bucketLength = bucket.length, i;
+                  for (i = 0; i < bucketLength; i++) {
+                    var bodyB = bucket[i];
+                    if (body.id === bodyB.id || body.isStatic && bodyB.isStatic)
+                      continue;
+                    var id2 = pairId(body, bodyB), pair = gridPairs[id2];
+                    if (pair) {
+                      pair[2] += 1;
+                    } else {
+                      gridPairs[id2] = [body, bodyB, 1];
+                    }
+                  }
+                  bucket.push(body);
+                };
+                Grid._bucketRemoveBody = function(grid, bucket, body) {
+                  var gridPairs = grid.pairs, pairId = Pair.id, i;
+                  bucket.splice(Common.indexOf(bucket, body), 1);
+                  var bucketLength = bucket.length;
+                  for (i = 0; i < bucketLength; i++) {
+                    var pair = gridPairs[pairId(body, bucket[i])];
+                    if (pair)
+                      pair[2] -= 1;
+                  }
+                };
+                Grid._createActivePairsList = function(grid) {
+                  var pair, gridPairs = grid.pairs, pairKeys = Common.keys(gridPairs), pairKeysLength = pairKeys.length, pairs = [], k;
+                  for (k = 0; k < pairKeysLength; k++) {
+                    pair = gridPairs[pairKeys[k]];
+                    if (pair[2] > 0) {
+                      pairs.push(pair);
+                    } else {
+                      delete gridPairs[pairKeys[k]];
+                    }
+                  }
+                  return pairs;
+                };
+              })();
+            }),
+            /* 24 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var MouseConstraint = {};
+              module2.exports = MouseConstraint;
+              var Vertices = __webpack_require__(3);
+              var Sleeping = __webpack_require__(7);
+              var Mouse = __webpack_require__(14);
+              var Events2 = __webpack_require__(5);
+              var Detector = __webpack_require__(13);
+              var Constraint = __webpack_require__(10);
+              var Composite2 = __webpack_require__(6);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              (function() {
+                MouseConstraint.create = function(engine, options) {
+                  var mouse = (engine ? engine.mouse : null) || (options ? options.mouse : null);
+                  if (!mouse) {
+                    if (engine && engine.render && engine.render.canvas) {
+                      mouse = Mouse.create(engine.render.canvas);
+                    } else if (options && options.element) {
+                      mouse = Mouse.create(options.element);
+                    } else {
+                      mouse = Mouse.create();
+                      Common.warn("MouseConstraint.create: options.mouse was undefined, options.element was undefined, may not function as expected");
+                    }
+                  }
+                  var constraint = Constraint.create({
+                    label: "Mouse Constraint",
+                    pointA: mouse.position,
+                    pointB: { x: 0, y: 0 },
+                    length: 0.01,
+                    stiffness: 0.1,
+                    angularStiffness: 1,
+                    render: {
+                      strokeStyle: "#90EE90",
+                      lineWidth: 3
+                    }
+                  });
+                  var defaults = {
+                    type: "mouseConstraint",
+                    mouse,
+                    element: null,
+                    body: null,
+                    constraint,
+                    collisionFilter: {
+                      category: 1,
+                      mask: 4294967295,
+                      group: 0
+                    }
+                  };
+                  var mouseConstraint = Common.extend(defaults, options);
+                  Events2.on(engine, "beforeUpdate", function() {
+                    var allBodies = Composite2.allBodies(engine.world);
+                    MouseConstraint.update(mouseConstraint, allBodies);
+                    MouseConstraint._triggerEvents(mouseConstraint);
+                  });
+                  return mouseConstraint;
+                };
+                MouseConstraint.update = function(mouseConstraint, bodies) {
+                  var mouse = mouseConstraint.mouse, constraint = mouseConstraint.constraint, body = mouseConstraint.body;
+                  if (mouse.button === 0) {
+                    if (!constraint.bodyB) {
+                      for (var i = 0; i < bodies.length; i++) {
+                        body = bodies[i];
+                        if (Bounds.contains(body.bounds, mouse.position) && Detector.canCollide(body.collisionFilter, mouseConstraint.collisionFilter)) {
+                          for (var j = body.parts.length > 1 ? 1 : 0; j < body.parts.length; j++) {
+                            var part = body.parts[j];
+                            if (Vertices.contains(part.vertices, mouse.position)) {
+                              constraint.pointA = mouse.position;
+                              constraint.bodyB = mouseConstraint.body = body;
+                              constraint.pointB = { x: mouse.position.x - body.position.x, y: mouse.position.y - body.position.y };
+                              constraint.angleB = body.angle;
+                              Sleeping.set(body, false);
+                              Events2.trigger(mouseConstraint, "startdrag", { mouse, body });
+                              break;
+                            }
+                          }
+                        }
+                      }
+                    } else {
+                      Sleeping.set(constraint.bodyB, false);
+                      constraint.pointA = mouse.position;
+                    }
+                  } else {
+                    constraint.bodyB = mouseConstraint.body = null;
+                    constraint.pointB = null;
+                    if (body)
+                      Events2.trigger(mouseConstraint, "enddrag", { mouse, body });
+                  }
+                };
+                MouseConstraint._triggerEvents = function(mouseConstraint) {
+                  var mouse = mouseConstraint.mouse, mouseEvents = mouse.sourceEvents;
+                  if (mouseEvents.mousemove)
+                    Events2.trigger(mouseConstraint, "mousemove", { mouse });
+                  if (mouseEvents.mousedown)
+                    Events2.trigger(mouseConstraint, "mousedown", { mouse });
+                  if (mouseEvents.mouseup)
+                    Events2.trigger(mouseConstraint, "mouseup", { mouse });
+                  Mouse.clearSourceEvents(mouse);
+                };
+              })();
+            }),
+            /* 25 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Query = {};
+              module2.exports = Query;
+              var Vector = __webpack_require__(2);
+              var Collision = __webpack_require__(8);
+              var Bounds = __webpack_require__(1);
+              var Bodies2 = __webpack_require__(12);
+              var Vertices = __webpack_require__(3);
+              (function() {
+                Query.collides = function(body, bodies) {
+                  var collisions = [], bodiesLength = bodies.length, bounds = body.bounds, collides = Collision.collides, overlaps = Bounds.overlaps;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var bodyA = bodies[i], partsALength = bodyA.parts.length, partsAStart = partsALength === 1 ? 0 : 1;
+                    if (overlaps(bodyA.bounds, bounds)) {
+                      for (var j = partsAStart; j < partsALength; j++) {
+                        var part = bodyA.parts[j];
+                        if (overlaps(part.bounds, bounds)) {
+                          var collision = collides(part, body);
+                          if (collision) {
+                            collisions.push(collision);
+                            break;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  return collisions;
+                };
+                Query.ray = function(bodies, startPoint, endPoint, rayWidth) {
+                  rayWidth = rayWidth || 1e-100;
+                  var rayAngle = Vector.angle(startPoint, endPoint), rayLength = Vector.magnitude(Vector.sub(startPoint, endPoint)), rayX = (endPoint.x + startPoint.x) * 0.5, rayY = (endPoint.y + startPoint.y) * 0.5, ray = Bodies2.rectangle(rayX, rayY, rayLength, rayWidth, { angle: rayAngle }), collisions = Query.collides(ray, bodies);
+                  for (var i = 0; i < collisions.length; i += 1) {
+                    var collision = collisions[i];
+                    collision.body = collision.bodyB = collision.bodyA;
+                  }
+                  return collisions;
+                };
+                Query.region = function(bodies, bounds, outside) {
+                  var result = [];
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], overlaps = Bounds.overlaps(body.bounds, bounds);
+                    if (overlaps && !outside || !overlaps && outside)
+                      result.push(body);
+                  }
+                  return result;
+                };
+                Query.point = function(bodies, point2) {
+                  var result = [];
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (Bounds.contains(body.bounds, point2)) {
+                      for (var j = body.parts.length === 1 ? 0 : 1; j < body.parts.length; j++) {
+                        var part = body.parts[j];
+                        if (Bounds.contains(part.bounds, point2) && Vertices.contains(part.vertices, point2)) {
+                          result.push(body);
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  return result;
+                };
+              })();
+            }),
+            /* 26 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Render = {};
+              module2.exports = Render;
+              var Body2 = __webpack_require__(4);
+              var Common = __webpack_require__(0);
+              var Composite2 = __webpack_require__(6);
+              var Bounds = __webpack_require__(1);
+              var Events2 = __webpack_require__(5);
+              var Vector = __webpack_require__(2);
+              var Mouse = __webpack_require__(14);
+              (function() {
+                var _requestAnimationFrame, _cancelAnimationFrame;
+                if (typeof window !== "undefined") {
+                  _requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+                    window.setTimeout(function() {
+                      callback(Common.now());
+                    }, 1e3 / 60);
+                  };
+                  _cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
+                }
+                Render._goodFps = 30;
+                Render._goodDelta = 1e3 / 60;
+                Render.create = function(options) {
+                  var defaults = {
+                    engine: null,
+                    element: null,
+                    canvas: null,
+                    mouse: null,
+                    frameRequestId: null,
+                    timing: {
+                      historySize: 60,
+                      delta: 0,
+                      deltaHistory: [],
+                      lastTime: 0,
+                      lastTimestamp: 0,
+                      lastElapsed: 0,
+                      timestampElapsed: 0,
+                      timestampElapsedHistory: [],
+                      engineDeltaHistory: [],
+                      engineElapsedHistory: [],
+                      engineUpdatesHistory: [],
+                      elapsedHistory: []
+                    },
+                    options: {
+                      width: 800,
+                      height: 600,
+                      pixelRatio: 1,
+                      background: "#14151f",
+                      wireframeBackground: "#14151f",
+                      wireframeStrokeStyle: "#bbb",
+                      hasBounds: !!options.bounds,
+                      enabled: true,
+                      wireframes: true,
+                      showSleeping: true,
+                      showDebug: false,
+                      showStats: false,
+                      showPerformance: false,
+                      showBounds: false,
+                      showVelocity: false,
+                      showCollisions: false,
+                      showSeparations: false,
+                      showAxes: false,
+                      showPositions: false,
+                      showAngleIndicator: false,
+                      showIds: false,
+                      showVertexNumbers: false,
+                      showConvexHulls: false,
+                      showInternalEdges: false,
+                      showMousePosition: false
+                    }
+                  };
+                  var render = Common.extend(defaults, options);
+                  if (render.canvas) {
+                    render.canvas.width = render.options.width || render.canvas.width;
+                    render.canvas.height = render.options.height || render.canvas.height;
+                  }
+                  render.mouse = options.mouse;
+                  render.engine = options.engine;
+                  render.canvas = render.canvas || _createCanvas(render.options.width, render.options.height);
+                  render.context = render.canvas.getContext("2d");
+                  render.textures = {};
+                  render.bounds = render.bounds || {
+                    min: {
+                      x: 0,
+                      y: 0
+                    },
+                    max: {
+                      x: render.canvas.width,
+                      y: render.canvas.height
+                    }
+                  };
+                  render.controller = Render;
+                  render.options.showBroadphase = false;
+                  if (render.options.pixelRatio !== 1) {
+                    Render.setPixelRatio(render, render.options.pixelRatio);
+                  }
+                  if (Common.isElement(render.element)) {
+                    render.element.appendChild(render.canvas);
+                  }
+                  return render;
+                };
+                Render.run = function(render) {
+                  (function loop(time) {
+                    render.frameRequestId = _requestAnimationFrame(loop);
+                    _updateTiming(render, time);
+                    Render.world(render, time);
+                    render.context.setTransform(render.options.pixelRatio, 0, 0, render.options.pixelRatio, 0, 0);
+                    if (render.options.showStats || render.options.showDebug) {
+                      Render.stats(render, render.context, time);
+                    }
+                    if (render.options.showPerformance || render.options.showDebug) {
+                      Render.performance(render, render.context, time);
+                    }
+                    render.context.setTransform(1, 0, 0, 1, 0, 0);
+                  })();
+                };
+                Render.stop = function(render) {
+                  _cancelAnimationFrame(render.frameRequestId);
+                };
+                Render.setPixelRatio = function(render, pixelRatio) {
+                  var options = render.options, canvas = render.canvas;
+                  if (pixelRatio === "auto") {
+                    pixelRatio = _getPixelRatio(canvas);
+                  }
+                  options.pixelRatio = pixelRatio;
+                  canvas.setAttribute("data-pixel-ratio", pixelRatio);
+                  canvas.width = options.width * pixelRatio;
+                  canvas.height = options.height * pixelRatio;
+                  canvas.style.width = options.width + "px";
+                  canvas.style.height = options.height + "px";
+                };
+                Render.setSize = function(render, width, height) {
+                  render.options.width = width;
+                  render.options.height = height;
+                  render.bounds.max.x = render.bounds.min.x + width;
+                  render.bounds.max.y = render.bounds.min.y + height;
+                  if (render.options.pixelRatio !== 1) {
+                    Render.setPixelRatio(render, render.options.pixelRatio);
+                  } else {
+                    render.canvas.width = width;
+                    render.canvas.height = height;
+                  }
+                };
+                Render.lookAt = function(render, objects, padding, center) {
+                  center = typeof center !== "undefined" ? center : true;
+                  objects = Common.isArray(objects) ? objects : [objects];
+                  padding = padding || {
+                    x: 0,
+                    y: 0
+                  };
+                  var bounds = {
+                    min: { x: Infinity, y: Infinity },
+                    max: { x: -Infinity, y: -Infinity }
+                  };
+                  for (var i = 0; i < objects.length; i += 1) {
+                    var object = objects[i], min = object.bounds ? object.bounds.min : object.min || object.position || object, max = object.bounds ? object.bounds.max : object.max || object.position || object;
+                    if (min && max) {
+                      if (min.x < bounds.min.x)
+                        bounds.min.x = min.x;
+                      if (max.x > bounds.max.x)
+                        bounds.max.x = max.x;
+                      if (min.y < bounds.min.y)
+                        bounds.min.y = min.y;
+                      if (max.y > bounds.max.y)
+                        bounds.max.y = max.y;
+                    }
+                  }
+                  var width = bounds.max.x - bounds.min.x + 2 * padding.x, height = bounds.max.y - bounds.min.y + 2 * padding.y, viewHeight = render.canvas.height, viewWidth = render.canvas.width, outerRatio = viewWidth / viewHeight, innerRatio = width / height, scaleX = 1, scaleY = 1;
+                  if (innerRatio > outerRatio) {
+                    scaleY = innerRatio / outerRatio;
+                  } else {
+                    scaleX = outerRatio / innerRatio;
+                  }
+                  render.options.hasBounds = true;
+                  render.bounds.min.x = bounds.min.x;
+                  render.bounds.max.x = bounds.min.x + width * scaleX;
+                  render.bounds.min.y = bounds.min.y;
+                  render.bounds.max.y = bounds.min.y + height * scaleY;
+                  if (center) {
+                    render.bounds.min.x += width * 0.5 - width * scaleX * 0.5;
+                    render.bounds.max.x += width * 0.5 - width * scaleX * 0.5;
+                    render.bounds.min.y += height * 0.5 - height * scaleY * 0.5;
+                    render.bounds.max.y += height * 0.5 - height * scaleY * 0.5;
+                  }
+                  render.bounds.min.x -= padding.x;
+                  render.bounds.max.x -= padding.x;
+                  render.bounds.min.y -= padding.y;
+                  render.bounds.max.y -= padding.y;
+                  if (render.mouse) {
+                    Mouse.setScale(render.mouse, {
+                      x: (render.bounds.max.x - render.bounds.min.x) / render.canvas.width,
+                      y: (render.bounds.max.y - render.bounds.min.y) / render.canvas.height
+                    });
+                    Mouse.setOffset(render.mouse, render.bounds.min);
+                  }
+                };
+                Render.startViewTransform = function(render) {
+                  var boundsWidth = render.bounds.max.x - render.bounds.min.x, boundsHeight = render.bounds.max.y - render.bounds.min.y, boundsScaleX = boundsWidth / render.options.width, boundsScaleY = boundsHeight / render.options.height;
+                  render.context.setTransform(
+                    render.options.pixelRatio / boundsScaleX,
+                    0,
+                    0,
+                    render.options.pixelRatio / boundsScaleY,
+                    0,
+                    0
+                  );
+                  render.context.translate(-render.bounds.min.x, -render.bounds.min.y);
+                };
+                Render.endViewTransform = function(render) {
+                  render.context.setTransform(render.options.pixelRatio, 0, 0, render.options.pixelRatio, 0, 0);
+                };
+                Render.world = function(render, time) {
+                  var startTime = Common.now(), engine = render.engine, world = engine.world, canvas = render.canvas, context = render.context, options = render.options, timing = render.timing;
+                  var allBodies = Composite2.allBodies(world), allConstraints = Composite2.allConstraints(world), background = options.wireframes ? options.wireframeBackground : options.background, bodies = [], constraints = [], i;
+                  var event = {
+                    timestamp: engine.timing.timestamp
+                  };
+                  Events2.trigger(render, "beforeRender", event);
+                  if (render.currentBackground !== background)
+                    _applyBackground(render, background);
+                  context.globalCompositeOperation = "source-in";
+                  context.fillStyle = "transparent";
+                  context.fillRect(0, 0, canvas.width, canvas.height);
+                  context.globalCompositeOperation = "source-over";
+                  if (options.hasBounds) {
+                    for (i = 0; i < allBodies.length; i++) {
+                      var body = allBodies[i];
+                      if (Bounds.overlaps(body.bounds, render.bounds))
+                        bodies.push(body);
+                    }
+                    for (i = 0; i < allConstraints.length; i++) {
+                      var constraint = allConstraints[i], bodyA = constraint.bodyA, bodyB = constraint.bodyB, pointAWorld = constraint.pointA, pointBWorld = constraint.pointB;
+                      if (bodyA) pointAWorld = Vector.add(bodyA.position, constraint.pointA);
+                      if (bodyB) pointBWorld = Vector.add(bodyB.position, constraint.pointB);
+                      if (!pointAWorld || !pointBWorld)
+                        continue;
+                      if (Bounds.contains(render.bounds, pointAWorld) || Bounds.contains(render.bounds, pointBWorld))
+                        constraints.push(constraint);
+                    }
+                    Render.startViewTransform(render);
+                    if (render.mouse) {
+                      Mouse.setScale(render.mouse, {
+                        x: (render.bounds.max.x - render.bounds.min.x) / render.options.width,
+                        y: (render.bounds.max.y - render.bounds.min.y) / render.options.height
+                      });
+                      Mouse.setOffset(render.mouse, render.bounds.min);
+                    }
+                  } else {
+                    constraints = allConstraints;
+                    bodies = allBodies;
+                    if (render.options.pixelRatio !== 1) {
+                      render.context.setTransform(render.options.pixelRatio, 0, 0, render.options.pixelRatio, 0, 0);
+                    }
+                  }
+                  if (!options.wireframes || engine.enableSleeping && options.showSleeping) {
+                    Render.bodies(render, bodies, context);
+                  } else {
+                    if (options.showConvexHulls)
+                      Render.bodyConvexHulls(render, bodies, context);
+                    Render.bodyWireframes(render, bodies, context);
+                  }
+                  if (options.showBounds)
+                    Render.bodyBounds(render, bodies, context);
+                  if (options.showAxes || options.showAngleIndicator)
+                    Render.bodyAxes(render, bodies, context);
+                  if (options.showPositions)
+                    Render.bodyPositions(render, bodies, context);
+                  if (options.showVelocity)
+                    Render.bodyVelocity(render, bodies, context);
+                  if (options.showIds)
+                    Render.bodyIds(render, bodies, context);
+                  if (options.showSeparations)
+                    Render.separations(render, engine.pairs.list, context);
+                  if (options.showCollisions)
+                    Render.collisions(render, engine.pairs.list, context);
+                  if (options.showVertexNumbers)
+                    Render.vertexNumbers(render, bodies, context);
+                  if (options.showMousePosition)
+                    Render.mousePosition(render, render.mouse, context);
+                  Render.constraints(constraints, context);
+                  if (options.hasBounds) {
+                    Render.endViewTransform(render);
+                  }
+                  Events2.trigger(render, "afterRender", event);
+                  timing.lastElapsed = Common.now() - startTime;
+                };
+                Render.stats = function(render, context, time) {
+                  var engine = render.engine, world = engine.world, bodies = Composite2.allBodies(world), parts = 0, width = 55, height = 44, x = 0, y = 0;
+                  for (var i = 0; i < bodies.length; i += 1) {
+                    parts += bodies[i].parts.length;
+                  }
+                  var sections = {
+                    "Part": parts,
+                    "Body": bodies.length,
+                    "Cons": Composite2.allConstraints(world).length,
+                    "Comp": Composite2.allComposites(world).length,
+                    "Pair": engine.pairs.list.length
+                  };
+                  context.fillStyle = "#0e0f19";
+                  context.fillRect(x, y, width * 5.5, height);
+                  context.font = "12px Arial";
+                  context.textBaseline = "top";
+                  context.textAlign = "right";
+                  for (var key in sections) {
+                    var section = sections[key];
+                    context.fillStyle = "#aaa";
+                    context.fillText(key, x + width, y + 8);
+                    context.fillStyle = "#eee";
+                    context.fillText(section, x + width, y + 26);
+                    x += width;
+                  }
+                };
+                Render.performance = function(render, context) {
+                  var engine = render.engine, timing = render.timing, deltaHistory = timing.deltaHistory, elapsedHistory = timing.elapsedHistory, timestampElapsedHistory = timing.timestampElapsedHistory, engineDeltaHistory = timing.engineDeltaHistory, engineUpdatesHistory = timing.engineUpdatesHistory, engineElapsedHistory = timing.engineElapsedHistory, lastEngineUpdatesPerFrame = engine.timing.lastUpdatesPerFrame, lastEngineDelta = engine.timing.lastDelta;
+                  var deltaMean = _mean(deltaHistory), elapsedMean = _mean(elapsedHistory), engineDeltaMean = _mean(engineDeltaHistory), engineUpdatesMean = _mean(engineUpdatesHistory), engineElapsedMean = _mean(engineElapsedHistory), timestampElapsedMean = _mean(timestampElapsedHistory), rateMean = timestampElapsedMean / deltaMean || 0, neededUpdatesPerFrame = Math.round(deltaMean / lastEngineDelta), fps = 1e3 / deltaMean || 0;
+                  var graphHeight = 4, gap = 12, width = 60, height = 34, x = 10, y = 69;
+                  context.fillStyle = "#0e0f19";
+                  context.fillRect(0, 50, gap * 5 + width * 6 + 22, height);
+                  Render.status(
+                    context,
+                    x,
+                    y,
+                    width,
+                    graphHeight,
+                    deltaHistory.length,
+                    Math.round(fps) + " fps",
+                    fps / Render._goodFps,
+                    function(i) {
+                      return deltaHistory[i] / deltaMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + gap + width,
+                    y,
+                    width,
+                    graphHeight,
+                    engineDeltaHistory.length,
+                    lastEngineDelta.toFixed(2) + " dt",
+                    Render._goodDelta / lastEngineDelta,
+                    function(i) {
+                      return engineDeltaHistory[i] / engineDeltaMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + (gap + width) * 2,
+                    y,
+                    width,
+                    graphHeight,
+                    engineUpdatesHistory.length,
+                    lastEngineUpdatesPerFrame + " upf",
+                    Math.pow(Common.clamp(engineUpdatesMean / neededUpdatesPerFrame || 1, 0, 1), 4),
+                    function(i) {
+                      return engineUpdatesHistory[i] / engineUpdatesMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + (gap + width) * 3,
+                    y,
+                    width,
+                    graphHeight,
+                    engineElapsedHistory.length,
+                    engineElapsedMean.toFixed(2) + " ut",
+                    1 - lastEngineUpdatesPerFrame * engineElapsedMean / Render._goodFps,
+                    function(i) {
+                      return engineElapsedHistory[i] / engineElapsedMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + (gap + width) * 4,
+                    y,
+                    width,
+                    graphHeight,
+                    elapsedHistory.length,
+                    elapsedMean.toFixed(2) + " rt",
+                    1 - elapsedMean / Render._goodFps,
+                    function(i) {
+                      return elapsedHistory[i] / elapsedMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + (gap + width) * 5,
+                    y,
+                    width,
+                    graphHeight,
+                    timestampElapsedHistory.length,
+                    rateMean.toFixed(2) + " x",
+                    rateMean * rateMean * rateMean,
+                    function(i) {
+                      return (timestampElapsedHistory[i] / deltaHistory[i] / rateMean || 0) - 1;
+                    }
+                  );
+                };
+                Render.status = function(context, x, y, width, height, count, label, indicator, plotY) {
+                  context.strokeStyle = "#888";
+                  context.fillStyle = "#444";
+                  context.lineWidth = 1;
+                  context.fillRect(x, y + 7, width, 1);
+                  context.beginPath();
+                  context.moveTo(x, y + 7 - height * Common.clamp(0.4 * plotY(0), -2, 2));
+                  for (var i = 0; i < width; i += 1) {
+                    context.lineTo(x + i, y + 7 - (i < count ? height * Common.clamp(0.4 * plotY(i), -2, 2) : 0));
+                  }
+                  context.stroke();
+                  context.fillStyle = "hsl(" + Common.clamp(25 + 95 * indicator, 0, 120) + ",100%,60%)";
+                  context.fillRect(x, y - 7, 4, 4);
+                  context.font = "12px Arial";
+                  context.textBaseline = "middle";
+                  context.textAlign = "right";
+                  context.fillStyle = "#eee";
+                  context.fillText(label, x + width, y - 5);
+                };
+                Render.constraints = function(constraints, context) {
+                  var c = context;
+                  for (var i = 0; i < constraints.length; i++) {
+                    var constraint = constraints[i];
+                    if (!constraint.render.visible || !constraint.pointA || !constraint.pointB)
+                      continue;
+                    var bodyA = constraint.bodyA, bodyB = constraint.bodyB, start, end;
+                    if (bodyA) {
+                      start = Vector.add(bodyA.position, constraint.pointA);
+                    } else {
+                      start = constraint.pointA;
+                    }
+                    if (constraint.render.type === "pin") {
+                      c.beginPath();
+                      c.arc(start.x, start.y, 3, 0, 2 * Math.PI);
+                      c.closePath();
+                    } else {
+                      if (bodyB) {
+                        end = Vector.add(bodyB.position, constraint.pointB);
+                      } else {
+                        end = constraint.pointB;
+                      }
+                      c.beginPath();
+                      c.moveTo(start.x, start.y);
+                      if (constraint.render.type === "spring") {
+                        var delta = Vector.sub(end, start), normal = Vector.perp(Vector.normalise(delta)), coils = Math.ceil(Common.clamp(constraint.length / 5, 12, 20)), offset;
+                        for (var j = 1; j < coils; j += 1) {
+                          offset = j % 2 === 0 ? 1 : -1;
+                          c.lineTo(
+                            start.x + delta.x * (j / coils) + normal.x * offset * 4,
+                            start.y + delta.y * (j / coils) + normal.y * offset * 4
+                          );
+                        }
+                      }
+                      c.lineTo(end.x, end.y);
+                    }
+                    if (constraint.render.lineWidth) {
+                      c.lineWidth = constraint.render.lineWidth;
+                      c.strokeStyle = constraint.render.strokeStyle;
+                      c.stroke();
+                    }
+                    if (constraint.render.anchors) {
+                      c.fillStyle = constraint.render.strokeStyle;
+                      c.beginPath();
+                      c.arc(start.x, start.y, 3, 0, 2 * Math.PI);
+                      c.arc(end.x, end.y, 3, 0, 2 * Math.PI);
+                      c.closePath();
+                      c.fill();
+                    }
+                  }
+                };
+                Render.bodies = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options, showInternalEdges = options.showInternalEdges || !options.wireframes, body, part, i, k;
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    for (k = body.parts.length > 1 ? 1 : 0; k < body.parts.length; k++) {
+                      part = body.parts[k];
+                      if (!part.render.visible)
+                        continue;
+                      if (options.showSleeping && body.isSleeping) {
+                        c.globalAlpha = 0.5 * part.render.opacity;
+                      } else if (part.render.opacity !== 1) {
+                        c.globalAlpha = part.render.opacity;
+                      }
+                      if (part.render.sprite && part.render.sprite.texture && !options.wireframes) {
+                        var sprite = part.render.sprite, texture = _getTexture(render, sprite.texture);
+                        c.translate(part.position.x, part.position.y);
+                        c.rotate(part.angle);
+                        c.drawImage(
+                          texture,
+                          texture.width * -sprite.xOffset * sprite.xScale,
+                          texture.height * -sprite.yOffset * sprite.yScale,
+                          texture.width * sprite.xScale,
+                          texture.height * sprite.yScale
+                        );
+                        c.rotate(-part.angle);
+                        c.translate(-part.position.x, -part.position.y);
+                      } else {
+                        if (part.circleRadius) {
+                          c.beginPath();
+                          c.arc(part.position.x, part.position.y, part.circleRadius, 0, 2 * Math.PI);
+                        } else {
+                          c.beginPath();
+                          c.moveTo(part.vertices[0].x, part.vertices[0].y);
+                          for (var j = 1; j < part.vertices.length; j++) {
+                            if (!part.vertices[j - 1].isInternal || showInternalEdges) {
+                              c.lineTo(part.vertices[j].x, part.vertices[j].y);
+                            } else {
+                              c.moveTo(part.vertices[j].x, part.vertices[j].y);
+                            }
+                            if (part.vertices[j].isInternal && !showInternalEdges) {
+                              c.moveTo(part.vertices[(j + 1) % part.vertices.length].x, part.vertices[(j + 1) % part.vertices.length].y);
+                            }
+                          }
+                          c.lineTo(part.vertices[0].x, part.vertices[0].y);
+                          c.closePath();
+                        }
+                        if (!options.wireframes) {
+                          c.fillStyle = part.render.fillStyle;
+                          if (part.render.lineWidth) {
+                            c.lineWidth = part.render.lineWidth;
+                            c.strokeStyle = part.render.strokeStyle;
+                            c.stroke();
+                          }
+                          c.fill();
+                        } else {
+                          c.lineWidth = 1;
+                          c.strokeStyle = render.options.wireframeStrokeStyle;
+                          c.stroke();
+                        }
+                      }
+                      c.globalAlpha = 1;
+                    }
+                  }
+                };
+                Render.bodyWireframes = function(render, bodies, context) {
+                  var c = context, showInternalEdges = render.options.showInternalEdges, body, part, i, j, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    for (k = body.parts.length > 1 ? 1 : 0; k < body.parts.length; k++) {
+                      part = body.parts[k];
+                      c.moveTo(part.vertices[0].x, part.vertices[0].y);
+                      for (j = 1; j < part.vertices.length; j++) {
+                        if (!part.vertices[j - 1].isInternal || showInternalEdges) {
+                          c.lineTo(part.vertices[j].x, part.vertices[j].y);
+                        } else {
+                          c.moveTo(part.vertices[j].x, part.vertices[j].y);
+                        }
+                        if (part.vertices[j].isInternal && !showInternalEdges) {
+                          c.moveTo(part.vertices[(j + 1) % part.vertices.length].x, part.vertices[(j + 1) % part.vertices.length].y);
+                        }
+                      }
+                      c.lineTo(part.vertices[0].x, part.vertices[0].y);
+                    }
+                  }
+                  c.lineWidth = 1;
+                  c.strokeStyle = render.options.wireframeStrokeStyle;
+                  c.stroke();
+                };
+                Render.bodyConvexHulls = function(render, bodies, context) {
+                  var c = context, body, part, i, j, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible || body.parts.length === 1)
+                      continue;
+                    c.moveTo(body.vertices[0].x, body.vertices[0].y);
+                    for (j = 1; j < body.vertices.length; j++) {
+                      c.lineTo(body.vertices[j].x, body.vertices[j].y);
+                    }
+                    c.lineTo(body.vertices[0].x, body.vertices[0].y);
+                  }
+                  c.lineWidth = 1;
+                  c.strokeStyle = "rgba(255,255,255,0.2)";
+                  c.stroke();
+                };
+                Render.vertexNumbers = function(render, bodies, context) {
+                  var c = context, i, j, k;
+                  for (i = 0; i < bodies.length; i++) {
+                    var parts = bodies[i].parts;
+                    for (k = parts.length > 1 ? 1 : 0; k < parts.length; k++) {
+                      var part = parts[k];
+                      for (j = 0; j < part.vertices.length; j++) {
+                        c.fillStyle = "rgba(255,255,255,0.2)";
+                        c.fillText(i + "_" + j, part.position.x + (part.vertices[j].x - part.position.x) * 0.8, part.position.y + (part.vertices[j].y - part.position.y) * 0.8);
+                      }
+                    }
+                  }
+                };
+                Render.mousePosition = function(render, mouse, context) {
+                  var c = context;
+                  c.fillStyle = "rgba(255,255,255,0.8)";
+                  c.fillText(mouse.position.x + "  " + mouse.position.y, mouse.position.x + 5, mouse.position.y - 5);
+                };
+                Render.bodyBounds = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options;
+                  c.beginPath();
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (body.render.visible) {
+                      var parts = bodies[i].parts;
+                      for (var j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                        var part = parts[j];
+                        c.rect(part.bounds.min.x, part.bounds.min.y, part.bounds.max.x - part.bounds.min.x, part.bounds.max.y - part.bounds.min.y);
+                      }
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "rgba(255,255,255,0.08)";
+                  } else {
+                    c.strokeStyle = "rgba(0,0,0,0.1)";
+                  }
+                  c.lineWidth = 1;
+                  c.stroke();
+                };
+                Render.bodyAxes = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options, part, i, j, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], parts = body.parts;
+                    if (!body.render.visible)
+                      continue;
+                    if (options.showAxes) {
+                      for (j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                        part = parts[j];
+                        for (k = 0; k < part.axes.length; k++) {
+                          var axis = part.axes[k];
+                          c.moveTo(part.position.x, part.position.y);
+                          c.lineTo(part.position.x + axis.x * 20, part.position.y + axis.y * 20);
+                        }
+                      }
+                    } else {
+                      for (j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                        part = parts[j];
+                        for (k = 0; k < part.axes.length; k++) {
+                          c.moveTo(part.position.x, part.position.y);
+                          c.lineTo(
+                            (part.vertices[0].x + part.vertices[part.vertices.length - 1].x) / 2,
+                            (part.vertices[0].y + part.vertices[part.vertices.length - 1].y) / 2
+                          );
+                        }
+                      }
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "indianred";
+                    c.lineWidth = 1;
+                  } else {
+                    c.strokeStyle = "rgba(255, 255, 255, 0.4)";
+                    c.globalCompositeOperation = "overlay";
+                    c.lineWidth = 2;
+                  }
+                  c.stroke();
+                  c.globalCompositeOperation = "source-over";
+                };
+                Render.bodyPositions = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options, body, part, i, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    for (k = 0; k < body.parts.length; k++) {
+                      part = body.parts[k];
+                      c.arc(part.position.x, part.position.y, 3, 0, 2 * Math.PI, false);
+                      c.closePath();
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.fillStyle = "indianred";
+                  } else {
+                    c.fillStyle = "rgba(0,0,0,0.5)";
+                  }
+                  c.fill();
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (body.render.visible) {
+                      c.arc(body.positionPrev.x, body.positionPrev.y, 2, 0, 2 * Math.PI, false);
+                      c.closePath();
+                    }
+                  }
+                  c.fillStyle = "rgba(255,165,0,0.8)";
+                  c.fill();
+                };
+                Render.bodyVelocity = function(render, bodies, context) {
+                  var c = context;
+                  c.beginPath();
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    var velocity = Body2.getVelocity(body);
+                    c.moveTo(body.position.x, body.position.y);
+                    c.lineTo(body.position.x + velocity.x, body.position.y + velocity.y);
+                  }
+                  c.lineWidth = 3;
+                  c.strokeStyle = "cornflowerblue";
+                  c.stroke();
+                };
+                Render.bodyIds = function(render, bodies, context) {
+                  var c = context, i, j;
+                  for (i = 0; i < bodies.length; i++) {
+                    if (!bodies[i].render.visible)
+                      continue;
+                    var parts = bodies[i].parts;
+                    for (j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                      var part = parts[j];
+                      c.font = "12px Arial";
+                      c.fillStyle = "rgba(255,255,255,0.5)";
+                      c.fillText(part.id, part.position.x + 10, part.position.y - 10);
+                    }
+                  }
+                };
+                Render.collisions = function(render, pairs, context) {
+                  var c = context, options = render.options, pair, collision, corrected, bodyA, bodyB, i, j;
+                  c.beginPath();
+                  for (i = 0; i < pairs.length; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    collision = pair.collision;
+                    for (j = 0; j < pair.contactCount; j++) {
+                      var contact = pair.contacts[j], vertex = contact.vertex;
+                      c.rect(vertex.x - 1.5, vertex.y - 1.5, 3.5, 3.5);
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.fillStyle = "rgba(255,255,255,0.7)";
+                  } else {
+                    c.fillStyle = "orange";
+                  }
+                  c.fill();
+                  c.beginPath();
+                  for (i = 0; i < pairs.length; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    collision = pair.collision;
+                    if (pair.contactCount > 0) {
+                      var normalPosX = pair.contacts[0].vertex.x, normalPosY = pair.contacts[0].vertex.y;
+                      if (pair.contactCount === 2) {
+                        normalPosX = (pair.contacts[0].vertex.x + pair.contacts[1].vertex.x) / 2;
+                        normalPosY = (pair.contacts[0].vertex.y + pair.contacts[1].vertex.y) / 2;
+                      }
+                      if (collision.bodyB === collision.supports[0].body || collision.bodyA.isStatic === true) {
+                        c.moveTo(normalPosX - collision.normal.x * 8, normalPosY - collision.normal.y * 8);
+                      } else {
+                        c.moveTo(normalPosX + collision.normal.x * 8, normalPosY + collision.normal.y * 8);
+                      }
+                      c.lineTo(normalPosX, normalPosY);
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "rgba(255,165,0,0.7)";
+                  } else {
+                    c.strokeStyle = "orange";
+                  }
+                  c.lineWidth = 1;
+                  c.stroke();
+                };
+                Render.separations = function(render, pairs, context) {
+                  var c = context, options = render.options, pair, collision, corrected, bodyA, bodyB, i, j;
+                  c.beginPath();
+                  for (i = 0; i < pairs.length; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    collision = pair.collision;
+                    bodyA = collision.bodyA;
+                    bodyB = collision.bodyB;
+                    var k = 1;
+                    if (!bodyB.isStatic && !bodyA.isStatic) k = 0.5;
+                    if (bodyB.isStatic) k = 0;
+                    c.moveTo(bodyB.position.x, bodyB.position.y);
+                    c.lineTo(bodyB.position.x - collision.penetration.x * k, bodyB.position.y - collision.penetration.y * k);
+                    k = 1;
+                    if (!bodyB.isStatic && !bodyA.isStatic) k = 0.5;
+                    if (bodyA.isStatic) k = 0;
+                    c.moveTo(bodyA.position.x, bodyA.position.y);
+                    c.lineTo(bodyA.position.x + collision.penetration.x * k, bodyA.position.y + collision.penetration.y * k);
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "rgba(255,165,0,0.5)";
+                  } else {
+                    c.strokeStyle = "orange";
+                  }
+                  c.stroke();
+                };
+                Render.inspector = function(inspector, context) {
+                  var engine = inspector.engine, selected = inspector.selected, render = inspector.render, options = render.options, bounds;
+                  if (options.hasBounds) {
+                    var boundsWidth = render.bounds.max.x - render.bounds.min.x, boundsHeight = render.bounds.max.y - render.bounds.min.y, boundsScaleX = boundsWidth / render.options.width, boundsScaleY = boundsHeight / render.options.height;
+                    context.scale(1 / boundsScaleX, 1 / boundsScaleY);
+                    context.translate(-render.bounds.min.x, -render.bounds.min.y);
+                  }
+                  for (var i = 0; i < selected.length; i++) {
+                    var item = selected[i].data;
+                    context.translate(0.5, 0.5);
+                    context.lineWidth = 1;
+                    context.strokeStyle = "rgba(255,165,0,0.9)";
+                    context.setLineDash([1, 2]);
+                    switch (item.type) {
+                      case "body":
+                        bounds = item.bounds;
+                        context.beginPath();
+                        context.rect(
+                          Math.floor(bounds.min.x - 3),
+                          Math.floor(bounds.min.y - 3),
+                          Math.floor(bounds.max.x - bounds.min.x + 6),
+                          Math.floor(bounds.max.y - bounds.min.y + 6)
+                        );
+                        context.closePath();
+                        context.stroke();
+                        break;
+                      case "constraint":
+                        var point2 = item.pointA;
+                        if (item.bodyA)
+                          point2 = item.pointB;
+                        context.beginPath();
+                        context.arc(point2.x, point2.y, 10, 0, 2 * Math.PI);
+                        context.closePath();
+                        context.stroke();
+                        break;
+                    }
+                    context.setLineDash([]);
+                    context.translate(-0.5, -0.5);
+                  }
+                  if (inspector.selectStart !== null) {
+                    context.translate(0.5, 0.5);
+                    context.lineWidth = 1;
+                    context.strokeStyle = "rgba(255,165,0,0.6)";
+                    context.fillStyle = "rgba(255,165,0,0.1)";
+                    bounds = inspector.selectBounds;
+                    context.beginPath();
+                    context.rect(
+                      Math.floor(bounds.min.x),
+                      Math.floor(bounds.min.y),
+                      Math.floor(bounds.max.x - bounds.min.x),
+                      Math.floor(bounds.max.y - bounds.min.y)
+                    );
+                    context.closePath();
+                    context.stroke();
+                    context.fill();
+                    context.translate(-0.5, -0.5);
+                  }
+                  if (options.hasBounds)
+                    context.setTransform(1, 0, 0, 1, 0, 0);
+                };
+                var _updateTiming = function(render, time) {
+                  var engine = render.engine, timing = render.timing, historySize = timing.historySize, timestamp = engine.timing.timestamp;
+                  timing.delta = time - timing.lastTime || Render._goodDelta;
+                  timing.lastTime = time;
+                  timing.timestampElapsed = timestamp - timing.lastTimestamp || 0;
+                  timing.lastTimestamp = timestamp;
+                  timing.deltaHistory.unshift(timing.delta);
+                  timing.deltaHistory.length = Math.min(timing.deltaHistory.length, historySize);
+                  timing.engineDeltaHistory.unshift(engine.timing.lastDelta);
+                  timing.engineDeltaHistory.length = Math.min(timing.engineDeltaHistory.length, historySize);
+                  timing.timestampElapsedHistory.unshift(timing.timestampElapsed);
+                  timing.timestampElapsedHistory.length = Math.min(timing.timestampElapsedHistory.length, historySize);
+                  timing.engineUpdatesHistory.unshift(engine.timing.lastUpdatesPerFrame);
+                  timing.engineUpdatesHistory.length = Math.min(timing.engineUpdatesHistory.length, historySize);
+                  timing.engineElapsedHistory.unshift(engine.timing.lastElapsed);
+                  timing.engineElapsedHistory.length = Math.min(timing.engineElapsedHistory.length, historySize);
+                  timing.elapsedHistory.unshift(timing.lastElapsed);
+                  timing.elapsedHistory.length = Math.min(timing.elapsedHistory.length, historySize);
+                };
+                var _mean = function(values) {
+                  var result = 0;
+                  for (var i = 0; i < values.length; i += 1) {
+                    result += values[i];
+                  }
+                  return result / values.length || 0;
+                };
+                var _createCanvas = function(width, height) {
+                  var canvas = document.createElement("canvas");
+                  canvas.width = width;
+                  canvas.height = height;
+                  canvas.oncontextmenu = function() {
+                    return false;
+                  };
+                  canvas.onselectstart = function() {
+                    return false;
+                  };
+                  return canvas;
+                };
+                var _getPixelRatio = function(canvas) {
+                  var context = canvas.getContext("2d"), devicePixelRatio2 = window.devicePixelRatio || 1, backingStorePixelRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1;
+                  return devicePixelRatio2 / backingStorePixelRatio;
+                };
+                var _getTexture = function(render, imagePath) {
+                  var image = render.textures[imagePath];
+                  if (image)
+                    return image;
+                  image = render.textures[imagePath] = new Image();
+                  image.src = imagePath;
+                  return image;
+                };
+                var _applyBackground = function(render, background) {
+                  var cssBackground = background;
+                  if (/(jpg|gif|png)$/.test(background))
+                    cssBackground = "url(" + background + ")";
+                  render.canvas.style.background = cssBackground;
+                  render.canvas.style.backgroundSize = "contain";
+                  render.currentBackground = background;
+                };
+              })();
+            }),
+            /* 27 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Runner = {};
+              module2.exports = Runner;
+              var Events2 = __webpack_require__(5);
+              var Engine2 = __webpack_require__(17);
+              var Common = __webpack_require__(0);
+              (function() {
+                Runner._maxFrameDelta = 1e3 / 15;
+                Runner._frameDeltaFallback = 1e3 / 60;
+                Runner._timeBufferMargin = 1.5;
+                Runner._elapsedNextEstimate = 1;
+                Runner._smoothingLowerBound = 0.1;
+                Runner._smoothingUpperBound = 0.9;
+                Runner.create = function(options) {
+                  var defaults = {
+                    delta: 1e3 / 60,
+                    frameDelta: null,
+                    frameDeltaSmoothing: true,
+                    frameDeltaSnapping: true,
+                    frameDeltaHistory: [],
+                    frameDeltaHistorySize: 100,
+                    frameRequestId: null,
+                    timeBuffer: 0,
+                    timeLastTick: null,
+                    maxUpdates: null,
+                    maxFrameTime: 1e3 / 30,
+                    lastUpdatesDeferred: 0,
+                    enabled: true
+                  };
+                  var runner = Common.extend(defaults, options);
+                  runner.fps = 0;
+                  return runner;
+                };
+                Runner.run = function(runner, engine) {
+                  runner.timeBuffer = Runner._frameDeltaFallback;
+                  (function onFrame(time) {
+                    runner.frameRequestId = Runner._onNextFrame(runner, onFrame);
+                    if (time && runner.enabled) {
+                      Runner.tick(runner, engine, time);
+                    }
+                  })();
+                  return runner;
+                };
+                Runner.tick = function(runner, engine, time) {
+                  var tickStartTime = Common.now(), engineDelta = runner.delta, updateCount = 0;
+                  var frameDelta = time - runner.timeLastTick;
+                  if (!frameDelta || !runner.timeLastTick || frameDelta > Math.max(Runner._maxFrameDelta, runner.maxFrameTime)) {
+                    frameDelta = runner.frameDelta || Runner._frameDeltaFallback;
+                  }
+                  if (runner.frameDeltaSmoothing) {
+                    runner.frameDeltaHistory.push(frameDelta);
+                    runner.frameDeltaHistory = runner.frameDeltaHistory.slice(-runner.frameDeltaHistorySize);
+                    var deltaHistorySorted = runner.frameDeltaHistory.slice(0).sort();
+                    var deltaHistoryWindow = runner.frameDeltaHistory.slice(
+                      deltaHistorySorted.length * Runner._smoothingLowerBound,
+                      deltaHistorySorted.length * Runner._smoothingUpperBound
+                    );
+                    var frameDeltaSmoothed = _mean(deltaHistoryWindow);
+                    frameDelta = frameDeltaSmoothed || frameDelta;
+                  }
+                  if (runner.frameDeltaSnapping) {
+                    frameDelta = 1e3 / Math.round(1e3 / frameDelta);
+                  }
+                  runner.frameDelta = frameDelta;
+                  runner.timeLastTick = time;
+                  runner.timeBuffer += runner.frameDelta;
+                  runner.timeBuffer = Common.clamp(
+                    runner.timeBuffer,
+                    0,
+                    runner.frameDelta + engineDelta * Runner._timeBufferMargin
+                  );
+                  runner.lastUpdatesDeferred = 0;
+                  var maxUpdates = runner.maxUpdates || Math.ceil(runner.maxFrameTime / engineDelta);
+                  var event = {
+                    timestamp: engine.timing.timestamp
+                  };
+                  Events2.trigger(runner, "beforeTick", event);
+                  Events2.trigger(runner, "tick", event);
+                  var updateStartTime = Common.now();
+                  while (engineDelta > 0 && runner.timeBuffer >= engineDelta * Runner._timeBufferMargin) {
+                    Events2.trigger(runner, "beforeUpdate", event);
+                    Engine2.update(engine, engineDelta);
+                    Events2.trigger(runner, "afterUpdate", event);
+                    runner.timeBuffer -= engineDelta;
+                    updateCount += 1;
+                    var elapsedTimeTotal = Common.now() - tickStartTime, elapsedTimeUpdates = Common.now() - updateStartTime, elapsedNextEstimate = elapsedTimeTotal + Runner._elapsedNextEstimate * elapsedTimeUpdates / updateCount;
+                    if (updateCount >= maxUpdates || elapsedNextEstimate > runner.maxFrameTime) {
+                      runner.lastUpdatesDeferred = Math.round(Math.max(0, runner.timeBuffer / engineDelta - Runner._timeBufferMargin));
+                      break;
+                    }
+                  }
+                  engine.timing.lastUpdatesPerFrame = updateCount;
+                  Events2.trigger(runner, "afterTick", event);
+                  if (runner.frameDeltaHistory.length >= 100) {
+                    if (runner.lastUpdatesDeferred && Math.round(runner.frameDelta / engineDelta) > maxUpdates) {
+                      Common.warnOnce("Matter.Runner: runner reached runner.maxUpdates, see docs.");
+                    } else if (runner.lastUpdatesDeferred) {
+                      Common.warnOnce("Matter.Runner: runner reached runner.maxFrameTime, see docs.");
+                    }
+                    if (typeof runner.isFixed !== "undefined") {
+                      Common.warnOnce("Matter.Runner: runner.isFixed is now redundant, see docs.");
+                    }
+                    if (runner.deltaMin || runner.deltaMax) {
+                      Common.warnOnce("Matter.Runner: runner.deltaMin and runner.deltaMax were removed, see docs.");
+                    }
+                    if (runner.fps !== 0) {
+                      Common.warnOnce("Matter.Runner: runner.fps was replaced by runner.delta, see docs.");
+                    }
+                  }
+                };
+                Runner.stop = function(runner) {
+                  Runner._cancelNextFrame(runner);
+                };
+                Runner._onNextFrame = function(runner, callback) {
+                  if (typeof window !== "undefined" && window.requestAnimationFrame) {
+                    runner.frameRequestId = window.requestAnimationFrame(callback);
+                  } else {
+                    throw new Error("Matter.Runner: missing required global window.requestAnimationFrame.");
+                  }
+                  return runner.frameRequestId;
+                };
+                Runner._cancelNextFrame = function(runner) {
+                  if (typeof window !== "undefined" && window.cancelAnimationFrame) {
+                    window.cancelAnimationFrame(runner.frameRequestId);
+                  } else {
+                    throw new Error("Matter.Runner: missing required global window.cancelAnimationFrame.");
+                  }
+                };
+                var _mean = function(values) {
+                  var result = 0, valuesLength = values.length;
+                  for (var i = 0; i < valuesLength; i += 1) {
+                    result += values[i];
+                  }
+                  return result / valuesLength || 0;
+                };
+              })();
+            }),
+            /* 28 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var SAT = {};
+              module2.exports = SAT;
+              var Collision = __webpack_require__(8);
+              var Common = __webpack_require__(0);
+              var deprecated = Common.deprecated;
+              (function() {
+                SAT.collides = function(bodyA, bodyB) {
+                  return Collision.collides(bodyA, bodyB);
+                };
+                deprecated(SAT, "collides", "SAT.collides ➤ replaced by Collision.collides");
+              })();
+            }),
+            /* 29 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var Svg = {};
+              module2.exports = Svg;
+              var Bounds = __webpack_require__(1);
+              var Common = __webpack_require__(0);
+              (function() {
+                Svg.pathToVertices = function(path, sampleLength) {
+                  if (typeof window !== "undefined" && !("SVGPathSeg" in window)) {
+                    Common.warn("Svg.pathToVertices: SVGPathSeg not defined, a polyfill is required.");
+                  }
+                  var i, il, total, point2, segment, segments, segmentsQueue, lastSegment, lastPoint, segmentIndex, points = [], lx, ly, length = 0, x = 0, y = 0;
+                  sampleLength = sampleLength || 15;
+                  var addPoint = function(px, py, pathSegType) {
+                    var isRelative = pathSegType % 2 === 1 && pathSegType > 1;
+                    if (!lastPoint || px != lastPoint.x || py != lastPoint.y) {
+                      if (lastPoint && isRelative) {
+                        lx = lastPoint.x;
+                        ly = lastPoint.y;
+                      } else {
+                        lx = 0;
+                        ly = 0;
+                      }
+                      var point3 = {
+                        x: lx + px,
+                        y: ly + py
+                      };
+                      if (isRelative || !lastPoint) {
+                        lastPoint = point3;
+                      }
+                      points.push(point3);
+                      x = lx + px;
+                      y = ly + py;
+                    }
+                  };
+                  var addSegmentPoint = function(segment2) {
+                    var segType = segment2.pathSegTypeAsLetter.toUpperCase();
+                    if (segType === "Z")
+                      return;
+                    switch (segType) {
+                      case "M":
+                      case "L":
+                      case "T":
+                      case "C":
+                      case "S":
+                      case "Q":
+                        x = segment2.x;
+                        y = segment2.y;
+                        break;
+                      case "H":
+                        x = segment2.x;
+                        break;
+                      case "V":
+                        y = segment2.y;
+                        break;
+                    }
+                    addPoint(x, y, segment2.pathSegType);
+                  };
+                  Svg._svgPathToAbsolute(path);
+                  total = path.getTotalLength();
+                  segments = [];
+                  for (i = 0; i < path.pathSegList.numberOfItems; i += 1)
+                    segments.push(path.pathSegList.getItem(i));
+                  segmentsQueue = segments.concat();
+                  while (length < total) {
+                    segmentIndex = path.getPathSegAtLength(length);
+                    segment = segments[segmentIndex];
+                    if (segment != lastSegment) {
+                      while (segmentsQueue.length && segmentsQueue[0] != segment)
+                        addSegmentPoint(segmentsQueue.shift());
+                      lastSegment = segment;
+                    }
+                    switch (segment.pathSegTypeAsLetter.toUpperCase()) {
+                      case "C":
+                      case "T":
+                      case "S":
+                      case "Q":
+                      case "A":
+                        point2 = path.getPointAtLength(length);
+                        addPoint(point2.x, point2.y, 0);
+                        break;
+                    }
+                    length += sampleLength;
+                  }
+                  for (i = 0, il = segmentsQueue.length; i < il; ++i)
+                    addSegmentPoint(segmentsQueue[i]);
+                  return points;
+                };
+                Svg._svgPathToAbsolute = function(path) {
+                  var x0, y0, x1, y1, x2, y2, segs = path.pathSegList, x = 0, y = 0, len = segs.numberOfItems;
+                  for (var i = 0; i < len; ++i) {
+                    var seg = segs.getItem(i), segType = seg.pathSegTypeAsLetter;
+                    if (/[MLHVCSQTA]/.test(segType)) {
+                      if ("x" in seg) x = seg.x;
+                      if ("y" in seg) y = seg.y;
+                    } else {
+                      if ("x1" in seg) x1 = x + seg.x1;
+                      if ("x2" in seg) x2 = x + seg.x2;
+                      if ("y1" in seg) y1 = y + seg.y1;
+                      if ("y2" in seg) y2 = y + seg.y2;
+                      if ("x" in seg) x += seg.x;
+                      if ("y" in seg) y += seg.y;
+                      switch (segType) {
+                        case "m":
+                          segs.replaceItem(path.createSVGPathSegMovetoAbs(x, y), i);
+                          break;
+                        case "l":
+                          segs.replaceItem(path.createSVGPathSegLinetoAbs(x, y), i);
+                          break;
+                        case "h":
+                          segs.replaceItem(path.createSVGPathSegLinetoHorizontalAbs(x), i);
+                          break;
+                        case "v":
+                          segs.replaceItem(path.createSVGPathSegLinetoVerticalAbs(y), i);
+                          break;
+                        case "c":
+                          segs.replaceItem(path.createSVGPathSegCurvetoCubicAbs(x, y, x1, y1, x2, y2), i);
+                          break;
+                        case "s":
+                          segs.replaceItem(path.createSVGPathSegCurvetoCubicSmoothAbs(x, y, x2, y2), i);
+                          break;
+                        case "q":
+                          segs.replaceItem(path.createSVGPathSegCurvetoQuadraticAbs(x, y, x1, y1), i);
+                          break;
+                        case "t":
+                          segs.replaceItem(path.createSVGPathSegCurvetoQuadraticSmoothAbs(x, y), i);
+                          break;
+                        case "a":
+                          segs.replaceItem(path.createSVGPathSegArcAbs(x, y, seg.r1, seg.r2, seg.angle, seg.largeArcFlag, seg.sweepFlag), i);
+                          break;
+                        case "z":
+                        case "Z":
+                          x = x0;
+                          y = y0;
+                          break;
+                      }
+                    }
+                    if (segType == "M" || segType == "m") {
+                      x0 = x;
+                      y0 = y;
+                    }
+                  }
+                };
+              })();
+            }),
+            /* 30 */
+            /***/
+            (function(module2, exports2, __webpack_require__) {
+              var World = {};
+              module2.exports = World;
+              var Composite2 = __webpack_require__(6);
+              var Common = __webpack_require__(0);
+              (function() {
+                World.create = Composite2.create;
+                World.add = Composite2.add;
+                World.remove = Composite2.remove;
+                World.clear = Composite2.clear;
+                World.addComposite = Composite2.addComposite;
+                World.addBody = Composite2.addBody;
+                World.addConstraint = Composite2.addConstraint;
+              })();
+            })
+            /******/
+          ])
+        );
+      });
+    }
+  });
+
   // .build/typescript/runtime/dom.js
   function createDom(document2) {
     function get(id2) {
@@ -576,7 +5480,7 @@
       text("wind-chapter-copy", flow.phase === "invite" ? rain ? "看叶尖蓄水，让竹筒等在雨滴下面。" : "水纹有方向，轻轻拨水，绕过青石。" : flow.phase === "memory" ? "正在展开你的手绘纪念" : rain ? "雨滴在竹筒里，留下最后一圈涟漪。" : "落叶慢慢漂远，溪水还在轻轻流。");
     }
     function update(s, refs) {
-      if (refs.mogan || refs.tiger) {
+      if (refs.mogan || refs.tiger || refs.directInput) {
       } else if (s.game && games2?.artAssets[s.game])
         artTools(s, refs);
       else if (s.game && games2?.wugongAssets[s.game])
@@ -630,7 +5534,7 @@
       view.update(current, refs);
       api.present?.(current, refs);
       if (current.game) {
-        if (current.game === "wind" && games2)
+        if (current.game === "wind" && games2 && !refs.directInput)
           options.audio.wind?.(games2.flow(current).energy, current.play.complete);
         for (const event of current.events || [])
           if (event.serial > soundSerial) {
@@ -658,7 +5562,7 @@
     function inputReady(input = {}) {
       if (!interactive() || !current || !refs)
         return false;
-      if ((refs.mogan || refs.tiger) && refs.contentState !== "ready")
+      if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready")
         return false;
       if (refs.art && !view.artReady(refs))
         return false;
@@ -697,7 +5601,7 @@
       $2("mini-retry").disabled = false;
       $2("micro-art").replaceChildren();
       refs = api.draw(options.svg, $2("micro-art"), entry);
-      refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || refs.tiger || current.game === "wind");
+      refs.waitsForArt = !!(refs.art || refs.story || refs.mogan || refs.tiger || refs.directInput || current.game === "wind");
       if (refs.waitsForArt)
         refs.contentState = "loading";
       surface.setAttribute("aria-busy", String(refs.waitsForArt));
@@ -710,7 +5614,7 @@
       $2("micro-panel").setAttribute("data-mogan", String(!!refs.mogan));
       $2("micro-panel").setAttribute("data-art-game", String(!!refs.art));
       $2("micro-panel").setAttribute("data-game", current.game || "");
-      $2("wind-hud").hidden = !current.game || !!refs.art || !!refs.mogan || !!refs.tiger;
+      $2("wind-hud").hidden = !current.game || !!refs.art || !!refs.mogan || !!refs.tiger || !!refs.directInput;
       const labels = { wind: "武功山 · 借风", clouds: "武功山 · 拨云见山", altar: "武功山 · 金顶石语", greet: "武功山 · 风口相遇", creek: "九溪 · 推叶", rain: "莫干山 · 接雨" };
       $2("mini-place-label").textContent = current.game && current.game in labels ? labels[current.game] : "";
       $2("mini-controls").hidden = !current.game;
@@ -793,7 +5697,7 @@
     function update(dt) {
       if (!interactive() || !current || !refs)
         return;
-      if ((refs.mogan || refs.tiger) && refs.contentState !== "ready") {
+      if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready") {
         updateStatus();
         paint();
         return;
@@ -839,7 +5743,7 @@
     function action(name, value) {
       if (!interactive() || !current || !refs)
         return;
-      if ((refs.mogan || refs.tiger) && refs.contentState !== "ready")
+      if ((refs.mogan || refs.tiger || refs.directInput) && refs.contentState !== "ready")
         return;
       if (refs.art && !view.artReady(refs))
         return;
@@ -925,7 +5829,7 @@
       });
       bindings.listen(surface, "keydown", keydown);
       bindings.listen(surface, "keyup", (event) => {
-        if (interactive() && current && (refs?.mogan || refs?.tiger) && api.key && inputReady()) {
+        if (interactive() && current && (refs?.mogan || refs?.tiger || refs?.directInput) && api.key && inputReady()) {
           const next = api.key(current, event.key, "up");
           if (next) {
             event.preventDefault();
@@ -953,7 +5857,7 @@
         pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, drag: false };
         surface.setPointerCapture?.(event.pointerId);
         if (current.game)
-          perform({ ...point2(event), ...refs?.art || refs?.mogan || refs?.tiger || current.game === "clouds" ? { phase: "press" } : {} });
+          perform({ ...point2(event), ...refs?.art || refs?.mogan || refs?.tiger || refs?.directInput || current.game === "clouds" ? { phase: "press" } : {} });
       });
       bindings.listen(surface, "pointermove", (event) => {
         if (!interactive() || !current)
@@ -995,9 +5899,9 @@
           return;
         event.stopPropagation?.();
         const dragged = pointer.drag, input = { ...point2(event), gesture: dragged ? "drag" : "tap" };
-        if (refs?.art || refs?.mogan || refs?.tiger || current.game === "clouds") {
+        if (refs?.art || refs?.mogan || refs?.tiger || refs?.directInput || current.game === "clouds") {
           pendingPoint = null;
-          if (dragged && refs && (view.artReady(refs) || (refs.mogan || refs.tiger || current.game === "clouds") && refs.contentState === "ready"))
+          if (dragged && refs && (view.artReady(refs) || (refs.mogan || refs.tiger || refs.directInput || current.game === "clouds") && refs.contentState === "ready"))
             current = api.move(current, input);
           perform({ ...input, phase: "release", dragged });
         } else if (dragged) {
@@ -1018,7 +5922,7 @@
       bindings.listen(surface, "blur", () => {
         if (current?.sling?.charge)
           cancelGesture();
-        if (refs?.mountain) {
+        if (refs?.mountain || refs?.directInput) {
           cancelGesture();
           return;
         }
@@ -2582,12 +7486,12 @@
           attrs(rockShapes[i], holes[i] ? { points: holes[i].map((v) => v.x + "," + v.y).join(" "), display: "" } : { display: "none" });
         const lines = waves(frame2, rect);
         for (let i = 0; i < waveNodes.length; i++) {
-          const line = lines[i];
-          attrs(waveNodes[i], line ? {
+          const line2 = lines[i];
+          attrs(waveNodes[i], line2 ? {
             display: "",
-            opacity: line.alpha,
+            opacity: line2.alpha,
             "stroke-width": frame2.passage ? 1.05 : 2.1,
-            d: "M" + line.x + " " + line.y + " q" + (frame2.passage ? line.length * 0.14 : line.length * 0.45) + " " + (frame2.passage ? line.length * 0.5 : -line.bend) + " " + (frame2.passage ? line.length * 0.45 : line.length) + " " + (frame2.passage ? line.length : 0)
+            d: "M" + line2.x + " " + line2.y + " q" + (frame2.passage ? line2.length * 0.14 : line2.length * 0.45) + " " + (frame2.passage ? line2.length * 0.5 : -line2.bend) + " " + (frame2.passage ? line2.length * 0.45 : line2.length) + " " + (frame2.passage ? line2.length : 0)
           } : { display: "none" });
         }
         const art = resources.get("actor");
@@ -3793,8 +8697,8 @@
     return s;
   }
   function keyMemory(state, key, phase) {
-    const arrow = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[key];
-    if (!arrow && !["Enter", " ", "1", "2", "3"].includes(key))
+    const arrow2 = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[key];
+    if (!arrow2 && !["Enter", " ", "1", "2", "3"].includes(key))
       return null;
     if (state.flow.kind !== "playing")
       return state;
@@ -3813,8 +8717,8 @@
         if (p.phase.kind !== "drawing")
           break;
         p.phase.keyboard = true;
-        if (arrow) {
-          const at = { x: clamp3(p.phase.cursor.x + arrow[0] * 12, 0, 1e3), y: clamp3(p.phase.cursor.y + arrow[1] * 12, 0, 750) };
+        if (arrow2) {
+          const at = { x: clamp3(p.phase.cursor.x + arrow2[0] * 12, 0, 1e3), y: clamp3(p.phase.cursor.y + arrow2[1] * 12, 0, 750) };
           if (p.phase.pen.kind === "down")
             drawRoad(s, at);
           else
@@ -3824,8 +8728,8 @@
         break;
       }
       case "inn":
-        if (arrow)
-          p.focus = (p.focus + (arrow[0] || arrow[1]) + 4) % 4;
+        if (arrow2)
+          p.focus = (p.focus + (arrow2[0] || arrow2[1]) + 4) % 4;
         else if (key === "Enter" || key === " ")
           flipCard(s, p.focus);
         break;
@@ -3834,8 +8738,8 @@
         if (/^[1-3]$/.test(key)) {
           p.color = Number(key) - 1;
           p.drawing = false;
-        } else if (arrow) {
-          p.brush = { x: clamp3(p.brush.x + arrow[0] * 0.045, 0, 1), y: clamp3(p.brush.y + arrow[1] * 0.045, 0, 1) };
+        } else if (arrow2) {
+          p.brush = { x: clamp3(p.brush.x + arrow2[0] * 0.045, 0, 1), y: clamp3(p.brush.y + arrow2[1] * 0.045, 0, 1) };
         } else if (key === " ") {
           p.keyHeld = true;
           const r = layout(s).sketchImage;
@@ -3844,9 +8748,9 @@
         break;
       }
       case "river":
-        if (arrow) {
+        if (arrow2) {
           const center = frameCenter(s);
-          p.center = moveFrame(s, { x: center.x + arrow[0] * 24, y: center.y + arrow[1] * 24 });
+          p.center = moveFrame(s, { x: center.x + arrow2[0] * 24, y: center.y + arrow2[1] * 24 });
           p.adjusted = true;
           s.acted = true;
         } else if (key === "Enter" || key === " ")
@@ -3854,6 +8758,90 @@
         break;
     }
     return s;
+  }
+
+  // .build/typescript/wugong-walk/scroll/camp-poses.js
+  var CAMP_POSE_FILE = "scenes/wugong-camp-night-v1/actions-q-v1.webp";
+  var CAMP_POSE_SCALE = 54 / 634;
+  var CAMP_POSES = [
+    {
+      "x": 122,
+      "y": 23,
+      "width": 375,
+      "height": 634,
+      "footX": 288.75,
+      "footY": 629
+    },
+    {
+      "x": 728,
+      "y": 88,
+      "width": 479,
+      "height": 565,
+      "footX": 153.28,
+      "footY": 560
+    },
+    {
+      "x": 61,
+      "y": 695,
+      "width": 556,
+      "height": 516,
+      "footX": 489.28000000000003,
+      "footY": 511
+    },
+    {
+      "x": 670,
+      "y": 694,
+      "width": 539,
+      "height": 519,
+      "footX": 474.32,
+      "footY": 514
+    }
+  ];
+
+  // .build/typescript/characters/braided-art.js
+  var BRAIDED_FILE = "characters/braided-hiker-v1.webp";
+  var BRAIDED_WALK_SCALE = 54 / 348.5;
+  var BRAIDED_ACTION_SCALE = 54 / 284;
+  var BRAIDED_WALK_FRAMES = [[99, 17, 243, 358, 125, 357], [484, 17, 218, 356, 124, 355], [869, 17, 212, 359, 121, 358], [1242, 17, 218, 358, 134, 357], [98, 389, 234, 344, 117, 343], [484, 389, 227, 343, 119, 342], [865, 389, 215, 345, 125, 344], [1241, 389, 228, 344, 137, 343]];
+  var BRAIDED_ACTION_FRAMES = [[105, 737, 178, 285, 104, 284], [463, 765, 277, 247, 87, 246], [805, 773, 313, 241, 155, 240], [1189, 773, 321, 241, 161, 240]];
+  var BRAIDED_CONTACT_OFFSETS = [-6.934, 4.088, -3.717, -8.292, -3.218, 7.271, -2.926, -7.643];
+
+  // .build/typescript/characters/catalog.js
+  function walkingFrames(frames, scale, contacts) {
+    return frames.map(([x, y, width, height, footX, footY], i) => ({ x, y, width, height, footX, footY, scale, contactX: contacts[i] ?? 0 }));
+  }
+  var blueCampRoots = [340, 875, 345, 957];
+  var CHARACTERS = {
+    blue: {
+      name: "蓝衣旅人",
+      detail: "灰蓝外套 · 苔绿背包",
+      preview: "characters/blue-hiker-preview-v1.webp",
+      walk: { file: MAP_WALK_FILE, frames: walkingFrames(MAP_WALK_FRAMES, MAP_WALK_SCALE, [-3.74, 3.74, -0.44, -4.92, -5.12, 2.83, -3.49, -4.95]) },
+      actions: { file: CAMP_POSE_FILE, frames: CAMP_POSES.map((p, i) => ({ ...p, footX: blueCampRoots[i] - p.x, scale: CAMP_POSE_SCALE, contactX: 0 })) }
+    },
+    braids: {
+      name: "双辫旅人",
+      detail: "米白外套 · 红棕背包",
+      preview: "characters/braided-hiker-preview-v1.webp",
+      walk: { file: BRAIDED_FILE, frames: walkingFrames(BRAIDED_WALK_FRAMES, BRAIDED_WALK_SCALE, BRAIDED_CONTACT_OFFSETS) },
+      actions: { file: BRAIDED_FILE, frames: walkingFrames(BRAIDED_ACTION_FRAMES, BRAIDED_ACTION_SCALE, [0, 0, 0, 0]) }
+    }
+  };
+  var CHARACTER_IDS = ["blue", "braids"];
+  var DEFAULT_CHARACTER = "blue";
+  var storageKey = "trailbound.character.v1";
+  var sessionChoice;
+  function characterId(value) {
+    return CHARACTER_IDS.find((id2) => id2 === value);
+  }
+  function readCharacterId() {
+    if (sessionChoice)
+      return sessionChoice;
+    try {
+      return characterId(localStorage.getItem(storageKey)) ?? DEFAULT_CHARACTER;
+    } catch {
+      return DEFAULT_CHARACTER;
+    }
   }
 
   // .build/typescript/runtime/tiger-memories/view.js
@@ -3919,9 +8907,11 @@
     paintedPoints = -1;
     portraitValue = false;
     cssWidth = 1e3;
+    actorId;
     constructor(kind, doc) {
       this.kind = kind;
       this.doc = doc;
+      this.actorId = characterId(new URLSearchParams(doc.defaultView?.location.search).get("character")) ?? readCharacterId();
       this.canvas = doc.createElement("canvas");
       this.canvas.className = "tiger-memory-canvas";
       this.canvas.setAttribute("aria-hidden", "true");
@@ -3965,7 +8955,19 @@
       try {
         if (!this.canvas.getContext("2d"))
           throw new Error("画面暂不支持绘制");
-        const [scene, badge, actor, rapids] = await Promise.all([load(sceneFile(this.kind)), load(badgeFile(this.kind)), this.kind === "bends" ? load(MAP_WALK_FILE) : Promise.resolve(null), this.kind === "bends" ? load(sceneFile("river")) : Promise.resolve(null)]);
+        const loadActor = async () => {
+          if (this.kind !== "bends")
+            return null;
+          try {
+            return await load(CHARACTERS[this.actorId].walk.file);
+          } catch (error) {
+            if (this.actorId === DEFAULT_CHARACTER)
+              throw error;
+            this.actorId = DEFAULT_CHARACTER;
+            return load(CHARACTERS[this.actorId].walk.file);
+          }
+        };
+        const [scene, badge, actor, rapids] = await Promise.all([load(sceneFile(this.kind)), load(badgeFile(this.kind)), loadActor(), this.kind === "bends" ? load(sceneFile("river")) : Promise.resolve(null)]);
         if (this.disposed)
           return;
         this.images = { scene, badge, actor, rapids };
@@ -4228,8 +9230,9 @@
       const actor = this.images.actor, at = roadAt(walk);
       const moving = phase.kind === "walking" && roadWalkingProgress(phase.elapsed + 0.02) > walk + 1e-5;
       if (actor) {
-        const frame2 = MAP_WALK_FRAMES[moving && !s.play.reduced ? Math.floor(walk * ROAD_LENGTH / 12) % 8 : 1], [sx, sy, w, h, fx, fy] = frame2;
-        const scale = (60 - walk * 9) / h * l.scene.width / 1e3, facing = Math.cos(at.heading) < 0 ? -1 : 1;
+        const frame2 = CHARACTERS[this.actorId].walk.frames[moving && !s.play.reduced ? Math.floor(walk * ROAD_LENGTH / 12) % 8 : 1];
+        const { x: sx, y: sy, width: w, height: h, footX: fx, footY: fy } = frame2;
+        const scale = (60 - walk * 9) / 54 * frame2.scale * l.scene.width / 1e3, facing = Math.cos(at.heading) < 0 ? -1 : 1;
         ctx.save();
         ctx.translate(l.scene.x + at.x * l.scene.width / 1e3, l.scene.y + at.y * l.scene.height / 750);
         if (phase.kind === "drawing")
@@ -4244,9 +9247,9 @@
         ctx.restore();
       }
       if (phase.kind === "river" && this.images.rapids) {
-        const fade = clamp3(phase.elapsed / (s.play.reduced ? 0.3 : 1), 0, 1), cover = Math.max(1, l.height / 750);
+        const fade = clamp3(phase.elapsed / (s.play.reduced ? 0.3 : 1), 0, 1), cover2 = Math.max(1, l.height / 750);
         const zoom = s.play.reduced ? 1 : 1 + Math.min(phase.elapsed, 4.8) * 6e-3;
-        const width = 1e3 * cover * zoom, height = 750 * cover * zoom;
+        const width = 1e3 * cover2 * zoom, height = 750 * cover2 * zoom;
         ctx.save();
         ctx.globalAlpha = fade * fade * (3 - 2 * fade);
         this.river(ctx, s, phase.elapsed * 1.35, this.images.rapids, { x: (1e3 - width) * 0.55, y: (l.height - height) * 0.5, width, height });
@@ -4561,15 +9564,1269 @@
     } };
   }
 
+  // .build/typescript/runtime/aotai-games/takin.js
+  var TAKIN_START = { x: 0.43, y: 0.67635 };
+  var TAKIN_PLATFORM = [
+    { x: 0.09, y: 0.76 },
+    { x: 0.29, y: 0.735 },
+    { x: 0.44, y: 0.765 },
+    { x: 0.45, y: 0.85 },
+    { x: 0.38, y: 0.91 },
+    { x: 0.13, y: 0.91 },
+    { x: 0.07, y: 0.85 }
+  ];
+  function createEncounter() {
+    return { kind: "takin", actor: { ...TAKIN_START }, target: null, phase: { kind: "opening", elapsed: 0 }, stride: 0, moving: false, footsteps: 0, breath: 0 };
+  }
+  var trailY = (x) => 0.7 - x * 0.055;
+  var TRAIL_HALF_WIDTH = 0.037;
+  function onPlatform(p) {
+    let inside2 = false;
+    for (let i = 0, j = TAKIN_PLATFORM.length - 1; i < TAKIN_PLATFORM.length; j = i++) {
+      const a = TAKIN_PLATFORM[i], b = TAKIN_PLATFORM[j];
+      if (a.y > p.y !== b.y > p.y && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)
+        inside2 = !inside2;
+    }
+    return inside2;
+  }
+  function passageClear(p, height) {
+    const distance3 = Math.abs((p.y - trailY(p.x)) * height) / Math.hypot(1, 0.055 * height / 1e3);
+    return onPlatform(p) && distance3 > TRAIL_HALF_WIDTH * height + 27;
+  }
+  function walkable(p) {
+    return p.x >= 0.09 && p.x <= 0.57 && (Math.abs(p.y - trailY(p.x)) <= 0.055 || onPlatform(p) || p.x >= 0.29 && p.x <= 0.46 && p.y >= 0.67 && p.y <= 0.81);
+  }
+  function targetEncounter(p, at) {
+    if (p.phase.kind === "opening" || p.phase.kind === "aftermath" || p.phase.kind === "returning" || p.phase.kind === "finished" || !walkable(at))
+      return false;
+    if ((p.phase.kind === "yielding" || p.phase.kind === "adult") && at.x > p.actor.x + 0.035)
+      return false;
+    p.target = at;
+    return true;
+  }
+  function encounterAdult(p) {
+    return p.phase.kind === "opening" ? 0.8 + (1 - Math.min(1, Math.max(0, (p.phase.elapsed - 4) / 6))) * 0.32 : p.phase.kind === "yielding" ? 0.8 : p.phase.kind === "adult" ? 0.8 - p.phase.progress * 1.04 : -0.24;
+  }
+  function encounterCalf(p) {
+    return p.phase.kind === "calf" ? 0.94 - p.phase.progress * 1.15 : p.phase.kind === "aftermath" || p.phase.kind === "returning" || p.phase.kind === "finished" ? -0.21 : 0.94;
+  }
+  function tickEncounter(p, dt, height, reduced2) {
+    const wasMoving = p.moving;
+    p.moving = false;
+    if (p.target) {
+      const dx = (p.target.x - p.actor.x) * 1e3, dy = (p.target.y - p.actor.y) * height, length = Math.hypot(dx, dy), step = Math.min(length, dt * 48);
+      if (length > 1) {
+        p.actor.x += dx / length * step / 1e3;
+        p.actor.y += dy / length * step / height;
+        p.moving = true;
+        p.stride += step / 23;
+      }
+    }
+    const clear = passageClear(p.actor, height), phase = p.phase, pace = reduced2 ? 1.65 : 1;
+    let walking = false;
+    switch (phase.kind) {
+      case "opening":
+        phase.elapsed += dt * pace;
+        walking = phase.elapsed > 1 && phase.elapsed < 10;
+        if (phase.elapsed >= 10)
+          p.phase = { kind: "yielding", clearFor: 0 };
+        break;
+      case "yielding":
+        phase.clearFor = clear ? phase.clearFor + dt : 0;
+        if (phase.clearFor >= 0.8)
+          p.phase = { kind: "adult", progress: 0 };
+        break;
+      case "adult":
+        if (clear) {
+          phase.progress = Math.min(1, phase.progress + dt * pace / 17);
+          walking = true;
+        }
+        if (phase.progress >= 1)
+          p.phase = { kind: "calf-reveal", elapsed: 0 };
+        break;
+      case "calf-reveal":
+        phase.elapsed += dt * pace;
+        if (phase.elapsed >= 6)
+          p.phase = { kind: "calf", progress: 0 };
+        break;
+      case "calf":
+        if (clear) {
+          phase.progress = Math.min(1, phase.progress + dt * pace / 14);
+          walking = true;
+        }
+        if (phase.progress >= 1) {
+          p.target = null;
+          p.phase = { kind: "aftermath", elapsed: 0 };
+        }
+        break;
+      case "aftermath":
+        phase.elapsed += dt * pace;
+        if (phase.elapsed >= 7)
+          p.phase = { kind: "returning", elapsed: 0, from: { ...p.actor } };
+        break;
+      case "returning": {
+        phase.elapsed += dt * pace;
+        const t = Math.min(1, phase.elapsed / 4), ease = t * t * (3 - 2 * t);
+        p.actor = { x: phase.from.x + (TAKIN_START.x - phase.from.x) * ease, y: phase.from.y + (TAKIN_START.y - phase.from.y) * ease };
+        p.moving = t < 1;
+        p.stride += dt * 1.6;
+        if (t === 1)
+          p.phase = { kind: "finished" };
+        break;
+      }
+      case "finished":
+        break;
+    }
+    const oldFootsteps = p.footsteps;
+    if (walking)
+      p.footsteps += dt * (phase.kind === "calf" ? 1.55 : 1.1);
+    const oldBreath = p.breath;
+    if (!walking && ["yielding", "adult", "calf"].includes(phase.kind))
+      p.breath += dt / 3.8;
+    return { complete: p.phase.kind === "finished", hoof: Math.floor(oldFootsteps) !== Math.floor(p.footsteps), breath: Math.floor(oldBreath) !== Math.floor(p.breath), cloth: p.moving && !wasMoving };
+  }
+
+  // .build/typescript/runtime/aotai-games/painterly-art.js
+  var PAINTED_PROPS_FILE = "scenes/aotai-painterly-v1/props-atlas.webp";
+  var PAINTED_PROPS = {
+    "mother": {
+      "x": 69,
+      "y": 11,
+      "width": 781,
+      "height": 542
+    },
+    "calf": {
+      "x": 1005,
+      "y": 163,
+      "width": 491,
+      "height": 388
+    },
+    "tent": {
+      "x": 36,
+      "y": 555,
+      "width": 931,
+      "height": 469
+    },
+    "snowball": {
+      "x": 1147,
+      "y": 696,
+      "width": 269,
+      "height": 263
+    }
+  };
+
+  // .build/typescript/runtime/aotai-games/snowball.js
+  var import_matter_js = __toESM(require_matter());
+  var SNOW_RADIUS = 26;
+  var SNOW_START = { x: 168, y: 352 };
+  var SNOW_FLOOR = [
+    { x: 95, y: 365 },
+    { x: 265, y: 408 },
+    { x: 355, y: 442 },
+    { x: 455, y: 456 },
+    { x: 560, y: 505 },
+    { x: 665, y: 530 },
+    { x: 754, y: 573 },
+    { x: 815, y: 599 },
+    { x: 872, y: 592 },
+    { x: 915, y: 510 }
+  ];
+  var SNOW_GOAL = { x: 826, y: 580, radius: 49 };
+  var SnowballWorld = class {
+    engine = import_matter_js.Engine.create({ gravity: { x: 0, y: 1.05, scale: 1e-3 } });
+    ball = import_matter_js.Bodies.circle(SNOW_START.x, SNOW_START.y, SNOW_RADIUS, { friction: 0.075, frictionAir: 9e-3, restitution: 0.08, density: 14e-4 });
+    impacts = 0;
+    constructor() {
+      import_matter_js.Body.setStatic(this.ball, true);
+      const ground = SNOW_FLOOR.slice(1).map((b, i) => {
+        const a = SNOW_FLOOR[i], angle = Math.atan2(b.y - a.y, b.x - a.x), depth = 36;
+        return import_matter_js.Bodies.rectangle((a.x + b.x) / 2 - Math.sin(angle) * depth / 2, (a.y + b.y) / 2 + Math.cos(angle) * depth / 2, Math.hypot(b.x - a.x, b.y - a.y) + 2, depth, { isStatic: true, angle, friction: i > 5 ? 0.3 : 0.08, restitution: 0.04 });
+      });
+      import_matter_js.Composite.add(this.engine.world, [...ground, this.ball]);
+      import_matter_js.Events.on(this.engine, "collisionStart", (event) => {
+        if (event.pairs.some((pair) => pair.bodyA === this.ball || pair.bodyB === this.ball))
+          this.impacts++;
+      });
+    }
+    get point() {
+      return this.ball.position;
+    }
+    get angle() {
+      return this.ball.angle;
+    }
+    get speed() {
+      return this.ball.speed;
+    }
+    launch(drag) {
+      const limit = (n, a, b) => Math.max(a, Math.min(b, n));
+      import_matter_js.Body.setStatic(this.ball, false);
+      import_matter_js.Body.setVelocity(this.ball, { x: limit(drag.x * 0.045, -5, 8), y: limit(drag.y * 0.025, -5, 3) });
+      import_matter_js.Body.setAngularVelocity(this.ball, drag.x * 8e-4);
+    }
+    tick(dt) {
+      for (let left = dt; left > 1e-5; ) {
+        const step = Math.min(left, 1 / 60);
+        import_matter_js.Engine.update(this.engine, step * 1e3);
+        left -= step;
+      }
+    }
+    reset() {
+      import_matter_js.Body.setStatic(this.ball, true);
+      import_matter_js.Body.setPosition(this.ball, SNOW_START);
+      import_matter_js.Body.setAngle(this.ball, 0);
+      import_matter_js.Body.setVelocity(this.ball, { x: 0, y: 0 });
+      import_matter_js.Body.setAngularVelocity(this.ball, 0);
+    }
+    dispose() {
+      import_matter_js.Events.off(this.engine, "collisionStart");
+      import_matter_js.Composite.clear(this.engine.world, false);
+      import_matter_js.Engine.clear(this.engine);
+    }
+  };
+
+  // .build/typescript/runtime/aotai-games/model.js
+  var AOTAI_GAMES = {
+    "snow-tracks": { kind: "snowball", game: "sling", title: "石海滚雪球", badge: "石海纹理", prompt: "从雪球向右下方轻拖，松手，让它滚进石槽尽头的雪窝。", keys: "方向键调整推送方向，Enter 推出雪球。", memory: "我轻轻推了一团雪，看它沿石槽滚下，碰起一点雪粉，最后稳稳停在雪窝里。石海里也藏着这样的小趣味。", scene: "stone-sea", place: "鳌山 · 冬日石海" },
+    "snow-lichen": { kind: "wind", game: "wind", title: "踏风上梁", badge: "秦岭长脊", prompt: "按住小人上山；风强时松手，在岩后歇一下，再继续。", keys: "按住空格或 Enter 前行，松开歇脚。", memory: "飞机梁的风掀起围巾。我在岩后歇了片刻，等风缓下来，再一步步登上山梁，看见更远的秦岭。", scene: "ridge", place: "飞机梁 · 冬日连峰" },
+    "aotai-takin-first": { kind: "takin", game: "footsteps", title: "冬林初遇", badge: "秦岭初遇", prompt: "退到宽处，让出山路。", keys: "按住身后地面缓慢退行，松手停下。方向键也可选择下一步，松开停下。", memory: "雪林里，一大一小正要经过。我退到路旁，看小牛慢慢追上母亲。等脚印远去，我也重新背起自己的旅途。", scene: "forest", place: "2800营地 · 冬日林缘" },
+    "aotai-camp-night": { kind: "camp", game: "packing", title: "雪夜搭营", badge: "雪夜营灯", prompt: "把两根松开的帐绳拖到地钉处系紧，再点亮帐门里的营灯。", keys: "左右键选帐绳，Enter 抓住，方向键移动，Enter 系紧；再按 Enter 点灯。", memory: "大石河的夜风慢慢吹来。我系紧帐绳，点亮一盏小灯。帐篷稳下来，雪色也有了一点温暖；明早再去看下一道山脊。", scene: "forest", place: "大石河 · 冬夜营地" }
+  };
+  var aotaiGameId = (id2) => Object.hasOwn(AOTAI_GAMES, id2);
+  var AOTAI_IDS = Object.keys(AOTAI_GAMES).filter(aotaiGameId);
+  var sceneFile2 = (id2) => `scenes/aotai-painterly-v1/${AOTAI_GAMES[id2].scene === "forest" ? "winter-encounter" : AOTAI_GAMES[id2].scene}.webp`;
+  var AotaiState = class {
+    id;
+    route = "aotai";
+    game;
+    kind;
+    age = 0;
+    acted = false;
+    dragging = false;
+    gesture = "tap";
+    done = false;
+    x = 0.5;
+    y = 0.5;
+    portrait = false;
+    events = [];
+    serial = 0;
+    feedback;
+    settledAt = null;
+    play;
+    session;
+    constructor(id2, reduced2) {
+      this.id = id2;
+      const spec = AOTAI_GAMES[id2];
+      this.game = spec.game;
+      this.kind = spec.kind;
+      this.feedback = spec.prompt;
+      this.play = { type: "aotai-memory-v2", progress: 0, complete: false, completedAt: null, reduced: reduced2 };
+      switch (spec.kind) {
+        case "snowball":
+          this.session = { kind: "snowball", world: new SnowballWorld(), motion: { kind: "ready" }, aim: { x: 100, y: 28 } };
+          break;
+        case "wind":
+          this.session = { kind: "wind", progress: 0, holding: false, rested: false, stride: 0, gust: 0 };
+          break;
+        case "takin":
+          this.session = createEncounter();
+          break;
+        case "camp":
+          this.session = { kind: "camp", phase: { kind: "ropes", tied: "none", focus: 0, drag: null } };
+          break;
+      }
+    }
+  };
+  function stateOf2(s) {
+    if (!(s instanceof AotaiState))
+      throw new Error("鳌太线互动状态不匹配");
+    return s;
+  }
+  var clamp4 = (n, min, max) => Math.max(min, Math.min(max, n));
+  var near = (a, b, radius) => Math.hypot(a.x - b.x, a.y - b.y) <= radius;
+  function layout2(s) {
+    const height = s.portrait ? 1240 : 720, offset = s.portrait ? 320 : 0;
+    const tentHeight = 470 * PAINTED_PROPS.tent.height / PAINTED_PROPS.tent.width;
+    const tent = { x: 310, y: height * (s.portrait ? 0.68 : 0.79) - tentHeight, width: 470, height: tentHeight };
+    const pegs = [{ x: 145, y: tent.y + tent.height * 0.94 }, { x: 895, y: tent.y + tent.height * 0.95 }];
+    const roots = [{ x: tent.x + tent.width * 0.22, y: tent.y + tent.height * 0.51 }, { x: tent.x + tent.width * 0.81, y: tent.y + tent.height * 0.49 }];
+    const loose = [{ x: 315, y: tent.y + tent.height * 0.93 }, { x: 785, y: tent.y + tent.height * 0.98 }];
+    const lamp = { x: tent.x + tent.width * 0.44, y: tent.y + tent.height * 0.38 };
+    return { width: 1e3, height, snowOffset: offset, tent, pegs, roots, loose, lamp };
+  }
+  function windPointAt(t, portrait) {
+    const height = portrait ? 1240 : 720;
+    return { x: 170 + t * 650, y: height * (0.78 - t * 235 / 720 - Math.sin(t * Math.PI) * 25 / 720) };
+  }
+  function windPoint(s) {
+    return windPointAt(s.session.kind === "wind" ? s.session.progress : 0, s.portrait);
+  }
+  var windStrength = (age) => {
+    const phase = age % 5.8;
+    return phase < 2.6 ? 0.17 : phase < 4.4 ? 0.88 : 0.3;
+  };
+  var ropeTied = (p, index) => p.kind !== "ropes" || p.tied === (index === 0 ? "left" : "right");
+  function emit3(s, type, x = 0.5, index = 0) {
+    s.events.push({ serial: ++s.serial, type, x, index });
+    if (s.events.length > 12)
+      s.events.shift();
+  }
+  function settle2(s, feedback) {
+    if (s.settledAt !== null)
+      return;
+    s.settledAt = s.age;
+    s.feedback = feedback;
+    s.dragging = false;
+    s.play.progress = 1;
+    emit3(s, "pack-place");
+  }
+  function launch(s, drag) {
+    const p = s.session;
+    if (p.kind !== "snowball")
+      return;
+    if (Math.hypot(drag.x, drag.y) < 24) {
+      p.motion = { kind: "ready" };
+      s.feedback = "轻轻向右下方推一下雪球，再松手。";
+      return;
+    }
+    p.world.launch(drag);
+    p.motion = { kind: "rolling", elapsed: 0, stable: 0, impacts: p.world.impacts };
+    s.acted = true;
+    s.gesture = "drag";
+    s.feedback = "雪球滚起来了。";
+    emit3(s, "sling-release", 0.2);
+  }
+  function tieRope(s) {
+    const p = s.session;
+    if (p.kind !== "camp")
+      return;
+    const phase = p.phase;
+    if (phase.kind !== "ropes")
+      return;
+    const drag = phase.drag;
+    if (!drag)
+      return;
+    const l = layout2(s);
+    if (!near(drag.point, l.pegs[drag.index], 70)) {
+      phase.drag = null;
+      s.feedback = "把绳头拉到地钉旁，再松手系紧。";
+      return;
+    }
+    s.acted = true;
+    s.gesture = "drag";
+    emit3(s, "pack-place", drag.index ? 0.85 : 0.15);
+    if (phase.tied !== "none") {
+      p.phase = { kind: "lamp", pressed: false };
+      s.play.progress = 0.7;
+      s.feedback = "帐篷稳下来了，点亮帐门里的营灯。";
+    } else {
+      phase.tied = drag.index === 0 ? "left" : "right";
+      phase.focus = drag.index === 0 ? 1 : 0;
+      phase.drag = null;
+      s.play.progress = 0.35;
+      s.feedback = "一根系好了，再拉紧另一根帐绳。";
+    }
+  }
+  function lightLamp(s) {
+    const p = s.session;
+    if (p.kind !== "camp" || p.phase.kind !== "lamp")
+      return;
+    p.phase = { kind: "lit", elapsed: 0 };
+    emit3(s, "aotai-camp-quiet");
+    s.acted = true;
+    s.play.progress = 0.9;
+    s.feedback = "营灯亮了，夜风慢慢安静下来。";
+    emit3(s, "depth-paper");
+  }
+  function actAotai(s, input) {
+    if (s.settledAt !== null || typeof input.x !== "number" || typeof input.y !== "number")
+      return s;
+    const p = s.session, at = { x: input.x, y: input.y }, l = layout2(s);
+    if (input.phase === "press") {
+      switch (p.kind) {
+        case "snowball":
+          if (p.motion.kind === "ready" && near(at, { x: SNOW_START.x, y: SNOW_START.y + l.snowOffset }, 75)) {
+            p.motion = { kind: "aiming", to: at };
+            s.dragging = true;
+          }
+          break;
+        case "wind":
+          if (near(at, { x: windPoint(s).x, y: windPoint(s).y - 55 }, 100)) {
+            p.holding = true;
+            s.dragging = true;
+            s.acted = true;
+          }
+          break;
+        case "takin":
+          if (targetEncounter(p, { x: at.x / 1e3, y: at.y / l.height })) {
+            s.dragging = true;
+            s.acted = true;
+            s.gesture = "hold";
+          }
+          break;
+        case "camp":
+          if (p.phase.kind === "ropes") {
+            const index = near(at, l.loose[0], 72) ? 0 : near(at, l.loose[1], 72) ? 1 : null;
+            if (index !== null && !ropeTied(p.phase, index)) {
+              p.phase.drag = { index, point: at };
+              p.phase.focus = index;
+              s.dragging = true;
+            }
+          } else if (p.phase.kind === "lamp")
+            p.phase.pressed = near(at, l.lamp, 76);
+          break;
+      }
+    } else if (input.phase === "release") {
+      switch (p.kind) {
+        case "snowball":
+          if (p.motion.kind === "aiming")
+            launch(s, { x: at.x - SNOW_START.x, y: at.y - l.snowOffset - SNOW_START.y });
+          break;
+        case "wind":
+          p.holding = false;
+          break;
+        case "takin":
+          p.target = null;
+          break;
+        case "camp":
+          if (p.phase.kind === "ropes" && p.phase.drag) {
+            p.phase.drag.point = at;
+            tieRope(s);
+          } else if (p.phase.kind === "lamp" && p.phase.pressed && near(at, l.lamp, 76))
+            lightLamp(s);
+          break;
+      }
+      s.dragging = false;
+    }
+    return s;
+  }
+  function moveAotai(s, input) {
+    if (s.settledAt !== null || typeof input.x !== "number" || typeof input.y !== "number")
+      return s;
+    const p = s.session;
+    if (p.kind === "snowball" && p.motion.kind === "aiming")
+      p.motion.to = { x: input.x, y: input.y };
+    else if (p.kind === "takin" && s.dragging)
+      targetEncounter(p, { x: input.x / 1e3, y: input.y / layout2(s).height });
+    else if (p.kind === "camp" && p.phase.kind === "ropes" && p.phase.drag)
+      p.phase.drag.point = { x: input.x, y: input.y };
+    return s;
+  }
+  function releaseAotai(s) {
+    s.dragging = false;
+    const p = s.session;
+    if (p.kind === "snowball" && p.motion.kind === "aiming")
+      p.motion = { kind: "ready" };
+    else if (p.kind === "wind")
+      p.holding = false;
+    else if (p.kind === "takin")
+      p.target = null;
+    else if (p.kind === "camp") {
+      if (p.phase.kind === "ropes")
+        p.phase.drag = null;
+      if (p.phase.kind === "lamp")
+        p.phase.pressed = false;
+    }
+    return s;
+  }
+  function tickAotai(s, dt) {
+    if (dt <= 0 || !Number.isFinite(dt))
+      return s;
+    s.age += dt;
+    const p = s.session;
+    if (s.settledAt === null)
+      switch (p.kind) {
+        case "snowball":
+          if (p.motion.kind === "rolling") {
+            p.world.tick(dt);
+            p.motion.elapsed += dt;
+            if (p.world.impacts !== p.motion.impacts) {
+              p.motion.impacts = p.world.impacts;
+              emit3(s, "altar-place", p.world.point.x / 1e3);
+            }
+            const ball = p.world.point;
+            s.play.progress = clamp4((ball.x - SNOW_START.x) / (SNOW_GOAL.x - SNOW_START.x), 0, 0.94);
+            if (near(ball, SNOW_GOAL, 49) && p.world.speed < 1.7)
+              p.motion.stable += dt;
+            else
+              p.motion.stable = 0;
+            if (p.motion.stable > 0.6)
+              settle2(s, "雪球停在雪窝里，石海也安静下来。");
+            else if (ball.y > 900 || ball.x < 20 || ball.x > 1010 || p.motion.elapsed > 12) {
+              p.motion = { kind: "retry", elapsed: 0 };
+              s.feedback = "再轻推一次，让雪球顺着石槽走。";
+            }
+          } else if (p.motion.kind === "retry") {
+            p.motion.elapsed += dt;
+            if (p.motion.elapsed > 1) {
+              p.world.reset();
+              p.motion = { kind: "ready" };
+              s.play.progress = 0;
+            }
+          }
+          break;
+        case "wind": {
+          const gust = windStrength(s.age);
+          if (p.gust <= 0.6 && gust > 0.6)
+            emit3(s, "aotai-gust");
+          p.gust = gust;
+          if (!p.holding && p.progress >= 0.34 && p.progress <= 0.5 && p.gust > 0.6) {
+            p.rested = true;
+            s.feedback = "在岩后歇一下，风缓了再按住小人出发。";
+          }
+          if (p.holding) {
+            const speed = p.gust > 0.6 ? 0.018 : 0.15, next = Math.min(p.rested ? 1 : 0.48, p.progress + speed * dt);
+            p.stride += (next - p.progress) * 17;
+            p.progress = next;
+            s.feedback = p.gust > 0.6 ? "风强了，松手在岩后歇一下。" : "一步一步，远山正在展开。";
+            if (p.progress >= 0.48 && !p.rested)
+              s.feedback = "松开，在岩后歇一下，等风缓下来。";
+          }
+          s.play.progress = p.progress;
+          if (p.progress >= 1 && p.rested && s.acted) {
+            p.holding = false;
+            settle2(s, "登上山梁，秦岭在眼前展开。");
+          }
+          break;
+        }
+        case "takin": {
+          const result = tickEncounter(p, dt, layout2(s).height, s.play.reduced);
+          if (result.hoof)
+            emit3(s, "aotai-hoof", p.phase.kind === "calf" ? 0.94 - p.phase.progress : 0.8, Math.floor(p.footsteps));
+          if (result.breath)
+            emit3(s, "aotai-breath", 0.72);
+          if (result.cloth)
+            emit3(s, "aotai-cloth", p.actor.x);
+          const phase = p.phase;
+          s.play.progress = phase.kind === "opening" ? 0.02 : phase.kind === "yielding" ? 0.08 : phase.kind === "adult" ? 0.15 + phase.progress * 0.3 : phase.kind === "calf-reveal" ? 0.5 : phase.kind === "calf" ? 0.55 + phase.progress * 0.3 : 0.9;
+          s.feedback = phase.kind === "opening" ? "风雪里，传来沉重的踩雪声。" : phase.kind === "yielding" || phase.kind === "adult" ? passageClear(p.actor, layout2(s).height) ? "停在宽处，等它经过。" : p.actor.x < 0.36 ? "再向平台里面退一点，主路还没让开。" : AOTAI_GAMES[s.id].prompt : phase.kind === "calf-reveal" || phase.kind === "calf" ? "雪幕里还有一组脚步，继续留在宽处。" : "脚步声远了，雪地上留下交错的足迹。";
+          if (result.complete && s.acted)
+            settle2(s, "山路重新安静下来，把这次相遇留在手帐。");
+          break;
+        }
+        case "camp":
+          if (p.phase.kind === "lit") {
+            p.phase.elapsed += dt;
+            if (p.phase.elapsed >= (s.play.reduced ? 1 : 2.5))
+              settle2(s, "帐绳系稳，营灯亮起。把这一夜的温暖收进手帐。");
+          }
+          break;
+      }
+    if (s.settledAt !== null && s.age - s.settledAt >= (s.play.reduced ? 0.7 : 2)) {
+      s.play.complete = true;
+      s.play.completedAt = s.age;
+      s.done = true;
+    }
+    return s;
+  }
+  function keyAotai(s, key, phase) {
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", " "].includes(key))
+      return null;
+    const p = s.session, confirm = key === "Enter" || key === " ", left = key === "ArrowLeft", right = key === "ArrowRight", up = key === "ArrowUp", down = key === "ArrowDown";
+    if (phase === "up") {
+      if (p.kind === "wind" && confirm)
+        p.holding = false;
+      if (p.kind === "takin")
+        p.target = null;
+      return s;
+    }
+    if (s.settledAt !== null)
+      return s;
+    switch (p.kind) {
+      case "snowball":
+        if (p.motion.kind === "ready") {
+          p.aim.x = clamp4(p.aim.x + (right ? 20 : left ? -20 : 0), -100, 170);
+          p.aim.y = clamp4(p.aim.y + (down ? 20 : up ? -20 : 0), -120, 100);
+          if (confirm)
+            launch(s, p.aim);
+        }
+        break;
+      case "wind":
+        if (confirm) {
+          p.holding = true;
+          s.acted = true;
+        }
+        break;
+      case "takin":
+        if (!confirm && targetEncounter(p, { x: p.actor.x + (left ? -0.12 : right ? 0.12 : 0), y: p.actor.y + (up ? -0.12 : down ? 0.12 : 0) })) {
+          s.acted = true;
+          s.gesture = "hold";
+        }
+        break;
+      case "camp":
+        if (p.phase.kind === "ropes") {
+          const phase2 = p.phase, l = layout2(s);
+          if (phase2.drag) {
+            phase2.drag.point.x += left ? -48 : right ? 48 : 0;
+            phase2.drag.point.y += up ? -48 : down ? 48 : 0;
+            if (confirm)
+              tieRope(s);
+          } else if (confirm) {
+            if (!ropeTied(phase2, phase2.focus))
+              phase2.drag = { index: phase2.focus, point: { ...l.loose[phase2.focus] } };
+          } else if (left || right)
+            phase2.focus = right ? 1 : 0;
+        } else if (p.phase.kind === "lamp" && confirm)
+          lightLamp(s);
+        break;
+    }
+    return s;
+  }
+
+  // .build/typescript/runtime/aotai-games/watercolor.js
+  var grain = (i) => {
+    const n = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+    return n - Math.floor(n);
+  };
+  function paperLayer(doc) {
+    const canvas = doc.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return canvas;
+    for (let i = 0; i < 5100; i++) {
+      const value = i % 3 ? "#716853" : "#fff8df";
+      ctx.globalAlpha = 0.025 + grain(i + 13) * 0.04;
+      ctx.fillStyle = value;
+      ctx.fillRect(grain(i) * 256, grain(i + 7) * 256, 0.6 + grain(i + 9) * 1.5, 0.4 + grain(i + 11) * 0.7);
+    }
+    ctx.lineWidth = 0.45;
+    ctx.strokeStyle = "#978b6a";
+    ctx.globalAlpha = 0.045;
+    for (let i = 0; i < 70; i++) {
+      const x = grain(i + 40) * 256, y = grain(i + 61) * 256;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + grain(i + 20) * 5, y + 1);
+      ctx.stroke();
+    }
+    return canvas;
+  }
+  function snowContact(ctx, at, width, depth = 7) {
+    ctx.save();
+    ctx.translate(at.x, at.y);
+    ctx.fillStyle = "#70858a";
+    for (let i = 0; i < 5; i++) {
+      ctx.globalAlpha = 0.025 + i * 7e-3;
+      ctx.beginPath();
+      ctx.ellipse((grain(i + 7) - 0.5) * width * 0.12, 1 + i * 0.2, width * (0.42 - i * 0.035), depth * (0.8 - i * 0.09), -0.035, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.strokeStyle = "#f9f3e1";
+    ctx.globalAlpha = 0.65;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(-width * 0.3, depth * 0.3);
+    ctx.quadraticCurveTo(0, depth * 0.7, width * 0.31, depth * 0.2);
+    ctx.stroke();
+    ctx.restore();
+  }
+  function snowMark(ctx, at, size, angle, hoof = false) {
+    ctx.save();
+    ctx.translate(at.x, at.y);
+    ctx.rotate(angle);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#718b8b";
+    ctx.lineWidth = hoof ? size * 0.42 : size * 0.7;
+    ctx.globalAlpha = 0.27;
+    for (const x of hoof ? [-size * 0.32, size * 0.32] : [0]) {
+      ctx.beginPath();
+      ctx.moveTo(x - size * 0.1, -size * 0.48);
+      ctx.quadraticCurveTo(x - size * 0.28, 0, x + size * 0.04, size * 0.48);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 0.4;
+    ctx.lineWidth = 0.8;
+    ctx.strokeStyle = "#fff9e9";
+    ctx.beginPath();
+    ctx.moveTo(-size * 0.65, size * 0.6);
+    ctx.quadraticCurveTo(0, size * 0.9, size * 0.6, size * 0.5);
+    ctx.stroke();
+    ctx.restore();
+  }
+  function washPaper(ctx, texture, rect) {
+    const pattern = ctx.createPattern(texture, "repeat");
+    if (!pattern)
+      return;
+    ctx.save();
+    ctx.globalCompositeOperation = "multiply";
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = pattern;
+    ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+    ctx.restore();
+  }
+
+  // .build/typescript/runtime/aotai-games/view.js
+  var noise = (i) => {
+    const n = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+    return n - Math.floor(n);
+  };
+  function cover(ctx, image, r, ground) {
+    const scale = Math.max(r.width / image.naturalWidth, r.height / image.naturalHeight), w = image.naturalWidth * scale, h = image.naturalHeight * scale;
+    const y = ground === void 0 ? r.y + (r.height - h) / 2 : Math.min(r.y, Math.max(r.y + r.height - h, ground - h * 0.64));
+    ctx.drawImage(image, r.x + (r.width - w) / 2, y, w, h);
+  }
+  function line(ctx, points) {
+    ctx.beginPath();
+    points.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
+  }
+  function arrow(ctx, a, b, alpha = 0.7) {
+    const angle = Math.atan2(b.y - a.y, b.x - a.x);
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = "#5e7774";
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.quadraticCurveTo((a.x + b.x) / 2 + 2, (a.y + b.y) / 2 - 3, b.x, b.y);
+    ctx.stroke();
+    line(ctx, [{ x: b.x - Math.cos(angle - 0.5) * 15, y: b.y - Math.sin(angle - 0.5) * 15 }, b, { x: b.x - Math.cos(angle + 0.5) * 15, y: b.y - Math.sin(angle + 0.5) * 15 }]);
+    ctx.stroke();
+    ctx.restore();
+  }
+  var AotaiGameView = class {
+    id;
+    doc;
+    directInput = true;
+    canvas;
+    contentState = "loading";
+    disposed = false;
+    pending = new AbortController();
+    observer = null;
+    host = null;
+    state = null;
+    scene = null;
+    props = null;
+    actor = null;
+    actions = null;
+    stone = null;
+    paper;
+    slope = null;
+    portrait = false;
+    scale = 1;
+    dx = 0;
+    dy = 0;
+    viewport = { x: 0, y: 0, width: 1e3, height: 720 };
+    character;
+    constructor(id2, doc) {
+      this.id = id2;
+      this.doc = doc;
+      this.canvas = doc.createElement("canvas");
+      this.canvas.className = "aotai-game-canvas";
+      this.canvas.setAttribute("aria-hidden", "true");
+      this.paper = paperLayer(doc);
+      this.character = characterId(new URLSearchParams(doc.defaultView?.location.search).get("character")) ?? readCharacterId();
+    }
+    resize() {
+      if (!this.host || this.disposed)
+        return;
+      const rect = this.host.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1, Math.sqrt(28e5 / Math.max(1, rect.width * rect.height)));
+      this.portrait = rect.height > rect.width;
+      this.canvas.width = Math.max(1, Math.round(rect.width * dpr));
+      this.canvas.height = Math.max(1, Math.round(rect.height * dpr));
+      const height = this.portrait ? 1240 : 720;
+      this.scale = Math.min(this.canvas.width / 1e3, this.canvas.height / height);
+      this.dx = (this.canvas.width - 1e3 * this.scale) / 2;
+      this.dy = (this.canvas.height - height * this.scale) / 2;
+      this.viewport = { x: -this.dx / this.scale, y: -this.dy / this.scale, width: this.canvas.width / this.scale, height: this.canvas.height / this.scale };
+      if (this.state)
+        this.paint(this.state);
+    }
+    async mount(host, cache2) {
+      this.host = host;
+      host.append(this.canvas);
+      this.resize();
+      this.observer = new ResizeObserver(() => this.resize());
+      this.observer.observe(host);
+      const { signal } = this.pending;
+      const load = (file) => new Promise((resolve, reject) => {
+        const entry = cache2?.request(file, "high");
+        let image = null;
+        const clean = () => {
+          signal.removeEventListener("abort", abort);
+          if (image)
+            image.onload = image.onerror = null;
+        };
+        const abort = () => {
+          clean();
+          reject(new DOMException("画作已收起", "AbortError"));
+        };
+        if (signal.aborted) {
+          abort();
+          return;
+        }
+        signal.addEventListener("abort", abort, { once: true });
+        if (entry)
+          void entry.promise.then((item) => {
+            if (signal.aborted)
+              return;
+            clean();
+            if (item.state === "ready")
+              resolve(item.image);
+            else
+              reject(new Error("画作暂未展开"));
+          });
+        else {
+          image = new Image();
+          image.decoding = "async";
+          image.onload = () => {
+            if (!image)
+              return;
+            clean();
+            resolve(image);
+          };
+          image.onerror = () => {
+            clean();
+            reject(new Error("画作暂未展开"));
+          };
+          image.src = file;
+        }
+      });
+      try {
+        const appearance = CHARACTERS[this.character];
+        const [scene, props, actor, actions, slope] = await Promise.all([
+          load(sceneFile2(this.id)),
+          this.id !== "snow-lichen" ? load(PAINTED_PROPS_FILE) : Promise.resolve(null),
+          load(appearance.walk.file),
+          this.id === "aotai-camp-night" ? load(appearance.actions.file) : Promise.resolve(null),
+          this.id === "snow-lichen" ? load("scenes/aotai-painterly-v1/winter-slope.webp") : Promise.resolve(null)
+        ]);
+        if (this.disposed || signal.aborted)
+          return;
+        this.scene = scene;
+        this.props = props;
+        this.actor = actor;
+        this.actions = actions;
+        this.slope = slope ? this.foregroundLayer(slope) : null;
+        this.stone = this.id === "snow-tracks" ? this.foregroundLayer(scene, true) : null;
+        this.contentState = "ready";
+        host.setAttribute("aria-busy", "false");
+        if (this.state)
+          this.paint(this.state);
+      } catch {
+        if (!this.disposed && !signal.aborted) {
+          this.contentState = "error";
+          host.setAttribute("aria-busy", "false");
+          if (this.state)
+            this.paint(this.state);
+        }
+      }
+    }
+    input(input) {
+      return { ...input, x: typeof input.x === "number" ? (input.x * this.canvas.width - this.dx) / this.scale : void 0, y: typeof input.y === "number" ? (input.y * this.canvas.height - this.dy) / this.scale : void 0 };
+    }
+    foregroundLayer(image, stone = false) {
+      const canvas = this.doc.createElement("canvas");
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx)
+        throw new Error("山坡画层无法展开");
+      ctx.drawImage(image, 0, 0);
+      ctx.globalCompositeOperation = "destination-in";
+      const edge = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      edge.addColorStop(0, "transparent");
+      edge.addColorStop(0.1, "#fff");
+      edge.addColorStop(0.88, "#fff");
+      edge.addColorStop(1, "transparent");
+      ctx.fillStyle = edge;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (stone) {
+        const top = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        top.addColorStop(0, "transparent");
+        top.addColorStop(0.28, "transparent");
+        top.addColorStop(0.49, "#fff");
+        top.addColorStop(0.78, "#fff");
+        top.addColorStop(1, "transparent");
+        ctx.fillStyle = top;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      return canvas;
+    }
+    characterAt(ctx, at, height, frame2 = 2, pose = false, lean = 0) {
+      const appearance = CHARACTERS[this.character], image = pose ? this.actions : this.actor;
+      if (!image)
+        return;
+      const frames = pose ? appearance.actions.frames : appearance.walk.frames, spec = frames[frame2 % frames.length], base = frames[0];
+      const scale = height / (base.height * base.scale) * spec.scale;
+      snowContact(ctx, at, height * 0.43, height * 0.035);
+      ctx.save();
+      ctx.translate(at.x, at.y);
+      ctx.rotate(lean);
+      ctx.filter = "saturate(.88) contrast(.96)";
+      ctx.drawImage(image, spec.x, spec.y, spec.width, spec.height, -spec.footX * scale, -spec.footY * scale, spec.width * scale, spec.height * scale);
+      ctx.restore();
+    }
+    snow(ctx, s, strength) {
+      if (s.play.reduced)
+        return;
+      const v = this.viewport, l = layout2(s);
+      for (let i = 0; i < 28; i++) {
+        const t = (noise(i + 31) + s.age * (0.025 + strength * 0.03)) % 1, x = v.x + (noise(i + 5) * v.width + s.age * strength * 40) % v.width, y = v.y + t * v.height;
+        ctx.fillStyle = `rgba(249,249,237,${0.32 + strength * 0.18})`;
+        ctx.beginPath();
+        ctx.ellipse(x, y, 1.3, 1.8, -0.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (strength > 0.65) {
+        ctx.strokeStyle = "#eff3e4";
+        ctx.lineWidth = 1.3;
+        ctx.globalAlpha = 0.36;
+        for (let i = 0; i < 12; i++) {
+          const y = l.height * 0.25 + noise(i + 60) * l.height * 0.48, x = (noise(i + 45) * 1200 + s.age * 120) % 1300 - 160;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.quadraticCurveTo(x + 60, y - 12, x + 120, y - 8);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
+    snowball(ctx, s) {
+      const p = s.session;
+      if (p.kind !== "snowball")
+        return;
+      const l = layout2(s), points = SNOW_FLOOR.map((p2) => ({ x: p2.x, y: p2.y + l.snowOffset }));
+      ctx.save();
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      if (this.stone)
+        ctx.drawImage(this.stone, 0, l.snowOffset, 1e3, 720);
+      const gx = SNOW_GOAL.x, gy = SNOW_GOAL.y + l.snowOffset;
+      snowContact(ctx, { x: gx, y: gy + 13 }, 87, 11);
+      ctx.strokeStyle = "#fcf5e1ba";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(gx - 38, gy + 17);
+      ctx.bezierCurveTo(gx - 18, gy + 30, gx + 22, gy + 25, gx + 43, gy + 8);
+      ctx.stroke();
+      ctx.fillStyle = "#647779";
+      ctx.font = '20px "Kaiti SC","STKaiti",serif';
+      ctx.textAlign = "center";
+      ctx.fillText("雪窝", gx + 12, gy + 59);
+      const ball = p.world.point, by = ball.y + l.snowOffset;
+      snowContact(ctx, { x: ball.x, y: by + SNOW_RADIUS - 2 }, SNOW_RADIUS * 1.7, 4);
+      if (this.props) {
+        const f = PAINTED_PROPS.snowball;
+        ctx.save();
+        ctx.translate(ball.x, by);
+        ctx.rotate(p.world.angle);
+        ctx.drawImage(this.props, f.x, f.y, f.width, f.height, -SNOW_RADIUS, -SNOW_RADIUS, SNOW_RADIUS * 2, SNOW_RADIUS * 2);
+        ctx.restore();
+      }
+      if (p.motion.kind === "ready")
+        arrow(ctx, { x: SNOW_START.x + 38, y: SNOW_START.y + l.snowOffset - 42 }, { x: SNOW_START.x + 102, y: SNOW_START.y + l.snowOffset - 12 }, 0.65);
+      if (p.motion.kind === "aiming")
+        arrow(ctx, { x: SNOW_START.x, y: SNOW_START.y + l.snowOffset }, p.motion.to);
+      if (p.motion.kind === "rolling" && p.world.speed > 1.5 && !s.play.reduced)
+        for (let i = 0; i < 7; i++) {
+          ctx.fillStyle = "#f4f5e7a6";
+          ctx.beginPath();
+          ctx.arc(ball.x - 18 - noise(i + s.age) * 36, by + 12 - noise(i + 5) * 12, 1.4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      this.characterAt(ctx, { x: 100, y: points[0].y + 10 }, s.portrait ? 135 : 105);
+      ctx.restore();
+    }
+    wind(ctx, s) {
+      const p = s.session;
+      if (p.kind !== "wind")
+        return;
+      const l = layout2(s);
+      ctx.save();
+      if (this.slope)
+        ctx.drawImage(this.slope, 0, 0, 1e3, l.height);
+      for (let i = 0; i < Math.floor(p.progress * 25); i++) {
+        const at = windPointAt(i / 25, s.portrait);
+        snowMark(ctx, { x: at.x + (i % 2 ? 4 : -4), y: at.y + 5 }, 6, -0.32);
+      }
+      this.characterAt(ctx, windPoint(s), s.portrait ? 145 : 110, p.holding ? Math.floor(p.stride * 8) % 8 : 2, false, p.holding ? 0.035 + p.gust * 0.045 : -0.025);
+      this.snow(ctx, s, p.gust);
+      ctx.restore();
+    }
+    animal(ctx, frame2, x, footY, height, gait, faceLeft = false) {
+      if (!this.props)
+        return;
+      const scale = height / frame2.height;
+      snowContact(ctx, { x, y: footY }, frame2.width * scale * 0.64, 7);
+      ctx.save();
+      if (faceLeft) {
+        ctx.beginPath();
+        ctx.rect(-400, -300, 1372, 2100);
+        ctx.clip();
+      }
+      ctx.translate(x, footY);
+      if (faceLeft)
+        ctx.scale(-1, 1);
+      ctx.rotate(Math.sin(gait) * 7e-3);
+      ctx.drawImage(this.props, frame2.x, frame2.y, frame2.width, frame2.height, -frame2.width * scale / 2, -height, frame2.width * scale, height);
+      ctx.restore();
+    }
+    takin(ctx, s) {
+      const p = s.session;
+      if (p.kind !== "takin")
+        return;
+      const l = layout2(s), phase = p.phase, clear = passageClear(p.actor, l.height);
+      ctx.save();
+      for (let i = 0; i < 32; i++) {
+        const x = 110 + noise(i + 91) * 330, y = l.height * (0.75 + noise(i + 112) * 0.14);
+        ctx.fillStyle = "#f9f6e720";
+        ctx.beginPath();
+        ctx.ellipse(x, y, 2 + noise(i) * 4, 1.3, -0.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      const adultX = encounterAdult(p), calfX = encounterCalf(p), adultProgress = Math.max(0, (0.8 - adultX) / 1.04), calfProgress = Math.max(0, (0.94 - calfX) / 1.15);
+      for (let animal = 0; animal < 2; animal++)
+        for (let i = 0; i < Math.floor((animal ? calfProgress : adultProgress) * 27); i++) {
+          const x = (animal ? 0.94 : 0.8) * 1e3 - i * 40, y = trailY(x / 1e3) * l.height;
+          for (const side of [-1, 1])
+            snowMark(ctx, { x: x + side * 5, y: y + side * 7 }, animal ? 4 : 6, -0.17, true);
+        }
+      const adultWalking = phase.kind === "opening" || phase.kind === "adult" && clear;
+      const calfWalking = phase.kind === "calf" && clear;
+      const mh = s.portrait ? 235 : 205, ch = mh * 0.53;
+      if (!["aftermath", "returning", "finished"].includes(phase.kind)) {
+        ctx.save();
+        ctx.globalAlpha = phase.kind === "calf" ? 1 : phase.kind === "calf-reveal" ? 0.2 + Math.min(1, phase.elapsed / 6) * 0.8 : 0.13;
+        this.animal(ctx, PAINTED_PROPS.calf, calfX * 1e3, trailY(calfX) * l.height + 2, ch, calfWalking && !s.play.reduced ? p.footsteps * Math.PI : 0, true);
+        ctx.restore();
+      }
+      if (adultX > -0.21)
+        this.animal(ctx, PAINTED_PROPS.mother, adultX * 1e3, trailY(adultX) * l.height, mh, adultWalking && !s.play.reduced ? p.footsteps * Math.PI : 0, true);
+      if (phase.kind === "opening" || phase.kind === "calf-reveal") {
+        ctx.fillStyle = "#e4e9df38";
+        ctx.beginPath();
+        ctx.ellipse(970, l.height * 0.61, 70, 55, -0.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      const actor = { x: p.actor.x * 1e3, y: p.actor.y * l.height };
+      this.characterAt(ctx, actor, s.portrait ? 112 : 90, p.moving ? Math.floor(p.stride * 4) % 8 : 2);
+      if ((phase.kind === "yielding" || phase.kind === "adult" || phase.kind === "calf") && !clear && !s.play.reduced) {
+        const x = (phase.kind === "calf" ? calfX : adultX) * 1e3, y = trailY(x / 1e3) * l.height;
+        ctx.strokeStyle = "#f7f3e150";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        const by = y - (phase.kind === "calf" ? 45 : 92);
+        ctx.moveTo(x - 77, by);
+        ctx.bezierCurveTo(x - 84, by - 5, x - 89, by + Math.sin(s.age * 1.6) * 3, x - 97, by - 2);
+        ctx.stroke();
+      }
+      this.snow(ctx, s, phase.kind === "opening" ? 0.6 - Math.min(1, phase.elapsed / 10) * 0.4 : 0.18);
+      ctx.restore();
+    }
+    camp(ctx, s) {
+      const p = s.session;
+      if (p.kind !== "camp" || !this.props)
+        return;
+      const l = layout2(s), phase = p.phase, t = l.tent;
+      const lit = phase.kind === "lit" ? Math.min(1, phase.elapsed / 1.7) : 0;
+      ctx.fillStyle = `rgba(14,30,56,${0.66 + lit * 0.06})`;
+      ctx.fillRect(this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height);
+      snowContact(ctx, { x: t.x + t.width / 2, y: t.y + t.height * 0.97 }, t.width * 0.94, 17);
+      const drift = s.play.reduced ? 0 : Math.sin(s.age * 4.6) * (phase.kind === "ropes" ? phase.tied === "none" ? 4 : 2 : 0.25);
+      ctx.save();
+      ctx.filter = `brightness(${0.62 + lit * 0.22}) saturate(.8)`;
+      const tentArt = PAINTED_PROPS.tent;
+      for (let row = 0; row < 8; row++) {
+        const sy = row / 8 * tentArt.height, sh = tentArt.height / 8;
+        ctx.drawImage(this.props, tentArt.x, tentArt.y + sy, tentArt.width, Math.min(sh + 1, tentArt.height - sy), t.x + drift * (1 - row / 8), t.y + row / 8 * t.height, t.width, t.height / 8 + 1);
+      }
+      ctx.restore();
+      for (const index of [0, 1]) {
+        const tied = ropeTied(phase, index), root = l.roots[index], peg = l.pegs[index], end = tied ? peg : phase.kind === "ropes" && phase.drag?.index === index ? phase.drag.point : l.loose[index];
+        ctx.strokeStyle = "#e6dec1";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(root.x + drift * 0.45, root.y);
+        ctx.quadraticCurveTo((root.x + end.x) / 2, (root.y + end.y) / 2 + (tied ? 0 : 26 + Math.sin(s.age * 5 + index) * 6), end.x, end.y);
+        ctx.stroke();
+        ctx.strokeStyle = "#c1c9b1";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(peg.x - 3, peg.y + 9);
+        ctx.lineTo(peg.x + 4, peg.y - 11);
+        ctx.lineTo(peg.x + 13, peg.y - 10);
+        ctx.stroke();
+        if (!tied) {
+          ctx.strokeStyle = "#f6efdc";
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.arc(end.x, end.y, 13, 0, Math.PI * 2);
+          ctx.stroke();
+          if (phase.kind === "ropes" && (phase.focus === index || phase.drag?.index === index))
+            arrow(ctx, { x: end.x + (index ? 19 : -19), y: end.y - 10 }, { x: peg.x, y: peg.y - 16 }, 0.55);
+        }
+      }
+      if (phase.kind === "lamp" && !s.play.reduced) {
+        const r = 21 + Math.sin(s.age * 2) * 2;
+        ctx.strokeStyle = "#eee6ce";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(l.lamp.x - r * 0.8, l.lamp.y + 20);
+        ctx.quadraticCurveTo(l.lamp.x, l.lamp.y + 24, l.lamp.x + r * 0.7, l.lamp.y + 20);
+        ctx.stroke();
+      }
+      if (lit > 0) {
+        const glow = ctx.createRadialGradient(l.lamp.x, l.lamp.y, 2, l.lamp.x, l.lamp.y, 155);
+        glow.addColorStop(0, `rgba(255,214,128,${lit * 0.8})`);
+        glow.addColorStop(0.27, `rgba(238,179,84,${lit * 0.37})`);
+        glow.addColorStop(1, "rgba(233,181,95,0)");
+        ctx.fillStyle = glow;
+        ctx.fillRect(l.lamp.x - 160, l.lamp.y - 160, 320, 320);
+        ctx.fillStyle = `rgba(255,230,161,${lit})`;
+        ctx.beginPath();
+        ctx.ellipse(l.lamp.x, l.lamp.y + 5, 7, 11, 0, 0, Math.PI * 2);
+        ctx.fill();
+        for (let i = 0; i < 25; i++) {
+          ctx.fillStyle = `rgba(249,239,202,${lit * 0.6})`;
+          ctx.beginPath();
+          ctx.arc(noise(i + 71) * 1e3, noise(i + 49) * l.height * 0.3, i % 5 ? 1 : 1.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      this.characterAt(ctx, { x: 260, y: t.y + t.height + 18 }, s.portrait ? 140 : 110, lit > 0.5 ? 2 : 0, true);
+      this.snow(ctx, s, phase.kind === "ropes" ? 0.75 : 0.2);
+    }
+    paint(s) {
+      if (this.disposed)
+        return;
+      this.state = s;
+      s.portrait = this.portrait;
+      const ctx = this.canvas.getContext("2d");
+      if (!ctx)
+        return;
+      const l = layout2(s), scene = this.scene, v = this.viewport;
+      ctx.setTransform(this.scale, 0, 0, this.scale, this.dx, this.dy);
+      ctx.clearRect(v.x, v.y, v.width, v.height);
+      ctx.fillStyle = "#e8ecdf";
+      ctx.fillRect(v.x, v.y, v.width, v.height);
+      if (this.contentState !== "ready" || !scene) {
+        ctx.font = '24px "PingFang SC",sans-serif';
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#64786e";
+        ctx.fillText(this.contentState === "error" ? "画作暂未展开，可以重试或继续山路。" : "山间画作正在展开……", 500, l.height / 2);
+        return;
+      }
+      const camera = s.session.kind === "takin" && !s.play.reduced ? 1 + Math.max(0, 1 - s.age / 10) * 0.075 : 1;
+      ctx.save();
+      ctx.translate(500, l.height * 0.7);
+      ctx.scale(camera, camera);
+      ctx.translate(-500, -l.height * 0.7);
+      const progress = s.session.kind === "wind" ? s.session.progress : 0;
+      ctx.save();
+      const zoom = 1 + progress * 0.09;
+      ctx.translate(-progress * 28, progress * 20);
+      cover(ctx, scene, { x: v.x, y: v.y - progress * 65, width: v.width * zoom, height: v.height * zoom }, s.session.kind === "takin" || s.session.kind === "camp" ? l.height * 0.67 : void 0);
+      ctx.restore();
+      switch (s.session.kind) {
+        case "snowball":
+          this.snowball(ctx, s);
+          break;
+        case "wind":
+          this.wind(ctx, s);
+          break;
+        case "takin":
+          this.takin(ctx, s);
+          break;
+        case "camp":
+          this.camp(ctx, s);
+          break;
+      }
+      ctx.restore();
+      washPaper(ctx, this.paper, v);
+      if (s.settledAt !== null) {
+        const t = Math.min(1, (s.age - s.settledAt) / 1.6);
+        ctx.fillStyle = `rgba(247,241,221,${t * 0.12})`;
+        ctx.fillRect(v.x, v.y, v.width, v.height);
+      }
+    }
+    dispose() {
+      if (this.disposed)
+        return;
+      this.disposed = true;
+      this.pending.abort();
+      this.observer?.disconnect();
+      this.canvas.remove();
+      if (this.state?.session.kind === "snowball")
+        this.state.session.world.dispose();
+      this.host = null;
+      this.state = null;
+      this.scene = this.props = this.actor = this.actions = null;
+      this.slope = this.stone = null;
+    }
+  };
+  function viewOf2(refs) {
+    if (!(refs instanceof AotaiGameView))
+      throw new Error("鳌太线画面不存在");
+    return refs;
+  }
+
+  // .build/typescript/runtime/aotai-games/adapter.js
+  function createAotaiGames(dom2) {
+    const { get: $2, text } = dom2;
+    return {
+      create(entry, options) {
+        if (!aotaiGameId(entry.id))
+          throw new Error("鳌太线画作不存在");
+        return new AotaiState(entry.id, options.reduced);
+      },
+      act: (s, input) => actAotai(stateOf2(s), input),
+      move: (s, input) => moveAotai(stateOf2(s), input),
+      release: (s) => releaseAotai(stateOf2(s)),
+      tick: (s, dt) => tickAotai(stateOf2(s), dt),
+      draw(_svg, _parent, entry) {
+        if (!aotaiGameId(entry.id))
+          throw new Error("鳌太线画作不存在");
+        return new AotaiGameView(entry.id, dom2.document);
+      },
+      paint: (refs, s) => viewOf2(refs).paint(stateOf2(s)),
+      instruction: (entry) => aotaiGameId(entry.id) ? AOTAI_GAMES[entry.id].prompt : "",
+      status: (s) => stateOf2(s).feedback,
+      outcome(state, entry) {
+        const s = stateOf2(state), spec = AOTAI_GAMES[s.id];
+        return { id: s.id, edition: entry.edition, earned: s.play.complete && s.settledAt !== null, interaction: s.gesture, memory: spec.memory, title: spec.badge };
+      },
+      assets: (entry) => ({ scene: aotaiGameId(entry.id) ? sceneFile2(entry.id) : void 0 }),
+      mount: (refs, context) => viewOf2(refs).mount(context.host, context.cache),
+      dispose(refs) {
+        viewOf2(refs).dispose();
+        $2("micro-panel").removeAttribute("data-aotai");
+      },
+      point: (refs, input) => viewOf2(refs).input(input),
+      key: (s, key, phase) => keyAotai(stateOf2(s), key, phase),
+      present(state, refs) {
+        const s = stateOf2(state), spec = AOTAI_GAMES[s.id], view = viewOf2(refs);
+        $2("micro-panel").dataset.aotai = s.kind;
+        if (s.session.kind === "takin") {
+          $2("micro-panel").dataset.encounterPhase = s.session.phase.kind;
+          $2("micro-panel").dataset.activeSeconds = s.age.toFixed(1);
+        }
+        text("micro-title", spec.title);
+        text("micro-instruction", view.contentState === "ready" ? s.settledAt !== null ? "" : spec.prompt : view.contentState === "error" ? "画作暂未展开，可以重试或继续山路。" : "山间画作正在展开……");
+        text("micro-result", view.contentState === "ready" && s.feedback !== spec.prompt ? s.feedback : "");
+        text("micro-skip", "继续山路 →");
+        $2("micro-surface").setAttribute("aria-label", spec.prompt + " " + spec.keys + " R 重试。");
+        $2("micro-surface").setAttribute("aria-busy", String(view.contentState === "loading"));
+      }
+    };
+  }
+
   // .build/typescript/wugong-walk/art-page.js
   var dom = createDom(document);
   var { get: $ } = dom;
   var query = new URLSearchParams(location.search);
   var id = query.get("entry");
-  var routeId = document.body.dataset.route === "tiger" ? "tiger" : "wugong";
-  var mapPage = routeId === "tiger" ? "tiger-walk.html" : "wugong-walk.html";
-  var allowed = new Set(routeId === "tiger" ? [...Object.keys(TRAIL_GAMES), ...MEMORY_IDS] : ["meadow-bird", "meadow-butterfly", "meadow-flower", "wugong-wind-hiker"]);
-  var places = new Set(routeId === "tiger" ? ["虎跳峡 · 二十八道拐", "虎跳峡 · 中虎跳江边", "虎跳峡 · 中途客栈", "虎跳峡 · 龙洞瀑布"] : ["武功山 · 山脊草甸", "武功山 · 观音宕草甸", "武功山 · 吊马桩", "武功山 · 吊马桩山脊", "武功山 · 金顶古祭坛"]);
+  var routeId = document.body.dataset.route === "tiger" ? "tiger" : document.body.dataset.route === "aotai" ? "aotai" : "wugong";
+  var artRoutes = {
+    wugong: { map: "wugong-walk.html", entries: ["meadow-bird", "meadow-butterfly", "meadow-flower", "wugong-wind-hiker"], places: ["武功山 · 山脊草甸", "武功山 · 观音宕草甸", "武功山 · 吊马桩", "武功山 · 吊马桩山脊", "武功山 · 金顶古祭坛"] },
+    tiger: { map: "tiger-walk.html", entries: [...Object.keys(TRAIL_GAMES), ...MEMORY_IDS], places: ["虎跳峡 · 二十八道拐", "虎跳峡 · 中虎跳江边", "虎跳峡 · 中途客栈", "虎跳峡 · 龙洞瀑布"] },
+    aotai: { map: "aotai-walk.html", entries: AOTAI_IDS, places: AOTAI_IDS.map((id2) => AOTAI_GAMES[id2].place) }
+  };
+  var mapPage = artRoutes[routeId].map;
+  var allowed = new Set(artRoutes[routeId].entries);
+  var places = new Set(artRoutes[routeId].places);
   var requestedPlace = query.get("place");
   var place = requestedPlace && places.has(requestedPlace) ? requestedPlace : null;
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -4636,7 +10893,7 @@
     reduced,
     autoCollect: true,
     presentArt: roundJournalArt,
-    gameKind: (entryId) => routeId === "tiger" ? memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId] : games.kinds[entryId],
+    gameKind: (entryId) => routeId === "aotai" ? aotaiGameId(entryId) ? AOTAI_GAMES[entryId].game : void 0 : routeId === "tiger" ? memoryId(entryId) ? MEMORY_SPECS[entryId].game : TRAIL_GAMES[entryId] : games.kinds[entryId],
     refresh,
     stopLoop,
     onCollected(moment) {
@@ -4738,6 +10995,8 @@
   var tigerMemories = routeId === "tiger" ? createTigerMemoryGames(dom, (name) => mini.action(name)) : null;
   if (tigerMemories)
     mini.registerGame(MEMORY_IDS, tigerMemories.adapter);
+  if (routeId === "aotai")
+    mini.registerGame(AOTAI_IDS, createAotaiGames(dom));
   var lastRoadSound = 0;
   function frame(now) {
     animation = 0;
@@ -4809,3 +11068,34 @@
     $("art-page-title").textContent = "旅行手帐";
   window.parent.postMessage({ type: "trailbound-wugong-art-ready" }, location.origin);
 })();
+/*! Bundled license information:
+
+matter-js/build/matter.js:
+  (*!
+   * matter-js 0.20.0 by @liabru
+   * http://brm.io/matter-js/
+   * License MIT
+   *
+   * The MIT License (MIT)
+   *
+   * Copyright (c) Liam Brummitt and contributors.
+   *
+   * Permission is hereby granted, free of charge, to any person obtaining a copy
+   * of this software and associated documentation files (the "Software"), to deal
+   * in the Software without restriction, including without limitation the rights
+   * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   * copies of the Software, and to permit persons to whom the Software is
+   * furnished to do so, subject to the following conditions:
+   *
+   * The above copyright notice and this permission notice shall be included in
+   * all copies or substantial portions of the Software.
+   *
+   * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   * THE SOFTWARE.
+   *)
+*/

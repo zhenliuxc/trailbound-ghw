@@ -10,12 +10,13 @@
   <link rel="stylesheet" href="wugong-camp-night.css?v=discovery-fade-10">
   <link rel="stylesheet" href="wugong-keepsakes.css?v=discovery-fade-10">
   <link rel="stylesheet" href="wugong-transitions.css?v=discovery-fade-10">
+  <link rel="stylesheet" href="character-picker.css?v=character-choice-1">
   <link rel="preload" as="image" href="characters/trailbound-walk-v2.webp">
   <link rel="prefetch" as="image" href="scenes/wugong-camp-night-v1/night-v1.webp">
   <script defer src="route-moments.js"></script>
   <script defer src="discoveries.js?v=auto-journal-8"></script>
   <script defer src="journal.js"></script>
-  <script defer src="wugong-walk.js?v=discovery-fade-10"></script>
+  <script defer src="wugong-walk.js?v=character-check-2"></script>
 </head>
 <body class="ww-scroll">
   <main class="ww-page">
@@ -26,7 +27,7 @@
     <section class="ww-journey" aria-labelledby="ww-title">
       <header class="ww-heading">
         <div><p id="ww-trip-day" class="ww-eyebrow">武功山 · 东江村经典反穿 / 第一天 · 向营地</p><h1 id="ww-title">沿着山路，慢慢走。</h1><p id="ww-subtitle" class="ww-subtitle">东江村 → 观音宕过夜 → 金顶 → 景区大门</p></div>
-        <div class="ww-heading-tools"><button id="ww-journal" type="button">旅行手帐</button><button id="ww-sound" type="button" aria-pressed="false">声音 · 关</button></div>
+        <div class="ww-heading-tools"><button id="ww-character" type="button" disabled>角色</button><button id="ww-journal" type="button">旅行手帐</button><button id="ww-sound" type="button" aria-pressed="false">声音 · 关</button></div>
       </header>
       <div id="ww-conditions" class="ww-conditions" data-weather="clear">
         <p class="ww-environment-status"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="ww-weather-sun"><circle cx="12" cy="12" r="4"/><path d="M12 4V2m0 20v-2M4 12H2m20 0h-2M6.3 6.3 4.9 4.9m14.2 14.2-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></g><path class="ww-weather-cloud" d="M9 24c-5-1-3-8 2-8 1-6 10-7 13-1 7-1 9 9 2 9Z"/><path class="ww-weather-rain" d="m12 27-1 3m8-3-1 3m8-3-1 3"/><path class="ww-weather-moon" d="M23 5A11 11 0 1 0 27 22C16 24 10 13 23 5Z"/></svg><span id="ww-environment-label">第一天 08:00 · 晴</span><small>旅程天气</small></p>

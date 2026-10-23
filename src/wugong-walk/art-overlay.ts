@@ -1,4 +1,5 @@
 import { animateWhileVisible, enterDialog, leaveDialog, type CancelMotion } from './visible-motion';
+import type { CharacterId } from '../characters/catalog';
 
 export interface ArtResult { readonly collected: number }
 export class ArtOverlay {
@@ -10,7 +11,7 @@ export class ArtOverlay {
   private closing = false;
   private cancelMotion: CancelMotion = () => {};
   private cancelFrameMotion: CancelMotion = () => {};
-  constructor(signal: AbortSignal, onClose: (result: ArtResult) => void, prefix: 'ww' | 'meadow' | 'tg', private readonly options: { soft?: boolean; page?: 'wugong-art.html' | 'tiger-art.html'; version?: string } = {}) {
+  constructor(signal: AbortSignal, onClose: (result: ArtResult) => void, prefix: 'ww' | 'meadow' | 'tg' | 'ao', private readonly options: { soft?: boolean; page?: 'wugong-art.html' | 'tiger-art.html' | 'aotai-art.html'; version?: string } = {}) {
     const dialog = document.getElementById(`${prefix}-art`), frame = document.getElementById(`${prefix}-art-frame`), status = document.getElementById(`${prefix}-art-state`);
     if (!(dialog instanceof HTMLDialogElement) || !(frame instanceof HTMLIFrameElement) || !status) throw new Error('手绘与手帐入口无法读取');
     this.dialog = dialog; this.frame = frame; this.status = status;
@@ -40,11 +41,12 @@ export class ArtOverlay {
     }, { signal });
   }
   get open(): boolean { return this.dialog.open; }
-  show(entry?: string, place?: string): void {
+  show(entry?: string, place?: string, character?: CharacterId): void {
     if (this.open) return;
     this.collected = 0; this.closing = false;
     this.status.hidden = false; this.status.textContent = entry ? '手绘正在展开…' : '正在翻开旅行手帐…'; this.frame.hidden = true;
     const query = new URLSearchParams(); if (entry) query.set('entry', entry); if (place) query.set('place', place);
+    if (character) query.set('character', character);
     if (this.options.version) query.set('v', this.options.version);
     this.frame.src = `${this.options.page ?? 'wugong-art.html'}?${query}`; this.dialog.showModal();
     if (this.options.soft) this.cancelMotion = enterDialog(this.dialog, matchMedia('(prefers-reduced-motion: reduce)').matches);

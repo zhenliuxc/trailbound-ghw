@@ -1,0 +1,34 @@
+✔ the complete Qinling chapter reaches Taibai after four games, three photos, night and dawn (5.11075ms)
+✔ skipping all games still reaches the end without earned badges (2.766417ms)
+✔ stale game close callbacks cannot advance or award a different active discovery (0.187584ms)
+✔ arrival-photo dismissal pauses, reopening it never consumes the next ridge event (0.447375ms)
+✔ blank taps and idle time cannot complete any Aotai game (3.731959ms)
+✔ three correct upright stone fragments complete the scene in landscape and portrait (0.640583ms)
+✔ a wrong or cancelled stone placement earns nothing (0.251ms)
+✔ ridge recognition rejects the wrong silhouette and accepts the matching one (0.217458ms)
+✔ mist cards turn back on a mismatch and require all three pairs (0.319625ms)
+✔ takin crossing needs a retreat and a deliberate return to the path, including reduced motion (1.160666ms)
+✔ keyboard controls can complete all four games without pointer input (0.433ms)
+✔ same earned badge keeps the first journal date and memory (0.259875ms)
+✔ only Baiqi Temple is labelled as a named-place photo; both Taibai photos stay regional (0.123417ms)
+✔ completed Wugong artwork saves automatically once and closes after the memory fades (190.169ms)
+✔ unfinished artwork cannot enter automatic collection (15.568708ms)
+✔ failed automatic storage stays open with an explicit retry, then saves once (14.854875ms)
+✔ background pauses automatic collection, and closing cancels a deferred save (19.396375ms)
+✔ other routes retain manual reward collection by default (13.54775ms)
+✔ reduced motion still shows the automatically earned memory before a short fade (13.179208ms)
+✔ automatic persistence preserves the first artwork, text and date when replayed (0.62575ms)
+✔ all six journey games have a distinct discovery before opening, without an extra button (135.949791ms)
+✔ cancelling or replacing a discovery prevents late game openings (4.638083ms)
+✔ memory remains open until its fade finishes; backgrounding pauses rather than restarts it (4.0315ms)
+✔ exiting during a memory fade cancels its pending continuation (4.557625ms)
+✔ reduced motion retains time to see the earned badge, with opacity only (4.704083ms)
+✔ fallback completion counts visible time and can still be cancelled (6.623208ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 483.975

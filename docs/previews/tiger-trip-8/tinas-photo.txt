@@ -1,0 +1,16 @@
+Browser tab: 29, Title: "虎跳峡 · 高路与江边 / 山径", URL: "http://127.0.0.1:8000/tiger-walk.html?scene=trip-photos-8".
+1 AXWebArea 虎跳峡 · 高路与江边 / 山径, URL: 127.0.0.1:8000/tiger-walk.html?scene=trip-photos-8
+	2 text 请使用支持 Canvas 的浏览器。
+	3 container 中峡客栈, ID: tg-photo
+		4 button Description: 关闭照片，停在山路, ID: tg-photo-close
+		5 image Description: 峡谷山壁前的中峡客栈，外墙保留原有客栈招牌, ID: tg-photo-image
+		6 text 中峡客栈建筑实拍 · 2011
+		7 heading 中峡客栈, Value: 2, ID: tg-photo-title
+			8 text 中峡客栈
+		9 container
+			10 link Description: zhanyoun, Help: 中虎跳 TINA‘S - panoramio.jpg, Value: commons.wikimedia.org/wiki/File:%E4%B8%AD%E8%99%8E%E8%B7%B3_TINA%E2%80%98S_-_panoramio.jpg, ID: tg-photo-source
+			11 text  · 
+			12 link Description: CC BY-SA 3.0, Value: creativecommons.org/licenses/by-sa/3.0, ID: tg-photo-license
+		13 button 看看江边支线 →, ID: tg-photo-continue
+
+The focused UI element is 4 button Description: 关闭照片，停在山路, ID: tg-photo-close

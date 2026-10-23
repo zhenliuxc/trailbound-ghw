@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { copyFile, mkdir } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import ts from 'typescript';
 import { build } from 'esbuild';
 import { buildRouteArt } from './build-wugong-art.mjs';
@@ -105,8 +105,14 @@ if (diagnostics.length || emit.emitSkipped) {
   await copyFile(path.join(root, 'node_modules/@dgreenheck/ez-tree/LICENSE'), path.join(root, 'dist/vendor/ez-tree-LICENSE.txt'));
   await buildRouteArt(new URL('../', import.meta.url), { route: 'wugong' });
   await buildRouteArt(new URL('../', import.meta.url), { route: 'tiger' });
+  await buildRouteArt(new URL('../', import.meta.url), { route: 'aotai' });
+  await build({ absWorkingDir: root, entryPoints: ['.build/typescript/aotai-walk/main.js'], outfile: 'dist/aotai-walk.js', bundle: true, minify: true, format: 'iife', target: 'es2022', charset: 'utf8', banner: { js: '// Generated from src/aotai-walk/*.ts. PixiJS (MIT); see vendor/PIXI-LICENSE.txt. Qinling virtual landscape chapter.' } });
   await build({ absWorkingDir: root, entryPoints: ['.build/typescript/tiger-walk/main.js'], outfile: 'dist/tiger-walk.js', bundle: true, minify: true, format: 'iife', target: 'es2022', charset: 'utf8', banner: { js: '// Generated from src/tiger-walk/*.ts. PixiJS (MIT); see vendor/PIXI-LICENSE.txt. High road + same-path Middle Tiger Leaping Gorge branch.' } });
   await build({ absWorkingDir: root, entryPoints: ['.build/typescript/wugong-walk/art-page.js'], outfile: 'dist/wugong-art.js', bundle: true, format: 'iife', target: 'es2022', charset: 'utf8', banner: { js: '// Generated Wugong art bridge. Reuses existing mini-game, reward and journal controllers.' } });
+  // Preserve bundled license text without its upstream trailing whitespace.
+  const artBundle = path.join(root, 'dist/wugong-art.js');
+  await writeFile(artBundle, (await readFile(artBundle, 'utf8')).replace(/[ \t]+$/gm, ''));
+  await copyFile(path.join(root, 'node_modules/matter-js/LICENSE'), path.join(root, 'dist/vendor/matter-js-LICENSE.txt'));
   await build({
     absWorkingDir: root,
     entryPoints: ['src/app.js'],
